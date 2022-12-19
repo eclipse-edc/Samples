@@ -22,4 +22,4 @@ Closes # <-- _insert Issue number if one exists_
 - [ ] documented public classes/methods?
 - [ ] documented code?
 - [ ] assigned appropriate label?
-- [ ] formatted title correctly? (_take a look at the [CONTRIBUTING](https://github.com/eclipse-dataspaceconnector/Samples/blob/main/CONTRIBUTING.md#submit-a-pull-request) for details_)
+- [ ] formatted title correctly? (_take a look at the [CONTRIBUTING](https://github.com/eclipse-edc/Samples/blob/main/CONTRIBUTING.md#submit-a-pull-request) for details_)
