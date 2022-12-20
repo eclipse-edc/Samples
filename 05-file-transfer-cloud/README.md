@@ -35,7 +35,7 @@ It's as simple as running the main terraform script:
 
 ```bash
 cd 05-file-transfer-cloud/terraform 
-terraform init
+terraform init --upgrade
 terraform apply
 ```
 
@@ -99,7 +99,7 @@ java -Dedc.fs.config=05-file-transfer-cloud/cloud-transfer-provider/config.prope
 To request data offers from the provider, run:
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' http://localhost:9191/api/control/catalog?provider=http://localhost:8282/api/v1/ids/data
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/catalog?providerUrl=http://localhost:8282/api/v1/ids/data"
 ```
 
 #### 3. Negotiate Contract
@@ -118,7 +118,7 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/contract
   "offer": {
     "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
     "assetId": "1",
-    "policy": { <Copy one of the policy from contractoffer.json file in 04.0-file-transfer> }
+    "policy": { <Copy the first policy from the previous response (the one with "target: 1")> }
   }
 }'
 ```
