@@ -16,14 +16,16 @@ README.md @ronjaquensel
 .github/ISSUE_TEMPLATE @ronjaquensel
 .github/workflows/ @ronjaquensel
 
-/01-basic-connector/ @paullatzelsperger
-/02-health-endpoint/ @paullatzelsperger
-/03-configuration/ @paullatzelsperger
-/04.0-file-transfer/ @ronjaquensel
-/04.1-file-transfer-listener/ @paullatzelsperger
-/04.2-modify-transferprocess/ @paullatzelsperger
-/04.3-open-telemetry/ @jimmarino
-/05-file-transfer-cloud/ @paullatzelsperger
+/basic/basic-01-basic-connector/ @paullatzelsperger
+/basic/basic-02-health-endpoint/ @paullatzelsperger
+/basic/basic-03-configuration/ @paullatzelsperger
+
+/transfer/transfer-01-file-transfer/ @ronjaquensel
+/transfer/transfer-02-file-transfer-listener/ @paullatzelsperger
+/transfer/transfer-03-modify-transferprocess/ @paullatzelsperger
+/transfer/transfer-04-open-telemetry/ @jimmarino
+/transfer/transfer-05-file-transfer-cloud/ @paullatzelsperger
+
 /other/ @paullatzelsperger
 
 /resources/ @ronjaquensel

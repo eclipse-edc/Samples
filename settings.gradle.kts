@@ -42,32 +42,34 @@ dependencyResolutionManagement {
     }
 }
 
-include(":01-basic-connector")
-include(":02-health-endpoint")
-include(":03-configuration")
+// basic
+include(":basic:basic-01-basic-connector")
+include(":basic:basic-02-health-endpoint")
+include(":basic:basic-03-configuration")
 
-include(":04.0-file-transfer:file-transfer-consumer")
-include(":04.0-file-transfer:file-transfer-provider")
-include(":04.0-file-transfer:file-transfer-integration-tests")
-include(":04.0-file-transfer:transfer-file-local")
-include(":04.0-file-transfer:status-checker")
+// transfer
+include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
+include(":transfer:transfer-01-file-transfer:file-transfer-provider")
+include(":transfer:transfer-01-file-transfer:file-transfer-integration-tests")
+include(":transfer:transfer-01-file-transfer:transfer-file-local")
+include(":transfer:transfer-01-file-transfer:status-checker")
 
-include(":04.1-file-transfer-listener:file-transfer-listener-consumer")
-include(":04.1-file-transfer-listener:file-transfer-listener-integration-tests")
-include(":04.1-file-transfer-listener:listener")
+include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
+include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-integration-tests")
+include(":transfer:transfer-02-file-transfer-listener:listener")
 
-include(":04.2-modify-transferprocess:api")
-include(":04.2-modify-transferprocess:modify-transferprocess-consumer")
-include(":04.2-modify-transferprocess:modify-transferprocess-integration-tests")
-include(":04.2-modify-transferprocess:simulator")
-include(":04.2-modify-transferprocess:watchdog")
+include(":transfer:transfer-03-modify-transferprocess:api")
+include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
+include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-integration-tests")
+include(":transfer:transfer-03-modify-transferprocess:simulator")
+include(":transfer:transfer-03-modify-transferprocess:watchdog")
 
-include(":04.3-open-telemetry:open-telemetry-consumer")
-include(":04.3-open-telemetry:open-telemetry-provider")
+include(":transfer:transfer-04-open-telemetry:open-telemetry-consumer")
+include(":transfer:transfer-04-open-telemetry:open-telemetry-provider")
 
-include(":05-file-transfer-cloud:cloud-transfer-consumer")
-include(":05-file-transfer-cloud:cloud-transfer-provider")
-include(":05-file-transfer-cloud:transfer-file-cloud")
+include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
+include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
+include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
