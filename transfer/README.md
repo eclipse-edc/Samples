@@ -38,3 +38,5 @@ encounter this in a real-world scenario. So now we'll move on to a more complex 
 transferred not in the local file system, but between two different cloud providers. In this sample you will set up
 a provider that offers a file located in an `Azure Blob Storage`, and a consumer that requests to transfer this file
 to an `AWS S3 bucket`. Terraform is used for creating all required cloud resources.
+
+### [Transfer sample 06](./transfer-06-http-data-flow/README.md): 
