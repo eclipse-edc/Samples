@@ -13,19 +13,11 @@
  */
 
 plugins {
-    `java-library`
-    `java-test-fixtures`
+    id("java")
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
-dependencies {
-    testImplementation("$groupId:junit:$edcVersion")
-
-    testFixturesImplementation("$groupId:junit:$edcVersion")
-    testFixturesImplementation(libs.restAssured)
-    testFixturesImplementation(libs.awaitility)
-    testFixturesImplementation(libs.assertj)
-    testFixturesImplementation(libs.junit.jupiter.api)
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "org.eclipse.edc.EdcHttpServer"
+    }
 }
