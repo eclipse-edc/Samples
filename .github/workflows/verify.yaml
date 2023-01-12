@@ -34,72 +34,72 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-build
 
-      - name: Check Sample 01
+      - name: Check Sample basic-01
         run: |
-          ./gradlew :01-basic-connector:shadowJar
-          echo "Checking Sample 01"
-          java -jar 01-basic-connector/build/libs/basic-connector.jar > log.txt &
+          ./gradlew :basic:basic-01-basic-connector:shadowJar
+          echo "Checking Sample basic-01"
+          java -jar basic/basic-01-basic-connector/build/libs/basic-connector.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
 
-      - name: Check Sample 02
+      - name: Check Sample basic-02
         run: |
-          ./gradlew :02-health-endpoint:shadowJar
-          echo "Checking Sample 02"
-          java -jar 02-health-endpoint/build/libs/connector-health.jar > log.txt &
+          ./gradlew :basic:basic-02-health-endpoint:shadowJar
+          echo "Checking Sample basic-02"
+          java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
-      - name: Check Sample 03
+      - name: Check Sample basic-03
         run: |
-          ./gradlew :03-configuration:shadowJar
-          echo "Checking Sample 03"
-          java -Dedc.fs.config=03-configuration/config.properties -jar 03-configuration/build/libs/filesystem-config-connector.jar > log.txt &
+          ./gradlew :basic:basic-03-configuration:shadowJar
+          echo "Checking Sample basic-03"
+          java -Dedc.fs.config=basic/basic-03-configuration/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
-      - name: Check Sample 04.0 (Consumer)
+      - name: Check Sample transfer-01 (Consumer)
         run: |
-          ./gradlew :04.0-file-transfer:file-transfer-consumer:shadowJar
-          echo "Checking Sample 04 - Consumer"
-          java -Dedc.fs.config=04.0-file-transfer/file-transfer-consumer/config.properties -jar 04.0-file-transfer/file-transfer-consumer/build/libs/consumer.jar > log.txt &
+          ./gradlew :transfer:transfer-01-file-transfer:file-transfer-consumer:shadowJar
+          echo "Checking Sample transfer-01 - Consumer"
+          java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-consumer/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-consumer/build/libs/consumer.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
-      - name: Check Sample 04.0 (Provider)
+      - name: Check Sample transfer-01 (Provider)
         run: |
-          echo "Checking Sample 04 - Provider"
-          ./gradlew :04.0-file-transfer:file-transfer-provider:shadowJar
-          java -Dedc.fs.config=04.0-file-transfer/file-transfer-provider/config.properties -jar 04.0-file-transfer/file-transfer-provider/build/libs/provider.jar > log.txt &
+          echo "Checking Sample transfer-01 - Provider"
+          ./gradlew :transfer:transfer-01-file-transfer:file-transfer-provider:shadowJar
+          java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-provider/build/libs/provider.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
-      - name: Check Sample 04.1 (Consumer)
+      - name: Check Sample transfer-02 (Consumer)
         run: |
-          echo "Checking Sample 04.1 - Consumer"
-          ./gradlew :04.1-file-transfer-listener:file-transfer-listener-consumer:shadowJar
-          java -Dedc.fs.config=04.1-file-transfer-listener/file-transfer-listener-consumer/config.properties -jar 04.1-file-transfer-listener/file-transfer-listener-consumer/build/libs/consumer.jar > log.txt &
+          echo "Checking Sample transfer-02 - Consumer"
+          ./gradlew :transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer:shadowJar
+          java -Dedc.fs.config=transfer/transfer-02-file-transfer-listener/file-transfer-listener-consumer/config.properties -jar transfer/transfer-02-file-transfer-listener/file-transfer-listener-consumer/build/libs/consumer.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
 
-      - name: Check Sample 04.2 (Command-Q/Watchdog)
+      - name: Check Sample transfer-03 (Command-Q/Watchdog)
         run: |
-          echo "Checking Sample 04.2 - Command-Q/Watchdog"
-          ./gradlew :04.2-modify-transferprocess:modify-transferprocess-consumer:shadowJar
-          java -Dedc.fs.config=04.2-modify-transferprocess/modify-transferprocess-consumer/config.properties -jar 04.2-modify-transferprocess/modify-transferprocess-consumer/build/libs/consumer.jar > log.txt &
+          echo "Checking Sample transfer-03 - Command-Q/Watchdog"
+          ./gradlew :transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer:shadowJar
+          java -Dedc.fs.config=transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/config.properties -jar transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/build/libs/consumer.jar > log.txt &
           sleep 5
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
