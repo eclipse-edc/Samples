@@ -69,5 +69,9 @@ include(":05-file-transfer-cloud:cloud-transfer-consumer")
 include(":05-file-transfer-cloud:cloud-transfer-provider")
 include(":05-file-transfer-cloud:transfer-file-cloud")
 
+include("06-http-data-flow:http-data-flow-consumer")
+
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
+include("06-http-data-flow:http-data-flow-integration-tests")
+findProject(":06-http-data-flow:http-data-flow-integration-tests")?.name = "http-data-flow-integration-tests"
