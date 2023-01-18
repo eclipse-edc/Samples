@@ -37,7 +37,11 @@ dependencyResolutionManagement {
         create("libs") {
             from("org.eclipse.edc:edc-versions:0.0.1-SNAPSHOT")
             // this is not part of the published EDC Version Catalog, so we'll just "amend" it
-            library("dnsOverHttps", "com.squareup.okhttp3", "okhttp-dnsoverhttps").versionRef("okhttp")
+            library(
+                "dnsOverHttps",
+                "com.squareup.okhttp3",
+                "okhttp-dnsoverhttps"
+            ).versionRef("okhttp")
         }
     }
 }
@@ -71,8 +75,8 @@ include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
 include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
 include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
 
-include("transfer:transfer-06-http-data-flow:connector")
-include("transfer:transfer-06-http-data-flow:http-data-flow-integration-tests")
+include("transfer:transfer-06-consumer-pull-http:connector")
+include("transfer:transfer-06-consumer-pull-http:backend-service")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
