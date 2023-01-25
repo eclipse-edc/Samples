@@ -44,7 +44,7 @@ public class CheckTimeoutCommandHandler implements CommandHandler<CheckTransferP
                     monitor.info(format("will retire TP with id [%s] due to timeout", tp.getId()));
 
                     tp.transitionError("timeout by watchdog");
-                    store.update(tp);
+                    store.save(tp);
                 });
     }
 
