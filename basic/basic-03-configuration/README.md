@@ -146,18 +146,18 @@ There are a few things worth mentioning here:
 ## Management API
 
 Part of most connectors will be the management api defined in the
-[`management-api`](https://github.com/eclipse-edc/Connector/tree/releases/extensions/control-plane/api/data-management-api)
+[`management-api`](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/api/management-api)
 module. Therefore, we need to add the following module to the dependency list in our `build.gradle.kts`:
 
 ```kotlin
 dependencies {
     // ...
-    implementation("$groupId:data-management-api:$edcVersion")
+    implementation("$groupId:management-api:$edcVersion")
     // ...
 }
 ```
 
-As described in the [README.md](https://github.com/eclipse-edc/Connector/tree/releases/extensions/control-plane/api/data-management-api/data-management-api-configuration)
+As described in the [README.md](https://github.com/eclipse-edc/Connector/tree/main/extensions/common/api/management-api-configuration)
 of the `api-configuration module`, the management api should be exposed on a separate jetty context. Therefore, it is
 necessary to provide the following configuration to the connector:
 
@@ -166,8 +166,8 @@ necessary to provide the following configuration to the connector:
 ```properties
 web.http.port=9191
 web.http.path=/api
-web.http.data.port=9192
-web.http.data.path=/api/v1/management
+web.http.management.port=9192
+web.http.management.path=/api/v1/management
 ```
 
 _**Caution**: If you do not provide this configuration, it leads to the problem that the authentication mechanism is

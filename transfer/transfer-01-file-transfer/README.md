@@ -115,7 +115,7 @@ implementation("$groupId:configuration-filesystem:$edcVersion")
 implementation("$groupId:ids:$edcVersion")
 implementation("$groupId:iam-mock:$edcVersion")
 
-implementation("$groupId:data-management-api:$edcVersion")
+implementation("$groupId:management-api:$edcVersion")
 implementation("$groupId:auth-tokenbased:$edcVersion")
 ```
 
