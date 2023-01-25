@@ -32,7 +32,7 @@ dependencies {
     implementation("$groupId:iam-mock:$edcVersion")
 
     implementation("$groupId:auth-tokenbased:$edcVersion")
-    implementation("$groupId:data-management-api:$edcVersion")
+    implementation("$groupId:management-api:$edcVersion")
 
     implementation("$groupId:ids:$edcVersion")
 
