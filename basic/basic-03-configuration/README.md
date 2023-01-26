@@ -146,7 +146,7 @@ There are a few things worth mentioning here:
 ## Management API
 
 Part of most connectors will be the management api defined in the
-[`management-api`](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/api/management-api)
+[`management-api`](https://github.com/eclipse-edc/Connector/tree/releases/extensions/control-plane/api/management-api)
 module. Therefore, we need to add the following module to the dependency list in our `build.gradle.kts`:
 
 ```kotlin
@@ -157,7 +157,7 @@ dependencies {
 }
 ```
 
-As described in the [README.md](https://github.com/eclipse-edc/Connector/tree/main/extensions/common/api/management-api-configuration)
+As described in the [README.md](https://github.com/eclipse-edc/Connector/tree/releases/extensions/common/api/management-api-configuration)
 of the `api-configuration module`, the management api should be exposed on a separate jetty context. Therefore, it is
 necessary to provide the following configuration to the connector:
 
