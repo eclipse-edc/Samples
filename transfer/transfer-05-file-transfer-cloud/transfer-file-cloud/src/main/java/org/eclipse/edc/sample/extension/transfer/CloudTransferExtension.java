@@ -79,6 +79,7 @@ public class CloudTransferExtension implements ServiceExtension {
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
                 .selectorExpression(AssetSelectorExpression.Builder.newInstance().whenEquals(Asset.PROPERTY_ID, "1").build())
+                .validity(31536000) //valid for a year
                 .build();
 
         var contractDefinition2 = ContractDefinition.Builder.newInstance()
@@ -86,6 +87,7 @@ public class CloudTransferExtension implements ServiceExtension {
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
                 .selectorExpression(AssetSelectorExpression.Builder.newInstance().whenEquals(Asset.PROPERTY_ID, "2").build())
+                .validity(31536000) //valid for a year
                 .build();
 
         contractDefinitionStore.save(contractDefinition1);

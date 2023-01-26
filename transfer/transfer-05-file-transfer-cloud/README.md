@@ -139,7 +139,7 @@ The EDC will return the current state of the contract negotiation. When the nego
 #### 5. Transfer Data
 
 To initiate the data transfer, execute the statement below. Please take care of setting the contract agreement id
-obtained at previous step.
+obtained at previous step as well as a unique bucket name.
 
 ```bash
 curl --location --request POST 'http://localhost:9192/api/v1/management/transferprocess' \
@@ -155,7 +155,8 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/transfer
   "dataDestination": {
     "properties": {
       "type": "AmazonS3",
-      "region": "us-east-1"
+      "region": "us-east-1",
+      "bucketName": "<Unique bucket name>"
     },
     "type": "AmazonS3"
   },
