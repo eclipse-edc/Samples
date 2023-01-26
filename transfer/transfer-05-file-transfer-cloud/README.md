@@ -99,7 +99,12 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-pro
 To request data offers from the provider, run:
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/catalog?providerUrl=http://localhost:8282/api/v1/ids/data"
+curl -X POST "http://localhost:9192/api/v1/management/catalog/request" \
+--header 'X-Api-Key: password' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "providerUrl": "http://localhost:8282/api/v1/ids/data"
+}'
 ```
 
 #### 3. Negotiate Contract
