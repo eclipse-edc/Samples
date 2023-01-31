@@ -99,7 +99,12 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-pro
 To request data offers from the provider, run:
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/catalog?providerUrl=http://localhost:8282/api/v1/ids/data"
+curl -X POST "http://localhost:9192/api/v1/management/catalog/request" \
+--header 'X-Api-Key: password' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "providerUrl": "http://localhost:8282/api/v1/ids/data"
+}'
 ```
 
 #### 3. Negotiate Contract
@@ -139,7 +144,7 @@ The EDC will return the current state of the contract negotiation. When the nego
 #### 5. Transfer Data
 
 To initiate the data transfer, execute the statement below. Please take care of setting the contract agreement id
-obtained at previous step.
+obtained at previous step as well as a unique bucket name.
 
 ```bash
 curl --location --request POST 'http://localhost:9192/api/v1/management/transferprocess' \
@@ -155,7 +160,8 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/transfer
   "dataDestination": {
     "properties": {
       "type": "AmazonS3",
-      "region": "us-east-1"
+      "region": "us-east-1",
+      "bucketName": "<Unique bucket name>"
     },
     "type": "AmazonS3"
   },

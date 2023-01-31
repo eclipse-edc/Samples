@@ -92,8 +92,8 @@ which has to be stored in the root folder of this sample as well. The only addit
       APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: DEBUG
       WEB_HTTP_PORT: 8181
       WEB_HTTP_PATH: /api
-      WEB_HTTP_DATA_PORT: 8182
-      WEB_HTTP_DATA_PATH: /api/v1/management
+      WEB_HTTP_MANAGEMENT_PORT: 8182
+      WEB_HTTP_MANAGEMENT_PATH: /api/v1/management
       IDS_WEBHOOK_ADDRESS: http://consumer:8181
     volumes:
       - ../:/samples
