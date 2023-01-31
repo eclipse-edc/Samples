@@ -52,6 +52,7 @@ allprojects {
             metaModel.set(metaModelVersion)
         }
         javaLanguageVersion.set(JavaLanguageVersion.of(javaVersion))
+        publish.set(false)
     }
 
     configure<CheckstyleExtension> {
