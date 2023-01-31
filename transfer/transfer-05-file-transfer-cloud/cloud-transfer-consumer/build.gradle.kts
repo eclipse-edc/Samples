@@ -38,7 +38,7 @@ dependencies {
     implementation("$groupId:vault-azure:$edcVersion")
 
     implementation("$groupId:auth-tokenbased:$edcVersion")
-    implementation("$groupId:data-management-api:$edcVersion")
+    implementation("$groupId:management-api:$edcVersion")
 
     implementation("$groupId:ids:$edcVersion")
 }

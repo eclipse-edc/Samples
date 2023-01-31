@@ -27,7 +27,7 @@ dependencies {
     implementation("$groupId:control-plane-core:$edcVersion")
     implementation("$groupId:http:$edcVersion")
 
-    implementation("$groupId:data-management-api:$edcVersion")
+    implementation("$groupId:management-api:$edcVersion")
 
     implementation("$groupId:configuration-filesystem:$edcVersion")
 

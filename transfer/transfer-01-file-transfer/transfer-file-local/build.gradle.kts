@@ -27,8 +27,9 @@ dependencies {
     implementation("$groupId:control-plane-core:$edcVersion")
     implementation("$groupId:data-plane-core:$edcVersion")
     implementation("$groupId:data-plane-util:$edcVersion")
-    implementation("$groupId:data-plane-transfer-client:$edcVersion")
+    implementation("$groupId:data-plane-client:$edcVersion")
     implementation("$groupId:data-plane-selector-client:$edcVersion")
     implementation("$groupId:data-plane-selector-core:$edcVersion")
+    implementation("$groupId:transfer-data-plane:$edcVersion")
     implementation(libs.opentelemetry.annotations)
 }

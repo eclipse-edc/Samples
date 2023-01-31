@@ -104,6 +104,7 @@ public class FileTransferExtension implements ServiceExtension {
                 .selectorExpression(AssetSelectorExpression.Builder.newInstance()
                         .whenEquals(Asset.PROPERTY_ID, "test-document")
                         .build())
+                .validity(31536000) //valid for a year
                 .build();
 
         contractStore.save(contractDefinition);
