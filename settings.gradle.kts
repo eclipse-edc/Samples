@@ -46,6 +46,7 @@ dependencyResolutionManagement {
 include(":basic:basic-01-basic-connector")
 include(":basic:basic-02-health-endpoint")
 include(":basic:basic-03-configuration")
+include(":basic:basic-04-datamanagement-api")
 
 // transfer
 include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
