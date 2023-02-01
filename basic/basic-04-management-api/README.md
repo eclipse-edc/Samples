@@ -17,8 +17,8 @@ The management API has two configurable parameters, which can be defined as show
 
 Example:
 ```
-  web.http.data.port=9192
-  web.http.data.path=/api/v1/management
+  web.http.data.port=9192 (default:8181)
+  web.http.data.path=/api/v1/management (default:/api)
 ```
   
 
@@ -38,13 +38,15 @@ To contact the management API, the following address applies first:
 
 
 
-### Assets
 
-#### Create an asset
+
+### Create
+
+#### Assets
 
 ##### API-Call
 
-```
+```http
 POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/assets
 ```
 
@@ -52,7 +54,7 @@ POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/assets
 Body:
 
 
-```
+```json
 {
   "asset": {
         "properties": {
@@ -72,7 +74,7 @@ Body:
 
 Response 200
 
-```
+```json
 {
     "createdAt": timestamp,
     "id": idName
@@ -85,7 +87,9 @@ Response 200
 POST http:localhost:9192/api/v1/management/assets
 ```
 
-```
+Body:
+
+```json
 {
     "asset": {
         "properties": {
@@ -108,82 +112,14 @@ POST http:localhost:9192/api/v1/management/assets
 
 Response 200
 
-```
+```json
 {
     "createdAt": 1675079609303,
     "id": "TESTASSETID"
 }
 ```
 
-
-
-#### Delete an Asset
-
-##### Call
-
-```
-DELETE {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/assets/{ASSETID}
-```
-
-Response 204
-
-##### Example:
-
-```
-DELETE http:localhost:9192/api/v1/management/assets/TESTASSETID
-```
-
-
-
-Response 204
-
-
-#### Get all Assets
-
-##### Call
-
-```
-POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/assets/request
-```
-
-Body:
-
-```
-{}
-```
-
-
-Response 200:
-
-```
-{
-  List of all created Assets
-}
-```
-
-Example:
-
-```
-POST http:localhost:9192/api/v1/management/assets/request
-```
-
-Body:
-
-```
-{}
-```
-
-Response 200:
-
-```
-{
-  List of all created Assets
-}
-```
-
-### Policies
-
-#### Create a Policy
+#### Policies
 
 ##### API-Call
 
@@ -193,7 +129,7 @@ POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/policydefinitions
 
 Body:
 
-```
+```json
 {
     "id": {POLICYID},
     "policy": {
@@ -212,7 +148,7 @@ Body:
 
 Response 200:
 
-```
+```json
 {
     "createdAt": timestamp,
     "id": idName
@@ -226,7 +162,7 @@ POST http:localhost:9192/api/v1/management/policydefinitions
 ```
 
 Body:
-```
+```json
 {
     "id": "TESTPOLICYID",
     "policy": {
@@ -244,76 +180,14 @@ Body:
 
 Response 200:
 
-```
+```json
 {
     "createdAt": 1675152359524,
     "id": "TESTPOLICYID"
 }
 ```
 
-
-#### Delete a policy
-##### API-Call
-
-```
-DELETE {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/policydefinitions/{POLICYID}
-```
-
-Response 204
-
-##### Example:
-
-```
-DELETE http:localhost:9192/api/v1/management/policydefinitions/TESTPOLICYID
-```
-
-Response 204
-
-#### GET all Policies
-
-##### API-Call
-
-```
-POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/policydefinitions/request
-```
-
-Body:
-
-```
-{}
-```
-
-Response 200:
-
-```
-{
-  List of all created Policies
-}
-```
-
-##### Example:
-
-```
-POST http:localhost:9192/api/v1/management/policydefinitions/request
-```
-
-Body:
-
-```
-{}
-```
-
-Response 200:
-
-```
-{
-  List of all created Policies
-}
-```
-
-### Policydefinitions
-
-#### Create a policy
+#### PolicyDefinitions
 
 ##### API-Call
 
@@ -322,7 +196,7 @@ POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/contractdefinition
 ```
 Body:
 
-```
+```json
 {
     "accessPolicyId": {ACCESSPOLICYID},
     "contractPolicyId": {CONTRACTPOLICYID},
@@ -340,7 +214,7 @@ Body:
 Response 200:
 
 
-```
+```json
 {
     "createdAt": {TIMESTAMP},
     "id": {CONTRACTDEFINITIONID}
@@ -356,7 +230,7 @@ POST http:localhost:9192/api/v1/management/contractdefinitions
 
 Body:
 
-```
+```json
 {
     "accessPolicyId": "TESTPOLICYID",
     "contractPolicyId": "TESTPOLICYID",
@@ -373,7 +247,7 @@ Body:
 
 Response 200:
 
-```
+```json
 {
     "createdAt": 1675156405307,
     "id": "TESTCONTRACTDEFINITIONID"
@@ -381,61 +255,74 @@ Response 200:
 ```
 
 
-#### Delete a policy
+### Delete
 
-##### API-Call
+##### Call
 
 ```
-DELETE {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/contractdefinitions/{CONTRACTDEFINITIONID}
+DELETE {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/[ENTITYTYPE]/{ID}
 ```
+
+[ENTITYTYPE] = assets/policidefinitions/contractdefinitions
 
 Response 204
 
 ##### Example:
 
 ```
-DELETE http:localhost:9192/api/v1/management/contractdefinitions/TESTCONTRACTDEFINITIONID
+DELETE http:localhost:9192/api/v1/management/assets/TESTASSETID
 ```
 
-#### Get all policies
 
-##### API-Call
+
+Response 204
+
+
+#### Get all objects of an entity
+
+##### Call
 
 ```
-POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/contractdefinitions/request
+POST {EDC-Connector URL}:{DATAMANAGMENTPORT}/{MANAGEMENTPATH}/[ENTITYTYPE]/request
+```
+
+[ENTITYTYPE] = assets/policidefinitions/contractdefinitions
+
+Body:
+
+```json
+{}
+```
+
+
+Response 200:
+
+```json
+{
+  List of all existing objects of the entitytype
+}
+```
+
+Example:
+
+```
+POST http:localhost:9192/api/v1/management/assets/request
 ```
 
 Body:
 
-```
+```json
 {}
 ```
 
 Response 200:
 
-```
-List of all Contractdefinitions
-```
-
-
-##### Example:
-
-
-```
-POST http:localhost:9192/api/v1/management/contractdefinitions/request
+```json
+{
+  List of all existing objects of the entitytype
+}
 ```
 
-Body:
-
-```
-{}
-```
-
-Response 200:
-
-```
-List of all Contractdefinitions
-```
 
 ### More
 
