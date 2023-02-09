@@ -21,7 +21,7 @@ Those steps are the following:
 * Create an access policy on the provider (The policy will define the access right to the data)
 * Create a contract definition on the provider
 
-At this step, the connector should be able to fetch the catalog from the provider and to see the
+At this step, the consumer should be able to fetch the catalog from the provider and to see the
 contract offer generated from the resources that have been created.
 
 Once the catalog is available, to access the data, the consumer should follow the following steps:
@@ -40,7 +40,7 @@ Java modules:
 * `backend-service`: represent the backend service where the consumer connector will send the
   EndpointDataReference to access the data
 
-> For the sake of simplicity, we will use an in-memory catalog and pre-fill it with just one single
+> For the sake of simplicity, we will use an in-memory catalog and fill it with just one single
 > asset. This will be deleted after the provider shutdown.
 
 ### Provider connector
@@ -61,26 +61,38 @@ and another one with the configuration of a consumer.
 This section allows you to build the connector before launching it.
 
 ```bash
-./gradlew transfer:transfer-06-consumer-pull-http:connector:build
+./gradlew transfer:transfer-06-consumer-pull-http:http-pull-connector:build
 ```
 
 After the build end you should verify that the connector jar is created in the directory
-[connector.jar](connector/build/libs/)
+[http-pull-connector.jar](http-pull-connector/build/libs/http-pull-connector.jar)
 
 # How to run a connector
 
-It is important to note that only the property file differs between the consumer and the supplier.
+It is important to note that only the property file differs between the consumer and the provider.
 You can find the configuration file in the directories below:
 
-* [provider](provider/provider-configuration.properties)
-* [consumer](consumer/consumer-configuration.properties)
+* [provider](http-pull-provider/provider-configuration.properties)
+* [consumer](http-pull-consumer/consumer-configuration.properties)
+
+The section bellow will show you some explanation about some of the properties that you can find in
+the configuration files.
+
+#### 1. edc.receiver.http.endpoint
+
+This property is used to define the endpoint where the connector consumer will send the
+EndpointDataReference.
+
+#### 2. edc.dataplane.token.validation.endpoint
+
+This property is used to define the endpoint exposed by the control plane to validate the token.
 
 ### 1. Run a provider
 
 To run a provider, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/provider/provider-configuration.properties -jar transfer/transfer-06-consumer-pull-http/connector/build/libs/connector.jar
+java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
 ```
 
 ### 2. Run a consumer
@@ -88,7 +100,7 @@ java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc
 To run a consumer, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/consumer/consumer-configuration.properties -jar transfer/transfer-06-consumer-pull-http/connector/build/libs/connector.jar
+java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
@@ -118,7 +130,7 @@ request to the management API of the connector.
 curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
-   "id": "provider-dataplane",
+   "id": "http-pull-provider-dataplane",
    "url": "http://localhost:19292/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
@@ -126,7 +138,7 @@ curl -H 'Content-Type: application/json' \
      "publicApiUrl": "http://localhost:19291/public/"
    }
  }' \
-     -X POST "http://localhost:19195/dataplane/instances"
+     -X POST "http://localhost:19193/api/v1/data/instances"
 ```
 
 ### 2. Register data plane instance for consumer
@@ -137,7 +149,7 @@ The same thing that is done for the provider must be done for the consumer
 curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
-   "id": "consumer-dataplane",
+   "id": "http-pull-consumer-dataplane",
    "url": "http://localhost:29292/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
@@ -145,8 +157,7 @@ curl -H 'Content-Type: application/json' \
      "publicApiUrl": "http://localhost:29291/public/"
    }
  }' \
-     -X POST "http://localhost:29195/dataplane/instances" \
-     -s | jq
+     -X POST "http://localhost:29193/api/v1/data/instances"
 ```
 
 ### 3. Create an Asset on the provider side
@@ -244,7 +255,11 @@ offer, the so-called "catalog". To get the catalog from the consumer side, you c
 endpoint:
 
 ```bash
-curl http://localhost:29193/api/v1/data/catalog\?providerUrl\=http://localhost:19194/api/v1/ids/data
+curl -X POST "http://localhost:29192/api/v1/management/catalog/request" \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "providerUrl": "http://localhost:19292/api/v1/ids/data"
+}'
 ```
 
 Sample output:
@@ -294,8 +309,8 @@ Sample output:
           "asset:prop:fileName": null
         }
       },
-      "provider": "urn:connector:provider",
-      "consumer": "urn:connector:consumer",
+      "provider": "urn:connector:http-pull-provider",
+      "consumer": "urn:connector:http-pull-consumer",
       "offerStart": null,
       "offerEnd": null,
       "contractStart": null,
@@ -325,7 +340,7 @@ send counter offers in addition to just confirming or declining an offer.
 
 ```bash
 curl -d '{
-           "connectorId": "provider",
+           "connectorId": "http-pull-provider",
            "connectorAddress": "http://localhost:19194/api/v1/ids/data",
            "protocol": "ids-multipart",
            "offer": {
@@ -396,8 +411,8 @@ Sample output:
 As a pre-requisite, you need to have a backend service that runs on port 4000
 
 ```bash
-./gradlew transfer:transfer-06-consumer-pull-http:backend-service:build
-java -jar transfer/transfer-06-consumer-pull-http/backend-service/build/libs/backend-service.jar 
+./gradlew transfer:transfer-06-http-pull-consumer-pull-http:backend-service:build
+java -jar transfer/transfer-06-http-pull-consumer-pull-http/backend-service/build/libs/backend-service.jar 
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
@@ -413,7 +428,7 @@ Before executing the request, insert the contract agreement ID from the previous
 curl -X POST "http://localhost:29193/api/v1/data/transferprocess" \
     --header "Content-Type: application/json" \
     --data '{
-                "connectorId": "provider",
+                "connectorId": "http-pull-provider",
                 "connectorAddress": "http://localhost:19194/api/v1/ids/data",
                 "contractId": "<contract agreement id>",
                 "assetId": "assetId",

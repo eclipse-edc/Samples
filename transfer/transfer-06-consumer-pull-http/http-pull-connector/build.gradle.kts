@@ -26,7 +26,7 @@ repositories {
 }
 
 val edcGroupId = "org.eclipse.edc"
-val edcVersion = "0.0.1-milestone-7"
+val edcVersion = "0.0.1-milestone-8"
 
 dependencies {
     implementation("${edcGroupId}:control-plane-core:${edcVersion}")
@@ -34,9 +34,9 @@ dependencies {
     implementation("${edcGroupId}:configuration-filesystem:${edcVersion}")
     implementation("${edcGroupId}:vault-filesystem:${edcVersion}")
     implementation("${edcGroupId}:iam-mock:${edcVersion}")
-    implementation("${edcGroupId}:data-management-api:${edcVersion}")
-    implementation("${edcGroupId}:data-plane-transfer-sync:${edcVersion}")
-    implementation("${edcGroupId}:http-receiver:${edcVersion}")
+    implementation("${edcGroupId}:management-api:${edcVersion}")
+    implementation("${edcGroupId}:transfer-data-plane:${edcVersion}")
+    implementation("${edcGroupId}:transfer-pull-http-receiver:${edcVersion}")
 
     implementation("${edcGroupId}:data-plane-selector-api:${edcVersion}")
     implementation("${edcGroupId}:data-plane-selector-core:${edcVersion}")
@@ -53,5 +53,5 @@ application {
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("connector.jar")
+    archiveFileName.set("http-pull-connector.jar")
 }
