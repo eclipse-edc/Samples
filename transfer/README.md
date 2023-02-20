@@ -56,4 +56,7 @@ EndpointDataReference.
 ### [Transfer sample 07](./transfer-07-provider-push-http/README.md): Perform a provider push exchange between a consumer and a provider
 
 In this sample, we will describe a step-by-step guide to demonstrate a provider push exchange
-between two connections. One connecter is a consumer and the other is a provider. 
+between two connections. One connecter is a consumer and the other is a provider. The consumer will
+initiate the transfer by sending a DataRequest with any destination type other
+than HttpProxy, and the provider will fetch the date from the actual DataSource and push it to the
+consumer.

@@ -79,7 +79,5 @@ include("transfer:transfer-06-consumer-pull-http:http-pull-connector")
 include("transfer:transfer-06-consumer-pull-http:backend-service")
 
 include("transfer:transfer-07-provider-push-http:http-push-connector")
-
 // modules for code samples ------------------------------------------------------------------------
-
 include(":other:custom-runtime")
