@@ -18,6 +18,6 @@ plugins {
 
 tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "org.eclipse.edc.EdcHttpServer"
+        attributes["Main-Class"] = "org.eclipse.edc.BackendService"
     }
 }
