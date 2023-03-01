@@ -65,7 +65,7 @@ This section allows you to build the connector before launching it.
 ./gradlew transfer:transfer-07-provider-push-http:http-push-connector:build
 ```
 
-After the build end you should verify that the connector jar is created in the directory
+After the building end, you should verify that the connector jar is created in the directory
 [http-push-connector.jar](http-push-connector/build/libs/http-push-connector.jar)
 
 # How to run a connector
@@ -131,8 +131,8 @@ request to the management API of the connector.
 curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
-   "id": "http-push-provider-dataplane",
-   "url": "http://localhost:19292/control/transfer",
+   "id": "http-pull-provider-dataplane",
+   "url": "http://localhost:19192/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
    "properties": {
@@ -150,8 +150,8 @@ The same thing that is done for the provider must be done for the consumer
 curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
-   "id": "http-push-consumer-dataplane",
-   "url": "http://localhost:29292/control/transfer",
+   "id": "http-pull-consumer-dataplane",
+   "url": "http://localhost:29192/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
    "properties": {
@@ -256,10 +256,10 @@ offer, the so-called "catalog". To get the catalog from the consumer side, you c
 endpoint:
 
 ```bash
-curl -X POST "http://localhost:29193/api/v1/management/catalog/request" \
+curl -X POST "http://localhost:29193/api/v1/data/catalog/request" \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "providerUrl": "http://localhost:19193/api/v1/ids/data"
+  "providerUrl": "http://localhost:19194/api/v1/ids/data"
 }'
 ```
 
@@ -341,7 +341,7 @@ send counter offers in addition to just confirming or declining an offer.
 
 ```bash
 curl -d '{
-           "connectorId": "http-push-provider",
+           "connectorId": "http-pull-provider",
            "connectorAddress": "http://localhost:19194/api/v1/ids/data",
            "protocol": "ids-multipart",
            "offer": {
@@ -426,7 +426,7 @@ curl -X POST "http://localhost:29193/api/v1/data/transferprocess" \
                 "contractId": "<contract agreement id>",
                 "assetId": "assetId",
                 "managedResources": "false",
-                "dataDestination": { "baseUrl": "http://localhost:4000/api/consumer/store" }
+                "dataDestination":  {"properties":{"baseUrl":"http://localhost:65519/api/consumer/store","type":"HttpData"}}
             }' \
     -s | jq
 ```
@@ -451,7 +451,7 @@ Due to the nature of the transfer, it will be very fast and most likely already 
 read the UUID.
 
 ```bash
-curl http://localhost:19193/api/v1/data/transferprocess/<transfer process id>
+curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
 ```
 
 ### 11. Check the data

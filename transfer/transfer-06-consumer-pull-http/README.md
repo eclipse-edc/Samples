@@ -131,7 +131,7 @@ curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
    "id": "http-pull-provider-dataplane",
-   "url": "http://localhost:19292/control/transfer",
+   "url": "http://localhost:19192/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
    "properties": {
@@ -150,7 +150,7 @@ curl -H 'Content-Type: application/json' \
      -d '{
    "edctype": "dataspaceconnector:dataplaneinstance",
    "id": "http-pull-consumer-dataplane",
-   "url": "http://localhost:29292/control/transfer",
+   "url": "http://localhost:29192/control/transfer",
    "allowedSourceTypes": [ "HttpData" ],
    "allowedDestTypes": [ "HttpProxy", "HttpData" ],
    "properties": {
@@ -255,10 +255,10 @@ offer, the so-called "catalog". To get the catalog from the consumer side, you c
 endpoint:
 
 ```bash
-curl -X POST "http://localhost:29192/api/v1/management/catalog/request" \
+curl -X POST "http://localhost:29193/api/v1/data/catalog/request" \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "providerUrl": "http://localhost:19292/api/v1/ids/data"
+  "providerUrl": "http://localhost:19194/api/v1/ids/data"
 }'
 ```
 
@@ -458,7 +458,7 @@ Due to the nature of the transfer, it will be very fast and most likely already 
 read the UUID.
 
 ```bash
-curl http://localhost:19193/api/v1/data/transferprocess/<transfer process id>
+curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
 ```
 
 ### 11. Pull the data
