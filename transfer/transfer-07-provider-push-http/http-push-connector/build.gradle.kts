@@ -36,7 +36,6 @@ dependencies {
     implementation("${edcGroupId}:iam-mock:${edcVersion}")
     implementation("${edcGroupId}:management-api:${edcVersion}")
     implementation("${edcGroupId}:transfer-data-plane:${edcVersion}")
-    implementation("${edcGroupId}:transfer-pull-http-receiver:${edcVersion}")
 
     implementation("${edcGroupId}:data-plane-selector-api:${edcVersion}")
     implementation("${edcGroupId}:data-plane-selector-core:${edcVersion}")

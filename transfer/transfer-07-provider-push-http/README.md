@@ -34,8 +34,8 @@ Once the catalog is available, to access the data, the provider should follow th
 * Provider Data Plane fetches data from the actual data source
 * Provider Data Plane pushes data to the consumer services
 
-Also, in order to keep things organized, the code in this example has been separated into several
-Java modules:
+Also, in order to keep things organized, the code in this example has been separated into one
+Java module:
 
 * `connector`: contains the configuration and build files for both the
   consumer and the provider connector
@@ -46,7 +46,7 @@ Java modules:
 ### Provider connector
 
 The provider connector is the one who fetches the data from the actual data source and push it to
-the consumer connector.
+the specified destination backend service.
 
 ### Consumer connector
 
@@ -78,15 +78,6 @@ You can find the configuration file in the directories below:
 
 The section bellow will show you some explanation about some of the properties that you can find in
 the configuration files.
-
-#### 1. edc.receiver.http.endpoint
-
-This property is used to define the endpoint where the connector consumer will send the
-EndpointDataReference.
-
-#### 2. edc.dataplane.token.validation.endpoint
-
-This property is used to define the endpoint exposed by the control plane to validate the token.
 
 ### 1. Run a provider
 
@@ -426,7 +417,7 @@ curl -X POST "http://localhost:29193/api/v1/data/transferprocess" \
                 "contractId": "<contract agreement id>",
                 "assetId": "assetId",
                 "managedResources": "false",
-                "dataDestination":  {"properties":{"baseUrl":"http://localhost:65519/api/consumer/store","type":"HttpData"}}
+                "dataDestination":  {"properties":{"baseUrl":"http://localhost:4000/api/consumer/store","type":"HttpData"}}
             }' \
     -s | jq
 ```
@@ -456,14 +447,6 @@ curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
 
 ### 11. Check the data
 
-At this step, you can check the data by calling the endpoint of the consumer connector. To do this,
-you should run the following command:
-
-```bash
-curl --location --request GET "http://localhost:29193/api/v1/data" \
-    --header 'Content-Type: application/json' \
-    -s | jq
-```
-
+At this step, you can check the data by checking the log of backend service
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
 is the same as the one you can get at https://jsonplaceholder.typicode.com/users
