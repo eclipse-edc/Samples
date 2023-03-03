@@ -1,7 +1,7 @@
-# Implement a simple "Provider Push" Http transfer flow
+# Implement a simple "Consumer Pull" Http transfer flow
 
 The purpose of this example is to show a data exchange between 2 connectors, one representing the
-data provider and the other, the consumer. It's based on a provider push usecase that you can find
+data provider and the other, the consumer. It's based on a consumer pull usecase that you can find
 more details
 on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane)
 For the sake of simplicity, the provider and the consumer
@@ -24,34 +24,33 @@ Those steps are the following:
 At this step, the consumer should be able to fetch the catalog from the provider and to see the
 contract offer generated from the resources that have been created.
 
-Once the catalog is available, to access the data, the provider should follow the following steps:
+Once the catalog is available, to access the data, the consumer should follow the following steps:
 
 * Performing a contract negotiation with the provider
 * Performing a transfer
     * The consumer will initiate a file transfer
-    * Provider Control Plane retrieves the DataAddress of the actual data source and creates a
-      DataFlowRequest based on the received DataRequest and this data address
-* Provider Data Plane fetches data from the actual data source
-* Provider Data Plane pushes data to the consumer services
+    * The provider will send an EndpointDataReference to the consumer
+* The consumer could reach the endpoint and access the data
 
-Also, in order to keep things organized, the code in this example has been separated into one
-Java module:
+Also, in order to keep things organized, the code in this example has been separated into several
+Java modules:
 
 * `connector`: contains the configuration and build files for both the
   consumer and the provider connector
+* `backend-service`: represent the backend service where the consumer connector will send the
+  EndpointDataReference to access the data
 
 > For the sake of simplicity, we will use an in-memory catalog and fill it with just one single
 > asset. This will be deleted after the provider shutdown.
 
 ### Provider connector
 
-The provider connector is the one who fetches the data from the actual data source and push it to
-the specified destination backend service.
+The provider connector is the one providing EndpointDataReference to the consumer after it initiates
+a transfer.
 
 ### Consumer connector
 
-The consumer initiates the transfer process, i.e. sends DataRequest with any destination type other
-than HttpProxy
+The consumer is the one "requesting" the data to the provider.
 
 # How to build a connector
 
@@ -62,29 +61,38 @@ and another one with the configuration of a consumer.
 This section allows you to build the connector before launching it.
 
 ```bash
-./gradlew transfer:transfer-07-provider-push-http:http-push-connector:build
+./gradlew transfer:transfer-06-consumer-pull-http:http-pull-connector:build
 ```
 
-After the building end, you should verify that the connector jar is created in the directory
-[http-push-connector.jar](http-push-connector/build/libs/http-push-connector.jar)
+After the build end you should verify that the connector jar is created in the directory
+[http-pull-connector.jar](http-pull-connector/build/libs/http-pull-connector.jar)
 
 # How to run a connector
 
 It is important to note that only the property file differs between the consumer and the provider.
 You can find the configuration file in the directories below:
 
-* [provider](http-push-provider/provider-configuration.properties)
-* [consumer](http-push-consumer/consumer-configuration.properties)
+* [provider](http-pull-provider/provider-configuration.properties)
+* [consumer](http-pull-consumer/consumer-configuration.properties)
 
 The section bellow will show you some explanation about some of the properties that you can find in
 the configuration files.
+
+#### 1. edc.receiver.http.endpoint
+
+This property is used to define the endpoint where the connector consumer will send the
+EndpointDataReference.
+
+#### 2. edc.dataplane.token.validation.endpoint
+
+This property is used to define the endpoint exposed by the control plane to validate the token.
 
 ### 1. Run a provider
 
 To run a provider, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-provider/provider-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/http-push-connector.jar
+java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
 ```
 
 ### 2. Run a consumer
@@ -92,7 +100,7 @@ java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc
 To run a consumer, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/http-push-connector.jar
+java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
@@ -181,7 +189,7 @@ curl -d '{
 ```
 
 > It is important to note that the `baseUrl` property of the `dataAddress` is a fake data used for
-> the purpose of this example. It will be the data that the provider will push on the sample
+> the purpose of this example. It will be the data that the consumer will pull on the sample
 > execution.
 
 ### 4. Create a Policy on the provider
@@ -400,24 +408,32 @@ Sample output:
 
 ### 9. Start the transfer
 
+As a pre-requisite, you need to have a backend service that runs on port 4000
+
+```bash
+./gradlew transfer:transfer-06-consumer-pull-http:backend-service:build
+java -jar transfer/transfer-06-consumer-pull-http/backend-service/build/libs/backend-service.jar 
+```
+
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
 to specify which asset we want transferred, the ID of the contract agreement, the address of the
 provider connector and where we want the file transferred. You will find the request body below.
 Before executing the request, insert the contract agreement ID from the previous step. Then run :
 
-> keep in mind that, to make a transfer with a provider push method, the dataDestination type should
-> be any value different from the "HttpProxy".
+> the "HttpProxy" method is used for the consumer pull method, and it means that it will be up to
+> the consumer to request the data to the provider and that the request will be a proxy for the
+> datasource
 
 ```bash
 curl -X POST "http://localhost:29193/api/v1/data/transferprocess" \
     --header "Content-Type: application/json" \
     --data '{
-                "connectorId": "http-push-provider",
+                "connectorId": "http-pull-provider",
                 "connectorAddress": "http://localhost:19194/api/v1/ids/data",
                 "contractId": "<contract agreement id>",
                 "assetId": "assetId",
                 "managedResources": "false",
-                "dataDestination":  {"properties":{"baseUrl":"http://localhost:4000/api/consumer/store","type":"HttpData"}}
+                "dataDestination": { "type": "HttpProxy" }
             }' \
     -s | jq
 ```
@@ -445,8 +461,32 @@ read the UUID.
 curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
 ```
 
-### 11. Check the data
+### 11. Pull the data
 
-At this step, you can check the data by checking the log of backend service
+At this step, if you look at the backend service logs, you will have a json representing
+the data useful for reading the data. This is presented in the following section.
+
+Sample log for the Backend Service:
+
+```json
+{
+  "id": "77a3551b-08da-4f81-b61d-fbc0c86c1069",
+  "endpoint": "http://localhost:29291/public/",
+  "authKey": "Authorization",
+  "authCode": "eyJhbGciOiJSUzI1NiJ9.eyJkYWQiOiJ7XCJwcm9wZXJ0aWVzXCI6e1wiYXV0aEtleVwiOlwiQXV0aG9yaXphdGlvblwiLFwiYmFzZVVybFwiOlwiaHR0cDpcL1wvbG9jYWxob3N0OjE5MjkxXC9wdWJsaWNcL1wiLFwiYXV0aENvZGVcIjpcImV5SmhiR2NpT2lKU1V6STFOaUo5LmV5SmtZV1FpT2lKN1hDSndjbTl3WlhKMGFXVnpYQ0k2ZTF3aVltRnpaVlZ5YkZ3aU9sd2lhSFIwY0hNNlhDOWNMMnB6YjI1d2JHRmpaV2h2YkdSbGNpNTBlWEJwWTI5a1pTNWpiMjFjTDNWelpYSnpYQ0lzWENKdVlXMWxYQ0k2WENKVVpYTjBJR0Z6YzJWMFhDSXNYQ0owZVhCbFhDSTZYQ0pJZEhSd1JHRjBZVndpZlgwaUxDSmxlSEFpT2pFMk56UTFPRGcwTWprc0ltTnBaQ0k2SWpFNk1XVTBOemc1TldZdE9UQXlOUzAwT1dVeExUazNNV1F0WldJNE5qVmpNemhrTlRRd0luMC5ITFJ6SFBkT2IxTVdWeWdYZi15a0NEMHZkU3NwUXlMclFOelFZckw5eU1tQjBzQThwMHFGYWV0ZjBYZHNHMG1HOFFNNUl5NlFtNVU3QnJFOUwxSE5UMktoaHFJZ1U2d3JuMVhGVUhtOERyb2dSemxuUkRlTU9ZMXowcDB6T2MwNGNDeFJWOEZoemo4UnVRVXVFODYwUzhqbU4wZk5sZHZWNlFpUVFYdy00QmRTQjNGYWJ1TmFUcFh6bDU1QV9SR2hNUGphS2w3RGsycXpJZ0ozMkhIdGIyQzhhZGJCY1pmRk12aEM2anZ2U1FieTRlZXU0OU1hclEydElJVmFRS1B4ajhYVnI3ZFFkYV95MUE4anNpekNjeWxyU3ljRklYRUV3eHh6Rm5XWmczV2htSUxPUFJmTzhna2RtemlnaXRlRjVEcmhnNjZJZzJPR0Eza2dBTUxtc3dcIixcInByb3h5TWV0aG9kXCI6XCJ0cnVlXCIsXCJwcm94eVF1ZXJ5UGFyYW1zXCI6XCJ0cnVlXCIsXCJwcm94eUJvZHlcIjpcInRydWVcIixcInR5cGVcIjpcIkh0dHBEYXRhXCIsXCJwcm94eVBhdGhcIjpcInRydWVcIn19IiwiZXhwIjoxNjc0NTg4NDI5LCJjaWQiOiIxOjFlNDc4OTVmLTkwMjUtNDllMS05NzFkLWViODY1YzM4ZDU0MCJ9.WhbTzERmM75mNMUG2Sh-8ZW6uDQCus_5uJPvGjAX16Ucc-2rDcOhAxrHjR_AAV4zWjKBHxQhYk2o9jD-9OiYb8Urv8vN4WtYFhxJ09A0V2c6lB1ouuPyCA_qKqJEWryTbturht4vf7W72P37ERo_HwlObOuJMq9CS4swA0GBqWupZHAnF-uPIQckaS9vLybJ-gqEhGxSnY4QAZ9-iwSUhkrH8zY2GCDkzAWIPmvtvRhAs9NqVkoUswG-ez1SUw5bKF0hn2OXv_KhfR8VsKKYUbKDQf5Wagk7rumlYbXMPNAEEagI4R0xiwKWVTfwwZPy_pYnHE7b4GQECz3NjhgdIw",
+  "properties": {
+    "cid": "1:1e47895f-9025-49e1-971d-eb865c38d540"
+  }
+}
+```
+
+Once this json is read, use a tool like postman or curl to execute the following query, to read the
+data
+
+```bash
+curl --location --request GET 'http://localhost:29291/public/' \
+--header 'Authorization: <auth code>'
+```
+
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
 is the same as the one you can get at https://jsonplaceholder.typicode.com/users

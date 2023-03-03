@@ -13,10 +13,7 @@ Those steps are the following:
 
 * Running the provider connector
 * Running the consumer connector
-* Running a Http server that will receive the Endpoint Data Reference on the consumer side, that
-  contains the url to be used to get the data.
 * Register data plane instance for provider connector
-* Register data plane instance for consumer connector
 * Create an Asset on the provider (The asset will be the data to be shared)
 * Create an access policy on the provider (The policy will define the access right to the data)
 * Create a contract definition on the provider
@@ -32,7 +29,7 @@ Once the catalog is available, to access the data, the provider should follow th
     * Provider Control Plane retrieves the DataAddress of the actual data source and creates a
       DataFlowRequest based on the received DataRequest and this data address
 * Provider Data Plane fetches data from the actual data source
-* Provider Data Plane pushes data to the consumer services
+* Provider Data Plane pushes data to the consumer service
 
 Also, in order to keep things organized, the code in this example has been separated into one
 Java module:
@@ -133,26 +130,7 @@ curl -H 'Content-Type: application/json' \
      -X POST "http://localhost:19193/api/v1/data/instances"
 ```
 
-### 2. Register data plane instance for consumer
-
-The same thing that is done for the provider must be done for the consumer
-
-```bash
-curl -H 'Content-Type: application/json' \
-     -d '{
-   "edctype": "dataspaceconnector:dataplaneinstance",
-   "id": "http-pull-consumer-dataplane",
-   "url": "http://localhost:29192/control/transfer",
-   "allowedSourceTypes": [ "HttpData" ],
-   "allowedDestTypes": [ "HttpProxy", "HttpData" ],
-   "properties": {
-     "publicApiUrl": "http://localhost:29291/public/"
-   }
- }' \
-     -X POST "http://localhost:29193/api/v1/data/instances"
-```
-
-### 3. Create an Asset on the provider side
+### 2. Create an Asset on the provider side
 
 The provider connector needs to transfer a file to the location specified by the consumer connector
 when the data are requested. In order to offer any data, the provider must maintain an internal list
@@ -184,7 +162,7 @@ curl -d '{
 > the purpose of this example. It will be the data that the provider will push on the sample
 > execution.
 
-### 4. Create a Policy on the provider
+### 3. Create a Policy on the provider
 
 In order to manage the accessibility rules of an asset, it is essential to create a policy. However,
 to keep things simple, we will choose a policy that gives direct access to all the assets that are
@@ -213,7 +191,7 @@ curl -d '{
          -s | jq
 ```
 
-### 5. Create a contract definition on Provider
+### 4. Create a contract definition on Provider
 
 To ensure an exchange between providers and consumers, the supplier must create a contract offer for
 the good, on the basis of which a contract agreement can be negotiated. The contract definition
@@ -239,7 +217,7 @@ Sample output:
 }
 ```
 
-### 6. How to fetch catalog on consumer side
+### 5. How to fetch catalog on consumer side
 
 In order to offer any data, the consumer can fetch the catalog from the provider, that will contain
 all the contract offers available for negotiation. In our case, it will contain a single contract
@@ -312,7 +290,7 @@ Sample output:
 }
 ```
 
-### 7. Negotiate a contract
+### 6. Negotiate a contract
 
 In order to request any data, a contract gets negotiated, and an agreement is resulting has to be
 negotiated between providers and consumers.
@@ -367,7 +345,7 @@ Sample output:
 }
 ```
 
-### 8. Getting the contract agreement id
+### 7. Getting the contract agreement id
 
 After calling the endpoint for initiating a contract negotiation, we get a UUID as the response.
 This UUID is the ID of the ongoing contract negotiation between consumer and provider. The
@@ -398,7 +376,7 @@ Sample output:
 }
 ```
 
-### 9. Start the transfer
+### 8. Start the transfer
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
 to specify which asset we want transferred, the ID of the contract agreement, the address of the
@@ -436,7 +414,7 @@ Sample output:
 }
 ```
 
-### 10. Check the transfer status
+### 9. Check the transfer status
 
 Due to the nature of the transfer, it will be very fast and most likely already done by the time you
 read the UUID.
@@ -445,7 +423,7 @@ read the UUID.
 curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
 ```
 
-### 11. Check the data
+### 10. Check the data
 
 At this step, you can check the data by checking the log of backend service
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
