@@ -38,6 +38,11 @@ cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform init --upgrade
 terraform apply
 ```
+```windows command prompt
+cd transfer\transfer-05-file-transfer-cloud\terraform 
+terraform init --upgrade
+terraform apply
+```
 
 it will prompt you to enter a unique name, which will serve as prefix for many resources both in Azure and in AWS. Then,
 enter "yes" and let terraform works its magic.
@@ -92,6 +97,12 @@ Thus, we can simply rebuild and run them:
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/build/libs/consumer.jar
 # in another terminal window:
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/build/libs/provider.jar
+```
+```windows command prompt
+.\gradlew clean build
+java -Dedc.fs.config=transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\config.properties -jar transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\build\libs\consumer.jar
+# in another terminal window:
+java -Dedc.fs.config=transfer\transfer-05-file-transfer-cloud\cloud-transfer-provider\config.properties -jar transfer\transfer-05-file-transfer-cloud\cloud-transfer-provider\build\libs\provider.jar
 ```
 
 ### 2. Retrieve provider Contract Offers
@@ -188,6 +199,10 @@ Finally, run terraform to clean-up the vault and other remaining stuffs:
 
 ```bash
 cd transfer/transfer-05-file-transfer-cloud/terraform 
+terraform destroy
+```
+```windows command prompt
+cd transfer\transfer-05-file-transfer-cloud\terraform 
 terraform destroy
 ```
 

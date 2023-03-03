@@ -25,6 +25,11 @@ with that we can build and run the connector from the root directory:
 java -jar basic/basic-01-basic-connector/build/libs/basic-connector.jar
 ```
 
+```windows command prompt
+.\gradlew clean basic:basic-01-basic-connector:build
+java -jar basic\basic-01-basic-connector\build\libs\basic-connector.jar
+```
+
 _Note: the above snippet assumes that you did not alter the build file, i.e. the `shadow` plugin is used and the build
 artifact resides at the path mentioned above. Also, we assume usage of the Gradle Wrapper, as opposed to a local Gradle
 installation._

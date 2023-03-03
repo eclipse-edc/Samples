@@ -25,6 +25,10 @@ We compile and run the application with:
 ./gradlew clean basic:basic-03-configuration:build
 java -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
+```windows command prompt
+.\gradlew clean basic:basic-03-configuration:build
+java -jar basic\basic-03-configuration\build\libs\filesystem-config-connector.jar
+```
 
 you will notice an additional log line stating that the "configuration file does not exist":
 
@@ -45,6 +49,10 @@ e.g. `/etc/eclipse/dataspaceconnector/config.properties`.
 mkdir -p /etc/eclipse/dataspaceconnector
 touch /etc/eclipse/dataspaceconnector/config.properties
 ```
+```windows command prompt
+mkdir -p \etc\eclipse\dataspaceconnector
+touch \etc\eclipse\dataspaceconnector\config.properties
+```
 
 Second, lets reconfigure the Jetty Web Server to listen to port `9191` instead of the default `8181`. Open
 the `config.properties` with a text editor of your choice and add the following line:
@@ -59,7 +67,9 @@ passing the path to the config file:
 ```bash
 java -Dedc.fs.config=/etc/eclipse/dataspaceconnector/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
-
+```windows command prompt
+java -Dedc.fs.config=\etc\eclipse\dataspaceconnector\config.properties -jar basic\basic-03-configuration\build\libs\filesystem-config-connector.jar
+```
 Observing the log output we now see that the connector's REST API is exposed on port `9191` instead:
 
 ```bash

@@ -94,6 +94,9 @@ To run a provider, you should run the following command
 ```bash
 java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-provider/provider-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
 ```
+```windows command prompt
+java -Dedc.keystore=transfer\transfer-06-consumer-pull-http\certs\cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer\transfer-06-consumer-pull-http\http-pull-provider\provider-vault.properties -Dedc.fs.config=transfer\transfer-06-consumer-pull-http\http-pull-provider\provider-configuration.properties -jar transfer\transfer-06-consumer-pull-http\http-pull-connector\build\libs\http-pull-connector.jar
+```
 
 ### 2. Run a consumer
 
@@ -101,6 +104,9 @@ To run a consumer, you should run the following command
 
 ```bash
 java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-06-consumer-pull-http/http-pull-consumer/consumer-configuration.properties -jar transfer/transfer-06-consumer-pull-http/http-pull-connector/build/libs/http-pull-connector.jar
+```
+```windows command prompt
+java -Dedc.keystore=transfer\transfer-06-consumer-pull-http\certs\cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer\transfer-06-consumer-pull-http\http-pull-consumer\consumer-vault.properties -Dedc.fs.config=transfer\transfer-06-consumer-pull-http\http-pull-consumer\consumer-configuration.properties -jar transfer\transfer-06-consumer-pull-http\http-pull-connector\build\libs\http-pull-connector.jar
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
@@ -413,6 +419,10 @@ As a pre-requisite, you need to have a backend service that runs on port 4000
 ```bash
 ./gradlew transfer:transfer-06-consumer-pull-http:backend-service:build
 java -jar transfer/transfer-06-consumer-pull-http/backend-service/build/libs/backend-service.jar 
+```
+```windows command prompt
+.\gradlew transfer:transfer-06-consumer-pull-http:backend-service:build
+java -jar transfer\transfer-06-consumer-pull-http\backend-service\build\libs\backend-service.jar 
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need

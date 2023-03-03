@@ -120,7 +120,10 @@ In order to run the sample, enter the following commands in a shell:
 ./gradlew transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer:build
 java -Dedc.fs.config=transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/config.properties -jar transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/build/libs/consumer.jar
 ```
-
+```windows command prompt
+.\gradlew transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer:build
+java -Dedc.fs.config=transfer\transfer-03-modify-transferprocess\modify-transferprocess-consumer\config.properties -jar transfer\transfer-03-modify-transferprocess\modify-transferprocess-consumer\build\libs\consumer.jar
+```
 ---
 
 [Previous Chapter](../transfer-02-file-transfer-listener/README.md) | [Next Chapter](../transfer-04-open-telemetry/README.md)
