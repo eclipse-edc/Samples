@@ -411,8 +411,8 @@ Sample output:
 As a pre-requisite, you need to have a backend service that runs on port 4000
 
 ```bash
-./gradlew transfer:transfer-06-consumer-pull-http:backend-service:build
-java -jar transfer/transfer-06-consumer-pull-http/backend-service/build/libs/backend-service.jar 
+./gradlew transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service:build
+java -jar transfer/transfer-06-consumer-pull-http/consumer-pull-backend-service/build/libs/consumer-pull-backend-service.jar 
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need

@@ -21,7 +21,7 @@ Those steps are the following:
 At this step, the consumer should be able to fetch the catalog from the provider and to see the
 contract offer generated from the resources that have been created.
 
-Once the catalog is available, to access the data, the provider should follow the following steps:
+Once the catalog is available, to access the data, the sample will go through:
 
 * Performing a contract negotiation with the provider
 * Performing a transfer
@@ -36,22 +36,11 @@ Java module:
 
 * `connector`: contains the configuration and build files for both the
   consumer and the provider connector
-* `backend-service-provider-push`: represent the backend service where the consumer connector will send the
-  EndpointDataReference to access the data
+* `provider-push-backend-service`: represent the backend service where the provider will push the data after the
+  consumer has initiated the transfer
 
 > For the sake of simplicity, we will use an in-memory catalog and fill it with just one single
 > asset. This will be deleted after the provider shutdown.
-
-### Provider connector
-
-The provider connector is the one who fetches the data from the actual data source and push it to
-the specified destination backend service.
-
-### Consumer connector
-
-The consumer initiates the transfer process, i.e. sends DataRequest with any destination type other
-than HttpProxy to the provider. The DataRequest should have a DataAddress with the URL of the backend service where the
-provider should push the data.
 
 # How to build a connector
 
@@ -384,8 +373,8 @@ Sample output:
 As a pre-requisite, you need to have a backend service that runs on port 4000
 
 ```bash
-./gradlew transfer:transfer-07-provider-push-http:backend-service-provider-push:build
-java -jar transfer/transfer-07-provider-push-http/backend-service-provider-push/build/libs/backend-service-provider-push.jar 
+./gradlew transfer:transfer-07-provider-push-http:provider-push-http-backend-service:build
+java -jar transfer/transfer-07-provider-push-http/provider-push-http-backend-service/build/libs/provider-push-http-backend-service.jar 
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
