@@ -57,7 +57,8 @@ Once we compile and run the application with
 ./gradlew clean basic:basic-02-health-endpoint:build
 java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar
 ```
-```Wwindows command prompt
+
+```windows command prompt
 .\gradlew clean basic:basic-02-health-endpoint:build
 java -jar basic\basic-02-health-endpoint\build\libs\connector-health.jar
 ```

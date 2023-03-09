@@ -175,6 +175,7 @@ java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-consumer/c
 ./gradlew transfer:transfer-01-file-transfer:file-transfer-provider:build
 java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-provider/build/libs/provider.jar
 ````
+
 ```windows command prompt
 .\gradlew transfer:transfer-01-file-transfer:file-transfer-consumer:build
 java -Dedc.fs.config=transfer\transfer-01-file-transfer\file-transfer-consumer\config.properties -jar transfer\transfer-01-file-transfer\file-transfer-consumer\build\libs\consumer.jar
@@ -214,7 +215,8 @@ of the header has to match the value of the `edc.api.auth.key` property in the c
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
-```Windows command Prompt
+
+```windows command prompt
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-01-file-transfer\contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
 
@@ -277,6 +279,7 @@ transfer. Then run:
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
+
 ```Windows command prompt
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-01-file-transfer\filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```

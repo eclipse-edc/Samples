@@ -40,8 +40,7 @@ terraform apply
 ```
 ```windows command prompt
 cd transfer\transfer-05-file-transfer-cloud\terraform 
-terraform init --upgrade
-terraform apply
+'other commands work for all OS user, So look up!'
 ```
 
 it will prompt you to enter a unique name, which will serve as prefix for many resources both in Azure and in AWS. Then,
@@ -98,6 +97,7 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-con
 # in another terminal window:
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/build/libs/provider.jar
 ```
+
 ```windows command prompt
 .\gradlew clean build
 java -Dedc.fs.config=transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\config.properties -jar transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\build\libs\consumer.jar
@@ -201,9 +201,10 @@ Finally, run terraform to clean-up the vault and other remaining stuffs:
 cd transfer/transfer-05-file-transfer-cloud/terraform 
 terraform destroy
 ```
+
 ```windows command prompt
 cd transfer\transfer-05-file-transfer-cloud\terraform 
-terraform destroy
+'Second command works for all OS user, So look up!'
 ```
 
 ---

@@ -35,7 +35,8 @@ To run the consumer, the provider, and Jaeger execute the following commands in 
 ./gradlew transfer:transfer-04-open-telemetry:open-telemetry-consumer:build transfer:transfer-04-open-telemetry:open-telemetry-provider:build
 docker-compose -f transfer/transfer-04-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
-```Windows command prompt
+
+```windows command prompt
 .\gradlew transfer:transfer-04-open-telemetry:open-telemetry-consumer:build transfer:transfer-04-open-telemetry:open-telemetry-provider:build
 docker-compose -f transfer\transfer-04-open-telemetry\docker-compose.yaml up --abort-on-container-exit
 ```
@@ -45,6 +46,7 @@ Once the consumer and provider are up, start a contract negotiation by executing
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
+
 ```windows command prompt
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-04-open-telemetry\contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
@@ -56,14 +58,13 @@ following command. Wait until the negotiation is in CONFIRMED state and note dow
 ```bash
 curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
 ```
-```windows command prompt
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
-```
+
 Finally, update the contract agreement id in the `filetransfer.json` file and execute a file transfer with the following command:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
+
 ```windows command prompt
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-04-open-telemetry\filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
