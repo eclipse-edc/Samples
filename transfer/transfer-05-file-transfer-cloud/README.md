@@ -38,9 +38,11 @@ cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform init --upgrade
 terraform apply
 ```
-```windows command prompt
+
+```bash
+# for Windows users
 cd transfer\transfer-05-file-transfer-cloud\terraform 
-'other commands work for all OS user, So look up!'
+# Other commands work for all OS user, so look up!
 ```
 
 it will prompt you to enter a unique name, which will serve as prefix for many resources both in Azure and in AWS. Then,
@@ -94,13 +96,16 @@ Thus, we can simply rebuild and run them:
 ```bash
 ./gradlew clean build
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/build/libs/consumer.jar
+
 # in another terminal window:
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/build/libs/provider.jar
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 .\gradlew clean build
 java -Dedc.fs.config=transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\config.properties -jar transfer\transfer-05-file-transfer-cloud\cloud-transfer-consumer\build\libs\consumer.jar
+
 # in another terminal window:
 java -Dedc.fs.config=transfer\transfer-05-file-transfer-cloud\cloud-transfer-provider\config.properties -jar transfer\transfer-05-file-transfer-cloud\cloud-transfer-provider\build\libs\provider.jar
 ```
@@ -202,9 +207,10 @@ cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform destroy
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 cd transfer\transfer-05-file-transfer-cloud\terraform 
-'Second command works for all OS user, So look up!'
+# Second command works for all OS user, so look up!
 ```
 
 ---

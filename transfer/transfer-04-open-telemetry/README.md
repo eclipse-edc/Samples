@@ -36,7 +36,8 @@ To run the consumer, the provider, and Jaeger execute the following commands in 
 docker-compose -f transfer/transfer-04-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 .\gradlew transfer:transfer-04-open-telemetry:open-telemetry-consumer:build transfer:transfer-04-open-telemetry:open-telemetry-provider:build
 docker-compose -f transfer\transfer-04-open-telemetry\docker-compose.yaml up --abort-on-container-exit
 ```
@@ -47,7 +48,8 @@ Once the consumer and provider are up, start a contract negotiation by executing
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-04-open-telemetry\contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
 ```
 
@@ -65,7 +67,8 @@ Finally, update the contract agreement id in the `filetransfer.json` file and ex
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-04-open-telemetry\filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
 

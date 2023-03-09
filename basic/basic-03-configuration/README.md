@@ -25,7 +25,9 @@ We compile and run the application with:
 ./gradlew clean basic:basic-03-configuration:build
 java -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
-```windows command prompt
+
+```bash
+# for Windows users
 .\gradlew clean basic:basic-03-configuration:build
 java -jar basic\basic-03-configuration\build\libs\filesystem-config-connector.jar
 ```
@@ -49,7 +51,9 @@ e.g. `/etc/eclipse/dataspaceconnector/config.properties`.
 mkdir -p /etc/eclipse/dataspaceconnector
 touch /etc/eclipse/dataspaceconnector/config.properties
 ```
-```windows command prompt
+
+```bash
+# for Windows users
 mkdir -p \etc\eclipse\dataspaceconnector
 touch \etc\eclipse\dataspaceconnector\config.properties
 ```
@@ -67,7 +71,9 @@ passing the path to the config file:
 ```bash
 java -Dedc.fs.config=/etc/eclipse/dataspaceconnector/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
-```windows command prompt
+
+```bash
+# for Windows users
 java -Dedc.fs.config=\etc\eclipse\dataspaceconnector\config.properties -jar basic\basic-03-configuration\build\libs\filesystem-config-connector.jar
 ```
 Observing the log output we now see that the connector's REST API is exposed on port `9191` instead:

@@ -25,7 +25,8 @@ with that we can build and run the connector from the root directory:
 java -jar basic/basic-01-basic-connector/build/libs/basic-connector.jar
 ```
 
-```windows command prompt
+```bash
+# for Windows users
 .\gradlew clean basic:basic-01-basic-connector:build
 java -jar basic\basic-01-basic-connector\build\libs\basic-connector.jar
 ```

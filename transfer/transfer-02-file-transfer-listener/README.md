@@ -53,9 +53,12 @@ java -Dedc.fs.config=transfer/transfer-02-file-transfer-listener/file-transfer-l
 java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-provider/build/libs/provider.jar
 ````
 
-```windows command prompt
+
+```bash
+# for Windows users
 .\gradlew transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer:build
 java -Dedc.fs.config=transfer\transfer-02-file-transfer-listener\file-transfer-listener-consumer\config.properties -jar transfer\transfer-02-file-transfer-listener\file-transfer-listener-consumer\build\libs\consumer.jar
+
 # in another terminal window:
 .\gradlew transfer:transfer-01-file-transfer:file-transfer-provider:build
 java -Dedc.fs.config=transfer\transfer-01-file-transfer\file-transfer-provider\config.properties -jar transfer\transfer-01-file-transfer\file-transfer-provider\build\libs\provider.jar
@@ -72,9 +75,10 @@ curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/co
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
 
-```Windows command prompt
+```bash
+# for Windows users
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-01-file-transfer\contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
-'Second command works for all OS user, So look up!'
+# Second command works for all OS user, so look up!
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer\transfer-01-file-transfer\filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
 ```
 
