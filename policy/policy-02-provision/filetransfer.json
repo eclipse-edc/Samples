@@ -1,0 +1,18 @@
+{
+  "edctype": "dataspaceconnector:datarequest",
+  "protocol": "ids-multipart",
+  "assetId": "test-document",
+  "contractId": "1:3d0c9f11-54bc-4b15-a078-a202679051e8",
+  "dataDestination": {
+    "properties": {
+      "type": "File"
+    }
+  },
+  "transferType": {
+    "contentType": "application/octet-stream",
+    "isFinite": true
+  },
+  "managedResources": true,
+  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
+  "connectorId": "consumer"
+}
