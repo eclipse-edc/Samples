@@ -87,6 +87,7 @@ include("transfer:transfer-07-provider-push-http:provider-push-http-backend-serv
 include(":policy:policy-02-provision:policy-provision")
 include(":policy:policy-02-provision:policy-transfer-file-local")
 include(":policy:policy-02-provision:policy-provision-provider-policy-functions")
+include(":policy:policy-02-provision:policy-provision-consumer-policy-functions")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
