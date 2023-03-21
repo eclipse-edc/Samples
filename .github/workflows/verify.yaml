@@ -105,6 +105,26 @@ jobs:
           rm log.txt
           killall java
 
+      - name: Check Sample policy-02-provision (Consumer)
+        run: |
+          ./gradlew policy:policy-02-provision:policy-provision-consumer:shadowJar
+          echo "Checking Sample policy-02-provision - Consumer"
+          java -Dedc.fs.config=policy/policy-02-provision/policy-provision-consumer/config.properties -jar policy/policy-02-provision/policy-provision-consumer/build/libs/consumer.jar > log.txt &
+          sleep 5
+          grep "INFO.*edc-.*ready" log.txt
+          rm log.txt
+          killall java
+
+      - name: Check Sample policy-02-provision (Provider)
+        run: |
+          echo "Checking Sample policy-02-provision - Provider"
+          ./gradlew policy:policy-02-provision:policy-provision-provider:shadowJar
+          java -Dedc.fs.config=policy/policy-02-provision/policy-provision-provider/config.properties -jar policy/policy-02-provision/policy-provision-provider/build/libs/provider.jar > log.txt &
+          sleep 5
+          grep "INFO.*edc-.*ready" log.txt
+          rm log.txt
+          killall java
+
       # we cannot check sample 5 currently because we'd need repo secrets for that (client id,...)
 
   End-To-End-Tests:
