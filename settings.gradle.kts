@@ -62,6 +62,11 @@ include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 include("util:http-request-logger")
 
 
+
+//policy
+include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector")
+include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-policy-functions")
+
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
 
