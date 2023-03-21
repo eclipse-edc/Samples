@@ -1,3 +1,17 @@
+/*
+ *  Copyright (c) 2023 Fraunhofer Institute for Software and Systems Engineering
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
+ *
+ */
+
 package org.eclipse.sample.extension.provision;
 
 import dev.failsafe.RetryPolicy;
@@ -79,7 +93,7 @@ public class LocalResourceProvisioner implements Provisioner<LocalResourceDefini
 
         monitor.debug("LocalResourceProvisioner: Resource request submitted: " + resourceDefinition.getPathName());
 
-        /** not using the secret token **/
+        // not using the secret token
         var response = ProvisionResponse.Builder.newInstance().resource(resource).build();
         return StatusResult.success(response);
     }
