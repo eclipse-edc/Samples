@@ -55,8 +55,8 @@ include(":policy:policy-01-policy-enforcement:policy-functions")
 
 //policy
 
-
 include(":policy:policy-02-provision:policy-provision")
+include(":policy:policy-02-provision:policy-transfer-file-local")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":advanced:advanced-02-custom-runtime")
