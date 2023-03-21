@@ -1,3 +1,17 @@
+/*
+ *  Copyright (c) 2023 Fraunhofer Institute for Software and Systems Engineering
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
+ *
+ */
+
 package org.eclipse.edc.sample.extension.policy;
 
 import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStore;
@@ -6,7 +20,12 @@ import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
-import org.eclipse.edc.policy.model.*;
+import org.eclipse.edc.policy.model.Action;
+import org.eclipse.edc.policy.model.AtomicConstraint;
+import org.eclipse.edc.policy.model.LiteralExpression;
+import org.eclipse.edc.policy.model.Operator;
+import org.eclipse.edc.policy.model.Permission;
+import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.asset.AssetSelectorExpression;
@@ -23,7 +42,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     private final String policyTimeKey = "POLICY_EVALUATION_TIME";
     private final String policyStartDateSetting = "edc.samples.policy-01.constraint.date.start";
     private final String policyEndDateSetting = "edc.samples.policy-01.constraint.date.end";
-    private final String EDC_ASSET_PATH = "edc.samples.policy-01.asset.path";
+    private static final String EDC_ASSET_PATH = "edc.samples.policy-01.asset.path";
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
