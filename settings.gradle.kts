@@ -52,6 +52,12 @@ include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
 include(":policy:policy-01-policy-enforcement:policy-functions")
 
+
+//policy
+
+
+include(":policy:policy-02-provision:policy-provision")
+
 // modules for code samples ------------------------------------------------------------------------
 include(":advanced:advanced-02-custom-runtime")
 
