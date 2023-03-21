@@ -48,6 +48,12 @@ include(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
 
+//policy
+include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector")
+include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-policy-functions")
+
+// modules for code samples ------------------------------------------------------------------------
+include(":other:custom-runtime")
 include(":advanced:advanced-02-custom-runtime")
 
 include(":util:http-request-logger")
