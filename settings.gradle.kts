@@ -81,5 +81,11 @@ include("transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service")
 include("transfer:transfer-07-provider-push-http:http-push-connector")
 include("transfer:transfer-07-provider-push-http:provider-push-http-backend-service")
 
+
+//policy
+
+
+include(":policy:policy-02-provision:policy-provision")
+
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
