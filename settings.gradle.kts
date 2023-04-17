@@ -35,7 +35,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from("org.eclipse.edc:edc-versions:0.0.1-SNAPSHOT")
+            from("org.eclipse.edc:edc-versions:0.0.1-milestone-8")
             // this is not part of the published EDC Version Catalog, so we'll just "amend" it
             library(
                     "dnsOverHttps",
