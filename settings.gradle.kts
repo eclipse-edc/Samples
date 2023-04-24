@@ -35,7 +35,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from("org.eclipse.edc:edc-versions:0.0.1-SNAPSHOT")
+            from("org.eclipse.edc:edc-versions:0.0.1-20230301-SNAPSHOT")
             // this is not part of the published EDC Version Catalog, so we'll just "amend" it
             library(
                     "dnsOverHttps",
@@ -90,6 +90,7 @@ include(":policy:policy-02-provision:policy-provision-provider-policy-functions"
 include(":policy:policy-02-provision:policy-provision-consumer-policy-functions")
 include(":policy:policy-02-provision:policy-provision-provider")
 include(":policy:policy-02-provision:policy-provision-consumer")
+include(":policy:policy-02-provision:policy-provision-integration-tests")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
