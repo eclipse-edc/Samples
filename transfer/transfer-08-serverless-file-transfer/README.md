@@ -177,7 +177,7 @@ Finally, to clean up, just delete the created resource groups and the new app re
 ```bash
 az group delete --name <consumer-resource-group-name>
 az group delete --name <provider-resource-group-name>
-az ad app delete --id <application id>
+az ad app delete --id <application-id>
 ```
 
 ---
