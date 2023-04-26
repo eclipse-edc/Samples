@@ -14,13 +14,14 @@ tenant=$(jq -r .tenant secrets)
 password=$(jq -r .password secrets)
 
 # Azure Subscription and resource names to create
-subscriptionId=<subscriptionId>
-consumerRg=edc-sample-consumer
-providerRg=edc-sample-provider
-adf=edcsampleadf
-akv=edcsampleadfvault
-provstore=edcproviderstore
-consstore=edcconsumerstore
+prefix=<custom prefix to ensure globally unique storage name>
+subscriptionId=<subscription-id>
+consumerRg=$prefix-edc-sample-consumer
+providerRg=$prefix-edc-sample-provider
+adf=$prefix-edcsampleadf
+akv=${prefix}edcadfvault
+provstore=${prefix}edcproviderstore
+consstore=${prefix}edcconsumerstore
 location=EastUS
 linkedServiceName=AzureKeyVault
 

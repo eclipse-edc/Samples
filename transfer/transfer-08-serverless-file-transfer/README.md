@@ -1,9 +1,8 @@
 # Serverless file transfer
 
 Serverless mechanisms for data transfers are supported in DPF. Example of serverless implementations include Azure Data Factory, a fully managed integration service that can be controlled through a REST API.
-This sample shows how to transfer file between two Azure Storage with Azure Data Factory.
-
-TBD: more description about this sample
+This sample shows how to transfer file between two Azure Storage containers with Azure Data Factory.
+For the sake of simplification, this sample uses one service principal and one key vault to negotaiate between containers. Typically the storage accounts that would transfer files would be under separate key vaults and service principals, but to reduce overhead on a sample, only one is used.
 
 ## Deploy cloud resources
 
@@ -13,13 +12,20 @@ Firstly, you will need to be logged in to your Azure CLI by entering the followi
 ```bash
 az login
 ```
-Then run the following script to deploy Azure resources. Resource names can be adapted by editing the script.
+Then run the following script to deploy Azure resources. Please add a prefix and subscription id to the following script. Resource names can be adapted by editing the script. The prefix is so that items that must be globally unique can be modified easily.
 ```bash
-./transfer/transfer-08-serverless-file-transfer/shell-scripts/create-cloud-resources.sh
+./transfer/transfer-08-serverless-file-transfer/shell-script/create-cloud-resources.sh
 ```
 Once the DPF server is running, all resources have been deployed.
 Resources include (TBD: list up all resources we deployed)
 - Azure Storage Account
+
+
+## Manually prepare the following resources
+
+- In the provider store, add a new blob container called `src-container` and add any text file with the name `test-document.txt`. This is the sample file that we will be moving.
+- In the key vault, add a secret called `<provider-storage-account-name>-key1`. The value of the secret should be the shared access key from the provider storage container. If doing this from the azure portal, you may need to give yourself Key Secrets Officer role access to be able to add secrets. 
+- In the consumer storage key vault, add a secret called `<consumer-storage-account-name>-key1`. The value of the secret should be the shared access key from the consumer storage container.
 
 
 ## Update connector config
@@ -27,6 +33,7 @@ Resources include (TBD: list up all resources we deployed)
 _Do the following for both the consumer's and the provider's `config.properties`!_
 
 Let's modify the following config values to the connector configuration `config.properties`
+
 Consumer:
 ```properties
 #azure key vault
@@ -57,7 +64,7 @@ Put the storage account name into the `DataAddress` builders within the `CloudTr
 ```
 DataAddress.Builder.newInstance()
    .type("AzureStorage")
-   .property("account", "<storage-account-name>")
+   .property("account", "<provider-storage-account-name>")
    .property("container", "src-container")
    .property("blobname", "test-document.txt")
    .keyName("<storage-account-name>-key1")
@@ -87,9 +94,7 @@ To request data offers from the provider, run:
 curl -X POST "http://localhost:9192/api/v1/management/catalog/request" \
 --header 'X-Api-Key: password' \
 --header 'Content-Type: application/json' \
---data-raw '{
-  "providerUrl": "http://localhost:8282/api/v1/ids/data"
-}'
+--data-raw '{ "providerUrl": "http://localhost:8282/api/v1/ids/data" }'
 ```
 
 #### 3. Negotiate Contract
@@ -106,9 +111,9 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/contract
   "connectorAddress": "http://localhost:8282/api/v1/ids/data",
   "protocol": "ids-multipart",
   "offer": {
-    "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
+    "offerId": "<contract offer id from the first policy in the previous response (the one with "target":1)>",
     "assetId": "1",
-    "policy": { <Copy the first policy from the previous response (the one with "target: 1")> }
+    "policy": { <Copy the first policy from the previous response (the one with "target": 1)> }
   }
 }'
 ```
@@ -141,11 +146,11 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/transfer
   "protocol": "ids-multipart",
   "connectorId": "consumer",
   "assetId": "1",
-  "contractId": "<ContractAgreementId>",
+  "contractId": "<contract-agreement-id>",
   "dataDestination": {
       "properties": {
           "type": "AzureStorage",
-          "account": "<storage-account-name>",
+          "account": "<consumer-storage-account-name>",
           "container:": "<container-name>"
       }
   },
@@ -168,11 +173,11 @@ it's generally advisable to do it.
 curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/transferprocess/{transferProcessId}/deprovision"
 ```
 
-Finally, run terraform to clean-up the vault and other remaining stuffs:
-
-TBD: write script to clean up
+Finally, to clean up, just delete the created resource groups and the new app registration
 ```bash
-
+az group delete --name <consumer-resource-group-name>
+az group delete --name <provider-resource-group-name>
+az ad app delete --id <application id>
 ```
 
 ---
