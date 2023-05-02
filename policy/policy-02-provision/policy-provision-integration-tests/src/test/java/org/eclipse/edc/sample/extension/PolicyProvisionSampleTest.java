@@ -45,7 +45,7 @@ public class PolicyProvisionSampleTest {
      */
     static final String DESIRED_DESTINATION_FILE_PATH = "policy/policy-02-provision/desired_requested_file.txt";
     static final String TRANSFER_FILE_PATH = "policy/policy-02-provision/filetransfer.json";
-    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-02-provision/policy-provision-integration-tests/src/testFixtures/resources/contractoffer.json";
+    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-02-provision/contractoffer.json";
 
     @RegisterExtension
     static EdcRuntimeExtension provider = new EdcRuntimeExtension(

@@ -15,6 +15,7 @@
 package org.eclipse.edc.sample.extension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -23,6 +24,12 @@ import org.eclipse.edc.connector.api.management.transferprocess.model.TransferPr
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.testfixtures.TestUtils;
+import org.eclipse.edc.policy.model.Action;
+import org.eclipse.edc.policy.model.AtomicConstraint;
+import org.eclipse.edc.policy.model.LiteralExpression;
+import org.eclipse.edc.policy.model.Operator;
+import org.eclipse.edc.policy.model.Permission;
+import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +51,6 @@ public class PolicyProvisionSampleTestCommon {
     static final String TRANSFER_PROCESS_URI = "http://localhost:9192/api/v1/management/transferprocess";
     static final String API_KEY_HEADER_KEY = "X-Api-Key";
     static final String API_KEY_HEADER_VALUE = "password";
-    static final String DEMO_DESTINATION_FILE_PATH = "policy/policy-02-provision/demo.txt";
     //endregion
 
     //region changeable test settings
@@ -71,7 +77,7 @@ public class PolicyProvisionSampleTestCommon {
         this.destinationFilePath = destinationFilePath;
         destinationFile = getFileFromRelativePath(destinationFilePath);
 
-        this.desiredDestinationFilePath = destinationFilePath;
+        this.desiredDestinationFilePath = desiredDestinationFilePath;
         desiredDestinationFile = getFileFromRelativePath(desiredDestinationFilePath);
     }
 
@@ -150,17 +156,52 @@ public class PolicyProvisionSampleTestCommon {
     }
 
     /**
+     * Creates a policy that matches the policy used by provider connector.
+     *
+     * @return The suitable {@link Policy}.
+     */
+    private Policy createContractPolicy() {
+
+        var regulateFilePathConstraint = AtomicConstraint.Builder.newInstance()
+                .leftExpression(new LiteralExpression("POLICY_REGULATE_FILE_PATH"))
+                .operator(Operator.EQ)
+                .rightExpression(new LiteralExpression(getFileFromRelativePath(desiredDestinationFilePath).getAbsolutePath()))
+                .build();
+
+
+        var permission = Permission.Builder.newInstance()
+                .action(Action.Builder.newInstance().type("USE").build())
+                .constraint(regulateFilePathConstraint)
+                .target("test-document")
+                .build();
+
+        return Policy.Builder.newInstance()
+                .permission(permission)
+                .build();
+    }
+
+    /**
      * Assert that a POST request to initiate a contract negotiation is successful.
-     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"}
+     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"}
      *
      * @param contractOfferFilePath A {@link File} instance pointing to a JSON contract offer file.
      */
-    void initiateContractNegotiation(String contractOfferFilePath) {
+    void initiateContractNegotiation(String contractOfferFilePath) throws IOException {
+
+        var contractOfferFile = new File(TestUtils.findBuildRoot(), contractOfferFilePath);
+
+        // get the root node from contractoffer.json
+        ObjectNode contractOfferJsonRootNode = MAPPER.readValue(contractOfferFile, ObjectNode.class);
+
+        // adjust the policy to match provider's policy
+        ObjectNode offerNode = (ObjectNode) contractOfferJsonRootNode.get("offer");
+        offerNode.putPOJO("policy", createContractPolicy());
+
         contractNegotiationId = RestAssured
                 .given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
-                .body(new File(TestUtils.findBuildRoot(), contractOfferFilePath))
+                .body(contractOfferJsonRootNode)
                 .when()
                 .post(INITIATE_CONTRACT_NEGOTIATION_URI)
                 .then()
