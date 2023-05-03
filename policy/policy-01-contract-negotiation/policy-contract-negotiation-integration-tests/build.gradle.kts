@@ -24,10 +24,10 @@ dependencies {
     testImplementation("$groupId:junit:$edcVersion")
 
     testFixturesImplementation("$groupId:junit:$edcVersion")
-    testFixturesImplementation("io.rest-assured:rest-assured:5.3.0")
-    testFixturesImplementation("org.awaitility", "awaitility", "4.2.0")
-    testFixturesImplementation("org.assertj", "assertj-core", "3.24.2")
-    testFixturesImplementation("org.junit.jupiter", "junit-jupiter-api", "5.9.2")
+    testFixturesImplementation(libs.restAssured)
+    testFixturesImplementation(libs.awaitility)
+    testFixturesImplementation(libs.assertj)
+    testFixturesImplementation(libs.junit.jupiter.api)
 
     testCompileOnly(project(":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector"))
 }
