@@ -33,55 +33,43 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal()
     }
-    versionCatalogs {
-        create("libs") {
-            from("org.eclipse.edc:edc-versions:0.0.1-20230301-SNAPSHOT")
-            // this is not part of the published EDC Version Catalog, so we'll just "amend" it
-            library(
-                    "dnsOverHttps",
-                    "com.squareup.okhttp3",
-                    "okhttp-dnsoverhttps"
-            ).versionRef("okhttp")
-        }
-    }
 }
 
-// TODO: add the modules - basic, transfer, other (remove from comment) - once the issue of versionCatalog is solved
 
 // basic
-//include(":basic:basic-01-basic-connector")
-//include(":basic:basic-02-health-endpoint")
-//include(":basic:basic-03-configuration")
+include(":basic:basic-01-basic-connector")
+include(":basic:basic-02-health-endpoint")
+include(":basic:basic-03-configuration")
 
 // transfer
-//include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
-//include(":transfer:transfer-01-file-transfer:file-transfer-provider")
-//include(":transfer:transfer-01-file-transfer:file-transfer-integration-tests")
-//include(":transfer:transfer-01-file-transfer:transfer-file-local")
-//include(":transfer:transfer-01-file-transfer:status-checker")
-//
-//include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
-//include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-integration-tests")
-//include(":transfer:transfer-02-file-transfer-listener:listener")
-//
-//include(":transfer:transfer-03-modify-transferprocess:api")
-//include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
-//include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-integration-tests")
-//include(":transfer:transfer-03-modify-transferprocess:simulator")
-//include(":transfer:transfer-03-modify-transferprocess:watchdog")
-//
-//include(":transfer:transfer-04-open-telemetry:open-telemetry-consumer")
-//include(":transfer:transfer-04-open-telemetry:open-telemetry-provider")
-//
-//include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
-//include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
-//include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
-//
-//include("transfer:transfer-06-consumer-pull-http:http-pull-connector")
-//include("transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service")
-//
-//include("transfer:transfer-07-provider-push-http:http-push-connector")
-//include("transfer:transfer-07-provider-push-http:provider-push-http-backend-service")
+include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
+include(":transfer:transfer-01-file-transfer:file-transfer-provider")
+include(":transfer:transfer-01-file-transfer:file-transfer-integration-tests")
+include(":transfer:transfer-01-file-transfer:transfer-file-local")
+include(":transfer:transfer-01-file-transfer:status-checker")
+
+include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
+include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-integration-tests")
+include(":transfer:transfer-02-file-transfer-listener:listener")
+
+include(":transfer:transfer-03-modify-transferprocess:api")
+include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
+include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-integration-tests")
+include(":transfer:transfer-03-modify-transferprocess:simulator")
+include(":transfer:transfer-03-modify-transferprocess:watchdog")
+
+include(":transfer:transfer-04-open-telemetry:open-telemetry-consumer")
+include(":transfer:transfer-04-open-telemetry:open-telemetry-provider")
+
+include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
+include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
+include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
+
+include("transfer:transfer-06-consumer-pull-http:http-pull-connector")
+include("transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service")
+
+include("transfer:transfer-07-provider-push-http:http-push-connector")
+include("transfer:transfer-07-provider-push-http:provider-push-http-backend-service")
 
 
 //policy
@@ -95,4 +83,4 @@ include(":policy:policy-02-provision:policy-provision-consumer")
 include(":policy:policy-02-provision:policy-provision-integration-tests")
 
 // modules for code samples ------------------------------------------------------------------------
-//include(":other:custom-runtime")
+include(":other:custom-runtime")
