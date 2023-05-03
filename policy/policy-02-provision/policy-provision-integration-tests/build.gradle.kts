@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Microsoft Corporation
+ *  Copyright (c) 2023 Fraunhofer Institute for Software and Systems Engineering
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,7 +8,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       Microsoft Corporation - initial test implementation for sample
+ *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
  *
  */
 
@@ -28,10 +28,10 @@ dependencies {
     testFixturesImplementation("$groupId:transfer-process-api:$edcVersion")
     testFixturesImplementation("$groupId:api-core:$edcVersion")
 
-    testFixturesImplementation("io.rest-assured:rest-assured:5.3.0")
-    testFixturesImplementation("org.awaitility", "awaitility", "4.2.0")
-    testFixturesImplementation("org.assertj", "assertj-core", "3.24.2")
-    testFixturesImplementation("org.junit.jupiter", "junit-jupiter-api", "5.9.2")
+    testFixturesImplementation(libs.restAssured)
+    testFixturesImplementation(libs.awaitility)
+    testFixturesImplementation(libs.assertj)
+    testFixturesImplementation(libs.junit.jupiter.api)
 
     testCompileOnly(project(":policy:policy-02-provision:policy-provision-provider"))
     testCompileOnly(project(":policy:policy-02-provision:policy-provision-consumer"))
