@@ -33,17 +33,6 @@ dependencyResolutionManagement {
         mavenCentral()
         mavenLocal()
     }
-    versionCatalogs {
-        create("libs") {
-            from("org.eclipse.edc:edc-versions:0.0.1-milestone-8")
-            // this is not part of the published EDC Version Catalog, so we'll just "amend" it
-            library(
-                    "dnsOverHttps",
-                    "com.squareup.okhttp3",
-                    "okhttp-dnsoverhttps"
-            ).versionRef("okhttp")
-        }
-    }
 }
 
 // basic
