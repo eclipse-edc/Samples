@@ -52,5 +52,5 @@ application {
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("http-push-connector.jar")
+    archiveFileName.set("push-connector.jar")
 }

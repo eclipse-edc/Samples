@@ -73,7 +73,7 @@ the configuration files.
 To run a provider, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-provider/provider-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/http-push-connector.jar
+java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-provider/provider-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/push-connector.jar
 ```
 
 ### 2. Run a consumer
@@ -81,7 +81,7 @@ java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc
 To run a consumer, you should run the following command
 
 ```bash
-java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/http-push-connector.jar
+java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/push-connector.jar
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
