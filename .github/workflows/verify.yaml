@@ -28,6 +28,16 @@ jobs:
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
 
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-build
+
+      - name: Build project
+        run: ./gradlew build
+
+
   Sanity-Check:
     runs-on: ubuntu-latest
     steps:
@@ -43,7 +53,6 @@ jobs:
           grep "INFO.*edc-.*ready" log.txt
           rm log.txt
           killall java
-
 
       - name: Check Sample basic-02
         run: |
@@ -117,13 +126,6 @@ jobs:
         uses: ./.github/actions/run-tests
         with:
           command: ./gradlew test -DincludeTags="EndToEndTest"
-
-      - name: "Publish Gatling report"
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Gatling reports
-          path: '**/build/reports/gatling/**'
 
   Upload-Test-Report:
     needs:
