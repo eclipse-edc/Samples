@@ -60,3 +60,9 @@ between two connections. One connecter is a consumer and the other is a provider
 initiate the transfer by sending a DataRequest with any destination type other
 than HttpProxy, and the provider will fetch the date from the actual DataSource and push it to the
 consumer.
+
+
+### [Transfer sample 08](./transfer-08-serverless-file-transfer/README.md): Perform a provider push exchange between a consumer and a provider using serverless file transfer
+
+In this sample, we will describe a step-by-step guide to demonstrate a provider push exchange
+between two connections. One connecter is a consumer and the other is a provider. Using a cloud serverless service, in this case, Azure Data Factory, the consumer will initiate the transfer and the provider will fetch the data. The end result is file transfer between two different cloud storage accounts.

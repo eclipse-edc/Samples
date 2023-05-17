@@ -17,9 +17,11 @@ Then run the following script to deploy Azure resources. Please add a prefix and
 ./transfer/transfer-08-serverless-file-transfer/shell-script/create-cloud-resources.sh
 ```
 Once the DPF server is running, all resources have been deployed.
-Resources include (TBD: list up all resources we deployed)
+Resources include:
 - Azure Storage Account
-
+- Azure Data Factory
+- Azure Key Vault
+- Azure Resource Group for Consumer and Provider
 
 ## Manually prepare the following resources
 
@@ -113,7 +115,7 @@ curl --location --request POST 'http://localhost:9192/api/v1/management/contract
   "offer": {
     "offerId": "<contract offer id from the first policy in the previous response (the one with "target":1)>",
     "assetId": "1",
-    "policy": { <Copy the first policy from the previous response (the one with "target": 1)> }
+    "policy": { <copy the first policy from the previous response (the one with "target": 1)> }
   }
 }'
 ```
