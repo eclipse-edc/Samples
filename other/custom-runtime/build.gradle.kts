@@ -37,8 +37,12 @@ application {
     mainClass.set("org.eclipse.edc.sample.runtime.CustomRuntime")
 }
 
+var distTar = tasks.getByName("distTar")
+var distZip = tasks.getByName("distZip")
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
     archiveFileName.set("custom-runtime.jar")
+    dependsOn(distTar, distZip)
 }

@@ -50,7 +50,11 @@ application {
     mainClass.set("${edcGroupId}.boot.system.runtime.BaseRuntime")
 }
 
+var distTar = tasks.getByName("distTar")
+var distZip = tasks.getByName("distZip")
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("http-push-connector.jar")
+    archiveFileName.set("push-connector.jar")
+    dependsOn(distTar, distZip)
 }
