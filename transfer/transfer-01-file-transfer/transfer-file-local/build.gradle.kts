@@ -18,18 +18,15 @@ plugins {
     id("application")
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    api("$groupId:control-plane-spi:$edcVersion")
-    api("$groupId:data-plane-spi:$edcVersion")
-    implementation("$groupId:control-plane-core:$edcVersion")
-    implementation("$groupId:data-plane-core:$edcVersion")
-    implementation("$groupId:data-plane-util:$edcVersion")
-    implementation("$groupId:data-plane-client:$edcVersion")
-    implementation("$groupId:data-plane-selector-client:$edcVersion")
-    implementation("$groupId:data-plane-selector-core:$edcVersion")
-    implementation("$groupId:transfer-data-plane:$edcVersion")
+    api(libs.edc.control.plane.spi)
+    api(libs.edc.data.plane.spi)
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.data.plane.core)
+    implementation(libs.edc.data.plane.util)
+    implementation(libs.edc.data.plane.client)
+    implementation(libs.edc.data.plane.selector.client)
+    implementation(libs.edc.data.plane.selector.core)
+    implementation(libs.edc.transfer.data.plane)
     implementation(libs.opentelemetry.annotations)
 }

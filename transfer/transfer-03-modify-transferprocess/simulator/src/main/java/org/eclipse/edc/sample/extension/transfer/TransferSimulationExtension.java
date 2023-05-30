@@ -25,6 +25,7 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,6 +40,9 @@ public class TransferSimulationExtension implements ServiceExtension {
     @Inject
     private StatusCheckerRegistry statusCheckerRegistry;
 
+    @Inject
+    private Clock clock;
+
     @Override
     public void initialize(ServiceExtensionContext context) {
         statusCheckerRegistry.register(TEST_TYPE, (transferProcess, resources) -> false); //never completes
@@ -50,19 +54,17 @@ public class TransferSimulationExtension implements ServiceExtension {
                         var tp = TransferProcess.Builder.newInstance()
                                 .id("tp-sample-transfer-03")
                                 .dataRequest(getRequest())
-                                .state(TransferProcessStates.IN_PROGRESS.code())
-                                .stateTimestamp(context.getClock().millis() - ALMOST_TEN_MINUTES)
+                                .state(TransferProcessStates.STARTED.code())
+                                .stateTimestamp(clock.millis() - ALMOST_TEN_MINUTES)
                                 .build();
                         tp.addProvisionedResource(createDummyResource());
 
                         context.getMonitor().info("Insert Dummy TransferProcess");
-                        store.save(tp);
+                        store.updateOrCreate(tp);
                     }
                 },
                 5000
         );
-
-
     }
 
     @NotNull
@@ -75,6 +77,7 @@ public class TransferSimulationExtension implements ServiceExtension {
         return DataRequest.Builder.newInstance()
                 .id("sample-transfer-03-datarequest")
                 .destinationType(TEST_TYPE)
+                .connectorAddress("http//localhost:9999")
                 .managedResources(true)
                 .build();
     }

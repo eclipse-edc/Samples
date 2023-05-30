@@ -38,7 +38,7 @@ public void initialize(ServiceExtensionContext context){
     // ...
     var policy = createPolicy();
     policyStore.save(policy);
-    
+
     registerDataEntries(context);
     registerContractDefinition(policy.getUid());
     // ...
@@ -47,33 +47,33 @@ public void initialize(ServiceExtensionContext context){
 //...
 
 private void registerDataEntries(ServiceExtensionContext context) {
-    var assetPathSetting = context.getSetting(EDC_ASSET_PATH, "/tmp/provider/test-document.txt");
-    var assetPath = Path.of(assetPathSetting);
-    
-    var dataAddress = DataAddress.Builder.newInstance()
+        var assetPathSetting = context.getSetting(EDC_ASSET_PATH, "/tmp/provider/test-document.txt");
+        var assetPath = Path.of(assetPathSetting);
+
+        var dataAddress = DataAddress.Builder.newInstance()
             .property("type", "File")
             .property("path", assetPath.getParent().toString())
             .property("filename", assetPath.getFileName().toString())
             .build();
-    
-    var assetId = "test-document";
-    var asset = Asset.Builder.newInstance().id(assetId).build();
-    
-    loader.accept(asset, dataAddress);
-}
+
+        var assetId = "test-document";
+        var asset = Asset.Builder.newInstance().id(assetId).build();
+
+        assetIndex.create(asset, dataAddress);
+        }
 
 private void registerContractDefinition(String uid) {
-    var contractDefinition = ContractDefinition.Builder.newInstance()
+        var contractDefinition = ContractDefinition.Builder.newInstance()
             .id("1")
             .accessPolicyId(uid)
             .contractPolicyId(uid)
-            .selectorExpression(AssetSelectorExpression.Builder.newInstance()
-                    .whenEquals(Asset.PROPERTY_ID, "test-document")
-                    .build())
+            .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "1"))
+            .whenEquals(Asset.PROPERTY_ID, "test-document")
+            .build())
             .build();
-    
-    contractStore.save(contractDefinition);
-}
+
+        contractStore.save(contractDefinition);
+        }
 ```
 
 This adds an `Asset` to the `AssetIndex` and the relative `DataAddress` to the `DataAddressResolver`.
@@ -83,7 +83,7 @@ transfer under its `id` `"test-document"`. While it makes sense to have some sor
 id, it is by no means mandatory.
 
 It also adds a `ContractDefinition` with `id` `1` and a previously created `Policy` (code omitted above), that poses no
-restrictions on the data usage. The `ContractDefinition` also has an `AssetSelectorExpression` defining that it is
+restrictions on the data usage. The `ContractDefinition` also has an `assetsSelector` `Criterion` defining that it is
 valid for all assets with the `id` `test-document`. Thus, it is valid for the created asset.
 
 Next to offering the file, the provider also needs to be able to transfer the file. Therefore, the `transfer-file`
@@ -110,13 +110,13 @@ build file and a config file. Common dependencies we need to add to the build fi
 
 ```kotlin
 // in file-transfer-consumer/build.gradle.kts and file-transfer-provider/build.gradle.kts:
-implementation("$groupId:configuration-filesystem:$edcVersion")
+implementation(libs.edc.configuration.filesystem)
 
-implementation("$groupId:ids:$edcVersion")
-implementation("$groupId:iam-mock:$edcVersion")
+implementation(libs.edc.dsp)
+implementation(libs.edc.iam.mock)
 
-implementation("$groupId:management-api:$edcVersion")
-implementation("$groupId:auth-tokenbased:$edcVersion")
+implementation(libs.edc.management.api)
+implementation(libs.edc.auth.tokenbased)
 ```
 
 Three of these dependencies are new and have not been used in the previous samples:
@@ -136,9 +136,9 @@ implementation(project(":transfer:transfer-01-file-transfer:transfer-file-local"
 We also need to adjust the provider's `config.properties`. The property `edc.samples.transfer.01.asset.path` should
 point to an existing file in our local environment, as this is the file that will be transferred. We also configure a
 separate API context for the management API, like we learned in previous chapter. Then we add the property
-`ids.webhook.address`, which should point to our provider connector's IDS address. This is used as the callback
-address during the contract negotiation. Since the IDS API is running on a different port (default is `8282`), we set
-the webhook address to `http://localhost:8282` accordingly.
+`edc.dsp.callback.address`, which should point to our provider connector's IDS address. This is used as the callback
+address during the contract negotiation. Since the DSP API is running on a different port (default is `8282`), we set
+the webhook address to `http://localhost:8282/protocol` accordingly.
 
 ### Consumer connector
 
@@ -150,7 +150,7 @@ provider. In the config file, we also need to configure the API key authenticati
 endpoints from the EDC's management API in this sample and integrated the extension for token-based API
 authentication. Therefore, we add the property `edc.api.auth.key` and set it to e.g. `password`. And last, we also need
 to configure the consumer's webhook address. We expose the IDS API endpoints on a different port and path than other
-endpoints, so the property `ids.webhook.address` is adjusted to match the IDS API port.
+endpoints, so the property `edc.dsp.callback.address` is adjusted to match the IDS API port.
 
 The consumer connector also needs the `status-checker` extension for marking the transfer as completed on the consumer
 side.
@@ -177,8 +177,8 @@ java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/c
 ````
 
 Assuming you didn't change the ports in config files, the consumer will listen on the ports `9191`, `9192`
-(management API) and `9292` (IDS API) and the provider will listen on the ports `8181`, `8182`
-(management API) and `8282` (IDS API).
+(management API) and `9292` (PROTOCOL API) and the provider will listen on the ports `8181`, `8182`
+(management API) and `8282` (PROTOCOL API).
 
 ### 2. Initiate a contract negotiation
 
@@ -206,7 +206,7 @@ provider's contract offer.
 of the header has to match the value of the `edc.api.auth.key` property in the consumer's `config.properties`.
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
 ```
 
 In the response we'll get a UUID that we can use to get the contract agreement negotiated between provider and consumer.
@@ -214,7 +214,7 @@ In the response we'll get a UUID that we can use to get the contract agreement n
 Sample output:
 
 ```json
-{"id":"5a6b7e22-dc7d-4135-bc98-4cc5fd1dd1ed"}
+{"@id":"5a6b7e22-dc7d-4135-bc98-4cc5fd1dd1ed"}
 ```
 
 ### 3. Look up the contract agreement ID
@@ -227,7 +227,7 @@ of the negotiation using an endpoint on the consumer side. Again, we use the `X-
 that's set in our consumer's `config.properties`.
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{UUID}"
 ```
 
 This will return information about the negotiation, which contains e.g. the current state of the negotiation and, if the
@@ -239,8 +239,8 @@ Sample output:
 ```json
 {
   ...
-  "contractAgreementId":"1:45d5b9d2-97b6-4073-8e11-e0e0f44a3538",
-  "state":"CONFIRMED",
+  "edc:contractAgreementId":"1:test-document:fb80be14-8e09-4e50-b65d-c269bc1f16d0",
+  "edc:state":"FINALIZED",
   ...
 }
 ```
@@ -251,8 +251,8 @@ just wait for a moment and call the endpoint again.
 ```json
 {
   ...
-  "state": "REQUESTED",
-  "contractAgreementId": null,
+  "edc:state": "REQUESTED",
+  "edc:contractAgreementId": null,
   ...
 }
 ```
@@ -266,7 +266,7 @@ the request, insert the contract agreement ID from the previous step and adjust 
 transfer. Then run:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"
 ```
 
 Again, we will get a UUID in the response. This time, this is the ID of the `TransferProcess` created on the consumer
@@ -275,7 +275,7 @@ side, because like the contract negotiation, the data transfer is handled in a s
 Sample output:
 
 ```json
-{"id":"deeed974-8a43-4fd5-93ad-e1b8c26bfa44"}
+{"@id":"deeed974-8a43-4fd5-93ad-e1b8c26bfa44"}
 ```
 
 Since transferring a file does not require any resource provisioning on either side, the transfer will be very quick and
@@ -290,7 +290,7 @@ Consumer side:
 ```bash
 DEBUG 2022-05-03T10:37:59.599642754 Starting transfer for asset asset-id
 DEBUG 2022-05-03T10:37:59.6071347 Transfer process initialised f925131b-d61e-48b9-aa15-0f5e2e749064
-DEBUG 2022-05-03T10:38:01.230902645 TransferProcessManager: Sending process f925131b-d61e-48b9-aa15-0f5e2e749064 request to http://localhost:8282/api/v1/ids/data
+DEBUG 2022-05-03T10:38:01.230902645 TransferProcessManager: Sending process f925131b-d61e-48b9-aa15-0f5e2e749064 request to http://localhost:8282/protocol
 DEBUG 2022-05-03T10:38:01.260916372 Response received from connector. Status 200
 DEBUG 2022-05-03T10:38:01.285641788 TransferProcessManager: Process f925131b-d61e-48b9-aa15-0f5e2e749064 is now REQUESTED
 DEBUG 2022-05-03T10:38:06.246094874 Process f925131b-d61e-48b9-aa15-0f5e2e749064 is now IN_PROGRESS

@@ -23,11 +23,12 @@ import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
-import org.eclipse.edc.spi.asset.AssetSelectorExpression;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
+
+import static org.eclipse.edc.spi.query.Criterion.criterion;
 
 public class CloudTransferExtension implements ServiceExtension {
     @Inject
@@ -45,7 +46,7 @@ public class CloudTransferExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var policy = createPolicy();
-        policyDefinitionStore.save(policy);
+        policyDefinitionStore.create(policy);
 
         registerDataEntries();
         registerContractDefinition(policy.getUid());
@@ -60,7 +61,7 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobname", "test-document.txt")
                 .keyName("<storage-account-name>-key1")
                 .build();
-        assetIndex.accept(asset, dataAddress);
+        assetIndex.create(asset, dataAddress);
 
         var asset2 = Asset.Builder.newInstance().id("2").build();
         var dataAddress2 = DataAddress.Builder.newInstance()
@@ -70,7 +71,7 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobname", "test-document.txt")
                 .keyName("<storage-account-name>-key1")
                 .build();
-        assetIndex.accept(asset2, dataAddress2);
+        assetIndex.create(asset2, dataAddress2);
     }
 
     public void registerContractDefinition(String policyId) {
@@ -78,16 +79,14 @@ public class CloudTransferExtension implements ServiceExtension {
                 .id("1")
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
-                .selectorExpression(AssetSelectorExpression.Builder.newInstance().whenEquals(Asset.PROPERTY_ID, "1").build())
-                .validity(31536000) //valid for a year
+                .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "1"))
                 .build();
 
         var contractDefinition2 = ContractDefinition.Builder.newInstance()
                 .id("2")
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
-                .selectorExpression(AssetSelectorExpression.Builder.newInstance().whenEquals(Asset.PROPERTY_ID, "2").build())
-                .validity(31536000) //valid for a year
+                .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "2"))
                 .build();
 
         contractDefinitionStore.save(contractDefinition1);

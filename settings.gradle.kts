@@ -14,12 +14,8 @@
 
 rootProject.name = "samples"
 
-// this is needed to have access to snapshot builds of plugins
 pluginManagement {
     repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -27,9 +23,6 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
         mavenCentral()
         mavenLocal()
     }
@@ -43,17 +36,14 @@ include(":basic:basic-03-configuration")
 // transfer
 include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
 include(":transfer:transfer-01-file-transfer:file-transfer-provider")
-include(":transfer:transfer-01-file-transfer:file-transfer-integration-tests")
 include(":transfer:transfer-01-file-transfer:transfer-file-local")
 include(":transfer:transfer-01-file-transfer:status-checker")
 
 include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
-include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-integration-tests")
 include(":transfer:transfer-02-file-transfer-listener:listener")
 
 include(":transfer:transfer-03-modify-transferprocess:api")
 include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
-include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-integration-tests")
 include(":transfer:transfer-03-modify-transferprocess:simulator")
 include(":transfer:transfer-03-modify-transferprocess:watchdog")
 
@@ -72,3 +62,5 @@ include("transfer:transfer-07-provider-push-http:provider-push-http-backend-serv
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
+
+include(":system-tests")

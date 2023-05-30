@@ -16,18 +16,15 @@ plugins {
     `java-library`
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
-    implementation("$groupId:data-plane-core:$edcVersion")
-    implementation("$groupId:data-plane-azure-storage:$edcVersion")
-    implementation("$groupId:data-plane-aws-s3:$edcVersion")
-    implementation("$groupId:data-plane-client:$edcVersion")
-    implementation("$groupId:data-plane-selector-client:$edcVersion")
-    implementation("$groupId:data-plane-selector-core:$edcVersion")
-    implementation("$groupId:transfer-data-plane:$edcVersion")
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.data.plane.core)
+    implementation(libs.edc.data.plane.azure.storage)
+    implementation(libs.edc.data.plane.aws.s3)
+    implementation(libs.edc.data.plane.client)
+    implementation(libs.edc.data.plane.selector.client)
+    implementation(libs.edc.data.plane.selector.core)
+    implementation(libs.edc.transfer.data.plane)
 
     implementation(libs.opentelemetry.annotations)
 }

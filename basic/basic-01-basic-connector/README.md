@@ -12,7 +12,7 @@ that contains the essential dependencies. We'll need at least the following thin
 
 ```kotlin
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
 }
 ```
 

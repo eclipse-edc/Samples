@@ -49,6 +49,6 @@ public class Watchdog {
 
     private void check() {
         monitor.info("Running watchdog - submit command");
-        manager.enqueueCommand(new CheckTransferProcessTimeoutCommand(3, TransferProcessStates.IN_PROGRESS, Duration.ofSeconds(10)));
+        manager.enqueueCommand(new CheckTransferProcessTimeoutCommand(3, TransferProcessStates.STARTED, Duration.ofSeconds(10)));
     }
 }

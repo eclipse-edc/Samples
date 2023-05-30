@@ -24,10 +24,12 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.edc.connector.contract.spi.negotiation.ConsumerContractNegotiationManager;
-import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractOfferRequest;
+import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequest;
+import org.eclipse.edc.connector.contract.spi.types.negotiation.ContractRequestData;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractOffer;
 import org.eclipse.edc.connector.transfer.spi.TransferProcessManager;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
+import org.eclipse.edc.connector.transfer.spi.types.TransferRequest;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 
@@ -68,12 +70,13 @@ public class ConsumerApiController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        var contractOfferRequest = ContractOfferRequest.Builder.newInstance()
-                .contractOffer(contractOffer)
-                .protocol("ids-multipart")
-                .connectorId("consumer")
-                .connectorAddress(connectorAddress)
-                .type(ContractOfferRequest.Type.INITIAL)
+        var contractOfferRequest = ContractRequest.Builder.newInstance()
+                .requestData(ContractRequestData.Builder.newInstance()
+                        .protocol("dataspace-protocol-http")
+                        .connectorId("consumer")
+                        .counterPartyAddress(connectorAddress)
+                        .contractOffer(contractOffer)
+                        .build())
                 .build();
 
         var result = consumerNegotiationManager.initiate(contractOfferRequest);
@@ -97,7 +100,7 @@ public class ConsumerApiController {
         var dataRequest = DataRequest.Builder.newInstance()
                 .id(UUID.randomUUID().toString()) //this is not relevant, thus can be random
                 .connectorAddress(connectorAddress) //the address of the provider connector
-                .protocol("ids-multipart")
+                .protocol("dataspace-protocol-http")
                 .connectorId("consumer")
                 .assetId(filename)
                 .dataDestination(DataAddress.Builder.newInstance()
@@ -108,7 +111,9 @@ public class ConsumerApiController {
                 .contractId(contractId)
                 .build();
 
-        var result = processManager.initiateConsumerRequest(dataRequest);
+        var transferRequest = TransferRequest.Builder.newInstance().dataRequest(dataRequest).build();
+
+        var result = processManager.initiateConsumerRequest(transferRequest);
 
         return result.failed() ? Response.status(400).build() : Response.ok(result.getContent()).build();
     }

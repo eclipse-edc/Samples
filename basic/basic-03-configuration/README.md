@@ -14,7 +14,7 @@ the `configuration-filesystem` module to the dependency list:
 ```kotlin
 dependencies {
     // ...
-    implementation("$groupId:configuration-filesystem:$edcVersion")
+    implementation(libs.edc.configuration.filesystem)
     // ...
 }
 ```
@@ -152,7 +152,7 @@ module. Therefore, we need to add the following module to the dependency list in
 ```kotlin
 dependencies {
     // ...
-    implementation("$groupId:management-api:$edcVersion")
+    implementation(libs.edc.management.api)
     // ...
 }
 ```
@@ -167,7 +167,7 @@ necessary to provide the following configuration to the connector:
 web.http.port=9191
 web.http.path=/api
 web.http.management.port=9192
-web.http.management.path=/api/v1/management
+web.http.management.path=/management
 ```
 
 _**Caution**: If you do not provide this configuration, it leads to the problem that the authentication mechanism is

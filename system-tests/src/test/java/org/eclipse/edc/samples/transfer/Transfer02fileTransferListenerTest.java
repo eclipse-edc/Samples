@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.sample.extension;
+package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
@@ -26,10 +26,10 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.sample.extension.FileTransferSampleTestCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getFileFromRelativePath;
 
 @EndToEndTest
-public class FileTransferListenerSampleTest {
+public class Transfer02fileTransferListenerTest {
 
     static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-02-file-transfer-listener/file-transfer-listener-consumer/config.properties";
     static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-01-file-transfer/file-transfer-provider/config.properties";

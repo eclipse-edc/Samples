@@ -12,9 +12,9 @@ services:
       WEB_HTTP_PORT: 9191
       WEB_HTTP_PATH: /api
       WEB_HTTP_MANAGEMENT_PORT: 9192
-      WEB_HTTP_MANAGEMENT_PATH: /api/v1/management
+      WEB_HTTP_MANAGEMENT_PATH: /management
       WEB_HTTP_IDS_PORT: 9292
-      WEB_HTTP_IDS_PATH: /api/v1/ids
+      WEB_HTTP_IDS_PATH: /protocol
       IDS_WEBHOOK_ADDRESS: http://consumer:9292
       EDC_API_AUTH_KEY: password
     volumes:
@@ -36,7 +36,7 @@ services:
       WEB_HTTP_PORT: 8181
       WEB_HTTP_PATH: /api
       WEB_HTTP_MANAGEMENT_PORT: 8182
-      WEB_HTTP_MANAGEMENT_PATH: /api/v1/management
+      WEB_HTTP_MANAGEMENT_PATH: /management
       IDS_WEBHOOK_ADDRESS: http://provider:8282
       EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /samples/transfer-04-open-telemetry/input-file.txt
     volumes:
