@@ -16,9 +16,6 @@ plugins {
     `java-library`
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    api("$groupId:control-plane-spi:$edcVersion")
+    api(libs.edc.control.plane.spi)
 }

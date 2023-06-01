@@ -34,7 +34,7 @@ and store all access credentials in an Azure Vault (learn more
 It's as simple as running the main terraform script:
 
 ```bash
-cd transfer/transfer-05-file-transfer-cloud/terraform 
+cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform init --upgrade
 terraform apply
 ```
@@ -99,11 +99,11 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-pro
 To request data offers from the provider, run:
 
 ```bash
-curl -X POST "http://localhost:9192/api/v1/management/catalog/request" \
+curl -X POST "http://localhost:9192/management/catalog/request" \
 --header 'X-Api-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "providerUrl": "http://localhost:8282/api/v1/ids/data"
+  "providerUrl": "http://localhost:8282/protocol"
 }'
 ```
 
@@ -113,13 +113,13 @@ To negotiate a contract copy one of the contract offers into the statement below
 it is only possible to negotiate an _unchanged_ contract, so counter offers are not supported.
 
 ```bash
-curl --location --request POST 'http://localhost:9192/api/v1/management/contractnegotiations' \
+curl --location --request POST 'http://localhost:9192/management/contractnegotiations' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "connectorId": "provider",
-  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
-  "protocol": "ids-multipart",
+  "connectorAddress": "http://localhost:8282/protocol",
+  "protocol": "dataspace-protocol-http",
   "offer": {
     "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
     "assetId": "1",
@@ -135,7 +135,7 @@ The EDC will answer with the contract negotiation id. This id will be used in st
 To get the contract agreement id insert the negotiation id into the following statement end execute it.
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{negotiationId}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{negotiationId}"
 ```
 
 The EDC will return the current state of the contract negotiation. When the negotiation is completed successfully
@@ -147,13 +147,13 @@ To initiate the data transfer, execute the statement below. Please take care of 
 obtained at previous step as well as a unique bucket name.
 
 ```bash
-curl --location --request POST 'http://localhost:9192/api/v1/management/transferprocess' \
+curl --location --request POST 'http://localhost:9192/management/transferprocess' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '
 {
-  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
-  "protocol": "ids-multipart",
+  "connectorAddress": "http://localhost:8282/protocol",
+  "protocol": "dataspace-protocol-http",
   "connectorId": "consumer",
   "assetId": "1",
   "contractId": "<ContractAgreementId>",
@@ -181,13 +181,13 @@ Deprovisioning is not necessary per se, but it will do some cleanup, delete the 
 it's generally advisable to do it.
 
 ```bash
-curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/transferprocess/{transferProcessId}/deprovision"
+curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/management/transferprocess/{transferProcessId}/deprovision"
 ```
 
 Finally, run terraform to clean-up the vault and other remaining stuffs:
 
 ```bash
-cd transfer/transfer-05-file-transfer-cloud/terraform 
+cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform destroy
 ```
 

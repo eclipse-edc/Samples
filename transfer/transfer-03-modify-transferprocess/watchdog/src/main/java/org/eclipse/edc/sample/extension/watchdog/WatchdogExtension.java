@@ -21,6 +21,8 @@ import org.eclipse.edc.spi.command.CommandHandlerRegistry;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
+import java.time.Clock;
+
 public class WatchdogExtension implements ServiceExtension {
 
     @Inject
@@ -31,11 +33,15 @@ public class WatchdogExtension implements ServiceExtension {
 
     @Inject
     private CommandHandlerRegistry commandHandlerRegistry;
+
+    @Inject
+    private Clock clock;
+
     private Watchdog wd;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        commandHandlerRegistry.register(new CheckTimeoutCommandHandler(store, context.getClock(), context.getMonitor()));
+        commandHandlerRegistry.register(new CheckTimeoutCommandHandler(store, clock, context.getMonitor()));
         wd = new Watchdog(manager, context.getMonitor());
     }
 

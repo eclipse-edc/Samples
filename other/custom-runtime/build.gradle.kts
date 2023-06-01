@@ -18,15 +18,12 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    api("$groupId:boot:$edcVersion")
-    implementation("$groupId:ids:$edcVersion")
+    api(libs.edc.boot)
+    implementation(libs.edc.dsp)
 
-    implementation("$groupId:iam-mock:$edcVersion")
-    implementation("$groupId:configuration-filesystem:$edcVersion")
+    implementation(libs.edc.iam.mock)
+    implementation(libs.edc.configuration.filesystem)
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)

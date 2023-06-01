@@ -53,15 +53,15 @@ java -Dedc.fs.config=transfer/transfer-02-file-transfer-listener/file-transfer-l
 java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-provider/build/libs/provider.jar
 ````
 
-Assuming you didn't change the config files, the consumer will expose management api on port `9192` and the custom 
+Assuming you didn't change the config files, the consumer will expose management api on port `9192` and the custom
 api endpoints on port `9191` and the provider will listen on port `8181`.
 Open another terminal window (or any REST client of your choice) and execute the following REST requests like in the
 previous sample:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/contractnegotiations"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{UUID}"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/transferprocess"
 ```
 
 > **Replace `{UUID}` in the second request with the UUID received as the response to the first request!**
@@ -76,7 +76,7 @@ The consumer should spew out logs similar to:
 ```bash
 DEBUG 2022-04-14T16:23:13.4042547 Starting transfer for asset test-document
 DEBUG 2022-04-14T16:23:13.4072776 Transfer process initialised 6804ed96-298e-4992-b72d-2366d97cf7a6
-DEBUG 2022-04-14T16:23:13.8801678 TransferProcessManager: Sending process 6804ed96-298e-4992-b72d-2366d97cf7a6 request to http://localhost:8282/api/v1/ids/data
+DEBUG 2022-04-14T16:23:13.8801678 TransferProcessManager: Sending process 6804ed96-298e-4992-b72d-2366d97cf7a6 request to http://localhost:8282/protocol
 DEBUG 2022-04-14T16:23:13.9341802 TransferProcessManager: Process 6804ed96-298e-4992-b72d-2366d97cf7a6 is now REQUESTED
 DEBUG 2022-04-14T16:23:18.9048494 Process 6804ed96-298e-4992-b72d-2366d97cf7a6 is now IN_PROGRESS
 DEBUG 2022-04-14T16:23:18.9048494 Process 6804ed96-298e-4992-b72d-2366d97cf7a6 is now COMPLETED

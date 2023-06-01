@@ -138,7 +138,7 @@ curl -H 'Content-Type: application/json' \
      "publicApiUrl": "http://localhost:19291/public/"
    }
  }' \
-     -X POST "http://localhost:19193/api/v1/data/instances"
+     -X POST "http://localhost:19193/management/instances"
 ```
 
 ### 2. Register data plane instance for consumer
@@ -157,7 +157,7 @@ curl -H 'Content-Type: application/json' \
      "publicApiUrl": "http://localhost:29291/public/"
    }
  }' \
-     -X POST "http://localhost:29193/api/v1/data/instances"
+     -X POST "http://localhost:29193/management/instances"
 ```
 
 ### 3. Create an Asset on the provider side
@@ -170,11 +170,14 @@ The following request creates an asset on the provider connector.
 
 ```bash
 curl -d '{
+           "@context": {
+             "edc": "https://w3id.org/edc/v0.0.1/ns/"
+           },
            "asset": {
+             "@id": "assetId",
              "properties": {
-               "asset:prop:id": "assetId",
-               "asset:prop:name": "product description",
-               "asset:prop:contenttype": "application/json"
+               "name": "product description",
+               "contenttype": "application/json"
              }
            },
            "dataAddress": {
@@ -184,7 +187,7 @@ curl -d '{
                "type": "HttpData"
              }
            }
-         }' -H 'content-type: application/json' http://localhost:19193/api/v1/data/assets \
+         }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
          -s | jq
 ```
 
@@ -201,23 +204,18 @@ This means that the consumer connector can request any asset from the provider c
 
 ```bash
 curl -d '{
-           "id": "aPolicy",
+           "@context": {
+             "edc": "https://w3id.org/edc/v0.0.1/ns/"
+           },
+           "@id": "aPolicy",
            "policy": {
-             "uid": "231802-bb34-11ec-8422-0242ac120002",
-             "permissions": [
-               {
-                 "target": "assetId",
-                 "action": {
-                   "type": "USE"
-                 },
-                 "edctype": "dataspaceconnector:permission"
-               }
-             ],
-             "@type": {
-               "@policytype": "set"
-             }
+             "@context": "http://www.w3.org/ns/odrl.jsonld",
+             "@type": "set",
+             "permission": [],
+             "prohibition": [],
+             "obligation": []
            }
-         }' -H 'content-type: application/json' http://localhost:19193/api/v1/data/policydefinitions \
+         }' -H 'content-type: application/json' http://localhost:19193/management/v2/policydefinitions \
          -s | jq
 ```
 
@@ -230,11 +228,14 @@ catalog. In this case, the selection is empty, so every asset is attached to the
 
 ```bash
 curl -d '{
-           "id": "1",
+           "@context": {
+             "edc": "https://w3id.org/edc/v0.0.1/ns/"
+           },
+           "@id": "1",
            "accessPolicyId": "aPolicy",
            "contractPolicyId": "aPolicy",
-           "criteria": []
-         }' -H 'content-type: application/json' http://localhost:19193/api/v1/data/contractdefinitions \
+           "assetsSelector": []
+         }' -H 'content-type: application/json' http://localhost:19193/management/v2/contractdefinitions \
          -s | jq
 ```
 
@@ -242,8 +243,10 @@ Sample output:
 
 ```json
 {
-  "createdAt": 1674578184023,
-  "id": "1"
+  ...
+  "@id": "1",
+  "edc:createdAt": 1674578184023,
+  ...
 }
 ```
 
@@ -255,68 +258,68 @@ offer, the so-called "catalog". To get the catalog from the consumer side, you c
 endpoint:
 
 ```bash
-curl -X POST "http://localhost:29193/api/v1/data/catalog/request" \
---header 'Content-Type: application/json' \
---data-raw '{
-  "providerUrl": "http://localhost:19194/api/v1/ids/data"
-}'
+curl -X POST "http://localhost:29193/management/v2/catalog/request" \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "@context": {
+        "edc": "https://w3id.org/edc/v0.0.1/ns/"
+      },
+      "providerUrl": "http://localhost:19194/protocol",
+      "protocol": "dataspace-protocol-http"
+    }' -s | jq
 ```
 
 Sample output:
 
 ```json
 {
-  "id": "default",
-  "contractOffers": [
-    {
-      "id": "1:11dd1ed3-0309-49f0-b3b9-dceb3d75bdbe",
-      "policy": {
-        "permissions": [
-          {
-            "edctype": "dataspaceconnector:permission",
-            "uid": null,
-            "target": "assetId",
-            "action": {
-              "type": "USE",
-              "includedIn": null,
-              "constraint": null
-            },
-            "assignee": null,
-            "assigner": null,
-            "constraints": [],
-            "duties": []
-          }
-        ],
-        "prohibitions": [],
-        "obligations": [],
-        "extensibleProperties": {},
-        "inheritsFrom": null,
-        "assigner": null,
-        "assignee": null,
-        "target": "assetId",
-        "@type": {
-          "@policytype": "set"
-        }
+  "@id": "31f6d748-d35b-4dec-9e34-d141fd17b458",
+  "@type": "dcat:Catalog",
+  "dcat:dataset": {
+    "@id": "f31a04bf-3575-4f60-9795-9550e979143a",
+    "@type": "dcat:Dataset",
+    "odrl:hasPolicy": {
+      "@id": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+      "@type": "odrl:Set",
+      "odrl:permission": [],
+      "odrl:prohibition": [],
+      "odrl:obligation": [],
+      "odrl:target": "assetId"
+    },
+    "dcat:distribution": [
+      {
+        "@type": "dcat:Distribution",
+        "dct:format": {
+          "@id": "HttpProxy"
+        },
+        "dcat:accessService": "2a5178c3-c937-4ac2-85be-c46dbc6c5642"
       },
-      "asset": {
-        "id": "assetId",
-        "createdAt": 1674578271345,
-        "properties": {
-          "asset:prop:byteSize": null,
-          "asset:prop:name": "product description",
-          "asset:prop:contenttype": "application/json",
-          "asset:prop:id": "assetId",
-          "asset:prop:fileName": null
-        }
-      },
-      "provider": "urn:connector:http-pull-provider",
-      "consumer": "urn:connector:http-pull-consumer",
-      "offerStart": null,
-      "offerEnd": null,
-      "contractStart": null,
-      "contractEnd": null
-    }
-  ]
+      {
+        "@type": "dcat:Distribution",
+        "dct:format": {
+          "@id": "HttpData"
+        },
+        "dcat:accessService": "2a5178c3-c937-4ac2-85be-c46dbc6c5642"
+      }
+    ],
+    "edc:name": "product description",
+    "edc:id": "assetId",
+    "edc:contenttype": "application/json"
+  },
+  "dcat:service": {
+    "@id": "2a5178c3-c937-4ac2-85be-c46dbc6c5642",
+    "@type": "dcat:DataService",
+    "dct:terms": "connector",
+    "dct:endpointUrl": "http://localhost:19194/protocol"
+  },
+  "edc:participantId": "anonymous",
+  "@context": {
+    "dct": "https://purl.org/dc/terms/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
 }
 ```
 
@@ -340,38 +343,40 @@ send counter offers in addition to just confirming or declining an offer.
 
 ```bash
 curl -d '{
-           "connectorId": "http-pull-provider",
-           "connectorAddress": "http://localhost:19194/api/v1/ids/data",
-           "protocol": "ids-multipart",
-           "offer": {
-             "offerId": "1:50f75a7a-5f81-4764-b2f9-ac258c3628e2",
-             "assetId": "assetId",
-             "policy": {
-               "uid": "231802-bb34-11ec-8422-0242ac120002",
-               "permissions": [
-                 {
-                   "target": "assetId",
-                   "action": {
-                     "type": "USE"
-                   },
-                   "edctype": "dataspaceconnector:permission"
-                 }
-               ],
-               "@type": {
-                 "@policytype": "set"
-               }
-             }
-           }
-         }' -X POST -H 'content-type: application/json' http://localhost:29193/api/v1/data/contractnegotiations \
-         -s | jq
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "NegotiationInitiateRequestDto",
+  "connectorId": "provider",
+  "connectorAddress": "http://localhost:19194/protocol",
+  "consumerId": "consumer",
+  "providerId": "provider",
+  "protocol": "dataspace-protocol-http",
+  "offer": {
+   "offerId": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+   "assetId": "assetId",
+   "policy": {
+     "@context": "http://www.w3.org/ns/odrl.jsonld",
+     "@id": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+     "@type": "Set",
+     "permission": [],
+     "prohibition": [],
+     "obligation": [],
+     "target": "assetId"
+   }
+  }
+}' -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
+-s | jq
 ```
 
 Sample output:
 
 ```json
 {
-  "createdAt": 1674585892398,
-  "id": "8ce50f33-25f3-42df-99e7-d6d72d83032c"
+  ...
+  "@id": "254015f3-5f1e-4a59-9ad9-bf0e42d4819e",
+  "edc:createdAt": 1685525281848,
+  ...
 }
 ```
 
@@ -385,7 +390,7 @@ state, the negotiation is finished. We can now use the UUID to check the current
 negotiation using an endpoint on the consumer side.
 
 ```bash
-curl -X GET "http://localhost:29193/api/v1/data/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
+curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
     --header 'Content-Type: application/json' \
     -s | jq
 ```
@@ -394,15 +399,21 @@ Sample output:
 
 ```json
 {
-  "createdAt": 1674585892398,
-  "updatedAt": 1674585897476,
-  "contractAgreementId": "1:307a028a-b2b3-495e-ab6c-f6dad24dd098",
-  "counterPartyAddress": "http://localhost:19194/api/v1/ids/data",
-  "errorDetail": null,
-  "id": "8ce50f33-25f3-42df-99e7-d6d72d83032c",
-  "protocol": "ids-multipart",
-  "state": "CONFIRMED",
-  "type": "CONSUMER"
+  "@type": "edc:ContractNegotiationDto",
+  "@id": "5ca21b82-075b-4682-add8-c26c9a2ced67",
+  "edc:type": "CONSUMER",
+  "edc:protocol": "dataspace-protocol-http",
+  "edc:state": "FINALIZED",
+  "edc:counterPartyAddress": "http://localhost:19194/protocol",
+  "edc:callbackAddresses": [],
+  "edc:contractAgreementId": "1:assetId:edd0292a-e791-4174-bf52-9c653dc1a867",
+  "@context": {
+    "dct": "https://purl.org/dc/terms/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
 }
 ```
 
@@ -412,7 +423,7 @@ As a pre-requisite, you need to have a backend service that runs on port 4000
 
 ```bash
 ./gradlew transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service:build
-java -jar transfer/transfer-06-consumer-pull-http/consumer-pull-backend-service/build/libs/consumer-pull-backend-service.jar 
+java -jar transfer/transfer-06-consumer-pull-http/consumer-pull-backend-service/build/libs/consumer-pull-backend-service.jar
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
@@ -425,16 +436,24 @@ Before executing the request, insert the contract agreement ID from the previous
 > datasource
 
 ```bash
-curl -X POST "http://localhost:29193/api/v1/data/transferprocess" \
-    --header "Content-Type: application/json" \
-    --data '{
-                "connectorId": "http-pull-provider",
-                "connectorAddress": "http://localhost:19194/api/v1/ids/data",
-                "contractId": "<contract agreement id>",
-                "assetId": "assetId",
-                "managedResources": "false",
-                "dataDestination": { "type": "HttpProxy" }
-            }' \
+curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "@context": {
+          "edc": "https://w3id.org/edc/v0.0.1/ns/"
+        },
+        "@type": "TransferRequestDto",
+        "connectorId": "provider",
+        "connectorAddress": "http://localhost:19194/protocol",
+        "contractId": "<contract agreement id>",
+        "assetId": "assetId",
+        "managedResources": false,
+        "protocol": "dataspace-protocol-http",
+        "dataDestination": { 
+          "@type": "DataAddress",
+          "type": "HttpProxy" 
+        }
+    }' \
     -s | jq
 ```
 
@@ -446,9 +465,11 @@ performed asynchronously.
 Sample output:
 
 ```json
- {
-  "createdAt": 1674078357807,
-  "id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9"
+{
+  ...
+  "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
+  "edc:createdAt": 1674078357807,
+  ...
 }
 ```
 
@@ -458,7 +479,18 @@ Due to the nature of the transfer, it will be very fast and most likely already 
 read the UUID.
 
 ```bash
-curl http://localhost:29193/api/v1/data/transferprocess/<transfer process id>
+curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
+```
+
+You should see the Transfer Process in `COMPLETED` state: 
+```json
+{
+  ...
+  "@id": "0f648d82-23b4-464d-8f7b-c89860efe7c9",
+  "edc:state": "COMPLETED",
+  ...
+}
+
 ```
 
 ### 11. Pull the data

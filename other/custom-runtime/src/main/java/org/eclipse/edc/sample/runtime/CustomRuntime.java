@@ -19,8 +19,6 @@ import org.eclipse.edc.boot.system.runtime.BaseRuntime;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ConfigurationExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-import org.eclipse.edc.spi.telemetry.Telemetry;
-import org.eclipse.edc.spi.types.TypeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -41,9 +39,9 @@ public class CustomRuntime extends BaseRuntime {
     }
 
     @Override
-    protected @NotNull ServiceExtensionContext createContext(TypeManager typeManager, Monitor monitor, Telemetry telemetry) {
+    protected @NotNull ServiceExtensionContext createContext(Monitor monitor) {
         //override the default service extension context with a super customized one
-        return new SuperCustomExtensionContext(typeManager, monitor, telemetry, loadConfigurationExtensions());
+        return new SuperCustomExtensionContext(monitor, loadConfigurationExtensions());
     }
 
     @Override
@@ -55,8 +53,8 @@ public class CustomRuntime extends BaseRuntime {
     }
 
     private static class SuperCustomExtensionContext extends DefaultServiceExtensionContext {
-        SuperCustomExtensionContext(TypeManager typeManager, Monitor monitor, Telemetry telemetry, List<ConfigurationExtension> configurationExtensions) {
-            super(typeManager, monitor, telemetry, configurationExtensions);
+        SuperCustomExtensionContext(Monitor monitor, List<ConfigurationExtension> configurationExtensions) {
+            super(monitor, configurationExtensions);
         }
     }
 }
