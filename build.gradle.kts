@@ -21,37 +21,30 @@ repositories {
     mavenCentral()
 }
 
-val javaVersion: String by project
-val groupId: String by project
-val defaultVersion: String by project
-val annotationProcessorVersion: String by project
-val metaModelVersion: String by project
-
-val actualVersion: String = (project.findProperty("version") ?: defaultVersion) as String
+val edcVersion: String by project
 
 buildscript {
     dependencies {
-        val edcGradlePluginsVersion: String by project
-        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:${edcGradlePluginsVersion}")
+        val edcVersion: String by project
+        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:${edcVersion}")
     }
 }
 
 allprojects {
-    apply(plugin = "${groupId}.edc-build")
+    apply(plugin = "$group.edc-build")
 
     // configure which version of the annotation processor to use. defaults to the same version as the plugin
     configure<org.eclipse.edc.plugins.autodoc.AutodocExtension> {
-        processorVersion.set(annotationProcessorVersion)
+        processorVersion.set(edcVersion)
         outputDirectory.set(project.buildDir)
     }
 
     configure<org.eclipse.edc.plugins.edcbuild.extensions.BuildExtension> {
         versions {
             // override default dependency versions here
-            projectVersion.set(actualVersion)
-            metaModel.set(metaModelVersion)
+            projectVersion.set(edcVersion)
+            metaModel.set(edcVersion)
         }
-        javaLanguageVersion.set(JavaLanguageVersion.of(javaVersion))
         publish.set(false)
     }
 

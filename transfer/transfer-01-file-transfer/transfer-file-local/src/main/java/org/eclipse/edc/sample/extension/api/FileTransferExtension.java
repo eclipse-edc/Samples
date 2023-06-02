@@ -20,18 +20,18 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServ
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
-import org.eclipse.edc.policy.model.Action;
-import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
-import org.eclipse.edc.spi.asset.AssetSelectorExpression;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
 
 import java.nio.file.Path;
+
+import static org.eclipse.edc.spi.query.Criterion.criterion;
 
 public class FileTransferExtension implements ServiceExtension {
 
@@ -59,7 +59,7 @@ public class FileTransferExtension implements ServiceExtension {
         pipelineService.registerFactory(sinkFactory);
 
         var policy = createPolicy();
-        policyStore.save(policy);
+        policyStore.create(policy);
 
         registerDataEntries(context);
         registerContractDefinition(policy.getUid());
@@ -68,14 +68,10 @@ public class FileTransferExtension implements ServiceExtension {
     }
 
     private PolicyDefinition createPolicy() {
-        var usePermission = Permission.Builder.newInstance()
-                .action(Action.Builder.newInstance().type("USE").build())
-                .build();
-
         return PolicyDefinition.Builder.newInstance()
                 .id(USE_POLICY)
                 .policy(Policy.Builder.newInstance()
-                        .permission(usePermission)
+                        .type(PolicyType.SET)
                         .build())
                 .build();
     }
@@ -93,7 +89,7 @@ public class FileTransferExtension implements ServiceExtension {
         var assetId = "test-document";
         var asset = Asset.Builder.newInstance().id(assetId).build();
 
-        assetIndex.accept(asset, dataAddress);
+        assetIndex.create(asset, dataAddress);
     }
 
     private void registerContractDefinition(String uid) {
@@ -101,10 +97,7 @@ public class FileTransferExtension implements ServiceExtension {
                 .id("1")
                 .accessPolicyId(uid)
                 .contractPolicyId(uid)
-                .selectorExpression(AssetSelectorExpression.Builder.newInstance()
-                        .whenEquals(Asset.PROPERTY_ID, "test-document")
-                        .build())
-                .validity(31536000) //valid for a year
+                .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "test-document"))
                 .build();
 
         contractStore.save(contractDefinition);

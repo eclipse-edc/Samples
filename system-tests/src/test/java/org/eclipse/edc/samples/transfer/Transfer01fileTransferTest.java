@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.sample.extension;
+package org.eclipse.edc.samples.transfer;
 
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
@@ -23,15 +23,16 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.Map;
 
-import static org.eclipse.edc.sample.extension.FileTransferSampleTestCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getFileFromRelativePath;
 
 @EndToEndTest
-public class FileTransferSampleTest {
+public class Transfer01fileTransferTest {
 
-    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-01-file-transfer/file-transfer-consumer/config.properties";
-    static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-01-file-transfer/file-transfer-provider/config.properties";
-    static final String SAMPLE_ASSET_FILE_PATH = "transfer/transfer-01-file-transfer/README.md";
-    static final String DESTINATION_FILE_PATH = "transfer/transfer-01-file-transfer/requested.test.txt";
+    private static final String SAMPLE_FOLDER = "transfer/transfer-01-file-transfer";
+    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = SAMPLE_FOLDER + "/file-transfer-consumer/config.properties";
+    static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = SAMPLE_FOLDER + "/file-transfer-provider/config.properties";
+    static final String SAMPLE_ASSET_FILE_PATH = SAMPLE_FOLDER + "/README.md";
+    static final String DESTINATION_FILE_PATH = SAMPLE_FOLDER + "/requested.test.txt";
 
     @RegisterExtension
     static EdcRuntimeExtension provider = new EdcRuntimeExtension(
@@ -43,6 +44,7 @@ public class FileTransferSampleTest {
                     "edc.fs.config", getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
             )
     );
+
     @RegisterExtension
     static EdcRuntimeExtension consumer = new EdcRuntimeExtension(
             ":transfer:transfer-01-file-transfer:file-transfer-consumer",
@@ -51,6 +53,7 @@ public class FileTransferSampleTest {
                     "edc.fs.config", getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
             )
     );
+
     final FileTransferSampleTestCommon testUtils = new FileTransferSampleTestCommon(SAMPLE_ASSET_FILE_PATH, DESTINATION_FILE_PATH);
 
     /**

@@ -19,23 +19,20 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
-    implementation("$groupId:micrometer-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.micrometer.core)
 
-    implementation("$groupId:configuration-filesystem:$edcVersion")
-    implementation("$groupId:iam-mock:$edcVersion")
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.iam.mock)
 
-    implementation("$groupId:auth-tokenbased:$edcVersion")
-    implementation("$groupId:management-api:$edcVersion")
+    implementation(libs.edc.auth.tokenbased)
+    implementation(libs.edc.management.api)
 
-    implementation("$groupId:ids:$edcVersion")
-    runtimeOnly("$groupId:jersey-micrometer:$edcVersion")
-    runtimeOnly("$groupId:jetty-micrometer:$edcVersion")
-    runtimeOnly("$groupId:monitor-jdk-logger:$edcVersion")
+    implementation(libs.edc.dsp)
+    runtimeOnly(libs.edc.jersey.micrometer)
+    runtimeOnly(libs.edc.jetty.micrometer)
+    runtimeOnly(libs.edc.monitor.jdk.logger)
 }
 
 application {

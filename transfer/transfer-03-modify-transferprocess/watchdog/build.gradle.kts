@@ -17,9 +17,7 @@ plugins {
     `java-library`
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.data.plane.selector.core)
 }

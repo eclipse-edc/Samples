@@ -17,6 +17,7 @@ package org.eclipse.edc.sample.extension.watchdog;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
 import org.eclipse.edc.spi.command.CommandHandler;
 import org.eclipse.edc.spi.monitor.Monitor;
+import org.eclipse.edc.spi.query.Criterion;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -38,13 +39,13 @@ public class CheckTimeoutCommandHandler implements CommandHandler<CheckTransferP
     @Override
     public void handle(CheckTransferProcessTimeoutCommand command) {
 
-        var states = store.nextForState(command.getTargetState().code(), command.getBatchSize());
+        var states = store.nextNotLeased(command.getBatchSize(), new Criterion("state", "=", command.getTargetState().code()));
         states.stream().filter(tp -> isExpired(tp.getStateTimestamp(), command.getMaxAge()))
                 .forEach(tp -> {
                     monitor.info(format("will retire TP with id [%s] due to timeout", tp.getId()));
 
-                    tp.transitionError("timeout by watchdog");
-                    store.save(tp);
+                    tp.transitionTerminating("timeout by watchdog");
+                    store.updateOrCreate(tp);
                 });
     }
 

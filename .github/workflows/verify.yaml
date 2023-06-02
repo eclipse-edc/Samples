@@ -26,86 +26,16 @@ jobs:
       - uses: ./.github/actions/setup-build
 
       - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest checkstyleTestFixtures
+        run: ./gradlew checkstyleMain checkstyleTest
 
-  Sanity-Check:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-build
 
-      - name: Check Sample basic-01
-        run: |
-          ./gradlew :basic:basic-01-basic-connector:shadowJar
-          echo "Checking Sample basic-01"
-          java -jar basic/basic-01-basic-connector/build/libs/basic-connector.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-
-      - name: Check Sample basic-02
-        run: |
-          ./gradlew :basic:basic-02-health-endpoint:shadowJar
-          echo "Checking Sample basic-02"
-          java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      - name: Check Sample basic-03
-        run: |
-          ./gradlew :basic:basic-03-configuration:shadowJar
-          echo "Checking Sample basic-03"
-          java -Dedc.fs.config=basic/basic-03-configuration/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      - name: Check Sample transfer-01 (Consumer)
-        run: |
-          ./gradlew :transfer:transfer-01-file-transfer:file-transfer-consumer:shadowJar
-          echo "Checking Sample transfer-01 - Consumer"
-          java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-consumer/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-consumer/build/libs/consumer.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      - name: Check Sample transfer-01 (Provider)
-        run: |
-          echo "Checking Sample transfer-01 - Provider"
-          ./gradlew :transfer:transfer-01-file-transfer:file-transfer-provider:shadowJar
-          java -Dedc.fs.config=transfer/transfer-01-file-transfer/file-transfer-provider/config.properties -jar transfer/transfer-01-file-transfer/file-transfer-provider/build/libs/provider.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      - name: Check Sample transfer-02 (Consumer)
-        run: |
-          echo "Checking Sample transfer-02 - Consumer"
-          ./gradlew :transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer:shadowJar
-          java -Dedc.fs.config=transfer/transfer-02-file-transfer-listener/file-transfer-listener-consumer/config.properties -jar transfer/transfer-02-file-transfer-listener/file-transfer-listener-consumer/build/libs/consumer.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      - name: Check Sample transfer-03 (Command-Q/Watchdog)
-        run: |
-          echo "Checking Sample transfer-03 - Command-Q/Watchdog"
-          ./gradlew :transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer:shadowJar
-          java -Dedc.fs.config=transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/config.properties -jar transfer/transfer-03-modify-transferprocess/modify-transferprocess-consumer/build/libs/consumer.jar > log.txt &
-          sleep 5
-          grep "INFO.*edc-.*ready" log.txt
-          rm log.txt
-          killall java
-
-      # we cannot check sample 5 currently because we'd need repo secrets for that (client id,...)
+      - name: Build project
+        run: ./gradlew build
 
   End-To-End-Tests:
     runs-on: ubuntu-latest
@@ -117,13 +47,6 @@ jobs:
         uses: ./.github/actions/run-tests
         with:
           command: ./gradlew test -DincludeTags="EndToEndTest"
-
-      - name: "Publish Gatling report"
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Gatling reports
-          path: '**/build/reports/gatling/**'
 
   Upload-Test-Report:
     needs:

@@ -20,23 +20,20 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
 
-    implementation("$groupId:api-observability:$edcVersion")
+    implementation(libs.edc.api.observability)
 
-    implementation("$groupId:configuration-filesystem:$edcVersion")
-    implementation("$groupId:iam-mock:$edcVersion")
-    implementation("$groupId:vault-azure:$edcVersion")
-    implementation("$groupId:http:$edcVersion")
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.iam.mock)
+    implementation(libs.edc.vault.azure)
+    implementation(libs.edc.http)
 
-    implementation("$groupId:auth-tokenbased:$edcVersion")
-    implementation("$groupId:management-api:$edcVersion")
+    implementation(libs.edc.auth.tokenbased)
+    implementation(libs.edc.management.api)
 
-    implementation("$groupId:ids:$edcVersion")
+    implementation(libs.edc.dsp)
 
     implementation(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 }

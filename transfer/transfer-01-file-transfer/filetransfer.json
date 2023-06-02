@@ -1,20 +1,20 @@
 {
-  "edctype": "dataspaceconnector:datarequest",
-  "protocol": "ids-multipart",
-  "assetId": "test-document",
-  "contractId": "{agreement ID}",
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequestDto",
   "dataDestination": {
+    "@type": "DataAddress",
+    "type": "File",
     "properties": {
       "path": "{path to destination file}",
-      "keyName": "keyName",
-      "type": "File"
+      "keyName": "keyName"
     }
   },
-  "transferType": {
-    "contentType": "application/octet-stream",
-    "isFinite": true
-  },
-  "managedResources": false,
-  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
-  "connectorId": "consumer"
+  "protocol": "dataspace-protocol-http",
+  "assetId": "test-document",
+  "contractId": "{agreement ID}",
+  "connectorAddress": "http://localhost:8282/protocol",
+  "privateProperties": {},
+  "managedResources": false
 }

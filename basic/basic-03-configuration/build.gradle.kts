@@ -20,16 +20,13 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
-    implementation("$groupId:http:$edcVersion")
+    implementation(libs.edc.boot)
+    implementation(libs.edc.connector.core)
+    
+    implementation(libs.edc.http)
 
-    implementation("$groupId:management-api:$edcVersion")
-
-    implementation("$groupId:configuration-filesystem:$edcVersion")
+    implementation(libs.edc.configuration.filesystem)
 
     implementation(libs.jakarta.rsApi)
 }

@@ -14,12 +14,8 @@
 
 rootProject.name = "samples"
 
-// this is needed to have access to snapshot builds of plugins
 pluginManagement {
     repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -27,22 +23,8 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        maven {
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-        }
         mavenCentral()
         mavenLocal()
-    }
-    versionCatalogs {
-        create("libs") {
-            from("org.eclipse.edc:edc-versions:0.0.1-milestone-8")
-            // this is not part of the published EDC Version Catalog, so we'll just "amend" it
-            library(
-                    "dnsOverHttps",
-                    "com.squareup.okhttp3",
-                    "okhttp-dnsoverhttps"
-            ).versionRef("okhttp")
-        }
     }
 }
 
@@ -54,17 +36,14 @@ include(":basic:basic-03-configuration")
 // transfer
 include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
 include(":transfer:transfer-01-file-transfer:file-transfer-provider")
-include(":transfer:transfer-01-file-transfer:file-transfer-integration-tests")
 include(":transfer:transfer-01-file-transfer:transfer-file-local")
 include(":transfer:transfer-01-file-transfer:status-checker")
 
 include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
-include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-integration-tests")
 include(":transfer:transfer-02-file-transfer-listener:listener")
 
 include(":transfer:transfer-03-modify-transferprocess:api")
 include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
-include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-integration-tests")
 include(":transfer:transfer-03-modify-transferprocess:simulator")
 include(":transfer:transfer-03-modify-transferprocess:watchdog")
 
@@ -86,3 +65,5 @@ include(":transfer:transfer-08-serverless-file-transfer:serverless-transfer-prov
 include(":transfer:transfer-08-serverless-file-transfer:serverless-transfer-file")
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
+
+include(":system-tests")

@@ -18,15 +18,12 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    api("$groupId:boot:$edcVersion")
-    implementation("$groupId:ids:$edcVersion")
+    api(libs.edc.boot)
+    implementation(libs.edc.dsp)
 
-    implementation("$groupId:iam-mock:$edcVersion")
-    implementation("$groupId:configuration-filesystem:$edcVersion")
+    implementation(libs.edc.iam.mock)
+    implementation(libs.edc.configuration.filesystem)
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
@@ -37,8 +34,12 @@ application {
     mainClass.set("org.eclipse.edc.sample.runtime.CustomRuntime")
 }
 
+var distTar = tasks.getByName("distTar")
+var distZip = tasks.getByName("distZip")
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
     archiveFileName.set("custom-runtime.jar")
+    dependsOn(distTar, distZip)
 }

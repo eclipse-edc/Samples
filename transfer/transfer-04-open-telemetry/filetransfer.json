@@ -1,5 +1,5 @@
 {
-  "protocol": "ids-multipart",
+  "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
   "contractId": "{agreement ID}",
   "dataDestination": {
@@ -14,6 +14,6 @@
     "isFinite": true
   },
   "managedResources": false,
-  "connectorAddress": "http://provider:8282/api/v1/ids/data",
+  "connectorAddress": "http://provider:8282/protocol",
   "connectorId": "consumer"
 }

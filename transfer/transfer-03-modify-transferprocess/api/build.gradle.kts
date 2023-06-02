@@ -18,12 +18,9 @@ plugins {
     id("application")
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-spi:$edcVersion")
-    implementation("$groupId:util:$edcVersion")
+    implementation(libs.edc.control.plane.spi)
+    implementation(libs.edc.util)
 
     api(libs.jakarta.rsApi)
 }

@@ -39,7 +39,7 @@ docker-compose -f transfer/transfer-04-open-telemetry/docker-compose.yaml up --a
 Once the consumer and provider are up, start a contract negotiation by executing:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/contractoffer.json "http://localhost:9192/management/contractnegotiations"
 ```
 
 The contract negotiation causes an HTTP request sent from the consumer to the provider connector, followed by another
@@ -47,13 +47,13 @@ message from the provider to the consumer connector. Query the status of the con
 following command. Wait until the negotiation is in CONFIRMED state and note down the contract agreement id.
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{UUID}"
 ```
 
 Finally, update the contract agreement id in the `filetransfer.json` file and execute a file transfer with the following command:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/filetransfer.json "http://localhost:9192/management/transferprocess"
 ```
 
 You can access the Jaeger UI on your browser at `http://localhost:16686`. In the search tool, we can select the service
@@ -93,7 +93,7 @@ which has to be stored in the root folder of this sample as well. The only addit
       WEB_HTTP_PORT: 8181
       WEB_HTTP_PATH: /api
       WEB_HTTP_MANAGEMENT_PORT: 8182
-      WEB_HTTP_MANAGEMENT_PATH: /api/v1/management
+      WEB_HTTP_MANAGEMENT_PATH: /management
       IDS_WEBHOOK_ADDRESS: http://consumer:8181
     volumes:
       - ../:/samples
