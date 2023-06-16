@@ -113,7 +113,7 @@ To negotiate a contract copy one of the contract offers into the statement below
 it is only possible to negotiate an _unchanged_ contract, so counter offers are not supported.
 
 ```bash
-curl --location --request POST 'http://localhost:9192/management/contractnegotiations' \
+curl --location --request POST 'http://localhost:9192/management/v2/contractnegotiations' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -135,7 +135,7 @@ The EDC will answer with the contract negotiation id. This id will be used in st
 To get the contract agreement id insert the negotiation id into the following statement end execute it.
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{negotiationId}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{negotiationId}"
 ```
 
 The EDC will return the current state of the contract negotiation. When the negotiation is completed successfully
@@ -147,7 +147,7 @@ To initiate the data transfer, execute the statement below. Please take care of 
 obtained at previous step as well as a unique bucket name.
 
 ```bash
-curl --location --request POST 'http://localhost:9192/management/transferprocess' \
+curl --location --request POST 'http://localhost:9192/management/v2/transferprocesses' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '
@@ -178,7 +178,7 @@ Deprovisioning is not necessary per se, but it will do some cleanup, delete the 
 it's generally advisable to do it.
 
 ```bash
-curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/management/transferprocess/{transferProcessId}/deprovision"
+curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/management/v2/transferprocesses/{transferProcessId}/deprovision"
 ```
 
 Finally, run terraform to clean-up the vault and other remaining stuffs:
