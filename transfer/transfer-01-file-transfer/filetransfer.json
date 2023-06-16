@@ -4,12 +4,9 @@
   },
   "@type": "TransferRequestDto",
   "dataDestination": {
-    "@type": "DataAddress",
     "type": "File",
-    "properties": {
-      "path": "{path to destination file}",
-      "keyName": "keyName"
-    }
+    "path": "{path to destination file}",
+    "keyName": "keyName"
   },
   "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
