@@ -143,11 +143,9 @@ curl -d '{
              }
            },
            "dataAddress": {
-             "properties": {
-               "name": "Test asset",
-               "baseUrl": "https://jsonplaceholder.typicode.com/users",
-               "type": "HttpData"
-             }
+             "name": "Test asset",
+             "baseUrl": "https://jsonplaceholder.typicode.com/users",
+             "type": "HttpData"
            }
          }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
          -s | jq
@@ -167,15 +165,15 @@ This means that the consumer connector can request any asset from the provider c
 ```bash
 curl -d '{
            "@context": {
-             "edc": "https://w3id.org/edc/v0.0.1/ns/"
+             "edc": "https://w3id.org/edc/v0.0.1/ns/",
+             "odrl": "http://www.w3.org/ns/odrl/2/"
            },
            "@id": "aPolicy",
            "policy": {
-             "@context": "http://www.w3.org/ns/odrl.jsonld",
              "@type": "set",
-             "permission": [],
-             "prohibition": [],
-             "obligation": []
+             "odrl:permission": [],
+             "odrl:prohibition": [],
+             "odrl:obligation": []
            }
          }' -H 'content-type: application/json' http://localhost:19193/management/v2/policydefinitions \
          -s | jq
@@ -304,7 +302,8 @@ send counter offers in addition to just confirming or declining an offer.
 ```bash
 curl -d '{
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
   },
   "@type": "NegotiationInitiateRequestDto",
   "connectorId": "provider",
@@ -316,13 +315,12 @@ curl -d '{
    "offerId": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
    "assetId": "assetId",
    "policy": {
-     "@context": "http://www.w3.org/ns/odrl.jsonld",
      "@id": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
      "@type": "Set",
-     "permission": [],
-     "prohibition": [],
-     "obligation": [],
-     "target": "assetId"
+     "odrl:permission": [],
+     "odrl:prohibition": [],
+     "odrl:obligation": [],
+     "odrl:target": "assetId"
    }
   }
 }' -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
@@ -409,11 +407,8 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
         "managedResources": false,
         "protocol": "dataspace-protocol-http",
         "dataDestination": { 
-          "@type": "DataAddress",
           "type": "HttpData",
-          "properties": {
-            "baseUrl": "http://localhost:4000/api/consumer/store"
-          }
+          "baseUrl": "http://localhost:4000/api/consumer/store"
         }
     }' \
     -s | jq

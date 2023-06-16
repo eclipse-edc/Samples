@@ -3,11 +3,9 @@
   "assetId": "test-document",
   "contractId": "{agreement ID}",
   "dataDestination": {
-    "properties": {
-      "path": "/samples/output-file.txt",
-      "keyName": "keyName",
-      "type": "File"
-    }
+    "path": "/samples/output-file.txt",
+    "keyName": "keyName",
+    "type": "File"
   },
   "transferType": {
     "contentType": "application/octet-stream",

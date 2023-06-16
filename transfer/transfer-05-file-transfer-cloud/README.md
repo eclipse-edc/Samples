@@ -158,12 +158,9 @@ curl --location --request POST 'http://localhost:9192/management/transferprocess
   "assetId": "1",
   "contractId": "<ContractAgreementId>",
   "dataDestination": {
-    "properties": {
-      "type": "AmazonS3",
-      "region": "us-east-1",
-      "bucketName": "<Unique bucket name>"
-    },
-    "type": "AmazonS3"
+    "type": "AmazonS3",
+    "region": "us-east-1",
+    "bucketName": "<Unique bucket name>"
   },
   "managedResources": true,
   "transferType": {
