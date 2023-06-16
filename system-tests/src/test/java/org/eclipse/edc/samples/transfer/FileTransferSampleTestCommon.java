@@ -116,7 +116,7 @@ public class FileTransferSampleTestCommon {
 
     /**
      * Assert that a POST request to initiate a contract negotiation is successful.
-     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/contractnegotiations"}
+     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"}
      */
     void initiateContractNegotiation() {
         contractNegotiationId = given()
@@ -145,7 +145,7 @@ public class FileTransferSampleTestCommon {
 
     /**
      * Assert that a GET request to look up a contract agreement is successful.
-     * This method corresponds to the command in the sample: {@code curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{UUID}"}
+     * This method corresponds to the command in the sample: {@code curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{UUID}"}
      */
     void lookUpContractAgreementId() {
         // Wait for transfer to be completed.
@@ -163,7 +163,7 @@ public class FileTransferSampleTestCommon {
 
     /**
      * Assert that a POST request to initiate transfer process is successful.
-     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/transferprocess"}
+     * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"}
      *
      * @throws IOException Thrown if there was an error accessing the transfer request file defined in {@link FileTransferSampleTestCommon#TRANSFER_FILE_PATH}.
      */

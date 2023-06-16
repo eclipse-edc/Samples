@@ -59,9 +59,9 @@ Open another terminal window (or any REST client of your choice) and execute the
 previous sample:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/contractnegotiations"
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/contractnegotiations/{UUID}"
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/transferprocess"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{UUID}"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"
 ```
 
 > **Replace `{UUID}` in the second request with the UUID received as the response to the first request!**
