@@ -9,7 +9,7 @@ jakarta-json = "2.0.1"
 junit-pioneer = "2.0.1"
 jupiter = "5.9.3"
 openTelemetry = "1.18.0"
-restAssured = "5.3.0"
+restAssured = "5.3.1"
 rsApi = "3.1.0"
 
 
