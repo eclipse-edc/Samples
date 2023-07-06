@@ -178,6 +178,7 @@ public class FileTransferSampleTestCommon {
                 .when()
                 .post(MANAGEMENT_API_URL + "/v2/transferprocesses")
                 .then()
+                .log().ifError()
                 .statusCode(HttpStatus.SC_OK)
                 .body("@id", not(emptyString()))
                 .extract()

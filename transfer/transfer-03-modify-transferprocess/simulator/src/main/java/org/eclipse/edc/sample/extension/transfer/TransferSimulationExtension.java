@@ -78,6 +78,7 @@ public class TransferSimulationExtension implements ServiceExtension {
                 .id("sample-transfer-03-datarequest")
                 .destinationType(TEST_TYPE)
                 .connectorAddress("http//localhost:9999")
+                .protocol("dataspace-protocol-http")
                 .managedResources(true)
                 .build();
     }

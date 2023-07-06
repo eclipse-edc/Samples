@@ -19,7 +19,7 @@ jobs:
         with:
           # Match pull request titles conventional commit syntax (https://www.conventionalcommits.org/en/v1.0.0/)
           # (online tool for regex quick check: https://regex101.com/r/V5J8kh/1)
-          regex: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+((,|\/|\\)?\s?\w+)+\))?!?: [\S ]{1,49}[^\.]$'
+          regex: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+((,|\/|\\)?\s?\w+)+\))?!?: [\S ]{1,80}[^\.]$'
           allowed_prefixes: 'build,chore,ci,docs,feat,fix,perf,refactor,revert,style,test'
           prefix_case_sensitive: true
 
