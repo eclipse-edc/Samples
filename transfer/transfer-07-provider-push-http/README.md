@@ -68,17 +68,15 @@ You can find the configuration file in the directories below:
 The section bellow will show you some explanation about some of the properties that you can find in
 the configuration files.
 
-### 1. Run a provider
+## Run the connectors
 
-To run a provider, you should run the following command
+To run the provider, just run the following command
 
 ```bash
 java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-provider/provider-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-provider/provider-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/push-connector.jar
 ```
 
-### 2. Run a consumer
-
-To run a consumer, you should run the following command
+To run the consumer, just run the following command
 
 ```bash
 java -Dedc.keystore=transfer/transfer-07-provider-push-http/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-vault.properties -Dedc.fs.config=transfer/transfer-07-provider-push-http/http-push-consumer/consumer-configuration.properties -jar transfer/transfer-07-provider-push-http/http-push-connector/build/libs/push-connector.jar
@@ -234,10 +232,10 @@ Sample output:
   "@id": "31f6d748-d35b-4dec-9e34-d141fd17b458",
   "@type": "dcat:Catalog",
   "dcat:dataset": {
-    "@id": "f31a04bf-3575-4f60-9795-9550e979143a",
+    "@id": "assetId",
     "@type": "dcat:Dataset",
     "odrl:hasPolicy": {
-      "@id": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+      "@id": "MQ==:YXNzZXRJZA==:MzY3ZGZlYTgtYWI5OS00OWMwLThmNmYtM2Y2YmMxNGE1ZDc4",
       "@type": "odrl:Set",
       "odrl:permission": [],
       "odrl:prohibition": [],
@@ -312,10 +310,10 @@ curl -d '{
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "offer": {
-   "offerId": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+   "offerId": "MQ==:YXNzZXRJZA==:MzY3ZGZlYTgtYWI5OS00OWMwLThmNmYtM2Y2YmMxNGE1ZDc4",
    "assetId": "assetId",
    "policy": {
-     "@id": "1:assetId:902a192a-dcc6-49d0-8c9f-17daa9303730",
+     "@id": "MQ==:YXNzZXRJZA==:MzY3ZGZlYTgtYWI5OS00OWMwLThmNmYtM2Y2YmMxNGE1ZDc4",
      "@type": "Set",
      "odrl:permission": [],
      "odrl:prohibition": [],
@@ -364,7 +362,7 @@ Sample output:
   "edc:state": "FINALIZED",
   "edc:counterPartyAddress": "http://localhost:19194/protocol",
   "edc:callbackAddresses": [],
-  "edc:contractAgreementId": "1:assetId:edd0292a-e791-4174-bf52-9c653dc1a867",
+  "edc:contractAgreementId": "MQ==:YXNzZXRJZA==:MjQ2ODMxOTMtZmFhMS00MzMxLWE2YzYtYTQ1ZjNkNzJkYWNk",
   "@context": {
     "dct": "https://purl.org/dc/terms/",
     "edc": "https://w3id.org/edc/v0.0.1/ns/",

@@ -25,7 +25,6 @@ import java.time.Duration;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static java.util.Collections.emptyMap;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.API_KEY_HEADER_VALUE;
@@ -59,8 +58,7 @@ public class Transfer03modifyTransferProcessTest {
                     .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                     .when()
                     .contentType(ContentType.JSON)
-                    .body(emptyMap())
-                    .post((MANAGEMENT_API_URL + "/v2/transferprocesses") + "/request")
+                    .post(MANAGEMENT_API_URL + "/v2/transferprocesses/request")
                     .then()
                     .statusCode(HttpStatus.SC_OK)
                     .contentType(ContentType.JSON)
