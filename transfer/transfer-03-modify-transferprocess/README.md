@@ -10,7 +10,7 @@ The `TransferProcessManager` (TPM), which is the central state machine handling 
 operational pattern:
 
 1. take transfer process (TP) out of `TransferProcessStore` (TPS)
-2. take appropriate action, e.g. provision or deprovision ressources
+2. take appropriate action, e.g. provision or deprovision resources
 3. update state of TP
 4. put back into TPS
 
@@ -66,52 +66,13 @@ then the TP would first go to the `ERROR` state, but then immediately to the `CO
 have different object references to the same TP. We essentially have a race condition at our hands, resulting in the TP never 
 "erroring out".
 
-## The `CommandQueue`
-The way to go around this is to create a `Command` and a respective `CommandHandler`, register both with the transfer state machine and 
-when the time comes to send a TP to `ERROR`, simply submit the `Command` object.
-
-Commands are the "what", handlers are the "how", so we separate the desired state from the actual action to be taken, they always exist
-in tandem. Command handlers have to be registered with the `CommandHandlerRegistry`:
-```java
-// in YourExtension.java
-
-//...
-@Inject
-private CommandHandlerRegistry registry;
-
-public void initialize(ServiceExtensionContext context){
-    registry.register(new CheckTimeoutCommandHandler(/*left out for clarity*/);
-}
-```
-
-## How to use it 
-New commands can be inserted into the queue through the `TransferProcessManager`. Although this might not be obvious at first, because
-one might expect to insert commands directly into the queue, there is actually good reasoning for this.
-Exposing the `CommandQueue` would also expose its entire API including `peek()` and `dequeue()`, which would be a dangerous thing.
-
-Also, most clients will already have a reference to the `TransferProcessManager`, so little change needs to be done. Instead simply
-do:
-```java
-tpm.enqueueCommand(new CheckTransferProcessTimeoutCommand(3, TransferProcessStates.IN_PROGRESS, Duration.ofSeconds(10)));
-```
-
-that will eventually get processed by the `TransferProcessManager`, resulting in log output similar to this: 
-
-```bash
-INFO 2022-01-14T12:45:38.176484 Running watchdog - submit command
-INFO 2022-01-14T12:45:38.176795 will retire TP with id [tp-sample-transfer-02] due to timeout
-DEBUG 2022-01-14T12:45:38.177363 Successfully processed command [class CheckTransferProcessTimeoutCommand]
-```
-
-_Note: The command queue is not accessible through the `ServiceExtensionContext`, precisely for the aforementioned reason._
-
 ## About this sample
-Please note that this sample does _not actually transfer anything_, it merely shows how to employ the `Command`/`CommandHandler`
-infrastructure to modify a transfer process outside of the main state machine.
+Please note that this sample does _not actually transfer anything_, it merely shows how to modify a transfer process 
+outside the main state machine.
 
 Modules:
 - `simulator`: used to insert a dummy transfer process, that never completes to simulate the use of a watchdog
-- `watchdog`: spins up a periodic task that sends a command to check for timed-out TPs and sets them to `ERROR`
+- `watchdog`: spins up a periodic task that checks for timed-out TPs and sets them to `ERROR`
 - `consumer`: the build configuration
 
 In order to run the sample, enter the following commands in a shell:

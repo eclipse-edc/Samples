@@ -53,7 +53,6 @@ public class CloudTransferExtension implements ServiceExtension {
     }
 
     public void registerDataEntries() {
-        var asset = Asset.Builder.newInstance().id("1").build();
         var dataAddress = DataAddress.Builder.newInstance()
                 .type("AzureStorage")
                 .property("account", "<storage-account-name>")
@@ -61,9 +60,9 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobname", "test-document.txt")
                 .keyName("<storage-account-name>-key1")
                 .build();
-        assetIndex.create(asset, dataAddress);
+        var asset = Asset.Builder.newInstance().id("1").dataAddress(dataAddress).build();
+        assetIndex.create(asset);
 
-        var asset2 = Asset.Builder.newInstance().id("2").build();
         var dataAddress2 = DataAddress.Builder.newInstance()
                 .type("AzureStorage")
                 .property("account", "<storage-account-name>")
@@ -71,7 +70,8 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobname", "test-document.txt")
                 .keyName("<storage-account-name>-key1")
                 .build();
-        assetIndex.create(asset2, dataAddress2);
+        var asset2 = Asset.Builder.newInstance().id("2").dataAddress(dataAddress2).build();
+        assetIndex.create(asset2);
     }
 
     public void registerContractDefinition(String policyId) {
