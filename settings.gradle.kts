@@ -42,7 +42,6 @@ include(":transfer:transfer-01-file-transfer:status-checker")
 include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
 include(":transfer:transfer-02-file-transfer-listener:listener")
 
-include(":transfer:transfer-03-modify-transferprocess:api")
 include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
 include(":transfer:transfer-03-modify-transferprocess:simulator")
 include(":transfer:transfer-03-modify-transferprocess:watchdog")

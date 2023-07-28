@@ -60,7 +60,7 @@ public class TransferSimulationExtension implements ServiceExtension {
                         tp.addProvisionedResource(createDummyResource());
 
                         context.getMonitor().info("Insert Dummy TransferProcess");
-                        store.updateOrCreate(tp);
+                        store.save(tp);
                     }
                 },
                 5000
@@ -76,10 +76,11 @@ public class TransferSimulationExtension implements ServiceExtension {
     private DataRequest getRequest() {
         return DataRequest.Builder.newInstance()
                 .id("sample-transfer-03-datarequest")
+                .assetId("assetId")
+                .contractId("contractId")
                 .destinationType(TEST_TYPE)
                 .connectorAddress("http//localhost:9999")
                 .protocol("dataspace-protocol-http")
-                .managedResources(true)
                 .build();
     }
 

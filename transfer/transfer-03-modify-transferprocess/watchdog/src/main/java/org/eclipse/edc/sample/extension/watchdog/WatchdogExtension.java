@@ -14,10 +14,8 @@
 
 package org.eclipse.edc.sample.extension.watchdog;
 
-import org.eclipse.edc.connector.transfer.spi.TransferProcessManager;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.spi.command.CommandHandlerRegistry;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
@@ -26,32 +24,25 @@ import java.time.Clock;
 public class WatchdogExtension implements ServiceExtension {
 
     @Inject
-    private TransferProcessManager manager;
-
-    @Inject
     private TransferProcessStore store;
-
-    @Inject
-    private CommandHandlerRegistry commandHandlerRegistry;
 
     @Inject
     private Clock clock;
 
-    private Watchdog wd;
+    private Watchdog watchDog;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        commandHandlerRegistry.register(new CheckTimeoutCommandHandler(store, clock, context.getMonitor()));
-        wd = new Watchdog(manager, context.getMonitor());
+        watchDog = new Watchdog(context.getMonitor(), store, clock);
     }
 
     @Override
     public void start() {
-        wd.start();
+        watchDog.start();
     }
 
     @Override
     public void shutdown() {
-        wd.stop();
+        watchDog.stop();
     }
 }
