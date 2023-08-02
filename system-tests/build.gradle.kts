@@ -22,6 +22,8 @@ dependencies {
 
     testImplementation(libs.awaitility)
     testImplementation(libs.restAssured)
+    testImplementation(libs.testcontainers)
+    testImplementation(libs.testcontainers.junit.jupiter)
 
     // runtimes
     testCompileOnly(project(":basic:basic-01-basic-connector"))
@@ -31,4 +33,6 @@ dependencies {
     testCompileOnly(project(":transfer:transfer-01-file-transfer:file-transfer-provider"))
     testCompileOnly(project(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer"))
     testCompileOnly(project(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer"))
+    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-consumer"))
+    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-provider"))
 }

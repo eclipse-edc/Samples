@@ -11,6 +11,7 @@ jupiter = "5.10.0"
 openTelemetry = "1.18.0"
 restAssured = "5.3.1"
 rsApi = "3.1.0"
+testcontainers = "1.18.3"
 
 
 [libraries]
@@ -61,6 +62,8 @@ junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", vers
 junit-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
 opentelemetry-annotations = { module = "io.opentelemetry:opentelemetry-extension-annotations", version.ref = "openTelemetry" }
 restAssured = { module = "io.rest-assured:rest-assured", version.ref = "restAssured" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

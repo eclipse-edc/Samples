@@ -21,6 +21,7 @@ plugins {
 
 dependencies {
     implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.data.plane.selector.core)
     implementation(libs.edc.micrometer.core)
 
     implementation(libs.edc.configuration.filesystem)

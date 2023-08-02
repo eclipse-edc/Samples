@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
     implementation(libs.edc.control.plane.core)
-
+    implementation(libs.edc.data.plane.selector.core)
     implementation(libs.edc.api.observability)
 
     implementation(libs.edc.configuration.filesystem)
