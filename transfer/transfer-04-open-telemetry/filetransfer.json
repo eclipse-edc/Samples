@@ -5,7 +5,7 @@
   "@type": "TransferRequestDto",
   "dataDestination": {
     "type": "File",
-    "path": "/samples/output-file.txt",
+    "path": "/samples/requested.test.txt",
     "keyName": "keyName"
   },
   "protocol": "dataspace-protocol-http",
