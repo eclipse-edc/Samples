@@ -55,7 +55,7 @@ public class Transfer04openTelemetryTest {
         testUtils.lookUpContractAgreementId();
         var transferProcessId = testUtils.requestTransferFile(TRANSFER_FILE_PATH);
         testUtils.assertDestinationFileContent();
-
+        // next one fails with "No checker found for process error (related to https://github.com/eclipse-edc/Connector/issues/3334 ?)
         // testUtils.assertTransferProcessStatusConsumerSide(transferProcessId);
     }
 
