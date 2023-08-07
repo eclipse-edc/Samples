@@ -185,7 +185,8 @@ curl -d '{
            "dataAddress": {
              "type": "HttpData",
              "name": "Test asset",
-             "baseUrl": "https://jsonplaceholder.typicode.com/users"
+             "baseUrl": "https://jsonplaceholder.typicode.com/users",
+             "proxyPath": "true"
            }
          }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
          -s | jq
@@ -194,6 +195,13 @@ curl -d '{
 > It is important to note that the `baseUrl` property of the `dataAddress` is a fake data used for
 > the purpose of this example. It will be the data that the consumer will pull on the sample
 > execution.
+
+Additional properties on `HttpData` can be used to allow consumers to enrich the data request:
+
+- `proxyPath`: allows specifying additional path segments.
+- `proxyQueryParams`: allows specifying query params.
+- `proxyBody`: allows attaching a body.
+- `proxyMethod`: allows specifying the Http Method (default `GET`)
 
 ### 4. Create a Policy on the provider
 
@@ -481,6 +489,7 @@ read the UUID.
 curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
 ```
 
+
 You should see the Transfer Process in `COMPLETED` state: 
 ```json
 {
@@ -521,3 +530,13 @@ curl --location --request GET 'http://localhost:29291/public/' \
 
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
 is the same as the one you can get at https://jsonplaceholder.typicode.com/users
+
+
+Since we configured the `HttpData` with `proxyPath`, we could also ask for a specific user with:
+
+```bash
+curl --location --request GET 'http://localhost:29291/public/1' \
+--header 'Authorization: <auth code>'
+```
+
+And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1
