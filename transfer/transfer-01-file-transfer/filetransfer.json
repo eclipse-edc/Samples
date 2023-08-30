@@ -13,6 +13,5 @@
   "contractId": "{agreement ID}",
   "connectorId": "provider",
   "connectorAddress": "http://localhost:8282/protocol",
-  "privateProperties": {},
-  "managedResources": false
+  "privateProperties": {}
 }

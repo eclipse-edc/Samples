@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 /**
- * Encapsulates common settings, test steps, and helper methods for the test for samples 4.x.
+ * Encapsulates common settings, test steps, and helper methods for transfer samples
  */
 public class FileTransferSampleTestCommon {
 
@@ -76,6 +77,19 @@ public class FileTransferSampleTestCommon {
     @NotNull
     public static File getFileFromRelativePath(String relativePath) {
         return new File(TestUtils.findBuildRoot(), relativePath);
+    }
+
+    /**
+     * Resolves a {@link File} instance from a relative path.
+     */
+    @NotNull
+    public static String getFileContentFromRelativePath(String relativePath) {
+        var fileFromRelativePath = getFileFromRelativePath(relativePath);
+        try {
+            return Files.readString(Paths.get(fileFromRelativePath.toURI()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

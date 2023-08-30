@@ -138,7 +138,7 @@ curl -H 'Content-Type: application/json' \
              "https://w3id.org/edc/v0.0.1/ns/publicApiUrl": "http://localhost:19291/public/"
            }
          }' \
-     -X POST "http://localhost:19193/management/v2/dataplanes"
+     -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
 ```
 
 ### 2. Register data plane instance for consumer
@@ -455,7 +455,6 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
         "connectorAddress": "http://localhost:19194/protocol",
         "contractId": "<contract agreement id>",
         "assetId": "assetId",
-        "managedResources": false,
         "protocol": "dataspace-protocol-http",
         "dataDestination": { 
           "type": "HttpProxy" 
