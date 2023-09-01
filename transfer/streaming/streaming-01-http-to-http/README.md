@@ -1,20 +1,20 @@
 # Streaming HTTP to HTTP
 
-This sample will show how you could set up the EDC to stream messages from HTTP to HTTP.
-This code is only for sampling purpose and should not be used in production.
+This sample will show how you can set up the EDC to stream messages from HTTP to HTTP.
+This code is only for demonstration purposes and should not be used in production.
 
 ## Concept
-We will build a data-plane `DataSource` extension that will get the data from a folder in the disk and will push every 
-new piece of data to every consumer that started a `TransferProcess` on an asset related to it.
+We will build a data-plane `DataSource` extension that will retrieve new data from a disk folder and push it
+to every consumer that has started a `TransferProcess` for a related asset.
 
 ### Run
 
-Build the connector runtime, it will be used both for provider and consumer:
+Build the connector runtime, which will be used both for the provider and consumer:
 ```shell
 ./gradlew :transfer:streaming:streaming-01-http-to-http:streaming-01-runtime:build
 ```
 
-Run the provider and the consumer, must be started from different terminal shells:
+Run the provider and the consumer, which must be started from different terminal shells:
 ```shell
 # provider
 export EDC_FS_CONFIG=transfer/streaming/streaming-01-http-to-http/streaming-01-runtime/provider.properties
@@ -26,7 +26,7 @@ java -jar transfer/streaming/streaming-01-http-to-http/streaming-01-runtime/buil
 ```
 
 #### Register Data Plane on provider
-Provider connector needs to be aware of the streaming capabilities of the embedded dataplane, it can be registered with 
+The provider connector needs to be aware of the streaming capabilities of the embedded dataplane, which can be registered with 
 this call:
 ```js
 curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-http-to-http/dataplane.json  -X POST "http://localhost:18181/management/v2/dataplanes"
@@ -35,8 +35,8 @@ curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-htt
 If you look at the `dataplane.json` you'll notice that the supported source is `HttpStreaming` and the supported sink is `HttpData`.
 
 #### Register Asset, Policy Definition and Contract Definition on provider
-First thing needed is to create a "source" folder, where our data plane will get the messages to be sent to the consumers, 
-a temp one will be enough:
+A "source" folder must first be created where the data plane will get the messages to be sent to the consumers.
+To do this, create a temp folder:
 ```shell
 mkdir /tmp/source
 ```
@@ -57,9 +57,9 @@ curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-htt
 ```
 
 #### Negotiate the contract
-The typical flow would require to fetch the catalog from the consumer side and look for the contract offer to being able
-to negotiate a contract, however in this sample case we already have the provider asset it (`"stream-asset"`) so we can
-get the related dataset directly with this call:
+The typical flow requires fetching the catalog from the consumer side and using the contract offer to negotiate a contract. 
+However, in this sample case, we already have the provider asset (`"stream-asset"`) so we can get the related dataset 
+directly with this call:
 ```shell
 curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-http-to-http/get-dataset.json  -X POST "http://localhost:28181/management/v2/catalog/dataset/request" -s | jq
 ```
@@ -102,7 +102,7 @@ curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-htt
 ```
 
 ### Start the transfer
-First we need to set up the receiver server on the consumer side, that will receive a call for every message. For this
+First we need to set up the receiver server on the consumer side that will receive a call for every message. For this
 you'll need to open another terminal shell and run:
 ```shell
 ./gradlew util:http-request-logger:build
@@ -147,10 +147,9 @@ Body:
 ```
 ### Up to you: second connector
 
-A little challenge for you, try to start another consumer connector and try to negotiate the contract and start the transfer,
-every message pushed by the provider will be sent to all the consumers.
+As a challenge, try starting another consumer connector, negotiating a contract, and starting the transfer.
+Every message pushed by the provider will be sent to all the consumers.
 
 ## Technical insight
 
-The code needed for this is all contained in the [`streaming-01-runtime` source folder](transfer/streaming/streaming-01-http-to-http/streaming-01-runtime/src/main/java/org/eclipse/edc/samples/transfer/streaming/http).
-There you can find some JavaDoc explaining every class behavior.
+The required code is contained in the [`streaming-01-runtime` source folder](transfer/streaming/streaming-01-http-to-http/streaming-01-runtime/src/main/java/org/eclipse/edc/samples/transfer/streaming/http).
