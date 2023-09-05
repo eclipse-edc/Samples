@@ -21,14 +21,13 @@ repositories {
     mavenCentral()
 }
 
-val edcVersion: String by project
-
 buildscript {
     dependencies {
-        val edcVersion: String by project
-        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:${edcVersion}")
+        classpath(libs.edc.build.plugin)
     }
 }
+
+val edcVersion = libs.versions.edc
 
 allprojects {
     apply(plugin = "$group.edc-build")
