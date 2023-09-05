@@ -138,7 +138,7 @@ curl -H 'Content-Type: application/json' \
              "https://w3id.org/edc/v0.0.1/ns/publicApiUrl": "http://localhost:19291/public/"
            }
          }' \
-     -X POST "http://localhost:19193/management/v2/dataplanes"
+     -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
 ```
 
 ### 2. Register data plane instance for consumer
@@ -427,11 +427,12 @@ Sample output:
 
 ### 9. Start the transfer
 
-As a pre-requisite, you need to have a backend service that runs on port 4000
+As a pre-requisite, you need to have an http server that runs on port 4000 and logs all the incoming requests, it will
+be mandatory to get the EndpointDataReference that will be used to get the data.
 
 ```bash
-./gradlew transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service:build
-java -jar transfer/transfer-06-consumer-pull-http/consumer-pull-backend-service/build/libs/consumer-pull-backend-service.jar
+./gradlew util:http-request-logger:build
+HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
@@ -455,7 +456,6 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
         "connectorAddress": "http://localhost:19194/protocol",
         "contractId": "<contract agreement id>",
         "assetId": "assetId",
-        "managedResources": false,
         "protocol": "dataspace-protocol-http",
         "dataDestination": { 
           "type": "HttpProxy" 
@@ -503,10 +503,8 @@ You should see the Transfer Process in `COMPLETED` state:
 
 ### 11. Pull the data
 
-At this step, if you look at the backend service logs, you will have a json representing
-the data useful for reading the data. This is presented in the following section.
-
-Sample log for the Backend Service:
+At this step, if you look at the http server logs, you will find a json representing the EndpointDataReference, needed
+to get the data from the provider:
 
 ```json
 {
@@ -524,8 +522,7 @@ Once this json is read, use a tool like postman or curl to execute the following
 data
 
 ```bash
-curl --location --request GET 'http://localhost:29291/public/' \
---header 'Authorization: <auth code>'
+curl --location --request GET 'http://localhost:29291/public/' --header 'Authorization: <auth code>'
 ```
 
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
@@ -535,8 +532,7 @@ is the same as the one you can get at https://jsonplaceholder.typicode.com/users
 Since we configured the `HttpData` with `proxyPath`, we could also ask for a specific user with:
 
 ```bash
-curl --location --request GET 'http://localhost:29291/public/1' \
---header 'Authorization: <auth code>'
+curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: <auth code>'
 ```
 
 And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1

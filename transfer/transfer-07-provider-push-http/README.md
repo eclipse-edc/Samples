@@ -377,11 +377,12 @@ Sample output:
 
 ### 8. Start the transfer
 
-As a pre-requisite, you need to have a backend service that runs on port 4000
+As a pre-requisite, you need to have an http server that runs on port 4000 and logs all the incoming requests, it will
+be mandatory to get the data from the provider.
 
 ```bash
-./gradlew transfer:transfer-07-provider-push-http:provider-push-http-backend-service:build
-java -jar transfer/transfer-07-provider-push-http/provider-push-http-backend-service/build/libs/provider-push-http-backend-service.jar 
+./gradlew util:http-request-logger:build
+HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
@@ -404,7 +405,6 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
         "connectorAddress": "http://localhost:19194/protocol",
         "contractId": "<contract agreement id>",
         "assetId": "assetId",
-        "managedResources": false,
         "protocol": "dataspace-protocol-http",
         "dataDestination": { 
           "type": "HttpData",
@@ -441,6 +441,5 @@ curl http://localhost:29193/management/v2/transferprocesses/<transfer process id
 
 ### 10. Check the data
 
-At this step, you can check the data by checking the log of backend service
-At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
-is the same as the one you can get at https://jsonplaceholder.typicode.com/users
+At this step, you can check the data by checking the log of the http server exposed on port 4000, you should see a log
+that shows the same data that you can get from https://jsonplaceholder.typicode.com/users
