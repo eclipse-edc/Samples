@@ -9,7 +9,7 @@ more sophisticated storage locations, like a database or a cloud storage.
 This is quite a big step up from the previous sample, where we ran only one connector. Those are the concrete tasks:
 
 * Creating an additional connector, so that in the end we have two connectors, a consumer and a provider
-* Providing communication between provider and consumer using IDS multipart messages
+* Providing communication between provider and consumer using DSP multipart messages
 * Utilizing the management API to interact with the connector system
 * Performing a contract negotiation between provider and consumer
 * Performing a file transfer
@@ -120,7 +120,7 @@ implementation(libs.edc.auth.tokenbased)
 ```
 
 Three of these dependencies are new and have not been used in the previous samples:
-1. `data-protocols:ids`: contains all IDS modules and therefore enables IDS Multipart communication with other connectors
+1. `data-protocols:dsp`: contains all DSP modules and therefore enables DSP Multipart communication with other connectors
 2. `extensions:iam:iam-mock`: provides a no-op identity provider, which does not require certificates and performs no checks
 3. `extensions:api:auth-tokenbased`: adds authentication for management API endpoints
 
@@ -136,7 +136,7 @@ implementation(project(":transfer:transfer-01-file-transfer:transfer-file-local"
 We also need to adjust the provider's `config.properties`. The property `edc.samples.transfer.01.asset.path` should
 point to an existing file in our local environment, as this is the file that will be transferred. We also configure a
 separate API context for the management API, like we learned in previous chapter. Then we add the property
-`edc.dsp.callback.address`, which should point to our provider connector's IDS address. This is used as the callback
+`edc.dsp.callback.address`, which should point to our provider connector's DSP address. This is used as the callback
 address during the contract negotiation. Since the DSP API is running on a different port (default is `8282`), we set
 the webhook address to `http://localhost:8282/protocol` accordingly.
 
@@ -149,8 +149,8 @@ We configure the consumer's API ports in `consumer/config.properties`, so that i
 provider. In the config file, we also need to configure the API key authentication, as we're going to use
 endpoints from the EDC's management API in this sample and integrated the extension for token-based API
 authentication. Therefore, we add the property `edc.api.auth.key` and set it to e.g. `password`. And last, we also need
-to configure the consumer's webhook address. We expose the IDS API endpoints on a different port and path than other
-endpoints, so the property `edc.dsp.callback.address` is adjusted to match the IDS API port.
+to configure the consumer's webhook address. We expose the DSP API endpoints on a different port and path than other
+endpoints, so the property `edc.dsp.callback.address` is adjusted to match the DSP API port.
 
 The consumer connector also needs the `status-checker` extension for marking the transfer as completed on the consumer
 side.

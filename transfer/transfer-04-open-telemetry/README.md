@@ -94,7 +94,7 @@ which has to be stored in the root folder of this sample as well. The only addit
       WEB_HTTP_PATH: /api
       WEB_HTTP_MANAGEMENT_PORT: 8182
       WEB_HTTP_MANAGEMENT_PATH: /management
-      IDS_WEBHOOK_ADDRESS: http://consumer:8181
+      DSP_WEBHOOK_ADDRESS: http://consumer:8181
     volumes:
       - ../:/samples
     ports:
