@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequest",
+  "dataDestination": {
+    "type": "HttpData",
+    "baseUrl": "http://localhost:4000"
+  },
+  "protocol": "dataspace-protocol-http",
+  "assetId": "stream-asset",
+  "contractId": "{{contract-agreement-id}}",
+  "connectorId": "provider",
+  "connectorAddress": "http://localhost:18182/protocol"
+}

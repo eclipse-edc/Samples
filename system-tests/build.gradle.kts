@@ -24,6 +24,9 @@ dependencies {
     testImplementation(libs.awaitility)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.restAssured)
+    testImplementation(libs.testcontainers.junit)
+    testImplementation(libs.testcontainers.kafka)
+    testImplementation(libs.kafka.clients)
 
     // runtimes
     testCompileOnly(project(":basic:basic-01-basic-connector"))
