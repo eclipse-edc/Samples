@@ -48,7 +48,7 @@ import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getF
 @EndToEndTest
 public class Streaming02KafkaToHttpTest {
 
-    private static final String KAFKA_IMAGE_NAME = "bashj79/kafka-kraft:3.0.0";
+    private static final String KAFKA_IMAGE_NAME = "confluentinc/cp-kafka";
     private static final String TOPIC = "kafka-stream-topic";
     private static final String MAX_DURATION = "PT30S";
     private static final String SAMPLE_FOLDER = "transfer/streaming/streaming-02-kafka-to-http";
@@ -109,7 +109,7 @@ public class Streaming02KafkaToHttpTest {
                 .replace("{{max.duration}}", MAX_DURATION)
                 .replace("{{topic}}", TOPIC));
         PROVIDER.createPolicyDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/2-policy-definition.json"));
-        PROVIDER.createContractDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/2-contract-definition.json"));
+        PROVIDER.createContractDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/3-contract-definition.json"));
 
         var destination = Json.createObjectBuilder()
                 .add("type", "HttpData")
