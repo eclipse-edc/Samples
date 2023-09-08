@@ -49,15 +49,11 @@ import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getF
 @EndToEndTest
 public class Streaming02KafkaToHttpTest {
 
-    private static final String KAFKA_IMAGE_NAME = "confluentinc/cp-kafka";
+    private static final String KAFKA_IMAGE_NAME = "confluentinc/cp-kafka:7.4.0";
     private static final String TOPIC = "kafka-stream-topic";
     private static final String MAX_DURATION = "PT30S";
     private static final String SAMPLE_FOLDER = "transfer/streaming/streaming-02-kafka-to-http";
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
-    @Container
-    public static final KafkaContainer KAFKA_CONTAINER = new KafkaContainer(DockerImageName
-            .parse(KAFKA_IMAGE_NAME)).withEnv("KAFKA_CREATE_TOPICS", TOPIC.concat(":1:1"));
-
     private static final Participant PROVIDER = Participant.Builder.newInstance()
             .name("provider")
             .id("provider")
@@ -65,7 +61,6 @@ public class Streaming02KafkaToHttpTest {
             .protocolEndpoint(new Participant.Endpoint(URI.create("http://localhost:18182/protocol")))
             .controlEndpoint(new Participant.Endpoint(URI.create("http://localhost:18183/control")))
             .build();
-
     private static final Participant CONSUMER = Participant.Builder.newInstance()
             .name("consumer")
             .id("consumer")
@@ -73,6 +68,12 @@ public class Streaming02KafkaToHttpTest {
             .protocolEndpoint(new Participant.Endpoint(URI.create("http://localhost:28182/protocol")))
             .controlEndpoint(new Participant.Endpoint(URI.create("http://localhost:28183/control")))
             .build();
+
+    @Container
+    static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse(KAFKA_IMAGE_NAME))
+            .withKraft()
+            .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+            .withEnv("KAFKA_CREATE_TOPICS", TOPIC.concat(":1:1"));
 
     @RegisterExtension
     static EdcRuntimeExtension providerConnector = new EdcRuntimeExtension(
@@ -86,7 +87,7 @@ public class Streaming02KafkaToHttpTest {
     @RegisterExtension
     static EdcRuntimeExtension consumerConnector = new EdcRuntimeExtension(
             ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime",
-            "provider",
+            "consumer",
             Map.of(
                     "edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/consumer.properties").getAbsolutePath()
             )
@@ -96,7 +97,6 @@ public class Streaming02KafkaToHttpTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        KAFKA_CONTAINER.start();
         consumerReceiverServer.start(httpReceiverPort);
     }
 
@@ -106,7 +106,7 @@ public class Streaming02KafkaToHttpTest {
         PROVIDER.registerDataPlane(List.of("Kafka"), List.of("HttpData"));
 
         PROVIDER.createAsset(getFileContentFromRelativePath(SAMPLE_FOLDER + "/1-asset.json")
-                .replace("{{bootstrap.servers}}", KAFKA_CONTAINER.getBootstrapServers())
+                .replace("{{bootstrap.servers}}", kafkaContainer.getBootstrapServers())
                 .replace("{{max.duration}}", MAX_DURATION)
                 .replace("{{topic}}", TOPIC));
         PROVIDER.createPolicyDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/2-policy-definition.json"));
@@ -140,7 +140,7 @@ public class Streaming02KafkaToHttpTest {
 
     private Producer<String, String> createKafkaProducer() {
         var props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_CONTAINER.getBootstrapServers());
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return new KafkaProducer<>(props);
