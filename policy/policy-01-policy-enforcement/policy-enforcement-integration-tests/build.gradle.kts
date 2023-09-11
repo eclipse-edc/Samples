@@ -29,5 +29,5 @@ dependencies {
     testFixturesImplementation(libs.assertj)
     testFixturesImplementation(libs.junit.jupiter.api)
 
-    testCompileOnly(project(":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector"))
+    testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-provider"))
 }

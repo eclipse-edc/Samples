@@ -10,17 +10,12 @@ val edcVersion: String by project
 dependencies {
     implementation("$groupId:control-plane-core:$edcVersion")
 
-    implementation("$groupId:api-observability:$edcVersion")
-
     implementation("$groupId:configuration-filesystem:$edcVersion")
     implementation("$groupId:iam-mock:$edcVersion")
 
-    implementation("$groupId:auth-tokenbased:$edcVersion")
     implementation("$groupId:management-api:$edcVersion")
 
     implementation("$groupId:ids:$edcVersion")
-
-    implementation(project(":policy:policy-01-contract-negotiation:policy-contract-negotiation-policy-functions"))
 }
 
 application {
@@ -30,5 +25,5 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
-    archiveFileName.set("connector.jar")
+    archiveFileName.set("consumer.jar")
 }

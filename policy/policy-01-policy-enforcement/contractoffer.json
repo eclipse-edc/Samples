@@ -1,0 +1,24 @@
+{
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "NegotiationInitiateRequestDto",
+  "connectorId": "provider",
+  "consumerId": "consumer",
+  "providerId": "provider",
+  "connectorAddress": "http://localhost:8282/api/protocol",
+  "protocol": "dataspace-protocol-http",
+  "offer": {
+    "offerId": "",
+    "assetId": "",
+    "policy": {
+      "@id": "",
+      "@type": "set",
+      "odrl:permission": [],
+      "odrl:prohibition": [],
+      "odrl:obligation": [],
+      "odrl:target": ""
+    }
+  }
+}
