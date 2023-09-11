@@ -42,6 +42,14 @@ EDC and run different transfer scenarios. Click the link above to learn about th
 
 All transfer samples are located in the `transfer` directory.
 
+### [Policy](./policy/README.md)
+
+These samples deal with the topic of policies and their evaluation and enforcement. They will teach you what
+configurations you need to make to enable the evaluation of specific policy rules and constraint and how to provide
+custom code for their enforcement.
+
+All policy samples are located in the `policy` directory.
+
 ## Contributing
 
 See [how to contribute](CONTRIBUTING.md).
