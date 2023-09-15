@@ -3,12 +3,9 @@ plugins {
     id("application")
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    api("$groupId:data-plane-spi:$edcVersion")
+    api(libs.edc.data.plane.spi)
 
-    implementation("$groupId:control-plane-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
 
 }

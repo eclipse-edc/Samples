@@ -17,13 +17,11 @@ plugins {
     `java-test-fixtures`
 }
 
-val groupId: String by project
-val edcVersion: String by project
 
 dependencies {
-    testImplementation("$groupId:junit:$edcVersion")
+    testImplementation(libs.edc.junit)
 
-    testFixturesImplementation("$groupId:junit:$edcVersion")
+    testFixturesImplementation(libs.edc.junit)
     testFixturesImplementation(libs.restAssured)
     testFixturesImplementation(libs.awaitility)
     testFixturesImplementation(libs.assertj)

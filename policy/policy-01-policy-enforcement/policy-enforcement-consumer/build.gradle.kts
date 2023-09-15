@@ -1,21 +1,18 @@
 plugins {
     `java-library`
     id("application")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    alias(libs.plugins.shadow)
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    implementation("$groupId:control-plane-core:$edcVersion")
+    implementation(libs.edc.control.plane.core)
 
-    implementation("$groupId:configuration-filesystem:$edcVersion")
-    implementation("$groupId:iam-mock:$edcVersion")
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.iam.mock)
 
-    implementation("$groupId:management-api:$edcVersion")
+    implementation(libs.edc.management.api)
 
-    implementation("$groupId:ids:$edcVersion")
+    implementation(libs.edc.ids)
 }
 
 application {
