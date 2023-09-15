@@ -9,7 +9,7 @@ more sophisticated storage locations, like a database or a cloud storage.
 This is quite a big step up from the previous sample, where we ran only one connector. Those are the concrete tasks:
 
 * Creating an additional connector, so that in the end we have two connectors, a consumer and a provider
-* Providing communication between provider and consumer using DSP multipart messages
+* Providing communication between provider and consumer using DSP messages
 * Utilizing the management API to interact with the connector system
 * Performing a contract negotiation between provider and consumer
 * Performing a file transfer
@@ -120,7 +120,7 @@ implementation(libs.edc.auth.tokenbased)
 ```
 
 Three of these dependencies are new and have not been used in the previous samples:
-1. `data-protocols:dsp`: contains all DSP modules and therefore enables DSP Multipart communication with other connectors
+1. `data-protocols:dsp`: contains all DSP modules and therefore enables DSP communication with other connectors
 2. `extensions:iam:iam-mock`: provides a no-op identity provider, which does not require certificates and performs no checks
 3. `extensions:api:auth-tokenbased`: adds authentication for management API endpoints
 

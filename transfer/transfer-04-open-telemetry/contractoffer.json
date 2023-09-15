@@ -36,9 +36,7 @@
     },
     "asset": {
       "properties": {
-        "dsp:byteSize": null,
-        "asset:prop:id": "test-document",
-        "dsp:fileName": null
+        "asset:prop:id": "test-document"
       }
     }
   }
