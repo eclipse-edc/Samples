@@ -102,8 +102,8 @@ java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
-ports `29191`, `29192` (management API) and `29292` (IDS API) and the provider will listen on the
-ports `12181`, `19182` (management API) and `19282` (IDS API).
+ports `29191`, `29192` (management API) and `29292` (DSP API) and the provider will listen on the
+ports `12181`, `19182` (management API) and `19282` (DSP API).
 
 # Run the sample
 
