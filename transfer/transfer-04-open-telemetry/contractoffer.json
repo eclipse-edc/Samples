@@ -36,9 +36,7 @@
     },
     "asset": {
       "properties": {
-        "ids:byteSize": null,
-        "asset:prop:id": "test-document",
-        "ids:fileName": null
+        "asset:prop:id": "test-document"
       }
     }
   }
