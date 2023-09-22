@@ -27,17 +27,18 @@ import static java.util.UUID.randomUUID;
 public class LocalConsumerResourceDefinitionGenerator implements ConsumerResourceDefinitionGenerator {
 
     private static final String TYPE = "File";
-    private static final String DESTINATION = "any path"; // this will get modified during the policy evaluation to notice the change, keep the path different from the path used in policy
+    /**
+     * This will get modified during the policy evaluation to notice the change, keep the path different from the path used in policy
+     */
+    private static final String DESTINATION = "any path";
 
     @Override
     public @Nullable ResourceDefinition generate(DataRequest dataRequest, Policy policy) {
         Objects.requireNonNull(dataRequest, "dataRequest must always be provided");
         Objects.requireNonNull(policy, "policy must always be provided");
 
-        var id = randomUUID().toString();
-
         return LocalResourceDefinition.Builder.newInstance()
-                .id(id)
+                .id(randomUUID().toString())
                 .pathName(DESTINATION)
                 .build();
     }

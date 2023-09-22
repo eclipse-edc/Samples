@@ -19,8 +19,10 @@ import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
+import org.eclipse.edc.sample.extension.provision.LocalResourceDefinition;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.sample.extension.provision.LocalResourceDefinition;
+
+import java.util.Objects;
 
 public class RegulateFilePathFunction implements AtomicConstraintFunction<Permission> {
     private final Monitor monitor;
@@ -31,19 +33,17 @@ public class RegulateFilePathFunction implements AtomicConstraintFunction<Permis
 
     @Override
     public boolean evaluate(Operator operator, Object rightValue, Permission rule, PolicyContext context) {
-
         var desiredFilePath = (String) rightValue;
 
-        switch (operator) {
-            case EQ:
-                var manifestContext = context.getContextData(ResourceManifestContext.class);
-                manifestContext.getDefinitions().stream()
-                        .filter(definition -> definition.getClass().equals(LocalResourceDefinition.class))
-                        .forEach(definition -> ((LocalResourceDefinition) definition).updatePathName(desiredFilePath));
-                return true;
-            default:
-                return false;
+        if (Objects.requireNonNull(operator) == Operator.EQ) {
+            var manifestContext = context.getContextData(ResourceManifestContext.class);
+            manifestContext.getDefinitions().stream()
+                    .filter(definition -> definition.getClass().equals(LocalResourceDefinition.class))
+                    .forEach(definition -> ((LocalResourceDefinition) definition).updatePathName(desiredFilePath));
+            return true;
         }
 
+        monitor.debug(String.format("Operator expected to be EQ but was %s", operator));
+        return false;
     }
 }

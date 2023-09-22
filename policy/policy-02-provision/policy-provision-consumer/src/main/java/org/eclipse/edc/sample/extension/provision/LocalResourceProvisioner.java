@@ -40,7 +40,7 @@ public class LocalResourceProvisioner implements Provisioner<LocalResourceDefini
         this.monitor = monitor;
         this.configuration = configuration;
         this.retryPolicy = RetryPolicy.builder(retryPolicy.getConfig())
-                .withMaxRetries(configuration.getMaxRetries())
+                .withMaxRetries(configuration.maxRetries())
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class LocalResourceProvisioner implements Provisioner<LocalResourceDefini
     @Override
     public CompletableFuture<StatusResult<ProvisionResponse>> provision(LocalResourceDefinition resourceDefinition, Policy policy) {
         createDestinationFile(resourceDefinition.getPathName());
-        StatusResult<ProvisionResponse> provisionResponseStatusResult = provisionSuccedeed(resourceDefinition);
+        StatusResult<ProvisionResponse> provisionResponseStatusResult = provisionSucceeded(resourceDefinition);
         return completedFuture(provisionResponseStatusResult);
     }
 
@@ -67,21 +67,20 @@ public class LocalResourceProvisioner implements Provisioner<LocalResourceDefini
     }
 
 
-    private File createDestinationFile(String pathName) {
-        File file = new File(pathName.replaceAll("\\.", ".").replaceAll("/", "/"));
-
+    private void createDestinationFile(String pathName) {
+        var file = new File(pathName.replaceAll("\\.", ".").replaceAll("/", "/"));
         if (!file.exists()) {
             try {
-                file.createNewFile();
-
+                if (!file.createNewFile()) {
+                    monitor.debug(String.format("File could not be created at path %s", pathName));
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return file;
     }
 
-    private StatusResult<ProvisionResponse> provisionSuccedeed(LocalResourceDefinition resourceDefinition) {
+    private StatusResult<ProvisionResponse> provisionSucceeded(LocalResourceDefinition resourceDefinition) {
         var resource = LocalProvisionedResource.Builder.newInstance()
                 .id(resourceDefinition.getPathName())
                 .resourceDefinitionId(resourceDefinition.getId())

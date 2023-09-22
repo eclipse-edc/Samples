@@ -18,9 +18,6 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
     api(libs.edc.data.plane.spi)
 

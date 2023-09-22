@@ -27,14 +27,6 @@ public class LocalProvisionedResource extends ProvisionedDataDestinationResource
     private static final String PATHNAME = "path";
     private static final String TYPE = "File";
 
-    public String getPathName() {
-        return getDataAddress().getStringProperty(PATHNAME);
-    }
-
-    private LocalProvisionedResource() {
-    }
-
-
     @JsonPOJOBuilder(withPrefix = "")
     public static class Builder extends ProvisionedDataDestinationResource.Builder<LocalProvisionedResource, Builder> {
         private Builder() {
@@ -51,6 +43,5 @@ public class LocalProvisionedResource extends ProvisionedDataDestinationResource
             dataAddressBuilder.property(PATHNAME, pathName);
             return this;
         }
-
     }
 }
