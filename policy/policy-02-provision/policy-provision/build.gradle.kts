@@ -7,9 +7,9 @@ val groupId: String by project
 val edcVersion: String by project
 
 dependencies {
-    api("$groupId:control-plane-spi:$edcVersion")
+    api(libs.edc.control.plane.core)
 
-    implementation("$groupId:data-plane-core:$edcVersion")
+    implementation(libs.edc.data.plane.core)
 
     implementation(libs.opentelemetry.annotations)
 }

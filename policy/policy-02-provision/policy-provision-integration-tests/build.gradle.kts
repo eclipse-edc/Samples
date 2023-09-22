@@ -17,16 +17,12 @@ plugins {
     `java-test-fixtures`
 }
 
-val groupId: String by project
-val edcVersion: String by project
-
 dependencies {
-    testImplementation("$groupId:junit:$edcVersion")
+    testImplementation(libs.edc.junit)
 
-    testFixturesImplementation("$groupId:control-plane-spi:$edcVersion")
-    testFixturesImplementation("$groupId:junit:$edcVersion")
-    testFixturesImplementation("$groupId:transfer-process-api:$edcVersion")
-    testFixturesImplementation("$groupId:api-core:$edcVersion")
+    testFixturesImplementation(libs.edc.control.plane.spi)
+    testFixturesImplementation(libs.edc.junit)
+    testFixturesImplementation(libs.edc.management.api)
 
     testFixturesImplementation(libs.restAssured)
     testFixturesImplementation(libs.awaitility)
