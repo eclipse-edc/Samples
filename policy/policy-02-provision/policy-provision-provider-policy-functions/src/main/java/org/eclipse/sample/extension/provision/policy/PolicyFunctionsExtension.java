@@ -26,10 +26,12 @@ import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.spi.asset.AssetSelectorExpression;
+import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
+
+import java.util.List;
 
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
@@ -100,19 +102,20 @@ public class PolicyFunctionsExtension implements ServiceExtension {
 
     private void registerContractDefinition(ServiceExtensionContext context) {
         var accessPolicy = createAccessPolicy();
-        policyStore.save(accessPolicy);
+        policyStore.create(accessPolicy);
 
         var contractPolicy = createContractPolicy(context);
-        policyStore.save(contractPolicy);
+        policyStore.create(contractPolicy);
 
         var contractDefinition = ContractDefinition.Builder.newInstance()
                 .id("1")
                 .accessPolicyId(accessPolicy.getUid())
                 .contractPolicyId(contractPolicy.getUid())
-                .selectorExpression(AssetSelectorExpression.Builder.newInstance()
-                        .whenEquals(Asset.PROPERTY_ID, "test-document")
-                        .build())
-                .validity(31536000)
+                .assetsSelector(List.of(Criterion.Builder.newInstance()
+                                .operandLeft(Asset.PROPERTY_ID)
+                                .operator("=")
+                                .operandRight("test-document")
+                                .build()))
                 .build();
         contractDefinitionStore.save(contractDefinition);
     }

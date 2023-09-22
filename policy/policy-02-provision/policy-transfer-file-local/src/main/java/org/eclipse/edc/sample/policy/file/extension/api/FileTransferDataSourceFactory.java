@@ -29,13 +29,13 @@ class FileTransferDataSourceFactory implements DataSourceFactory {
     }
 
     @Override
-    public @NotNull Result<Boolean> validate(DataFlowRequest request) {
+    public @NotNull Result<Void> validateRequest(DataFlowRequest request) {
         var source = getFile(request);
         if (!source.exists()) {
             return Result.failure("Source file " + source.getName() + " does not exist!");
         }
 
-        return Result.success(true);
+        return Result.success();
     }
 
     @Override
@@ -48,8 +48,8 @@ class FileTransferDataSourceFactory implements DataSourceFactory {
     private File getFile(DataFlowRequest request) {
         var dataAddress = request.getSourceDataAddress();
         // verify source path
-        var sourceFileName = dataAddress.getProperty("filename");
-        var path = dataAddress.getProperty("path");
+        var sourceFileName = dataAddress.getStringProperty("filename");
+        var path = dataAddress.getStringProperty("path");
         // As this is a controlled test input below is to avoid path-injection warning by CodeQL
         sourceFileName = sourceFileName.replaceAll("\\.", ".").replaceAll("/", "/");
         path = path.replaceAll("\\.", ".").replaceAll("/", "/");

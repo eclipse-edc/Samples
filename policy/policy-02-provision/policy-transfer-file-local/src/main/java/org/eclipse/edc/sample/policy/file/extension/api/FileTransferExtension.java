@@ -18,6 +18,7 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServ
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
+import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
@@ -34,11 +35,11 @@ public class FileTransferExtension implements ServiceExtension {
     private PipelineService pipelineService;
     @Inject
     private DataTransferExecutorServiceContainer executorContainer;
+    @Inject
+    private Monitor monitor;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var monitor = context.getMonitor();
-
         var sourceFactory = new FileTransferDataSourceFactory();
         pipelineService.registerFactory(sourceFactory);
 
@@ -61,8 +62,11 @@ public class FileTransferExtension implements ServiceExtension {
                 .build();
 
         var assetId = "test-document";
-        var asset = Asset.Builder.newInstance().id(assetId).build();
+        var asset = Asset.Builder.newInstance()
+                .id(assetId)
+                .dataAddress(dataAddress)
+                .build();
 
-        assetIndex.accept(asset, dataAddress);
+        assetIndex.create(asset);
     }
 }

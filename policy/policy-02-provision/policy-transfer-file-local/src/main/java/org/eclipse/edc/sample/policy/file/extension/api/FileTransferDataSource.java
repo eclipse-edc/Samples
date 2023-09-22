@@ -15,6 +15,7 @@
 package org.eclipse.edc.sample.policy.file.extension.api;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
+import org.eclipse.edc.connector.dataplane.spi.pipeline.StreamResult;
 import org.eclipse.edc.spi.EdcException;
 
 import java.io.File;
@@ -32,8 +33,8 @@ class FileTransferDataSource implements DataSource {
     }
 
     @Override
-    public Stream<Part> openPartStream() {
-        return Stream.of(new Part() {
+    public StreamResult<Stream<Part>> openPartStream() {
+        return StreamResult.success(Stream.of(new Part() {
             @Override
             public String name() {
                 return file.getName();
@@ -47,6 +48,6 @@ class FileTransferDataSource implements DataSource {
                     throw new EdcException(e);
                 }
             }
-        });
+        }));
     }
 }

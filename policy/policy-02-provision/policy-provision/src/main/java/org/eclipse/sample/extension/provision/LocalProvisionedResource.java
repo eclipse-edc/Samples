@@ -28,7 +28,7 @@ public class LocalProvisionedResource extends ProvisionedDataDestinationResource
     private static final String TYPE = "File";
 
     public String getPathName() {
-        return getDataAddress().getProperty(PATHNAME);
+        return getDataAddress().getStringProperty(PATHNAME);
     }
 
     private LocalProvisionedResource() {
