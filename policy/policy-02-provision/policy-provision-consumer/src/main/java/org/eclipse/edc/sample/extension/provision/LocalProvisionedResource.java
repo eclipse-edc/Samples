@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.sample.extension.provision;
+package org.eclipse.edc.sample.extension.provision;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;

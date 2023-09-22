@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.sample.extension.provision;
+package org.eclipse.edc.sample.extension.provision;
 
 import dev.failsafe.RetryPolicy;
 import org.eclipse.edc.connector.transfer.spi.provision.ProvisionManager;

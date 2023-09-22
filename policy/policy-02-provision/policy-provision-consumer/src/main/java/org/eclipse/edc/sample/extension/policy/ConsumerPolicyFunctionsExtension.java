@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.sample.extension.provision.consumer.policy;
+package org.eclipse.edc.sample.extension.policy;
 
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
