@@ -1,24 +1,35 @@
+/*
+ *  Copyright (c) 2023 Fraunhofer Institute for Software and Systems Engineering
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Fraunhofer Institute for Software and Systems Engineering - initial API and implementation
+ *
+ */
+
 plugins {
     `java-library`
     id("application")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
-    implementation(libs.edc.control.plane.core)
+    api(libs.edc.data.plane.spi)
 
     implementation(libs.edc.api.observability)
-
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
-
     implementation(libs.edc.auth.tokenbased)
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.dsp)
+    implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
 
-    implementation(libs.edc.dsp)
-
-    implementation(project(":policy:policy-02-provision:policy-provision-provider-policy-functions"))
-    implementation(project(":policy:policy-02-provision:policy-transfer-file-local"))
+    implementation(project(":transfer:transfer-01-file-transfer:transfer-file-local"))
 }
 
 application {

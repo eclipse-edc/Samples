@@ -12,11 +12,13 @@
  *
  */
 
-package org.eclipse.edc.sample.policy.file.extension.api;
+package org.eclipse.edc.sample.extension.transfer;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServiceContainer;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.sample.extension.api.FileTransferDataSinkFactory;
+import org.eclipse.edc.sample.extension.api.FileTransferDataSourceFactory;
 import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;

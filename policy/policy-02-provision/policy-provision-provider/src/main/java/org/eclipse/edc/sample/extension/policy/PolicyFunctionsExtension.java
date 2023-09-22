@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.sample.extension.provision.policy;
+package org.eclipse.edc.sample.extension.policy;
 
 import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStore;
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
