@@ -25,6 +25,7 @@ import org.eclipse.edc.policy.model.LiteralExpression;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.system.ServiceExtension;
@@ -35,36 +36,35 @@ import java.util.List;
 
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
+@Extension(value = PolicyFunctionsExtension.NAME)
 public class PolicyFunctionsExtension implements ServiceExtension {
-    private final String policyRegulatedFilePathSetting = "edc.samples.policy-02.constraint.desired.file.path";
-    private final String policyRegulateFilePath = "POLICY_REGULATE_FILE_PATH";
+    private static final String FILE_PATH = "edc.samples.policy-02.constraint.desired.file.path";
+    private static final String KEY = "POLICY_REGULATE_FILE_PATH";
+    public static final String NAME = "Policy Functions Extension";
+    public static final String POLICY_TYPE = "USE";
+    public static final String RIGHT_OPERAND = "test-document";
+    public static final String DEFAULT_FILE_PATH = "/tmp/desired/path/transfer.txt";
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
-
     @Inject
     private PolicyDefinitionStore policyStore;
-
     @Inject
     private ContractDefinitionStore contractDefinitionStore;
 
     @Override
     public String name() {
-        return "Policy - provision policies";
+        return NAME;
     }
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-
-        ruleBindingRegistry.bind("USE", ALL_SCOPES);
+        ruleBindingRegistry.bind(POLICY_TYPE, ALL_SCOPES);
 
         registerContractDefinition(context);
-
-        context.getMonitor().info("Policy Extension for Policy Sample (provision) initialized!");
     }
 
     private PolicyDefinition createAccessPolicy() {
-
         var usePermission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type("USE").build())
                 .build();
@@ -78,16 +78,16 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     }
 
     private PolicyDefinition createContractPolicy(ServiceExtensionContext context) {
-        var desiredFilePath = context.getSetting(policyRegulatedFilePathSetting, "/tmp/desired/path/transfer.txt");
+        var desiredFilePath = context.getSetting(FILE_PATH, DEFAULT_FILE_PATH);
         var regulateFilePathConstraint = AtomicConstraint.Builder.newInstance()
-                .leftExpression(new LiteralExpression(policyRegulateFilePath))
+                .leftExpression(new LiteralExpression(KEY))
                 .operator(Operator.EQ)
                 .rightExpression(new LiteralExpression(desiredFilePath))
                 .build();
 
 
         var permission = Permission.Builder.newInstance()
-                .action(Action.Builder.newInstance().type("USE").build())
+                .action(Action.Builder.newInstance().type(POLICY_TYPE).build())
                 .constraint(regulateFilePathConstraint)
                 .build();
 
@@ -113,8 +113,8 @@ public class PolicyFunctionsExtension implements ServiceExtension {
                 .contractPolicyId(contractPolicy.getUid())
                 .assetsSelector(List.of(Criterion.Builder.newInstance()
                                 .operandLeft(Asset.PROPERTY_ID)
-                                .operator("=")
-                                .operandRight("test-document")
+                                .operator("=") // TODO changed to EQ?
+                                .operandRight(RIGHT_OPERAND)
                                 .build()))
                 .build();
         contractDefinitionStore.save(contractDefinition);

@@ -16,6 +16,7 @@ package org.eclipse.edc.sample.extension.transfer;
 
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServiceContainer;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
+import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.sample.extension.api.FileTransferDataSinkFactory;
 import org.eclipse.edc.sample.extension.api.FileTransferDataSourceFactory;
@@ -28,9 +29,12 @@ import org.eclipse.edc.spi.types.domain.asset.Asset;
 
 import java.nio.file.Path;
 
+@Extension(FileTransferExtension.NAME)
 public class FileTransferExtension implements ServiceExtension {
-
+    public static final String NAME = "File Transfer Extension";
     private static final String EDC_ASSET_PATH = "edc.samples.policy-02.asset.path";
+    private static final String DEFAULT_PATH = "/tmp/provider/test-document.txt";
+
     @Inject
     private AssetIndex assetIndex;
     @Inject
@@ -42,19 +46,16 @@ public class FileTransferExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var sourceFactory = new FileTransferDataSourceFactory();
-        pipelineService.registerFactory(sourceFactory);
+        pipelineService.registerFactory(new FileTransferDataSourceFactory());
 
         var sinkFactory = new FileTransferDataSinkFactory(monitor, executorContainer.getExecutorService(), 5);
         pipelineService.registerFactory(sinkFactory);
 
         registerDataEntries(context);
-
-        context.getMonitor().info("Policy-sample: File Transfer Extension initialized!");
     }
 
     private void registerDataEntries(ServiceExtensionContext context) {
-        var assetPathSetting = context.getSetting(EDC_ASSET_PATH, "/tmp/provider/test-document.txt");
+        var assetPathSetting = context.getSetting(EDC_ASSET_PATH, DEFAULT_PATH);
         var assetPath = Path.of(assetPathSetting);
 
         var dataAddress = DataAddress.Builder.newInstance()
@@ -63,9 +64,8 @@ public class FileTransferExtension implements ServiceExtension {
                 .property("filename", assetPath.getFileName().toString())
                 .build();
 
-        var assetId = "test-document";
         var asset = Asset.Builder.newInstance()
-                .id(assetId)
+                .id("test-document")
                 .dataAddress(dataAddress)
                 .build();
 
