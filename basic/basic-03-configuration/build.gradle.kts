@@ -36,7 +36,6 @@ application {
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
     archiveFileName.set("filesystem-config-connector.jar")
 }
