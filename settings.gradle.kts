@@ -57,6 +57,7 @@ include("transfer:transfer-06-consumer-pull-http:http-pull-connector")
 include("transfer:transfer-07-provider-push-http:http-push-connector")
 
 include("transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
+include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 
 include("util:http-request-logger")
 
