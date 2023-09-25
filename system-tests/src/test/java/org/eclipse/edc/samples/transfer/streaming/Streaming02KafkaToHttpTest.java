@@ -38,7 +38,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.Executors;
 
+import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
@@ -80,7 +82,9 @@ public class Streaming02KafkaToHttpTest {
             ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime",
             "provider",
             Map.of(
-                    "edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/provider.properties").getAbsolutePath()
+                    "edc.fs.config",
+                    getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/provider.properties")
+                            .getAbsolutePath()
             )
     );
 
@@ -89,7 +93,9 @@ public class Streaming02KafkaToHttpTest {
             ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime",
             "consumer",
             Map.of(
-                    "edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/consumer.properties").getAbsolutePath()
+                    "edc.fs.config",
+                    getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/consumer.properties")
+                            .getAbsolutePath()
             )
     );
     private final int httpReceiverPort = TestUtils.getFreePort();
@@ -110,14 +116,16 @@ public class Streaming02KafkaToHttpTest {
                 .replace("{{max.duration}}", MAX_DURATION)
                 .replace("{{topic}}", TOPIC));
         PROVIDER.createPolicyDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/2-policy-definition.json"));
-        PROVIDER.createContractDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/3-contract-definition.json"));
+        PROVIDER.createContractDefinition(
+                getFileContentFromRelativePath(SAMPLE_FOLDER + "/3-contract-definition.json"));
 
         var destination = Json.createObjectBuilder()
                 .add("type", "HttpData")
                 .add("baseUrl", "http://localhost:" + httpReceiverPort)
                 .build();
 
-        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "kafka-stream-asset", Json.createObjectBuilder().build(), destination);
+        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "kafka-stream-asset",
+                Json.createObjectBuilder().build(), destination);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             String state = CONSUMER.getTransferProcessState(transferProcessId);
@@ -125,8 +133,9 @@ public class Streaming02KafkaToHttpTest {
         });
 
         var producer = createKafkaProducer();
-        var message = "fake message";
-        producer.send(new ProducerRecord<>(TOPIC, "key", message));
+        var message = "message";
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> producer
+                .send(new ProducerRecord<>(TOPIC, "key", message)), 0L, 100L, MICROSECONDS);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var request = consumerReceiverServer.takeRequest();
