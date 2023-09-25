@@ -26,11 +26,14 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static java.util.concurrent.Executors.newScheduledThreadPool;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
@@ -106,12 +109,20 @@ public class Streaming01httpToHttpTest {
         });
 
         var eventBody = "message that will be sent".getBytes();
-        Files.write(source.resolve("message-" + UUID.randomUUID()), eventBody);
+        newScheduledThreadPool(1).scheduleAtFixedRate(() -> createMessage(source, eventBody), 0L, 200L, MILLISECONDS);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var request = consumerReceiverServer.takeRequest();
             assertThat(request).isNotNull();
             assertThat(request.getBody().readByteArray()).isEqualTo(eventBody);
         });
+    }
+
+    private static void createMessage(Path source, byte[] content) {
+        try {
+            Files.write(source.resolve("message-" + UUID.randomUUID()), content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
