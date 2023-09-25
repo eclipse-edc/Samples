@@ -53,7 +53,7 @@ public class Streaming02KafkaToHttpTest {
     private static final String TOPIC = "kafka-stream-topic";
     private static final String MAX_DURATION = "PT30S";
     private static final String SAMPLE_FOLDER = "transfer/streaming/streaming-02-kafka-to-http";
-    private static final Duration TIMEOUT = Duration.ofSeconds(120);
+    private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final Participant PROVIDER = Participant.Builder.newInstance()
             .name("provider")
             .id("provider")
@@ -126,7 +126,6 @@ public class Streaming02KafkaToHttpTest {
 
         var producer = createKafkaProducer();
         var message = "fake message";
-        producer.send(new ProducerRecord<>(TOPIC, "key", message));
         producer.send(new ProducerRecord<>(TOPIC, "key", message));
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
