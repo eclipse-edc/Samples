@@ -43,7 +43,7 @@ public class TransferListenerExtension implements ServiceExtension {
     private static class FileStatusChecker implements StatusChecker {
         @Override
         public boolean isComplete(TransferProcess transferProcess, List<ProvisionedResource> resources) {
-            var path = transferProcess.getDataDestination().getProperty("path");
+            var path = transferProcess.getDataDestination().getStringProperty("path");
             return path != null && new File(path).exists();
         }
     }

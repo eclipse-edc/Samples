@@ -12,6 +12,15 @@
   "assetId": "test-document",
   "contractId": "{agreement ID}",
   "connectorId": "provider",
+  "dataDestination": {
+    "path": "/samples/output-file.txt",
+    "keyName": "keyName",
+    "type": "File"
+  },
+  "transferType": {
+    "contentType": "application/octet-stream",
+    "isFinite": true
+  },
   "connectorAddress": "http://provider:8282/protocol",
   "privateProperties": {},
   "managedResources": false

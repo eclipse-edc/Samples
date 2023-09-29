@@ -17,6 +17,9 @@ services:
       WEB_HTTP_PROTOCOL_PATH: /protocol
       EDC_DSP_CALLBACK_ADDRESS: http://consumer:9292/protocol
       EDC_PARTICIPANT_ID: consumer
+      WEB_HTTP_DSP_PORT: 9292
+      WEB_HTTP_DSP_PATH: /protocol
+      DSP_WEBHOOK_ADDRESS: http://consumer:9292
       EDC_API_AUTH_KEY: password
     volumes:
       - ../:/samples
@@ -43,6 +46,8 @@ services:
       EDC_DSP_CALLBACK_ADDRESS: http://provider:8282/protocol
       EDC_PARTICIPANT_ID: provider
       EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /samples/transfer-04-open-telemetry/README.md
+      DSP_WEBHOOK_ADDRESS: http://provider:8282
+      EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /samples/transfer-04-open-telemetry/input-file.txt
     volumes:
       - ../:/samples
     ports:

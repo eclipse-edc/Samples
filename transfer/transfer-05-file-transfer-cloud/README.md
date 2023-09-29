@@ -162,7 +162,6 @@ curl --location --request POST 'http://localhost:9192/management/v2/transferproc
     "region": "us-east-1",
     "bucketName": "<Unique bucket name>"
   },
-  "managedResources": true,
   "transferType": {
     "contentType": "application/octet-stream",
     "isFinite": true

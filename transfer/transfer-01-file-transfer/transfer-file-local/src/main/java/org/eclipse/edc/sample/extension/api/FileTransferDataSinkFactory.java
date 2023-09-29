@@ -41,16 +41,11 @@ class FileTransferDataSinkFactory implements DataSinkFactory {
     }
 
     @Override
-    public @NotNull Result<Boolean> validate(DataFlowRequest request) {
-        return Result.success(true);
-    }
-
-    @Override
     public DataSink createSink(DataFlowRequest request) {
         var destination = request.getDestinationDataAddress();
 
         // verify destination path
-        var path = destination.getProperty("path");
+        var path = destination.getStringProperty("path");
         // As this is a controlled test input below is to avoid path-injection warning by CodeQL
         var destinationFile = new File(path.replaceAll("\\.", ".").replaceAll("/", "/"));
 
@@ -61,5 +56,10 @@ class FileTransferDataSinkFactory implements DataSinkFactory {
                 .executorService(executorService)
                 .monitor(monitor)
                 .build();
+    }
+
+    @Override
+    public @NotNull Result<Void> validateRequest(DataFlowRequest request) {
+        return Result.success();
     }
 }

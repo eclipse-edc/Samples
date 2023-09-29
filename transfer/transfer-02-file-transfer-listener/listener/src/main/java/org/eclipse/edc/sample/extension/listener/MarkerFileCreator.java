@@ -39,7 +39,7 @@ public class MarkerFileCreator implements TransferProcessListener {
      */
     @Override
     public void preCompleted(final TransferProcess process) {
-        Path path = Path.of(process.getDataRequest().getDataDestination().getProperty("path"));
+        Path path = Path.of(process.getDataRequest().getDataDestination().getStringProperty("path"));
         if (!Files.isDirectory(path)) {
             path = path.getParent();
         }

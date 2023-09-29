@@ -102,8 +102,8 @@ java -Dedc.keystore=transfer/transfer-06-consumer-pull-http/certs/cert.pfx -Dedc
 ```
 
 Assuming you didn't change the ports in config files, the consumer will listen on the
-ports `29191`, `29192` (management API) and `29292` (IDS API) and the provider will listen on the
-ports `12181`, `19182` (management API) and `19282` (IDS API).
+ports `29191`, `29192` (management API) and `29292` (DSP API) and the provider will listen on the
+ports `12181`, `19182` (management API) and `19282` (DSP API).
 
 # Run the sample
 
@@ -138,7 +138,7 @@ curl -H 'Content-Type: application/json' \
              "https://w3id.org/edc/v0.0.1/ns/publicApiUrl": "http://localhost:19291/public/"
            }
          }' \
-     -X POST "http://localhost:19193/management/v2/dataplanes"
+     -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
 ```
 
 ### 2. Register data plane instance for consumer
@@ -185,7 +185,8 @@ curl -d '{
            "dataAddress": {
              "type": "HttpData",
              "name": "Test asset",
-             "baseUrl": "https://jsonplaceholder.typicode.com/users"
+             "baseUrl": "https://jsonplaceholder.typicode.com/users",
+             "proxyPath": "true"
            }
          }' -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
          -s | jq
@@ -194,6 +195,13 @@ curl -d '{
 > It is important to note that the `baseUrl` property of the `dataAddress` is a fake data used for
 > the purpose of this example. It will be the data that the consumer will pull on the sample
 > execution.
+
+Additional properties on `HttpData` can be used to allow consumers to enrich the data request:
+
+- `proxyPath`: allows specifying additional path segments.
+- `proxyQueryParams`: allows specifying query params.
+- `proxyBody`: allows attaching a body.
+- `proxyMethod`: allows specifying the Http Method (default `GET`)
 
 ### 4. Create a Policy on the provider
 
@@ -419,11 +427,12 @@ Sample output:
 
 ### 9. Start the transfer
 
-As a pre-requisite, you need to have a backend service that runs on port 4000
+As a pre-requisite, you need to have an http server that runs on port 4000 and logs all the incoming requests, it will
+be mandatory to get the EndpointDataReference that will be used to get the data.
 
 ```bash
-./gradlew transfer:transfer-06-consumer-pull-http:consumer-pull-backend-service:build
-java -jar transfer/transfer-06-consumer-pull-http/consumer-pull-backend-service/build/libs/consumer-pull-backend-service.jar
+./gradlew util:http-request-logger:build
+HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
 ```
 
 Now that we have a contract agreement, we can finally request the file. In the request body, we need
@@ -447,7 +456,6 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
         "connectorAddress": "http://localhost:19194/protocol",
         "contractId": "<contract agreement id>",
         "assetId": "assetId",
-        "managedResources": false,
         "protocol": "dataspace-protocol-http",
         "dataDestination": { 
           "type": "HttpProxy" 
@@ -481,11 +489,12 @@ read the UUID.
 curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
 ```
 
+
 You should see the Transfer Process in `COMPLETED` state: 
 ```json
 {
   ...
-  "@id": "0f648d82-23b4-464d-8f7b-c89860efe7c9",
+  "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
   "edc:state": "COMPLETED",
   ...
 }
@@ -494,14 +503,12 @@ You should see the Transfer Process in `COMPLETED` state:
 
 ### 11. Pull the data
 
-At this step, if you look at the backend service logs, you will have a json representing
-the data useful for reading the data. This is presented in the following section.
-
-Sample log for the Backend Service:
+At this step, if you look at the http server logs, you will find a json representing the EndpointDataReference, needed
+to get the data from the provider:
 
 ```json
 {
-  "id": "77a3551b-08da-4f81-b61d-fbc0c86c1069",
+  "id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
   "endpoint": "http://localhost:29291/public/",
   "authKey": "Authorization",
   "authCode": "eyJhbGciOiJSUzI1NiJ9.eyJkYWQiOiJ7XCJwcm9wZXJ0aWVzXCI6e1wiYXV0aEtleVwiOlwiQXV0aG9yaXphdGlvblwiLFwiYmFzZVVybFwiOlwiaHR0cDpcL1wvbG9jYWxob3N0OjE5MjkxXC9wdWJsaWNcL1wiLFwiYXV0aENvZGVcIjpcImV5SmhiR2NpT2lKU1V6STFOaUo5LmV5SmtZV1FpT2lKN1hDSndjbTl3WlhKMGFXVnpYQ0k2ZTF3aVltRnpaVlZ5YkZ3aU9sd2lhSFIwY0hNNlhDOWNMMnB6YjI1d2JHRmpaV2h2YkdSbGNpNTBlWEJwWTI5a1pTNWpiMjFjTDNWelpYSnpYQ0lzWENKdVlXMWxYQ0k2WENKVVpYTjBJR0Z6YzJWMFhDSXNYQ0owZVhCbFhDSTZYQ0pJZEhSd1JHRjBZVndpZlgwaUxDSmxlSEFpT2pFMk56UTFPRGcwTWprc0ltTnBaQ0k2SWpFNk1XVTBOemc1TldZdE9UQXlOUzAwT1dVeExUazNNV1F0WldJNE5qVmpNemhrTlRRd0luMC5ITFJ6SFBkT2IxTVdWeWdYZi15a0NEMHZkU3NwUXlMclFOelFZckw5eU1tQjBzQThwMHFGYWV0ZjBYZHNHMG1HOFFNNUl5NlFtNVU3QnJFOUwxSE5UMktoaHFJZ1U2d3JuMVhGVUhtOERyb2dSemxuUkRlTU9ZMXowcDB6T2MwNGNDeFJWOEZoemo4UnVRVXVFODYwUzhqbU4wZk5sZHZWNlFpUVFYdy00QmRTQjNGYWJ1TmFUcFh6bDU1QV9SR2hNUGphS2w3RGsycXpJZ0ozMkhIdGIyQzhhZGJCY1pmRk12aEM2anZ2U1FieTRlZXU0OU1hclEydElJVmFRS1B4ajhYVnI3ZFFkYV95MUE4anNpekNjeWxyU3ljRklYRUV3eHh6Rm5XWmczV2htSUxPUFJmTzhna2RtemlnaXRlRjVEcmhnNjZJZzJPR0Eza2dBTUxtc3dcIixcInByb3h5TWV0aG9kXCI6XCJ0cnVlXCIsXCJwcm94eVF1ZXJ5UGFyYW1zXCI6XCJ0cnVlXCIsXCJwcm94eUJvZHlcIjpcInRydWVcIixcInR5cGVcIjpcIkh0dHBEYXRhXCIsXCJwcm94eVBhdGhcIjpcInRydWVcIn19IiwiZXhwIjoxNjc0NTg4NDI5LCJjaWQiOiIxOjFlNDc4OTVmLTkwMjUtNDllMS05NzFkLWViODY1YzM4ZDU0MCJ9.WhbTzERmM75mNMUG2Sh-8ZW6uDQCus_5uJPvGjAX16Ucc-2rDcOhAxrHjR_AAV4zWjKBHxQhYk2o9jD-9OiYb8Urv8vN4WtYFhxJ09A0V2c6lB1ouuPyCA_qKqJEWryTbturht4vf7W72P37ERo_HwlObOuJMq9CS4swA0GBqWupZHAnF-uPIQckaS9vLybJ-gqEhGxSnY4QAZ9-iwSUhkrH8zY2GCDkzAWIPmvtvRhAs9NqVkoUswG-ez1SUw5bKF0hn2OXv_KhfR8VsKKYUbKDQf5Wagk7rumlYbXMPNAEEagI4R0xiwKWVTfwwZPy_pYnHE7b4GQECz3NjhgdIw",
@@ -515,9 +522,17 @@ Once this json is read, use a tool like postman or curl to execute the following
 data
 
 ```bash
-curl --location --request GET 'http://localhost:29291/public/' \
---header 'Authorization: <auth code>'
+curl --location --request GET 'http://localhost:29291/public/' --header 'Authorization: <auth code>'
 ```
 
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
 is the same as the one you can get at https://jsonplaceholder.typicode.com/users
+
+
+Since we configured the `HttpData` with `proxyPath`, we could also ask for a specific user with:
+
+```bash
+curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: <auth code>'
+```
+
+And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1

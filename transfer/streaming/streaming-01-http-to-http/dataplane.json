@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "http-pull-provider-dataplane",
+  "url": "http://localhost:19192/control/transfer",
+  "allowedSourceTypes": [ "HttpStreaming" ],
+  "allowedDestTypes": [ "HttpData" ]
+}

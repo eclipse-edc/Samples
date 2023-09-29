@@ -27,7 +27,7 @@ public class SampleFileStatusChecker implements StatusChecker {
     @Override
     public boolean isComplete(TransferProcess transferProcess, List<ProvisionedResource> resources) {
         var destination = transferProcess.getDataRequest().getDataDestination();
-        var path = destination.getProperty("path");
+        var path = destination.getStringProperty("path");
         return Optional.ofNullable(path)
                 .map(this::checkPath)
                 .orElse(false);

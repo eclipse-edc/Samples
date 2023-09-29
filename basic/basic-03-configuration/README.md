@@ -171,7 +171,7 @@ web.http.management.path=/management
 ```
 
 _**Caution**: If you do not provide this configuration, it leads to the problem that the authentication mechanism is
-also applied to EVERY request in the _default_ context of Jetty, which includes the IDS communication between two
+also applied to EVERY request in the _default_ context of Jetty, which includes the DSP communication between two
 connectors._
 
 ---
