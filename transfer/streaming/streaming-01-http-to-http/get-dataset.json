@@ -1,0 +1,7 @@
+{
+  "@context": { "@vocab": "https://w3id.org/edc/v0.0.1/ns/" },
+  "@type": "DatasetRequest",
+  "@id": "stream-asset",
+  "counterPartyAddress": "http://localhost:18182/protocol",
+  "protocol": "dataspace-protocol-http"
+}

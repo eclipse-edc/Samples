@@ -17,10 +17,11 @@
 plugins {
     `java-library`
     id("application")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    alias(libs.plugins.shadow)
 }
 
 dependencies {
+    implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.data.plane.selector.core)
     implementation(libs.edc.api.observability)
@@ -38,7 +39,6 @@ application {
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
     archiveFileName.set("provider.jar")
 }

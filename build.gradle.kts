@@ -21,14 +21,13 @@ repositories {
     mavenCentral()
 }
 
-val edcVersion: String by project
-
 buildscript {
     dependencies {
-        val edcVersion: String by project
-        classpath("org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin:${edcVersion}")
+        classpath(libs.edc.build.plugin)
     }
 }
+
+val edcVersion = libs.versions.edc
 
 allprojects {
     apply(plugin = "$group.edc-build")
@@ -42,7 +41,6 @@ allprojects {
     configure<org.eclipse.edc.plugins.edcbuild.extensions.BuildExtension> {
         versions {
             // override default dependency versions here
-            projectVersion.set(edcVersion)
             metaModel.set(edcVersion)
         }
         publish.set(false)
@@ -52,7 +50,6 @@ allprojects {
         configFile = rootProject.file("resources/edc-checkstyle-config.xml")
         configDirectory.set(rootProject.file("resources"))
     }
-
 
     // EdcRuntimeExtension uses this to determine the runtime classpath of the module to run.
     tasks.register("printClasspath") {

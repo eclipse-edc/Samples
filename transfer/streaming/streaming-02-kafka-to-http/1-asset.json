@@ -1,0 +1,12 @@
+{
+  "@context": { "@vocab": "https://w3id.org/edc/v0.0.1/ns/" },
+  "@id": "kafka-stream-asset",
+  "properties": {
+  },
+  "dataAddress": {
+    "type": "Kafka",
+    "kafka.bootstrap.servers": "{{bootstrap.servers}}",
+    "maxDuration": "{{max.duration}}",
+    "topic": "{{topic}}"
+  }
+}
