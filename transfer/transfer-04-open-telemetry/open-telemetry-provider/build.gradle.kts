@@ -1,3 +1,7 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
 /*
  *  Copyright (c) 2022 Microsoft Corporation
  *
@@ -19,6 +23,8 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.opentelemetry)
+    implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.data.plane.selector.core)
 
@@ -45,20 +51,21 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("provider.jar")
 }
 
-tasks.register("downloadOpenTelemetryJar"){
-    val filePath = "../opentelemetry-javaagent.jar"
-    val file = File(filePath)
-    if (!file.isFile) {
-        val sourceUrl = "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.27.0/opentelemetry-javaagent.jar"
-        download(sourceUrl,filePath)
+tasks.register("copyOpenTelemetryJar") {
+    doLast {
+        sourceSets["main"]
+                .runtimeClasspath
+                .files
+                .find { file -> file.name.contains("opentelemetry-javaagent") }
+                ?.path
+                ?.let {
+                    val sourcePath = Paths.get(it)
+                    val targetPath = Paths.get("transfer/transfer-04-open-telemetry/opentelemetry-javaagent.jar")
+                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
+                }
     }
 }
 
 tasks.build {
-    dependsOn("downloadOpenTelemetryJar")
-}
-
-fun download(url : String, path : String){
-    val destFile = File(path)
-    ant.invokeMethod("get", mapOf("src" to url, "dest" to destFile))
+    dependsOn("copyOpenTelemetryJar")
 }

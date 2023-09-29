@@ -5,23 +5,13 @@
   "@type": "TransferRequestDto",
   "dataDestination": {
     "type": "File",
-    "path": "/samples/requested.test.txt",
+    "path": "/samples/README_transferred.md",
     "keyName": "keyName"
   },
   "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
-  "contractId": "{agreement ID}",
+  "contractId": "afa67850-6b8f-4417-b5f0-60630d55be28",
   "connectorId": "provider",
-  "dataDestination": {
-    "path": "/samples/output-file.txt",
-    "keyName": "keyName",
-    "type": "File"
-  },
-  "transferType": {
-    "contentType": "application/octet-stream",
-    "isFinite": true
-  },
-  "connectorAddress": "http://provider:8282/protocol",
-  "privateProperties": {},
-  "managedResources": false
+  "connectorAddress": "http://localhost:8282/protocol",
+  "privateProperties": {}
 }

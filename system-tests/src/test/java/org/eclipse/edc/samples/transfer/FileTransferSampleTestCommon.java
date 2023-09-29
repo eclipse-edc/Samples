@@ -52,7 +52,7 @@ public class FileTransferSampleTestCommon {
     final String sampleAssetFilePath;
     final File sampleAssetFile;
     final File destinationFile;
-    Duration timeout = Duration.ofSeconds(30);
+    Duration timeout = Duration.ofSeconds(15);
     Duration pollInterval = Duration.ofMillis(500);
 
     String contractNegotiationId;
@@ -135,6 +135,7 @@ public class FileTransferSampleTestCommon {
     void initiateContractNegotiation() {
         initiateContractNegotiation(CONTRACT_OFFER_FILE_PATH);
     }
+
 
     void initiateContractNegotiation(String contractOfferFilePath) {
         contractNegotiationId = given()
