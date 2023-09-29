@@ -45,3 +45,21 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("provider.jar")
 }
+
+tasks.register("downloadOpenTelemetryJar"){
+    val filePath = "../opentelemetry-javaagent.jar"
+    val file = File(filePath)
+    if (!file.isFile) {
+        val sourceUrl = "https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.27.0/opentelemetry-javaagent.jar"
+        download(sourceUrl,filePath)
+    }
+}
+
+tasks.build {
+    dependsOn("downloadOpenTelemetryJar")
+}
+
+fun download(url : String, path : String){
+    val destFile = File(path)
+    ant.invokeMethod("get", mapOf("src" to url, "dest" to destFile))
+}
