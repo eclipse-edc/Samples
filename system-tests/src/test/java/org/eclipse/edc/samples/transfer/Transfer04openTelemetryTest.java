@@ -32,8 +32,9 @@ public class Transfer04openTelemetryTest {
     private static final String SAMPLE_FOLDER = "transfer/transfer-04-open-telemetry";
     private static final String DOCKER_COMPOSE_YAML = "/docker-compose.yaml";
     private static final String SAMPLE_ASSET_FILE_PATH = SAMPLE_FOLDER + "/README.md";
-    private static final String DESTINATION_FILE_PATH = "transfer/README_transferred.md";
+    private static final String DESTINATION_FILE_PATH = SAMPLE_FOLDER + "/README_transferred.md";
     private static final String CONTRACT_OFFER_FILE_PATH = SAMPLE_FOLDER + "/contractoffer.json";
+    private static final String FILE_TRANSFER_FILE_PATH = SAMPLE_FOLDER + "/filetransfer.json";
 
     private final FileTransferSampleTestCommon testUtils = new FileTransferSampleTestCommon(SAMPLE_ASSET_FILE_PATH, DESTINATION_FILE_PATH);
 
@@ -54,7 +55,7 @@ public class Transfer04openTelemetryTest {
         testUtils.assertTestPrerequisites();
         testUtils.initiateContractNegotiation(CONTRACT_OFFER_FILE_PATH);
         testUtils.lookUpContractAgreementId();
-        var transferProcessId = testUtils.requestTransferFile();
+        var transferProcessId = testUtils.requestTransferFile(FILE_TRANSFER_FILE_PATH);
         testUtils.assertDestinationFileContent();
         testUtils.assertTransferProcessStatusConsumerSide(transferProcessId);
     }

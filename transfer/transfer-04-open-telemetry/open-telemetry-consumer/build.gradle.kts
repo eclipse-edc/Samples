@@ -29,14 +29,15 @@ dependencies {
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.data.plane.selector.core)
     implementation(libs.edc.micrometer.core)
-
+    implementation(libs.edc.api.observability)
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
-
     implementation(libs.edc.auth.tokenbased)
     implementation(libs.edc.management.api)
-
     implementation(libs.edc.dsp)
+
+    implementation(project(":transfer:transfer-01-file-transfer:status-checker"))
+
     runtimeOnly(libs.edc.jersey.micrometer)
     runtimeOnly(libs.edc.jetty.micrometer)
     runtimeOnly(libs.edc.monitor.jdk.logger)

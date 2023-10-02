@@ -5,13 +5,13 @@
   "@type": "TransferRequestDto",
   "dataDestination": {
     "type": "File",
-    "path": "/samples/README_transferred.md",
+    "path": "/samples/transfer-04-open-telemetry/README_transferred.md",
     "keyName": "keyName"
   },
   "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
-  "contractId": "afa67850-6b8f-4417-b5f0-60630d55be28",
+  "contractId": "{agreement ID}",
   "connectorId": "provider",
-  "connectorAddress": "http://localhost:8282/protocol",
+  "connectorAddress": "http://provider:8282/protocol",
   "privateProperties": {}
 }
