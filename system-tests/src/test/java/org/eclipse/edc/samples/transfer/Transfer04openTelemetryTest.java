@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2023 - Mercedes-Benz Tech Innovation GmbH
+ *  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -23,8 +23,6 @@ import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.Duration;
-
 @EndToEndTest
 @Testcontainers
 public class Transfer04openTelemetryTest {
@@ -42,8 +40,7 @@ public class Transfer04openTelemetryTest {
     public static DockerComposeContainer environment =
             new DockerComposeContainer(FileTransferSampleTestCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
-                    .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1))
-                    .withStartupTimeout(Duration.ofSeconds(10));
+                    .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
     @BeforeAll
     static void setUp() {

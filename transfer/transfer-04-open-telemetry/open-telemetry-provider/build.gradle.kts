@@ -53,19 +53,24 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
 tasks.register("copyOpenTelemetryJar") {
     doLast {
-        sourceSets["main"]
-                .runtimeClasspath
-                .files
-                .find { file -> file.name.contains("opentelemetry-javaagent") }
-                ?.path
-                ?.let {
-                    val sourcePath = Paths.get(it)
-                    val targetPath = Paths.get("transfer/transfer-04-open-telemetry/opentelemetry-javaagent.jar")
-                    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
-                }
+        val filePath = "transfer/transfer-04-open-telemetry/opentelemetry-javaagent.jar"
+        val file = File(filePath)
+
+        if (!file.exists()) {
+            sourceSets["main"]
+                    .runtimeClasspath
+                    .files
+                    .find { it.name.contains("opentelemetry-javaagent") }
+                    ?.path
+                    ?.let {
+                        val sourcePath = Paths.get(it)
+                        val targetPath = Paths.get(filePath)
+                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
+                    }
+        }
     }
 }
 
-tasks.build {
-    dependsOn("copyOpenTelemetryJar")
+tasks.compileJava {
+    finalizedBy("copyOpenTelemetryJar")
 }
