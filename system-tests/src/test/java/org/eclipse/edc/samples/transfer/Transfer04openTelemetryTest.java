@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.samples.transfer;
 
+import org.apache.http.HttpStatus;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +23,12 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @EndToEndTest
 @Testcontainers
@@ -33,6 +40,7 @@ public class Transfer04openTelemetryTest {
     private static final String DESTINATION_FILE_PATH = SAMPLE_FOLDER + "/README_transferred.md";
     private static final String CONTRACT_OFFER_FILE_PATH = SAMPLE_FOLDER + "/contractoffer.json";
     private static final String FILE_TRANSFER_FILE_PATH = SAMPLE_FOLDER + "/filetransfer.json";
+    private static final String JAEGER_URL = "http://localhost:16686";
 
     private final FileTransferSampleTestCommon testUtils = new FileTransferSampleTestCommon(SAMPLE_ASSET_FILE_PATH, DESTINATION_FILE_PATH);
 
@@ -55,6 +63,17 @@ public class Transfer04openTelemetryTest {
         var transferProcessId = testUtils.requestTransferFile(FILE_TRANSFER_FILE_PATH);
         testUtils.assertDestinationFileContent();
         testUtils.assertTransferProcessStatusConsumerSide(transferProcessId);
+        assertJaegerState();
+    }
+
+    private void assertJaegerState() {
+        try {
+            var url = new URL(JAEGER_URL);
+            var huc = (HttpURLConnection) url.openConnection();
+            assertThat(huc.getResponseCode()).isEqualTo(HttpStatus.SC_OK);
+        } catch (IOException e) {
+            fail("Unable to assert Jaeger state", e);
+        }
     }
 
     @AfterEach
