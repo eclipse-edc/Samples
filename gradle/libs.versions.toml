@@ -13,7 +13,7 @@ openTelemetry = "1.18.0"
 restAssured = "5.3.2"
 rsApi = "3.1.0"
 kafkaClients = "3.5.1"
-testcontainers = "1.19.0"
+testContainers = "1.19.1"
 
 [libraries]
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
