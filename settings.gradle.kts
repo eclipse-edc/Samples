@@ -49,8 +49,10 @@ include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
 
 //policy
-include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector")
-include(":policy:policy-01-contract-negotiation:policy-contract-negotiation-policy-functions")
+include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
+include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
+include(":policy:policy-01-policy-enforcement:policy-functions")
+include(":policy:policy-01-policy-enforcement:policy-enforcement-integration-tests")
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
