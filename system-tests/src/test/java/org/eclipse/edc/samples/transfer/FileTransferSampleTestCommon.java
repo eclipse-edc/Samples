@@ -52,7 +52,7 @@ public class FileTransferSampleTestCommon {
     final String sampleAssetFilePath;
     final File sampleAssetFile;
     final File destinationFile;
-    Duration timeout = Duration.ofSeconds(30);
+    Duration timeout = Duration.ofSeconds(15);
     Duration pollInterval = Duration.ofMillis(500);
 
     String contractNegotiationId;
@@ -133,10 +133,15 @@ public class FileTransferSampleTestCommon {
      * This method corresponds to the command in the sample: {@code curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-01-file-transfer/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"}
      */
     void initiateContractNegotiation() {
+        initiateContractNegotiation(CONTRACT_OFFER_FILE_PATH);
+    }
+
+
+    void initiateContractNegotiation(String contractOfferFilePath) {
         contractNegotiationId = given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
-                .body(new File(TestUtils.findBuildRoot(), CONTRACT_OFFER_FILE_PATH))
+                .body(new File(TestUtils.findBuildRoot(), contractOfferFilePath))
                 .when()
                 .post(MANAGEMENT_API_URL + "/v2/contractnegotiations")
                 .then()
@@ -181,8 +186,8 @@ public class FileTransferSampleTestCommon {
      *
      * @throws IOException Thrown if there was an error accessing the transfer request file defined in {@link FileTransferSampleTestCommon#TRANSFER_FILE_PATH}.
      */
-    String requestTransferFile() throws IOException {
-        var transferJsonFile = getFileFromRelativePath(TRANSFER_FILE_PATH);
+    String requestTransferFile(String transferFilePath) throws IOException {
+        var transferJsonFile = getFileFromRelativePath(transferFilePath);
         var requestBody = readAndUpdateDataRequestFromJsonFile(transferJsonFile, contractAgreementId);
 
         var jsonPath = given()
@@ -203,6 +208,10 @@ public class FileTransferSampleTestCommon {
         assertThat(transferProcessId).isNotEmpty();
 
         return transferProcessId;
+    }
+
+    String requestTransferFile() throws IOException {
+        return requestTransferFile(TRANSFER_FILE_PATH);
     }
 
     /**

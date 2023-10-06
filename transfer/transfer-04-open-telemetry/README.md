@@ -12,12 +12,7 @@ several popular [libraries and frameworks](https://github.com/open-telemetry/ope
 
 In order to visualize and analyze the traces and metrics, we use
 [OpenTelemetry exporters](https://opentelemetry.io/docs/instrumentation/js/exporters/) to export data into the Jaeger
-tracing backend and a Prometheus endpoint.  
-
-## Prerequisites
-
-Download the [opentelemetry-javaagent.jar](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.12.0/opentelemetry-javaagent.jar) 
-and place it in the root folder of this sample.
+tracing backend and a Prometheus endpoint.
 
 ## Run the sample
 

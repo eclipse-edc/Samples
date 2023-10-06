@@ -24,6 +24,7 @@ dependencies {
     testImplementation(libs.awaitility)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.restAssured)
+    testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.junit)
     testImplementation(libs.testcontainers.kafka)
     testImplementation(libs.kafka.clients)
@@ -36,6 +37,8 @@ dependencies {
     testCompileOnly(project(":transfer:transfer-01-file-transfer:file-transfer-provider"))
     testCompileOnly(project(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer"))
     testCompileOnly(project(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer"))
+    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-consumer"))
+    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-provider"))
     testCompileOnly(project(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
 }
