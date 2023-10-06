@@ -34,8 +34,6 @@ dependencies {
 
     implementation(libs.edc.dsp)
 
-    implementation(project(":transfer:transfer-01-file-transfer:status-checker"))
-
 }
 
 application {

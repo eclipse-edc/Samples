@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.sample.extension.transfer;
 
-import org.eclipse.edc.connector.transfer.spi.status.StatusCheckerRegistry;
 import org.eclipse.edc.connector.transfer.spi.store.TransferProcessStore;
 import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
 import org.eclipse.edc.connector.transfer.spi.types.ProvisionedDataDestinationResource;
@@ -38,14 +37,10 @@ public class TransferSimulationExtension implements ServiceExtension {
     private TransferProcessStore store;
 
     @Inject
-    private StatusCheckerRegistry statusCheckerRegistry;
-
-    @Inject
     private Clock clock;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        statusCheckerRegistry.register(TEST_TYPE, (transferProcess, resources) -> false); //never completes
         //Insert a test TP after a delay to simulate a zombie transfer
         new Timer().schedule(
                 new TimerTask() {

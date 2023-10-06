@@ -26,6 +26,7 @@ edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-bui
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
 edc-control-plane-api-client = { module = "org.eclipse.edc:control-plane-api-client", version.ref = "edc" }
+edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.ref = "edc" }
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
 edc-data-plane-api = { module = "org.eclipse.edc:data-plane-api", version.ref = "edc" }
