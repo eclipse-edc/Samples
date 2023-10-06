@@ -1,16 +1,17 @@
 {
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequestDto",
+  "dataDestination": {
+    "type": "File",
+    "path": "/samples/transfer-04-open-telemetry/README_transferred.md",
+    "keyName": "keyName"
+  },
   "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
   "contractId": "{agreement ID}",
-  "dataDestination": {
-    "path": "/samples/output-file.txt",
-    "keyName": "keyName",
-    "type": "File"
-  },
-  "transferType": {
-    "contentType": "application/octet-stream",
-    "isFinite": true
-  },
+  "connectorId": "provider",
   "connectorAddress": "http://provider:8282/protocol",
-  "connectorId": "consumer"
+  "privateProperties": {}
 }

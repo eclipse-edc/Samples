@@ -1,3 +1,7 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
 /*
  *  Copyright (c) 2022 Microsoft Corporation
  *
@@ -19,7 +23,10 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.opentelemetry)
+    implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.data.plane.selector.core)
 
     implementation(libs.edc.api.observability)
 
@@ -42,4 +49,28 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("provider.jar")
+}
+
+tasks.register("copyOpenTelemetryJar") {
+    doLast {
+        val filePath = "transfer/transfer-04-open-telemetry/opentelemetry-javaagent.jar"
+        val file = File(filePath)
+
+        if (!file.exists()) {
+            sourceSets["main"]
+                    .runtimeClasspath
+                    .files
+                    .find { it.name.contains("opentelemetry-javaagent") }
+                    ?.path
+                    ?.let {
+                        val sourcePath = Paths.get(it)
+                        val targetPath = Paths.get(filePath)
+                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
+                    }
+        }
+    }
+}
+
+tasks.compileJava {
+    finalizedBy("copyOpenTelemetryJar")
 }

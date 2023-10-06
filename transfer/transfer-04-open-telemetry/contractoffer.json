@@ -1,43 +1,24 @@
 {
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "NegotiationInitiateRequestDto",
   "connectorId": "provider",
+  "consumerId": "consumer",
+  "providerId": "provider",
   "connectorAddress": "http://provider:8282/protocol",
   "protocol": "dataspace-protocol-http",
   "offer": {
-    "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
+    "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
     "assetId": "test-document",
     "policy": {
-      "uid": "956e172f-2de1-4501-8881-057a57fd0e69",
-      "permissions": [
-        {
-          "edctype": "dataspaceconnector:permission",
-          "uid": null,
-          "target": "test-document",
-          "action": {
-            "type": "USE",
-            "includedIn": null,
-            "constraint": null
-          },
-          "assignee": null,
-          "assigner": null,
-          "constraints": [],
-          "duties": []
-        }
-      ],
-      "prohibitions": [],
-      "obligations": [],
-      "extensibleProperties": {},
-      "inheritsFrom": null,
-      "assigner": null,
-      "assignee": null,
-      "target": null,
-      "@type": {
-        "@policytype": "set"
-      }
-    },
-    "asset": {
-      "properties": {
-        "asset:prop:id": "test-document"
-      }
+      "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
+      "@type": "set",
+      "odrl:permission": [],
+      "odrl:prohibition": [],
+      "odrl:obligation": [],
+      "odrl:target": "test-document"
     }
   }
 }

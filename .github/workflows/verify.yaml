@@ -46,7 +46,8 @@ jobs:
       - name: End to End Integration Tests
         uses: ./.github/actions/run-tests
         with:
-          command: ./gradlew test -DincludeTags="EndToEndTest"
+          command:
+            - ./gradlew test -DincludeTags="EndToEndTest"
 
   Upload-Test-Report:
     needs:
