@@ -27,6 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -49,6 +50,7 @@ public class Transfer04openTelemetryTest {
     public static DockerComposeContainer environment =
             new DockerComposeContainer(FileTransferSampleTestCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
+                    .withStartupTimeout(Duration.ofSeconds(30))
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
     @BeforeAll
