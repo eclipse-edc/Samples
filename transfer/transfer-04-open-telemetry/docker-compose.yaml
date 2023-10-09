@@ -3,7 +3,14 @@ version: "3.8"
 services:
 
   consumer:
-    image: openjdk:17-jdk-slim-buster
+    build:
+      context: ../..
+      dockerfile: transfer/transfer-04-open-telemetry/open-telemetry-consumer/Dockerfile
+    volumes:
+      - ./:/app/resources
+    ports:
+      - "9191:9191"
+      - "9192:9192"
     environment:
       EDC_HOSTNAME: consumer
       OTEL_SERVICE_NAME: consumer
@@ -21,18 +28,20 @@ services:
       WEB_HTTP_DSP_PORT: 9393
       WEB_HTTP_DSP_PATH: /protocol
       EDC_API_AUTH_KEY: password
-    volumes:
-      - ../:/samples
-    ports:
-      - "9191:9191"
-      - "9192:9192"
     entrypoint: java
-      -javaagent:/samples/transfer-04-open-telemetry/opentelemetry-javaagent.jar
-      -Djava.util.logging.config.file=/samples/transfer-04-open-telemetry/logging.properties
-      -jar /samples/transfer-04-open-telemetry/open-telemetry-consumer/build/libs/consumer.jar
+      -javaagent:/app/resources/opentelemetry-javaagent.jar
+      -Djava.util.logging.config.file=/app/resources/logging.properties
+      -jar /app/connector.jar
 
   provider:
-    image: openjdk:17-jdk-slim-buster
+    build:
+      context: ../..
+      dockerfile: transfer/transfer-04-open-telemetry/open-telemetry-provider/Dockerfile
+    volumes:
+      - ./:/app/resources
+    ports:
+      - "8181:8181"
+      - "8182:8182"
     environment:
       EDC_HOSTNAME: provider
       OTEL_SERVICE_NAME: provider
@@ -46,25 +55,20 @@ services:
       WEB_HTTP_PROTOCOL_PATH: /protocol
       EDC_DSP_CALLBACK_ADDRESS: http://provider:8282/protocol
       EDC_PARTICIPANT_ID: provider
-      EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /samples/transfer-04-open-telemetry/README.md
-    volumes:
-      - ../:/samples
-    ports:
-      - "8181:8181"
-      - "8182:8182"
+      EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /app/resources/README.md
     entrypoint: java
-      -javaagent:/samples/transfer-04-open-telemetry/opentelemetry-javaagent.jar
-      -Djava.util.logging.config.file=/samples/transfer-04-open-telemetry/logging.properties
-      -jar /samples/transfer-04-open-telemetry/open-telemetry-provider/build/libs/provider.jar
+      -javaagent:/app/resources/opentelemetry-javaagent.jar
+      -Djava.util.logging.config.file=/app/resources/logging.properties
+      -jar /app/connector.jar
 
   jaeger:
     image: jaegertracing/all-in-one
     ports:
-      - 16686:16686
+      - "16686:16686"
 
   prometheus:
     image: prom/prometheus:v2.30.3
     volumes:
       - ./prometheus/:/etc/prometheus/
     ports:
-      - 9090:9090
+      - "9090:9090"

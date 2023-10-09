@@ -23,7 +23,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.opentelemetry)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.data.plane.selector.core)

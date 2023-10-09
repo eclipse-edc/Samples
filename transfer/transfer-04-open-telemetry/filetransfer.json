@@ -5,7 +5,7 @@
   "@type": "TransferRequestDto",
   "dataDestination": {
     "type": "File",
-    "path": "/samples/transfer-04-open-telemetry/README_transferred.md",
+    "path": "/resources/README_transferred.md",
     "keyName": "keyName"
   },
   "protocol": "dataspace-protocol-http",

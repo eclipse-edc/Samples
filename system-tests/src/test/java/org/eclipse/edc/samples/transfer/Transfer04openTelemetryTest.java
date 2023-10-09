@@ -50,7 +50,7 @@ public class Transfer04openTelemetryTest {
     public static DockerComposeContainer environment =
             new DockerComposeContainer(FileTransferSampleTestCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
-                    .withStartupTimeout(Duration.ofSeconds(30))
+                    .withStartupTimeout(Duration.ofMinutes(1))
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
     @BeforeAll
