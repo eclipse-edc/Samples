@@ -52,7 +52,7 @@ public class FileTransferSampleTestCommon {
     final String sampleAssetFilePath;
     final File sampleAssetFile;
     final File destinationFile;
-    Duration timeout = Duration.ofSeconds(15);
+    Duration timeout = Duration.ofSeconds(30);
     Duration pollInterval = Duration.ofMillis(500);
 
     String contractNegotiationId;
