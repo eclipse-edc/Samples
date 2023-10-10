@@ -27,7 +27,6 @@ is configured to expose a Prometheus metrics endpoint.
 To run the consumer, the provider, and Jaeger execute the following commands in the project root folder:
 
 ```bash
-./gradlew transfer:transfer-04-open-telemetry:open-telemetry-consumer:build transfer:transfer-04-open-telemetry:open-telemetry-provider:build
 docker-compose -f transfer/transfer-04-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
@@ -79,26 +78,37 @@ which has to be stored in the root folder of this sample as well. The only addit
 
 ```yaml
   consumer:
-    image: openjdk:17-jdk-slim-buster
+    build:
+      context: ../..
+      dockerfile: transfer/transfer-04-open-telemetry/open-telemetry-consumer/Dockerfile
+    volumes:
+      - ./:/resources
+    ports:
+      - "9191:9191"
+      - "9192:9192"
     environment:
       APPLICATIONINSIGHTS_CONNECTION_STRING: <your-connection-string>
       APPLICATIONINSIGHTS_ROLE_NAME: consumer
       # optional: increase log verbosity (default level is INFO)
       APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: DEBUG
-      WEB_HTTP_PORT: 8181
+      EDC_HOSTNAME: consumer
+      OTEL_SERVICE_NAME: consumer
+      OTEL_TRACES_EXPORTER: jaeger
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
+      OTEL_METRICS_EXPORTER: prometheus
+      WEB_HTTP_PORT: 9191
       WEB_HTTP_PATH: /api
-      WEB_HTTP_MANAGEMENT_PORT: 8182
+      WEB_HTTP_MANAGEMENT_PORT: 9192
       WEB_HTTP_MANAGEMENT_PATH: /management
-      DSP_WEBHOOK_ADDRESS: http://consumer:8181
-    volumes:
-      - ../:/samples
-    ports:
-      - 9191:8181
-      - 9192:8182
+      WEB_HTTP_PROTOCOL_PORT: 9292
+      WEB_HTTP_PROTOCOL_PATH: /protocol
+      EDC_DSP_CALLBACK_ADDRESS: http://consumer:9292/protocol
+      EDC_PARTICIPANT_ID: consumer
+      EDC_API_AUTH_KEY: password
     entrypoint: java
-      -javaagent:/samples/transfer-04-open-telemetry/applicationinsights-agent-3.2.8.jar
-      -Djava.util.logging.config.file=/samples/transfer-04-open-telemetry/logging.properties
-      -jar /samples/transfer-04-open-telemetry/open-telemetry-consumer/build/libs/consumer.jar
+      -javaagent:/resources/opentelemetry-javaagent.jar
+      -Djava.util.logging.config.file=/resources/logging.properties
+      -jar /app/connector.jar
 ```
 
 The Application Insights Java agent will automatically collect metrics from Micrometer, without any configuration needed.
