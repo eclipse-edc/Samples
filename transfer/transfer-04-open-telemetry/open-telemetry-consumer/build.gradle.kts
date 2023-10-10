@@ -24,6 +24,7 @@ plugins {
 }
 
 dependencies {
+
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.data.plane.selector.core)
@@ -37,6 +38,7 @@ dependencies {
 
     implementation(project(":transfer:transfer-01-file-transfer:status-checker"))
 
+    runtimeOnly(libs.opentelemetry)
     runtimeOnly(libs.edc.jersey.micrometer)
     runtimeOnly(libs.edc.jetty.micrometer)
     runtimeOnly(libs.edc.monitor.jdk.logger)
@@ -53,8 +55,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
 
 tasks.register("copyOpenTelemetryJar") {
     doLast {
-        val filePath = "transfer/transfer-04-open-telemetry/opentelemetry-javaagent.jar"
-        val file = File(filePath)
+        val file = file("../opentelemetry-javaagent.jar")
 
         if (!file.exists()) {
             sourceSets["main"]
@@ -64,13 +65,13 @@ tasks.register("copyOpenTelemetryJar") {
                     ?.path
                     ?.let {
                         val sourcePath = Paths.get(it)
-                        val targetPath = Paths.get(filePath)
+                        val targetPath = Paths.get(file.path)
                         Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
                     }
         }
     }
 }
 
-tasks.compileJava {
+tasks.build {
     finalizedBy("copyOpenTelemetryJar")
 }
