@@ -152,13 +152,6 @@ authentication. Therefore, we add the property `edc.api.auth.key` and set it to 
 to configure the consumer's webhook address. We expose the DSP API endpoints on a different port and path than other
 endpoints, so the property `edc.dsp.callback.address` is adjusted to match the DSP API port.
 
-The consumer connector also needs the `status-checker` extension for marking the transfer as completed on the consumer
-side.
-
-```kotlin
-implementation(project(":transfer:transfer-01-file-transfer:status-checker"))
-```
-
 ## Run the sample
 
 Running this sample consists of multiple steps, that are executed one by one.
