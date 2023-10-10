@@ -16,12 +16,12 @@ package org.eclipse.edc.samples.transfer;
 
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
@@ -45,9 +45,9 @@ public class Transfer04openTelemetryTest {
 
     private final FileTransferSampleTestCommon testUtils = new FileTransferSampleTestCommon(SAMPLE_ASSET_FILE_PATH, DESTINATION_FILE_PATH);
 
-    @ClassRule
-    public static DockerComposeContainer environment =
-            new DockerComposeContainer(FileTransferSampleTestCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
+    @Container
+    public static DockerComposeContainer<?> environment =
+            new DockerComposeContainer<>(FileTransferSampleTestCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 

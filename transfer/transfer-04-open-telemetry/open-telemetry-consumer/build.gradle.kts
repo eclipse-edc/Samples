@@ -36,8 +36,6 @@ dependencies {
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
 
-    implementation(project(":transfer:transfer-01-file-transfer:status-checker"))
-
     runtimeOnly(libs.opentelemetry)
     runtimeOnly(libs.edc.jersey.micrometer)
     runtimeOnly(libs.edc.jetty.micrometer)

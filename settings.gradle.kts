@@ -37,7 +37,6 @@ include(":basic:basic-03-configuration")
 include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
 include(":transfer:transfer-01-file-transfer:file-transfer-provider")
 include(":transfer:transfer-01-file-transfer:transfer-file-local")
-include(":transfer:transfer-01-file-transfer:status-checker")
 
 include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
 include(":transfer:transfer-02-file-transfer-listener:listener")
