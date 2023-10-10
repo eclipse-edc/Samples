@@ -12,7 +12,7 @@
  *
  */
 
-rootProject.name = "Samples"
+rootProject.name = "samples"
 
 pluginManagement {
     repositories {
