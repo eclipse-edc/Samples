@@ -87,6 +87,10 @@ which has to be stored in the root folder of this sample as well. The only addit
       - "9191:9191"
       - "9192:9192"
     environment:
+      APPLICATIONINSIGHTS_CONNECTION_STRING: <your-connection-string>
+      APPLICATIONINSIGHTS_ROLE_NAME: consumer
+      # optional: increase log verbosity (default level is INFO)
+      APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL: DEBUG
       EDC_HOSTNAME: consumer
       OTEL_SERVICE_NAME: consumer
       OTEL_TRACES_EXPORTER: jaeger
