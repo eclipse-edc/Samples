@@ -74,7 +74,7 @@ testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", ve
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafkaClients" }
 testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
-opentelemetry = "io.opentelemetry.javaagent:opentelemetry-javaagent:1.30.0"
+opentelemetry = "io.opentelemetry.javaagent:opentelemetry-javaagent:1.31.0"
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
