@@ -33,12 +33,10 @@ dependencies {
     testCompileOnly(project(":basic:basic-01-basic-connector"))
     testCompileOnly(project(":basic:basic-02-health-endpoint"))
     testCompileOnly(project(":basic:basic-03-configuration"))
-    testCompileOnly(project(":transfer:transfer-01-file-transfer:file-transfer-consumer"))
-    testCompileOnly(project(":transfer:transfer-01-file-transfer:file-transfer-provider"))
-    testCompileOnly(project(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer"))
-    testCompileOnly(project(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer"))
-    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-consumer"))
-    testCompileOnly(project(":transfer:transfer-04-open-telemetry:open-telemetry-provider"))
+
+    testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
+    testCompileOnly(project(":transfer:transfer-05-open-telemetry:open-telemetry-consumer"))
+    testCompileOnly(project(":transfer:transfer-05-open-telemetry:open-telemetry-provider"))
     testCompileOnly(project(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
 }

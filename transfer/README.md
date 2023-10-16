@@ -53,7 +53,7 @@ initiate a transfer, and the provider will send an EndpointDataReference to the 
 the consumer will be able to access the data by requesting the endpoint that received through the
 EndpointDataReference.
 
-### [Transfer sample 07](./transfer-07-provider-push-http/README.md): Perform a provider push exchange between a consumer and a provider
+### [Transfer sample 07](transfer-03-provider-push/README.md): Perform a provider push exchange between a consumer and a provider
 
 In this sample, we will describe a step-by-step guide to demonstrate a provider push exchange
 between two connections. One connecter is a consumer and the other is a provider. The consumer will

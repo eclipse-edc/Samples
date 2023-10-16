@@ -34,26 +34,18 @@ include(":basic:basic-02-health-endpoint")
 include(":basic:basic-03-configuration")
 
 // transfer
-include(":transfer:transfer-01-file-transfer:file-transfer-consumer")
-include(":transfer:transfer-01-file-transfer:file-transfer-provider")
-include(":transfer:transfer-01-file-transfer:transfer-file-local")
+include(":transfer:transfer-00-prerequisites:connector")
+include(":transfer:transfer-00-prerequisites:transfer-started-listener")
 
-include(":transfer:transfer-02-file-transfer-listener:file-transfer-listener-consumer")
-include(":transfer:transfer-02-file-transfer-listener:listener")
+include(":transfer:transfer-04-event-consumer:consumer-with-listener")
+include(":transfer:transfer-04-event-consumer:listener")
 
-include(":transfer:transfer-03-modify-transferprocess:modify-transferprocess-consumer")
-include(":transfer:transfer-03-modify-transferprocess:simulator")
-include(":transfer:transfer-03-modify-transferprocess:watchdog")
+include(":transfer:transfer-05-open-telemetry:open-telemetry-consumer")
+include(":transfer:transfer-05-open-telemetry:open-telemetry-provider")
 
-include(":transfer:transfer-04-open-telemetry:open-telemetry-consumer")
-include(":transfer:transfer-04-open-telemetry:open-telemetry-provider")
-
-include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
-include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
-include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
-
-include("transfer:transfer-06-consumer-pull-http:http-pull-connector")
-include("transfer:transfer-07-provider-push-http:http-push-connector")
+include(":transfer:transfer-06-file-transfer-cloud:cloud-transfer-consumer")
+include(":transfer:transfer-06-file-transfer-cloud:cloud-transfer-provider")
+include(":transfer:transfer-06-file-transfer-cloud:transfer-file-cloud")
 
 include("transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
 include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")

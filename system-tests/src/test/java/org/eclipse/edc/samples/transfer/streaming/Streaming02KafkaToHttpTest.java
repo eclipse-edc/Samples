@@ -44,8 +44,8 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
-import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.FileTransferSampleTestCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
 
 @Testcontainers
 @EndToEndTest
