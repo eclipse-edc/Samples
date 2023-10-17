@@ -30,6 +30,7 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
 
 @EndToEndTest
 @Testcontainers
@@ -47,7 +48,7 @@ public class Transfer05openTelemetryTest {
 
     @Container
     public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(FileTransferCommon.getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
+            new DockerComposeContainer<>(getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 

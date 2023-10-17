@@ -12,20 +12,18 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.transfer.transfer00prerequisites;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.samples.transfer.ConnectorSetupCommon.*;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.transfer.transfer02consumerpull.ConsumerPullCommon.startConsumerPullTransfer;
 
 @EndToEndTest
 public class Transfer00prerequisitesTest {

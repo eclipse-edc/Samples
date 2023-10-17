@@ -29,34 +29,21 @@ As a pre-requisite, you need to have a http server that runs on port 4000 and lo
 be mandatory to get the EndpointDataReference that will be used to get the data.
 
 ```bash
-./gradlew util:http-request-logger:build
-HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
+docker-compose -f util/http-request-logger/docker-compose.yaml up --abort-on-container-exit
 ```
 
 ### 2. Start the transfer
 
-In the request body, we need to specify which asset we want transferred, the ID of the contract agreement, the address of the
-provider connector and where we want the file transferred. You will find the request body below.
-Before executing the request, insert the "contractAgreementId" from the previous chapter. Then run:
+In the [request body](resources/start-transfer.json), we need to specify which asset we want transferred, the ID of the contract agreement, the address of the
+provider connector and where we want the file transferred.
+Before executing the request, insert the `contractAgreementId` from the previous chapter. Then run:
 
 ```bash
 curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
-    -H "Content-Type: application/json" \
-    -d '{
-        "@context": {
-          "edc": "https://w3id.org/edc/v0.0.1/ns/"
-        },
-        "@type": "TransferRequestDto",
-        "connectorId": "provider",
-        "connectorAddress": "http://localhost:19194/protocol",
-        "contractId": "<contract agreement id>",
-        "assetId": "assetId",
-        "protocol": "dataspace-protocol-http",
-        "dataDestination": { 
-          "type": "HttpProxy" 
-        }
-    }' \
-    -s | jq
+  -H "Content-Type: application/json" \
+  -d @transfer/transfer-02-consumer-pull/resources/start-transfer.json \
+  -s | jq
+
 ```
 
 > the "HttpProxy" method is used for the consumer pull method, and it means that it will be up to
@@ -88,13 +75,14 @@ read the UUID.
 curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
 ```
 
+TODO: Clarify why transfer remains STARTED 
 
-You should see the Transfer Process in `COMPLETED` state: 
+You should see the Transfer Process in `STARTED` state: 
 ```json
 {
   ...
   "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "edc:state": "COMPLETED",
+  "edc:state": "STARTED",
   ...
 }
 
@@ -134,7 +122,7 @@ Since we configured the `HttpData` with `proxyPath`, we could also ask for a spe
 curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: <auth code>'
 ```
 
-And the data returned will be the same as in https://jsonplaceholder.typicode.com/users
+And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1
 
 Your first data transfer has been completed successfully.
 Continue with the [next chapter](../transfer-03-provider-push/README.md) to run through a "provider push" scenario.

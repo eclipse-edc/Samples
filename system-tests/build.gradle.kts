@@ -40,3 +40,7 @@ dependencies {
     testCompileOnly(project(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
 }
+
+tasks.test {
+    useJUnitPlatform()
+}

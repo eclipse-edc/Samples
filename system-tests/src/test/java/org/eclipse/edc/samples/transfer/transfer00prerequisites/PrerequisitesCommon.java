@@ -1,4 +1,4 @@
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.transfer.transfer00prerequisites;
 
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -9,11 +9,12 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
 
-public class ConnectorSetupCommon {
-    static final String API_KEY_HEADER_KEY = "X-Api-Key";
-    static final String API_KEY_HEADER_VALUE = "password";
-    static final String PROVIDER_HOST = "http://localhost:19193";
-    static final String CONSUMER_HOST = "http://localhost:29193";
+public class PrerequisitesCommon {
+    public static final String API_KEY_HEADER_KEY = "X-Api-Key";
+    public static final String API_KEY_HEADER_VALUE = "password";
+    public static final String PROVIDER_MANAGEMENT_HOST = "http://localhost:19193";
+    public static final String CONSUMER_MANAGEMENT_HOST = "http://localhost:29193";
+    public static final String CONSUMER_PUBLIC_HOST = "http://localhost:29191";
 
     private static final String CONNECTOR_MODULE_PATH = ":transfer:transfer-00-prerequisites:connector";
     private static final String PROVIDER = "provider";
@@ -33,7 +34,7 @@ public class ConnectorSetupCommon {
     private static final String REGISTER_DATA_PLANE_CONSUMER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json";
     private static final String MANAGEMENT_V2_DATAPLANES_PATH = "/management/v2/dataplanes";
 
-    static EdcRuntimeExtension getProvider() {
+    public static EdcRuntimeExtension getProvider() {
         return new EdcRuntimeExtension(
                 CONNECTOR_MODULE_PATH,
                 PROVIDER,
@@ -46,7 +47,7 @@ public class ConnectorSetupCommon {
         );
     }
 
-    static EdcRuntimeExtension getConsumer() {
+    public static EdcRuntimeExtension getConsumer() {
         return new EdcRuntimeExtension(
                 CONNECTOR_MODULE_PATH,
                 CONSUMER,
@@ -59,16 +60,21 @@ public class ConnectorSetupCommon {
         );
     }
 
-    static void registerDataPlaneProvider() {
-        registerDataPlane(PROVIDER_HOST, REGISTER_DATA_PLANE_PROVIDER_JSON);
+    public static void registerDataPlaneProvider() {
+        registerDataPlane(PROVIDER_MANAGEMENT_HOST, REGISTER_DATA_PLANE_PROVIDER_JSON);
     }
 
-    static void registerDataPlaneConsumer() {
-        registerDataPlane(CONSUMER_HOST, REGISTER_DATA_PLANE_CONSUMER_JSON);
+    public static void registerDataPlaneConsumer() {
+        registerDataPlane(CONSUMER_MANAGEMENT_HOST, REGISTER_DATA_PLANE_CONSUMER_JSON);
+    }
+
+    public static void runPrerequisites() {
+        registerDataPlaneProvider();
+        registerDataPlaneConsumer();
     }
 
     private static void registerDataPlane(String host, String payloadPath) {
-        var requestBody = FileTransferCommon.getFileFromRelativePath(payloadPath);
+        var requestBody = getFileFromRelativePath(payloadPath);
 
         given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)

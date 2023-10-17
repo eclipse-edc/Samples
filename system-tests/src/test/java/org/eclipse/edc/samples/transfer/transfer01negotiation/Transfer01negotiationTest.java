@@ -12,18 +12,16 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.transfer.transfer01negotiation;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.Map;
-
-import static org.eclipse.edc.samples.transfer.ConnectorSetupCommon.*;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
-import static org.eclipse.edc.samples.transfer.NegotiationUtil.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.*;
 
 @EndToEndTest
 public class Transfer01negotiationTest {
@@ -36,12 +34,13 @@ public class Transfer01negotiationTest {
 
     @Test
     void runSampleSteps() {
-        registerDataPlaneProvider();
-        registerDataPlaneConsumer();
+        runPrerequisites();
         createAsset();
         createPolicy();
         createContractDefinition();
         fetchCatalog();
-        negotiateContract();
+        var contractNegotiationId = negotiateContract();
+        var contractAgreementId = getContractAgreementId(contractNegotiationId);
+        assertThat(contractAgreementId).isNotEmpty();
     }
 }
