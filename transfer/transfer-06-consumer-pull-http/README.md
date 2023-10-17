@@ -141,28 +141,7 @@ curl -H 'Content-Type: application/json' \
      -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
 ```
 
-### 2. Register data plane instance for consumer
-
-The same thing that is done for the provider must be done for the consumer
-
-```bash
-curl -H 'Content-Type: application/json' \
-     -d '{
-           "@context": {
-             "edc": "https://w3id.org/edc/v0.0.1/ns/"
-           },
-           "@id": "http-pull-consumer-dataplane",
-           "url": "http://localhost:29192/control/transfer",
-           "allowedSourceTypes": [ "HttpData" ],
-           "allowedDestTypes": [ "HttpProxy", "HttpData" ],
-           "properties": {
-             "https://w3id.org/edc/v0.0.1/ns/publicApiUrl/publicApiUrl": "http://localhost:29291/public/"
-            }
-         }' \
-             -X POST "http://localhost:29193/management/v2/dataplanes"
-```
-
-### 3. Create an Asset on the provider side
+### 2. Create an asset on the provider side
 
 The provider connector needs to transfer a file to the location specified by the consumer connector
 when the data are requested. In order to offer any data, the provider must maintain an internal list
@@ -203,7 +182,7 @@ Additional properties on `HttpData` can be used to allow consumers to enrich the
 - `proxyBody`: allows attaching a body.
 - `proxyMethod`: allows specifying the Http Method (default `GET`)
 
-### 4. Create a Policy on the provider
+### 3. Create a policy on the provider
 
 In order to manage the accessibility rules of an asset, it is essential to create a policy. However,
 to keep things simple, we will choose a policy that gives direct access to all the assets that are
@@ -227,7 +206,7 @@ curl -d '{
          -s | jq
 ```
 
-### 5. Create a contract definition on Provider
+### 4. Create a contract definition on provider
 
 To ensure an exchange between providers and consumers, the supplier must create a contract offer for
 the good, on the basis of which a contract agreement can be negotiated. The contract definition
@@ -258,7 +237,7 @@ Sample output:
 }
 ```
 
-### 6. How to fetch catalog on consumer side
+### 5. How to fetch catalog on consumer side
 
 In order to offer any data, the consumer can fetch the catalog from the provider, that will contain
 all the contract offers available for negotiation. In our case, it will contain a single contract
@@ -331,7 +310,7 @@ Sample output:
 }
 ```
 
-### 7. Negotiate a contract
+### 6. Negotiate a contract
 
 In order to request any data, a contract gets negotiated, and an agreement is resulting has to be
 negotiated between providers and consumers.
@@ -388,7 +367,7 @@ Sample output:
 }
 ```
 
-### 8. Getting the contract agreement id
+### 7. Getting the contract agreement id
 
 After calling the endpoint for initiating a contract negotiation, we get a UUID as the response.
 This UUID is the ID of the ongoing contract negotiation between consumer and provider. The
@@ -425,7 +404,7 @@ Sample output:
 }
 ```
 
-### 9. Start the transfer
+### 8. Start the transfer
 
 As a pre-requisite, you need to have an http server that runs on port 4000 and logs all the incoming requests, it will
 be mandatory to get the EndpointDataReference that will be used to get the data.
@@ -480,7 +459,7 @@ Sample output:
 }
 ```
 
-### 10. Check the transfer status
+### 9. Check the transfer status
 
 Due to the nature of the transfer, it will be very fast and most likely already done by the time you
 read the UUID.
@@ -501,7 +480,7 @@ You should see the Transfer Process in `COMPLETED` state:
 
 ```
 
-### 11. Pull the data
+### 10. Pull the data
 
 At this step, if you look at the http server logs, you will find a json representing the EndpointDataReference, needed
 to get the data from the provider:
