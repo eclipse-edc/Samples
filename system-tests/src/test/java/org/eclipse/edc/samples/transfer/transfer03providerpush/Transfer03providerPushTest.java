@@ -66,6 +66,6 @@ public class Transfer03providerPushTest {
         var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
-        assertThat(LOG_CONSUMER.toUtf8String().contains("Leanne Graham")).isTrue();
+        assertThat(LOG_CONSUMER.toUtf8String()).contains("Leanne Graham");
     }
 }

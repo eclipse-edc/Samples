@@ -53,11 +53,13 @@ Sample output:
 ### 2. Check the transfer status
 
 Due to the nature of the transfer, it will be very fast and most likely already done by the time you
-read the UUID.
+read the UUID. 
 
 ```bash
 curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
 ```
+
+Notice the transfer COMPLETED state
 
 ### 3. Check the data
 

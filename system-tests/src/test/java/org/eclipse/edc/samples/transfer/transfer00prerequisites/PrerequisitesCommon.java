@@ -35,29 +35,16 @@ public class PrerequisitesCommon {
     private static final String V2_DATAPLANES_PATH = "/v2/dataplanes";
 
     public static EdcRuntimeExtension getProvider() {
-        return new EdcRuntimeExtension(
-                CONNECTOR_MODULE_PATH,
-                PROVIDER,
-                Map.of(
-                        EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                        EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
-                        EDC_VAULT, getFileFromRelativePath(PROVIDER_VAULT_PROPERTIES_FILE_PATH).getAbsolutePath(),
-                        EDC_FS_CONFIG, getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
-                )
-        );
+        return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_VAULT_PROPERTIES_FILE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
+
     }
 
     public static EdcRuntimeExtension getConsumer() {
-        return new EdcRuntimeExtension(
-                CONNECTOR_MODULE_PATH,
-                CONSUMER,
-                Map.of(
-                        EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                        EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
-                        EDC_VAULT, getFileFromRelativePath(CONSUMER_VAULT_PROPERTIES_FILE_PATH).getAbsolutePath(),
-                        EDC_FS_CONFIG, getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
-                )
-        );
+        return getConnector(CONNECTOR_MODULE_PATH, CONSUMER, CONSUMER_VAULT_PROPERTIES_FILE_PATH, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
+    }
+
+    public static EdcRuntimeExtension getConsumer(String modulePath) {
+        return getConnector(modulePath, CONSUMER, CONSUMER_VAULT_PROPERTIES_FILE_PATH, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     public static void registerDataPlaneProvider() {
@@ -71,6 +58,24 @@ public class PrerequisitesCommon {
     public static void runPrerequisites() {
         registerDataPlaneProvider();
         registerDataPlaneConsumer();
+    }
+
+    private static EdcRuntimeExtension getConnector(
+            String modulePath,
+            String moduleName,
+            String vaultPropertiesFilePath,
+            String configPropertiesFilePath
+    ) {
+        return new EdcRuntimeExtension(
+                modulePath,
+                moduleName,
+                Map.of(
+                        EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
+                        EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
+                        EDC_VAULT, getFileFromRelativePath(vaultPropertiesFilePath).getAbsolutePath(),
+                        EDC_FS_CONFIG, getFileFromRelativePath(configPropertiesFilePath).getAbsolutePath()
+                )
+        );
     }
 
     private static void registerDataPlane(String host, String payloadPath) {

@@ -19,11 +19,7 @@ import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
-import static org.eclipse.edc.samples.transfer.transfer02consumerpull.ConsumerPullCommon.startConsumerPullTransfer;
 
 @EndToEndTest
 public class Transfer00prerequisitesTest {
