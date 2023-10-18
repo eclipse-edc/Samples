@@ -12,9 +12,9 @@ import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRel
 public class PrerequisitesCommon {
     public static final String API_KEY_HEADER_KEY = "X-Api-Key";
     public static final String API_KEY_HEADER_VALUE = "password";
-    public static final String PROVIDER_MANAGEMENT_HOST = "http://localhost:19193";
-    public static final String CONSUMER_MANAGEMENT_HOST = "http://localhost:29193";
-    public static final String CONSUMER_PUBLIC_HOST = "http://localhost:29191";
+    public static final String PROVIDER_MANAGEMENT_URL = "http://localhost:19193/management";
+    public static final String CONSUMER_MANAGEMENT_URL = "http://localhost:29193/management";
+    public static final String CONSUMER_PUBLIC_URL = "http://localhost:29291/public";
 
     private static final String CONNECTOR_MODULE_PATH = ":transfer:transfer-00-prerequisites:connector";
     private static final String PROVIDER = "provider";
@@ -32,7 +32,7 @@ public class PrerequisitesCommon {
     private static final String CONSUMER_VAULT_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties";
     private static final String REGISTER_DATA_PLANE_PROVIDER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json";
     private static final String REGISTER_DATA_PLANE_CONSUMER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json";
-    private static final String MANAGEMENT_V2_DATAPLANES_PATH = "/management/v2/dataplanes";
+    private static final String V2_DATAPLANES_PATH = "/v2/dataplanes";
 
     public static EdcRuntimeExtension getProvider() {
         return new EdcRuntimeExtension(
@@ -61,11 +61,11 @@ public class PrerequisitesCommon {
     }
 
     public static void registerDataPlaneProvider() {
-        registerDataPlane(PROVIDER_MANAGEMENT_HOST, REGISTER_DATA_PLANE_PROVIDER_JSON);
+        registerDataPlane(PROVIDER_MANAGEMENT_URL, REGISTER_DATA_PLANE_PROVIDER_JSON);
     }
 
     public static void registerDataPlaneConsumer() {
-        registerDataPlane(CONSUMER_MANAGEMENT_HOST, REGISTER_DATA_PLANE_CONSUMER_JSON);
+        registerDataPlane(CONSUMER_MANAGEMENT_URL, REGISTER_DATA_PLANE_CONSUMER_JSON);
     }
 
     public static void runPrerequisites() {
@@ -81,7 +81,7 @@ public class PrerequisitesCommon {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post(host + MANAGEMENT_V2_DATAPLANES_PATH)
+                .post(host + V2_DATAPLANES_PATH)
                 .then()
                 .log()
                 .ifError()

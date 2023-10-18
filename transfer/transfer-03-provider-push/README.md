@@ -14,37 +14,10 @@ This samples consists of:
 
 ## Prerequisites
 
-For the "provider push" use case the "edc.receiver.http.endpoint" is not needed.
-Terminate your current consumer connector. 
-
-Execute this to re-run the consumer connector with proper configuration:
-
-```bash
-java -Dedc.keystore=transfer/transfer-00-prerequisites/resources/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties -Dedc.fs.config=transfer/transfer-03-provider-push/configuration/consumer-configuration.properties -jar transfer/transfer-00-prerequisites/connector/build/libs/connector.jar
-```
-
-Don't forget to register the data plane for the consumer since it has been started again.
-
-```bash
-curl -H 'Content-Type: application/json' \
-     -d '{
-           "@context": {
-             "edc": "https://w3id.org/edc/v0.0.1/ns/"
-           },
-           "@id": "http-pull-consumer-dataplane",
-           "url": "http://localhost:29192/control/transfer",
-           "allowedSourceTypes": [ "HttpData" ],
-           "allowedDestTypes": [ "HttpProxy", "HttpData" ],
-           "properties": {
-             "https://w3id.org/edc/v0.0.1/ns/publicApiUrl/publicApiUrl": "http://localhost:29291/public/"
-            }
-         }' \
-             -X POST "http://localhost:29193/management/v2/dataplanes"
-```
-
-You can leave your provider connector from before running.
-Also make sure the http server from the [Consumer Pull](../transfer-02-consumer-pull/README.md) chapter is still running.
-Restart it otherwise.
+The following steps assume your provider and consumer connectors are still up and running and contract
+negotiation has taken place successfully. Furthermore, the http server should be up as well.
+If not, re-visit the [Prerequisites](../transfer-00-prerequisites/README.md)
+, [Negotiation](../transfer-01-negotiation/README.md) and [Consumer Pull](../transfer-02-consumer-pull/README.md) chapters.
 
 # Run the sample
 
@@ -53,27 +26,14 @@ order.
 
 ### 1. Start the transfer
 
-Before executing the request, insert the contract agreement ID from the [Negotiation](../transfer-01-negotiation/README.md)
-chapter. We will re-use the same asset, policies and contract negotiation from before.
+Before executing the request, modify the [request body](resources/start-transfer.json) by inserting the contract agreement ID
+from the [Negotiation](../transfer-01-negotiation/README.md) chapter. 
+You can re-use the same asset, policies and contract negotiation from before.
 
 ```bash
 curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
     -H "Content-Type: application/json" \
-    -d '{
-        "@context": {
-          "edc": "https://w3id.org/edc/v0.0.1/ns/"
-        },
-        "@type": "TransferRequestDto",
-        "connectorId": "provider",
-        "connectorAddress": "http://localhost:19194/protocol",
-        "contractId": "<contract agreement id>",
-        "assetId": "assetId",
-        "protocol": "dataspace-protocol-http",
-        "dataDestination": { 
-          "type": "HttpData",
-          "baseUrl": "http://localhost:4000/api/consumer/store"
-        }
-    }' \
+    -d @transfer/transfer-03-provider-push/resources/start-transfer.json \
     -s | jq
 ```
 > keep in mind that, to make a transfer with a provider push method, the dataDestination type should

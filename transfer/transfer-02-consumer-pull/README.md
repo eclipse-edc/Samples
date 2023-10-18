@@ -75,9 +75,8 @@ read the UUID.
 curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
 ```
 
-TODO: Clarify why transfer remains STARTED 
-
 You should see the Transfer Process in `STARTED` state: 
+
 ```json
 {
   ...
@@ -88,7 +87,10 @@ You should see the Transfer Process in `STARTED` state:
 
 ```
 
-### 4. Pull the data
+> Note that for the consumer pull scenario the TP will stay in STARTED state after the data has been transferred successfully.
+> It might get eventually get shifted to TERMINATED or DEPROVISIONED by other resources, but this is not scope of this sample.
+
+### 4. Check the data
 
 At this step, if you look at the http server logs, you will find a json representing the EndpointDataReference, needed
 to get the data from the provider:

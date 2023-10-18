@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer02consumerpull;
+package org.eclipse.edc.samples.transfer.transfer03providerpush;
 
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
@@ -33,17 +33,17 @@ import static org.eclipse.edc.samples.HttpRequestLoggerUtil.getHttpRequestLogger
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.transfer.TransferUtil.*;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.*;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 @EndToEndTest
 @Testcontainers
-public class Transfer02consumerPullTest {
+public class Transfer03providerPushTest {
 
     private static final HttpRequestLoggerConsumer LOG_CONSUMER = new HttpRequestLoggerConsumer();
-    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
-    private static final String AUTH_CODE_KEY = "authCode";
+    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-03-provider-push/resources/start-transfer.json";
+
 
     @RegisterExtension
     static EdcRuntimeExtension provider = getProvider();
@@ -62,28 +62,10 @@ public class Transfer02consumerPullTest {
     @Test
     void runSampleSteps() {
         runPrerequisites();
-        var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var contractAgreementId = runNegotiation();
+        var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
-        checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
-        var authCode = LOG_CONSUMER.getJsonValue(AUTH_CODE_KEY);
-        checkData(authCode);
-    }
-
-    private static void checkData(String authCode) {
-        var result = given()
-                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE, AUTHORIZATION, authCode)
-                .when()
-                .get(CONSUMER_PUBLIC_URL)
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .log()
-                .ifError()
-                .body("[0].name", not(emptyString()))
-                .extract()
-                .jsonPath()
-                .get("[0].name");
-
-        assertThat(result).isEqualTo("Leanne Graham");
+        checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
+        assertThat(LOG_CONSUMER.toUtf8String().contains("Leanne Graham")).isTrue();
     }
 }
