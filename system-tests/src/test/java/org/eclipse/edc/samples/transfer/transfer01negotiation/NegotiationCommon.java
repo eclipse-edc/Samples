@@ -41,10 +41,14 @@ public class NegotiationCommon {
         post(CONSUMER_MANAGEMENT_URL + V2_CATALOG_REQUEST_PATH, getFileContentFromRelativePath(FETCH_CATALOG_FILE_PATH));
     }
 
-    public static String negotiateContract() {
-        var contractNegotiationId = post(CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH, getFileContentFromRelativePath(NEGOTIATE_CONTRACT_FILE_PATH), CONTRACT_NEGOTIATION_ID);
+    public static String negotiateContract(String negotiateContractFilePath) {
+        var contractNegotiationId = post(CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH, getFileContentFromRelativePath(negotiateContractFilePath), CONTRACT_NEGOTIATION_ID);
         assertThat(contractNegotiationId).isNotEmpty();
         return contractNegotiationId;
+    }
+
+    public static String negotiateContract() {
+        return negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH);
     }
 
     public static String getContractAgreementId(String contractNegotiationId) {

@@ -5,20 +5,20 @@
   },
   "@type": "NegotiationInitiateRequestDto",
   "connectorId": "provider",
+  "connectorAddress": "http://provider:19194/protocol",
   "consumerId": "consumer",
   "providerId": "provider",
-  "connectorAddress": "http://provider:8282/protocol",
   "protocol": "dataspace-protocol-http",
   "offer": {
-    "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
-    "assetId": "test-document",
+    "offerId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
+    "assetId": "assetId",
     "policy": {
-      "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
-      "@type": "set",
+      "@id": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
+      "@type": "Set",
       "odrl:permission": [],
       "odrl:prohibition": [],
       "odrl:obligation": [],
-      "odrl:target": "test-document"
+      "odrl:target": "assetId"
     }
   }
 }

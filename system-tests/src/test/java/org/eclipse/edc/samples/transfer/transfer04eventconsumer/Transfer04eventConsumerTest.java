@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer04eventConsumer;
+package org.eclipse.edc.samples.transfer.transfer04eventconsumer;
 
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
+import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;

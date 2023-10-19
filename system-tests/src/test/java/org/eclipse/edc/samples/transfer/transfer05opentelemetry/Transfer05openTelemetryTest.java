@@ -12,10 +12,12 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.transfer.transfer05opentelemetry;
 
 import org.apache.http.HttpStatus;
+import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
+import org.eclipse.edc.samples.transfer.FileTransferCommon;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,25 +32,25 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
+import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.*;
 
 @EndToEndTest
 @Testcontainers
 public class Transfer05openTelemetryTest {
 
-    private static final String SAMPLE_FOLDER = "transfer/transfer-05-open-telemetry";
-    private static final String DOCKER_COMPOSE_YAML = "/docker-compose.yaml";
-    private static final String SAMPLE_ASSET_FILE_PATH = SAMPLE_FOLDER + "/README.md";
-    private static final String DESTINATION_FILE_PATH = SAMPLE_FOLDER + "/README_transferred.md";
-    private static final String CONTRACT_OFFER_FILE_PATH = SAMPLE_FOLDER + "/contractoffer.json";
-    private static final String FILE_TRANSFER_FILE_PATH = SAMPLE_FOLDER + "/filetransfer.json";
+    private static final String DOCKER_COMPOSE_YAML = "advanced/advanced-01-open-telemetry/docker-compose.yaml";
+    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/negotiate-contract.json";
+    private static final String START_TRANSFER_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/start-transfer.json";
     private static final String JAEGER_URL = "http://localhost:16686";
-
-    private final FileTransferCommon testUtils = new FileTransferCommon(SAMPLE_ASSET_FILE_PATH, DESTINATION_FILE_PATH);
 
     @Container
     public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(getFileFromRelativePath(SAMPLE_FOLDER + DOCKER_COMPOSE_YAML))
+            new DockerComposeContainer<>(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
@@ -58,13 +60,15 @@ public class Transfer05openTelemetryTest {
     }
 
     @Test
-    void runSampleSteps() throws Exception {
-        testUtils.assertTestPrerequisites();
-        testUtils.initiateContractNegotiation(CONTRACT_OFFER_FILE_PATH);
-        testUtils.lookUpContractAgreementId();
-        var transferProcessId = testUtils.requestTransferFile(FILE_TRANSFER_FILE_PATH);
-        testUtils.assertDestinationFileContent();
-        testUtils.assertTransferProcessStatusConsumerSide(transferProcessId);
+    void runSampleSteps()  {
+        runPrerequisites();
+        createAsset();
+        createPolicy();
+        createContractDefinition();
+        var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH);
+        var contractAgreementId = getContractAgreementId(contractNegotiationId);
+        var transferProcessId = startTransfer(getFileContentFromRelativePath(START_TRANSFER_FILE_PATH), contractAgreementId);
+        checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
         assertJaegerState();
     }
 
@@ -76,10 +80,5 @@ public class Transfer05openTelemetryTest {
         } catch (IOException e) {
             fail("Unable to assert Jaeger state", e);
         }
-    }
-
-    @AfterEach
-    protected void tearDown() {
-        testUtils.cleanTemporaryTestFiles();
     }
 }

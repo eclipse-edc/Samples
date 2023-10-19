@@ -1,6 +1,5 @@
-package org.eclipse.edc.samples;
+package org.eclipse.edc.samples.transfer;
 
-import groovy.transform.ToString;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.ToStringConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;

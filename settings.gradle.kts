@@ -35,13 +35,9 @@ include(":basic:basic-03-configuration")
 
 // transfer
 include(":transfer:transfer-00-prerequisites:connector")
-include(":transfer:transfer-00-prerequisites:transfer-started-listener")
 
 include(":transfer:transfer-04-event-consumer:consumer-with-listener")
 include(":transfer:transfer-04-event-consumer:listener")
-
-include(":transfer:transfer-05-open-telemetry:open-telemetry-consumer")
-include(":transfer:transfer-05-open-telemetry:open-telemetry-provider")
 
 include(":transfer:transfer-06-file-transfer-cloud:cloud-transfer-consumer")
 include(":transfer:transfer-06-file-transfer-cloud:cloud-transfer-provider")
@@ -50,6 +46,9 @@ include(":transfer:transfer-06-file-transfer-cloud:transfer-file-cloud")
 include("transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
 include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 
+include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
+include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
+
 include("util:http-request-logger")
 
 
@@ -57,3 +56,4 @@ include("util:http-request-logger")
 include(":other:custom-runtime")
 
 include(":system-tests")
+include("advanced")

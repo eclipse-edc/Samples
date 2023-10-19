@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.samples.transfer.transfer03providerpush;
 
-import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
@@ -27,14 +26,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static io.restassured.RestAssured.given;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
+import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.transfer.TransferUtil.*;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
-import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 @EndToEndTest

@@ -1,0 +1,93 @@
+version: "3.8"
+
+services:
+
+  consumer:
+    build:
+      context: ../..
+      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-consumer/Dockerfile
+    volumes:
+      - ./:/open-telemetry
+      - ../../transfer/transfer-00-prerequisites/:/prerequisites
+    ports:
+      - "29193:29193"
+      - "29194:29194"
+    environment:
+      EDC_HOSTNAME: consumer
+      OTEL_SERVICE_NAME: consumer
+      OTEL_TRACES_EXPORTER: jaeger
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
+      OTEL_METRICS_EXPORTER: prometheus
+      WEB_HTTP_PORT: 29191
+      WEB_HTTP_PATH: /api
+      WEB_HTTP_PUBLIC_PORT: 29291
+      WEB_HTTP_PUBLIC_PATH: /public
+      WEB_HTTP_CONTROL_PORT: 29192
+      WEB_HTTP_CONTROL_PATH: /control
+      WEB_HTTP_MANAGEMENT_PORT: 29193
+      WEB_HTTP_MANAGEMENT_PATH: /management
+      WEB_HTTP_PROTOCOL_PORT: 29194
+      WEB_HTTP_PROTOCOL_PATH: /protocol
+      EDC_CONTROL_ENDPOINT: http://consumer:29192/control
+      EDC_DSP_CALLBACK_ADDRESS: http://consumer:29194/protocol
+      EDC_PARTICIPANT_ID: consumer
+      EDC_API_AUTH_KEY: password
+      EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_VAULT: /prerequisites/resources/configuration/provider-vault.properties
+      EDC_FS_CONFIG: /prerequisites/resources/configuration/provider-configuration.properties
+    entrypoint: java
+      -javaagent:/app/libs/opentelemetry-javaagent.jar
+      -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
+      -jar /app/connector.jar
+
+  provider:
+    build:
+      context: ../..
+      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-provider/Dockerfile
+    volumes:
+      - ./:/open-telemetry
+      - ../../transfer/transfer-00-prerequisites/:/prerequisites
+    ports:
+      - "19193:19193"
+      - "19192:19192"
+    environment:
+      EDC_HOSTNAME: provider
+      OTEL_SERVICE_NAME: provider
+      OTEL_TRACES_EXPORTER: jaeger
+      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
+      WEB_HTTP_PORT: 19191
+      WEB_HTTP_PATH: /api
+      WEB_HTTP_PUBLIC_PORT: 19291
+      WEB_HTTP_PUBLIC_PATH: /public
+      WEB_HTTP_CONTROL_PORT: 19192
+      WEB_HTTP_CONTROL_PATH: /control
+      WEB_HTTP_MANAGEMENT_PORT: 19193
+      WEB_HTTP_MANAGEMENT_PATH: /management
+      WEB_HTTP_PROTOCOL_PORT: 19194
+      WEB_HTTP_PROTOCOL_PATH: /protocol
+      EDC_CONTROL_ENDPOINT: http://provider:19192/control
+      EDC_DSP_CALLBACK_ADDRESS: http://provider:19194/protocol
+      EDC_PARTICIPANT_ID: provider
+      EDC_API_AUTH_KEY: password
+      EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
+      EDC_KEYSTORE_PASSWORD: 123456
+      EDC_VAULT: /prerequisites/resources/configuration/consumer-vault.properties
+      EDC_FS_CONFIG: /prerequisites/resources/configuration/consumer-configuration.properties
+      EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /open-telemetry/README.md
+    entrypoint: java
+      -javaagent:/app/libs/opentelemetry-javaagent.jar
+      -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
+      -jar /app/connector.jar
+
+  jaeger:
+    image: jaegertracing/all-in-one
+    ports:
+      - "16686:16686"
+
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    ports:
+      - "9090:9090"

@@ -35,10 +35,11 @@ dependencies {
     testCompileOnly(project(":basic:basic-03-configuration"))
 
     testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
-    testCompileOnly(project(":transfer:transfer-05-open-telemetry:open-telemetry-consumer"))
-    testCompileOnly(project(":transfer:transfer-05-open-telemetry:open-telemetry-provider"))
     testCompileOnly(project(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
+
+    testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-provider"))
+    testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-consumer"))
 }
 
 tasks.test {

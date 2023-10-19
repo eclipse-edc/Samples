@@ -27,27 +27,38 @@ is configured to expose a Prometheus metrics endpoint.
 To run the consumer, the provider, and Jaeger execute the following commands in the project root folder:
 
 ```bash
-docker-compose -f transfer/transfer-04-open-telemetry/docker-compose.yaml up --abort-on-container-exit
+docker-compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
-Once the consumer and provider are up, start a contract negotiation by executing:
+Register data planes for provider and consumer
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
+curl -H 'Content-Type: application/json' \
+     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
+     -X POST "http://localhost:8182/management/v2/dataplanes"
+```
+```bash
+curl -H 'Content-Type: application/json' \
+     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
+     -X POST "http://localhost:9192/management/v2/dataplanes"
 ```
 
-The contract negotiation causes an HTTP request sent from the consumer to the provider connector, followed by another
-message from the provider to the consumer connector. Query the status of the contract negotiation by executing the
-following command. Wait until the negotiation is in CONFIRMED state and note down the contract agreement id.
+Start a contract negotiation:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @advanced/advanced-01-open-telemetry/negotiate-contract.json "http://localhost:9192/management/v2/contractnegotiations"
+```
+
+Wait until the negotiation is in CONFIRMED state and note down the contract agreement id.
 
 ```bash
 curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{UUID}"
 ```
 
-Finally, update the contract agreement id in the `filetransfer.json` file and execute a file transfer with the following command:
+Finally, update the contract agreement id in the [request body](resources/filetransfer.json) and execute a file transfer with the following command:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @transfer/transfer-04-open-telemetry/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @advanced/advanced-01-open-telemetry/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"
 ```
 
 You can access the Jaeger UI on your browser at `http://localhost:16686`. In the search tool, we can select the service
@@ -55,10 +66,10 @@ You can access the Jaeger UI on your browser at `http://localhost:16686`. In the
 details on the spans contained in a trace by clicking on it in the Jaeger UI.
 
 Example contract negotiation trace:
-![Contract negotiation](./attachments/contract-negotiation-trace.png)
+![Contract negotiation](attachments/contract-negotiation-trace.png)
 
 Example file transfer trace:
-![File transfer](./attachments/file-transfer-trace.png)
+![File transfer](attachments/file-transfer-trace.png)
 
 OkHttp and Jetty are part of the [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation)
 that OpenTelemetry can capture telemetry from. We can observe spans related to OkHttp and Jetty as EDC uses both
@@ -80,7 +91,7 @@ which has to be stored in the root folder of this sample as well. The only addit
   consumer:
     build:
       context: ../..
-      dockerfile: transfer/transfer-04-open-telemetry/open-telemetry-consumer/Dockerfile
+      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-consumer/Dockerfile
     volumes:
       - ./:/resources
     ports:
@@ -129,5 +140,3 @@ it, otherwise it will use the registered global OpenTelemetry. You can look at t
 to have more information about service providers.
 
 ---
-
-[Previous Chapter](../transfer-03-modify-transferprocess/README.md) | [Next Chapter](../transfer-05-file-transfer-cloud/README.md)
