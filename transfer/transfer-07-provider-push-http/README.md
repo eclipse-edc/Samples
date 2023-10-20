@@ -1,12 +1,12 @@
 # Implement a simple "Provider Push" Http transfer flow
 
-The purpose of this example is to show a data exchange between 2 connectors, one representing the
-data provider and the other, the consumer. It's based on a provider push usecase that you can find
+The purpose of this example is to show a data exchange between two connectors, one representing the
+data provider and the other, the consumer. It's based on a provider push use case that you can find
 more details
-on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane)
+on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane).
 For the sake of simplicity, the provider and the consumer
 will be on the same machine, but in a real world configuration, they will likely be on different
-machines. The final goal of this example is to present the steps through which the 2 connectors will
+machines. The final goal of this example is to present the steps through which the two connectors will
 have to pass so that the consumer can have access to the data, held by the provider.
 
 Those steps are the following:
@@ -297,7 +297,7 @@ looks as follows:
    reference
 
 Of course, this is the simplest possible negotiation sequence. Later on, both connectors can also
-send counter offers in addition to just confirming or declining an offer.
+send counteroffers in addition to just confirming or declining an offer.
 
 ```bash
 curl -d '{
