@@ -37,7 +37,7 @@ services:
       EDC_VAULT: /prerequisites/resources/configuration/provider-vault.properties
       EDC_FS_CONFIG: /prerequisites/resources/configuration/provider-configuration.properties
     entrypoint: java
-      -javaagent:/app/libs/opentelemetry-javaagent.jar
+      -javaagent:/app/opentelemetry-javaagent.jar
       -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
       -jar /app/connector.jar
 
@@ -76,7 +76,7 @@ services:
       EDC_FS_CONFIG: /prerequisites/resources/configuration/consumer-configuration.properties
       EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /open-telemetry/README.md
     entrypoint: java
-      -javaagent:/app/libs/opentelemetry-javaagent.jar
+      -javaagent:/app/opentelemetry-javaagent.jar
       -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
       -jar /app/connector.jar
 

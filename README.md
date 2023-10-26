@@ -42,6 +42,13 @@ EDC and run different transfer scenarios. Click the link above to learn about th
 
 All transfer samples are located in the `transfer` directory.
 
+### [Advanced](./advanced/README.md)
+
+Collection of advanced topics regarding the EDC framework.
+Click the link above to learn about the transfer samples in more detail.
+
+All transfer samples are located in the `advanced` directory.
+
 ## Contributing
 
 See [how to contribute](CONTRIBUTING.md).

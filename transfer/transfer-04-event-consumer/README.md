@@ -73,49 +73,16 @@ The data plane has to be registered again for the consumer connector.
 
 ```bash
 curl -H 'Content-Type: application/json' \
--d '{
-"@context": {
-"edc": "https://w3id.org/edc/v0.0.1/ns/"
-},
-"@id": "http-pull-consumer-dataplane",
-"url": "http://localhost:29192/control/transfer",
-"allowedSourceTypes": [ "HttpData" ],
-"allowedDestTypes": [ "HttpProxy", "HttpData" ],
-"properties": {
-"https://w3id.org/edc/v0.0.1/ns/publicApiUrl/publicApiUrl": "http://localhost:29291/public/"
-}
-}' \
--X POST "http://localhost:29193/management/v2/dataplanes"
+     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
+     -X POST "http://localhost:29193/management/v2/dataplanes"
 ```
 
 ### 3. Negotiate a new contract
 
 ```bash
-curl -d '{
-  "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
-    "odrl": "http://www.w3.org/ns/odrl/2/"
-  },
-  "@type": "NegotiationInitiateRequestDto",
-  "connectorId": "provider",
-  "connectorAddress": "http://localhost:19194/protocol",
-  "consumerId": "consumer",
-  "providerId": "provider",
-  "protocol": "dataspace-protocol-http",
-  "offer": {
-   "offerId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
-   "assetId": "assetId",
-   "policy": {
-     "@id": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
-     "@type": "Set",
-     "odrl:permission": [],
-     "odrl:prohibition": [],
-     "odrl:obligation": [],
-     "odrl:target": "assetId"
-   }
-  }
-}' -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
--s | jq
+curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
+  -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
+  -s | jq
 ```
 
 ### 4. Get the contract agreement id
@@ -128,27 +95,14 @@ curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract
 
 ### 5. Perform a file transfer
 
-Replace the `contractId` property with the contract agreement id from the previous call.
+Replace the `contractId` property inside the [request body](../transfer-02-consumer-pull/resources/start-transfer.json) with the contract agreement id from the previous call.
 Afterward run:
 
 ```bash
 curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
-    -H "Content-Type: application/json" \
-    -d '{
-        "@context": {
-          "edc": "https://w3id.org/edc/v0.0.1/ns/"
-        },
-        "@type": "TransferRequestDto",
-        "connectorId": "provider",
-        "connectorAddress": "http://localhost:19194/protocol",
-        "contractId": "<contract agreement id>",
-        "assetId": "assetId",
-        "protocol": "dataspace-protocol-http",
-        "dataDestination": {
-          "type": "HttpProxy"
-        }
-    }' \
-    -s | jq
+  -H "Content-Type: application/json" \
+  -d @transfer/transfer-02-consumer-pull/resources/start-transfer.json \
+  -s | jq
 ```
 
 ### 6. Inspect the logs

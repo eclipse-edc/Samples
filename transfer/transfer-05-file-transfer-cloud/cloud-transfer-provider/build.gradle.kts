@@ -35,7 +35,7 @@ dependencies {
 
     implementation(libs.edc.dsp)
 
-    implementation(project(":transfer:transfer-06-file-transfer-cloud:transfer-file-cloud"))
+    implementation(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 }
 
 application {

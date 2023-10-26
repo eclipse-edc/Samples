@@ -48,7 +48,6 @@ dependencies {
     implementation(libs.edc.api.observability)
     implementation(libs.edc.auth.tokenbased)
 
-    runtimeOnly(libs.opentelemetry)
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
 
@@ -61,23 +60,15 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("provider.jar")
 }
 
-tasks.register("copyOpenTelemetryJar") {
-    doLast {
-        val file = file("../opentelemetry-javaagent.jar")
+tasks.register("copyOpenTelemetryJar", Copy::class) {
+    val openTelemetry = configurations.create("open-telemetry")
 
-        if (!file.exists()) {
-            sourceSets["main"]
-                    .runtimeClasspath
-                    .files
-                    .find { it.name.contains("opentelemetry-javaagent") }
-                    ?.path
-                    ?.let {
-                        val sourcePath = Paths.get(it)
-                        val targetPath = Paths.get(file.path)
-                        Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)
-                    }
-        }
+    dependencies {
+        openTelemetry(libs.opentelemetry)
     }
+
+    from(openTelemetry)
+    into("build/libs")
 }
 
 tasks.build {

@@ -1,11 +1,10 @@
 # Telemetry with OpenTelemetry and Micrometer
 
-This sample builds on top of [sample transfer-01-file-transfer](../transfer-01-file-transfer/README.md) to show how you
-can:
+This sample will show you how you can:
 
-- generate traces with [OpenTelemetry](https://opentelemetry.io) and collect and visualize them with [Jaeger](https://www.jaegertracing.io/).
+- generate traces with [OpenTelemetry](https://opentelemetry.io) and collect and visualize them with [Jaeger](https://www.jaegertracing.io/)
 - automatically collect metrics from infrastructure, server endpoints and client libraries with [Micrometer](https://micrometer.io)
-  and visualize them with [Prometheus](https://prometheus.io).
+  and visualize them with [Prometheus](https://prometheus.io)
 
 For this, this sample uses the Open Telemetry Java Agent, which dynamically injects bytecode to capture telemetry from
 several popular [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation).
@@ -30,35 +29,77 @@ To run the consumer, the provider, and Jaeger execute the following commands in 
 docker-compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
-Register data planes for provider and consumer
+Open a new terminal.
+
+Register data planes for provider and consumer:
 
 ```bash
 curl -H 'Content-Type: application/json' \
-     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
-     -X POST "http://localhost:8182/management/v2/dataplanes"
+  -H "X-Api-Key: password" \
+  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
+  -X POST "http://localhost:19193/management/v2/dataplanes" \
+  -s | jq
 ```
+
 ```bash
 curl -H 'Content-Type: application/json' \
-     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
-     -X POST "http://localhost:9192/management/v2/dataplanes"
+  -H "X-Api-Key: password" \
+  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
+  -X POST "http://localhost:29193/management/v2/dataplanes" \
+  -s | jq
+```
+
+Create an asset:
+
+```bash
+curl -H "X-Api-Key: password" \
+  -d @transfer/transfer-01-negotiation/resources/create-asset.json \
+  -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
+  -s | jq
+```
+
+Create a Policy on the provider connector:
+
+```bash
+curl -H "X-Api-Key: password" \
+  -d @transfer/transfer-01-negotiation/resources/create-policy.json \
+  -H 'content-type: application/json' http://localhost:19193/management/v2/policydefinitions \
+  -s | jq
+```
+
+Follow up with the creation of a contract definition:
+
+```bash
+curl -H "X-Api-Key: password" \
+  -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
+  -H 'content-type: application/json' http://localhost:19193/management/v2/contractdefinitions \
+  -s | jq
 ```
 
 Start a contract negotiation:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @advanced/advanced-01-open-telemetry/negotiate-contract.json "http://localhost:9192/management/v2/contractnegotiations"
+curl -H "X-Api-Key: password" \
+  -H "Content-Type: application/json" \
+  -d @advanced/advanced-01-open-telemetry/resources/negotiate-contract.json \
+  -X POST "http://localhost:29193/management/v2/contractnegotiations" \
+  -s | jq
 ```
 
-Wait until the negotiation is in CONFIRMED state and note down the contract agreement id.
+Wait until the negotiation is in `FINALIZED` state and call
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/{UUID}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:29193/management/v2/contractnegotiations/{UUID}"
 ```
+to get the contract agreement id.
 
-Finally, update the contract agreement id in the [request body](resources/filetransfer.json) and execute a file transfer with the following command:
+Finally, update the contract agreement id in the [request body](resources/start-transfer.json) and execute a file transfer with the following command:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @advanced/advanced-01-open-telemetry/filetransfer.json "http://localhost:9192/management/v2/transferprocesses"
+curl -H "X-Api-Key: password" \
+  -H "Content-Type: application/json" \
+  -d @advanced/advanced-01-open-telemetry/resources/start-transfer.json \
+  -X POST "http://localhost:29193/management/v2/transferprocesses"
 ```
 
 You can access the Jaeger UI on your browser at `http://localhost:16686`. In the search tool, we can select the service
