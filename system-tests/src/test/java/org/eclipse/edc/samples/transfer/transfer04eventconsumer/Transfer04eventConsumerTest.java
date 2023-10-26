@@ -38,14 +38,14 @@ import static org.eclipse.edc.samples.transfer.transfer01negotiation.Negotiation
 
 @EndToEndTest
 public class Transfer04eventConsumerTest {
-    private static final String CONNECTOR_MODULE_PATH = ":transfer:transfer-04-event-consumer:consumer-with-listener";
+    private static final String CONSUMER_WITH_LISTENER_MODULE_PATH = ":transfer:transfer-04-event-consumer:consumer-with-listener";
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
 
     @RegisterExtension
     static EdcRuntimeExtension provider = getProvider();
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = getConsumer(CONNECTOR_MODULE_PATH);
+    static EdcRuntimeExtension consumer = getConsumer(CONSUMER_WITH_LISTENER_MODULE_PATH);
 
     @Container
     static DockerComposeContainer<?> httpRequestLoggerContainer = getHttpRequestLoggerContainer();
