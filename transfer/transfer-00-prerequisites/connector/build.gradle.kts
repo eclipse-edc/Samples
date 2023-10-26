@@ -19,15 +19,11 @@ plugins {
 }
 
 dependencies {
-
     implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)
-
     implementation(libs.edc.dsp)
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.vault.filesystem)
-
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane)
@@ -40,7 +36,6 @@ dependencies {
     implementation(libs.edc.data.plane.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
-
 }
 
 application {
