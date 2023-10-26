@@ -12,13 +12,11 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer05opentelemetry;
+package org.eclipse.edc.samples.advanced.advanced00opentelemetry;
 
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.samples.transfer.FileTransferCommon;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -36,12 +34,16 @@ import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContent
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createAsset;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createContractDefinition;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createPolicy;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.getContractAgreementId;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.negotiateContract;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.*;
 
 @EndToEndTest
 @Testcontainers
-public class Transfer05openTelemetryTest {
+public class Advanced00openTelemetryTest {
 
     private static final String DOCKER_COMPOSE_YAML = "advanced/advanced-01-open-telemetry/docker-compose.yaml";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/negotiate-contract.json";

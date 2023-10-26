@@ -1,3 +1,17 @@
+/*
+ *  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
+ *
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Apache License, Version 2.0 which is available at
+ *  https://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  SPDX-License-Identifier: Apache-2.0
+ *
+ *  Contributors:
+ *       Mercedes-Benz Tech Innovation GmbH - Initial implementation
+ *
+ */
+
 package org.eclipse.edc.samples.transfer.transfer01negotiation;
 
 
@@ -6,7 +20,10 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.TransferUtil.*;
+import static org.eclipse.edc.samples.transfer.TransferUtil.POLL_INTERVAL;
+import static org.eclipse.edc.samples.transfer.TransferUtil.TIMEOUT;
+import static org.eclipse.edc.samples.transfer.TransferUtil.get;
+import static org.eclipse.edc.samples.transfer.TransferUtil.post;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.PROVIDER_MANAGEMENT_URL;
 

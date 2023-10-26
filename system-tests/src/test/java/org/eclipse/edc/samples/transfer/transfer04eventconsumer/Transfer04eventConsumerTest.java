@@ -27,12 +27,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.*;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
 
 @EndToEndTest
 public class Transfer04eventConsumerTest {

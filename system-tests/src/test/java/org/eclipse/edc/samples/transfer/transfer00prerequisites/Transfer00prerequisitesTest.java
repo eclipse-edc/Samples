@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2022 Microsoft Corporation
+ *  Copyright (c) 2023 Mercedes-Benz Tech Innovation GmbH
  *
  *  This program and the accompanying materials are made available under the
  *  terms of the Apache License, Version 2.0 which is available at
@@ -8,7 +8,7 @@
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Contributors:
- *       Microsoft Corporation - initial test implementation for sample
+ *       Mercedes-Benz Tech Innovation GmbH - Initial implementation
  *
  */
 
@@ -19,7 +19,10 @@ import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.*;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.registerDataPlaneConsumer;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.registerDataPlaneProvider;
 
 @EndToEndTest
 public class Transfer00prerequisitesTest {
