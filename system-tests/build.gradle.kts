@@ -35,6 +35,8 @@ dependencies {
     testCompileOnly(project(":basic:basic-03-configuration"))
 
     testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
+    testCompileOnly(project(":transfer:transfer-04-event-consumer:consumer-with-listener"))
+    testCompileOnly(project(":transfer:transfer-04-event-consumer:listener"))
     testCompileOnly(project(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
 
