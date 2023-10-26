@@ -18,12 +18,6 @@ import org.eclipse.edc.connector.transfer.spi.observe.TransferProcessListener;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.spi.monitor.Monitor;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import static java.lang.String.format;
-
 public class TransferProcessStartedListener implements TransferProcessListener {
 
     private final Monitor monitor;

@@ -30,10 +30,10 @@ import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContent
 import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
+import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
 
 @EndToEndTest
 @Testcontainers

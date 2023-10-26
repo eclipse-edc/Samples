@@ -34,12 +34,12 @@ import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContent
 import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
+import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createAsset;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.getContractAgreementId;
 import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.negotiateContract;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
 
 @EndToEndTest
 @Testcontainers
