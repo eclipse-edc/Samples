@@ -1,0 +1,13 @@
+# This wraps the http request logger container in the correct context (project root).
+# Needed for test execution.
+
+version: "3.8"
+
+services:
+  http-request-logger:
+    image: http-request-logger
+    build:
+      context: ../../../../../../../../..
+      dockerfile: util/http-request-logger/Dockerfile
+    ports:
+      - "4000:4000"

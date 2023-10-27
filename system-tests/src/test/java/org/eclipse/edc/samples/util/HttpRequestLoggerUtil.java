@@ -22,7 +22,7 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelat
 
 public class HttpRequestLoggerUtil {
 
-    private static final String HTTP_REQUEST_LOGGER_DOCKER_COMPOSE_FILE_PATH = "util/http-request-logger/docker-compose.yaml";
+    private static final String HTTP_REQUEST_LOGGER_DOCKER_COMPOSE_FILE_PATH = "system-tests/src/test/java/org/eclipse/edc/samples/util/http-request-logger-wrapper.yaml";
 
     private static final String HTTP_REQUEST_LOGGER = "http-request-logger";
 
