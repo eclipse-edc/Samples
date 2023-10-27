@@ -9,10 +9,11 @@
  *
  *  Contributors:
  *       Microsoft Corporation - initial test implementation for sample
+ *       Mercedes-Benz Tech Innovation GmbH - refactor test cases
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;

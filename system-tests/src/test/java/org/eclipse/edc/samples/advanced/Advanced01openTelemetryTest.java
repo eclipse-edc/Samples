@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.advanced.advanced00opentelemetry;
+package org.eclipse.edc.samples.advanced;
 
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
@@ -30,20 +30,20 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
-import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
-import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createAsset;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createContractDefinition;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createPolicy;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.getContractAgreementId;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.negotiateContract;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createAsset;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDefinition;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
+import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreementId;
+import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
+import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
+import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
 @EndToEndTest
 @Testcontainers
-public class Advanced00openTelemetryTest {
+public class Advanced01openTelemetryTest {
 
     private static final String DOCKER_COMPOSE_YAML = "advanced/advanced-01-open-telemetry/docker-compose.yaml";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/negotiate-contract.json";

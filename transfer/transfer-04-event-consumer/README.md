@@ -67,17 +67,7 @@ Run this to build and launch the consumer with listener extension:
 java -Dedc.keystore=transfer/transfer-00-prerequisites/resources/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties -jar transfer/transfer-04-event-consumer/consumer-with-listener/build/libs/connector.jar
 ````
 
-### 2. Register data plane instance for consumer
-
-The data plane has to be registered again for the consumer connector.
-
-```bash
-curl -H 'Content-Type: application/json' \
-     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
-     -X POST "http://localhost:29193/management/v2/dataplanes"
-```
-
-### 3. Negotiate a new contract
+### 2. Negotiate a new contract
 
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
@@ -85,7 +75,7 @@ curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
   -s | jq
 ```
 
-### 4. Get the contract agreement id
+### 3. Get the contract agreement id
 
 ```bash
 curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
@@ -93,7 +83,7 @@ curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract
     -s | jq
 ```
 
-### 5. Perform a file transfer
+### 4. Perform a file transfer
 
 Replace the `contractId` property inside the [request body](../transfer-02-consumer-pull/resources/start-transfer.json) with the contract agreement id from the previous call.
 Afterward run:
@@ -105,7 +95,7 @@ curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
   -s | jq
 ```
 
-### 6. Inspect the logs
+### 5. Inspect the logs
 
 The consumer should spew out logs similar to:
 

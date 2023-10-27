@@ -12,13 +12,13 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.util;
 
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.ToStringConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
 public class HttpRequestLoggerUtil {
 

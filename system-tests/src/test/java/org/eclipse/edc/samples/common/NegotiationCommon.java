@@ -12,20 +12,18 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer01negotiation;
+package org.eclipse.edc.samples.common;
 
 
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.TransferUtil.POLL_INTERVAL;
-import static org.eclipse.edc.samples.transfer.TransferUtil.TIMEOUT;
-import static org.eclipse.edc.samples.transfer.TransferUtil.get;
-import static org.eclipse.edc.samples.transfer.TransferUtil.post;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.PROVIDER_MANAGEMENT_URL;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.util.TransferUtil.POLL_INTERVAL;
+import static org.eclipse.edc.samples.util.TransferUtil.TIMEOUT;
+import static org.eclipse.edc.samples.util.TransferUtil.get;
+import static org.eclipse.edc.samples.util.TransferUtil.post;
 
 public class NegotiationCommon {
 
@@ -43,23 +41,23 @@ public class NegotiationCommon {
     private static final String CONTRACT_AGREEMENT_ID = "'edc:contractAgreementId'";
 
     public static void createAsset() {
-        post(PROVIDER_MANAGEMENT_URL + V2_ASSETS_PATH, getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_ASSETS_PATH, getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH));
     }
 
     public static void createPolicy() {
-        post(PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_POLICY_FILE_PATH));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_POLICY_FILE_PATH));
     }
 
     public static void createContractDefinition() {
-        post(PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_CONTRACT_DEFINITION_FILE_PATH));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_CONTRACT_DEFINITION_FILE_PATH));
     }
 
     public static void fetchCatalog() {
-        post(CONSUMER_MANAGEMENT_URL + V2_CATALOG_REQUEST_PATH, getFileContentFromRelativePath(FETCH_CATALOG_FILE_PATH));
+        post(PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_REQUEST_PATH, getFileContentFromRelativePath(FETCH_CATALOG_FILE_PATH));
     }
 
     public static String negotiateContract(String negotiateContractFilePath) {
-        var contractNegotiationId = post(CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH, getFileContentFromRelativePath(negotiateContractFilePath), CONTRACT_NEGOTIATION_ID);
+        var contractNegotiationId = post(PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH, getFileContentFromRelativePath(negotiateContractFilePath), CONTRACT_NEGOTIATION_ID);
         assertThat(contractNegotiationId).isNotEmpty();
         return contractNegotiationId;
     }
@@ -72,7 +70,7 @@ public class NegotiationCommon {
         return await()
                 .atMost(TIMEOUT)
                 .pollInterval(POLL_INTERVAL)
-                .until(() -> get(CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId, CONTRACT_AGREEMENT_ID), Objects::nonNull);
+                .until(() -> get(PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId, CONTRACT_AGREEMENT_ID), Objects::nonNull);
     }
 
     public static String runNegotiation() {

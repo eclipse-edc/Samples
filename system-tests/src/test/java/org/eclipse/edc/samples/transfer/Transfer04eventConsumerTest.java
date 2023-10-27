@@ -9,10 +9,11 @@
  *
  *  Contributors:
  *       Microsoft Corporation - initial test implementation for sample
+ *       Mercedes-Benz Tech Innovation GmbH - refactor test cases
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer04eventconsumer;
+package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
@@ -27,14 +28,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
-import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
-import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.common.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
+import static org.eclipse.edc.samples.util.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
+import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
+import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
 @EndToEndTest
 public class Transfer04eventConsumerTest {

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.util;
 
 import org.testcontainers.containers.output.ToStringConsumer;
 

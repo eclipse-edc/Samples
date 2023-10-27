@@ -9,16 +9,17 @@
  *
  *  Contributors:
  *       Microsoft Corporation - initial test implementation for sample
+ *       Mercedes-Benz Tech Innovation GmbH - refactor test cases
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer02consumerpull;
+package org.eclipse.edc.samples.transfer;
 
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.eclipse.edc.samples.transfer.HttpRequestLoggerConsumer;
+import org.eclipse.edc.samples.util.HttpRequestLoggerConsumer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -29,17 +30,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.transfer.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
-import static org.eclipse.edc.samples.transfer.TransferUtil.checkTransferStatus;
-import static org.eclipse.edc.samples.transfer.TransferUtil.startTransfer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.API_KEY_HEADER_KEY;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.API_KEY_HEADER_VALUE;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.CONSUMER_PUBLIC_URL;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
+import static org.eclipse.edc.samples.common.NegotiationCommon.runNegotiation;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_PUBLIC_URL;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
+import static org.eclipse.edc.samples.util.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
+import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
+import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 

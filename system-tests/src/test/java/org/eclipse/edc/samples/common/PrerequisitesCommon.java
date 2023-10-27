@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer00prerequisites;
+package org.eclipse.edc.samples.common;
 
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
 public class PrerequisitesCommon {
     public static final String API_KEY_HEADER_KEY = "X-Api-Key";
@@ -65,13 +65,8 @@ public class PrerequisitesCommon {
         registerDataPlane(PROVIDER_MANAGEMENT_URL, REGISTER_DATA_PLANE_PROVIDER_JSON);
     }
 
-    public static void registerDataPlaneConsumer() {
-        registerDataPlane(CONSUMER_MANAGEMENT_URL, REGISTER_DATA_PLANE_CONSUMER_JSON);
-    }
-
     public static void runPrerequisites() {
         registerDataPlaneProvider();
-        registerDataPlaneConsumer();
     }
 
     private static EdcRuntimeExtension getConnector(

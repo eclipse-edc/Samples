@@ -16,7 +16,6 @@ This sample will go through:
 * Running the provider connector
 * Running the consumer connector
 * Registering data plane instance for the provider connector
-* Registering data plane instance for the consumer connector
 
 ## Run the sample
 
@@ -90,16 +89,6 @@ Open a new terminal and execute:
 curl -H 'Content-Type: application/json' \
      -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
      -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
-```
-
-### 4. Register data plane instance for consumer
-
-The same thing that is done for the provider must be done for the consumer
-
-```bash
-curl -H 'Content-Type: application/json' \
-     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
-     -X POST "http://localhost:29193/management/v2/dataplanes"
 ```
 
 The connectors have been configured successfully and are ready to be used.

@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer;
+package org.eclipse.edc.samples.util;
 
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
@@ -22,9 +22,9 @@ import java.time.Duration;
 
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.API_KEY_HEADER_KEY;
-import static org.eclipse.edc.samples.transfer.FileTransferCommon.API_KEY_HEADER_VALUE;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 

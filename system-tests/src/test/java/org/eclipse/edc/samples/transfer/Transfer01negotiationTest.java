@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer01negotiation;
+package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
@@ -20,15 +20,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createAsset;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createContractDefinition;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.createPolicy;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.fetchCatalog;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.getContractAgreementId;
-import static org.eclipse.edc.samples.transfer.transfer01negotiation.NegotiationCommon.negotiateContract;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createAsset;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDefinition;
+import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
+import static org.eclipse.edc.samples.common.NegotiationCommon.fetchCatalog;
+import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreementId;
+import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 
 @EndToEndTest
 public class Transfer01negotiationTest {

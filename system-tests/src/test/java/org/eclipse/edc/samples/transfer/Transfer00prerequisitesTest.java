@@ -12,17 +12,16 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.transfer00prerequisites;
+package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getConsumer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.registerDataPlaneConsumer;
-import static org.eclipse.edc.samples.transfer.transfer00prerequisites.PrerequisitesCommon.registerDataPlaneProvider;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.registerDataPlaneProvider;
 
 @EndToEndTest
 public class Transfer00prerequisitesTest {
@@ -36,6 +35,5 @@ public class Transfer00prerequisitesTest {
     @Test
     void runSampleSteps() {
         registerDataPlaneProvider();
-        registerDataPlaneConsumer();
     }
 }
