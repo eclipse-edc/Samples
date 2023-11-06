@@ -29,7 +29,7 @@ As a pre-requisite, you need to have a http server that runs on port 4000 and lo
 be mandatory to get the EndpointDataReference that will be used to get the data.
 
 ```bash
-docker build -f util/http-request-logger/Dockerfile -t http-request-logger .
+docker build -t http-request-logger util/http-request-logger
 docker run -p 4000:4000 http-request-logger
 ```
 

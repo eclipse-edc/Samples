@@ -18,6 +18,7 @@ package org.eclipse.edc.samples.transfer;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.samples.util.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -49,7 +50,7 @@ public class Transfer04eventConsumerTest {
     static EdcRuntimeExtension consumer = getConsumer(CONSUMER_WITH_LISTENER_MODULE_PATH);
 
     @Container
-    static DockerComposeContainer<?> httpRequestLoggerContainer = getHttpRequestLoggerContainer();
+    static HttpRequestLoggerContainer httpRequestLoggerContainer = getHttpRequestLoggerContainer();
 
     @BeforeAll
     static void setUp() {

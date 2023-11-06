@@ -14,27 +14,31 @@
 
 package org.eclipse.edc.samples.util;
 
-import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.output.ToStringConsumer;
-import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.images.builder.*;
+
+import java.util.*;
 
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
 public class HttpRequestLoggerUtil {
 
-    private static final String HTTP_REQUEST_LOGGER_DOCKER_COMPOSE_FILE_PATH = "system-tests/src/test/java/org/eclipse/edc/samples/util/http-request-logger-wrapper.yaml";
+    private static final String HTTP_REQUEST_LOGGER_DOCKERFILE_PATH = "util/http-request-logger/Dockerfile";
+    private static final String PORT_BINDING = "4000:4000";
 
-    private static final String HTTP_REQUEST_LOGGER = "http-request-logger";
-
-    public static DockerComposeContainer<?> getHttpRequestLoggerContainer() {
-        return new DockerComposeContainer<>(getFileFromRelativePath(HTTP_REQUEST_LOGGER_DOCKER_COMPOSE_FILE_PATH))
-                .withLocalCompose(true)
-                .waitingFor(HttpRequestLoggerUtil.HTTP_REQUEST_LOGGER, Wait.forLogMessage(".*started.*", 1));
+    public static HttpRequestLoggerContainer getHttpRequestLoggerContainer() {
+        var container = new HttpRequestLoggerContainer(getDockerImage());
+        container.setPortBindings(List.of(PORT_BINDING));
+        return container;
     }
 
-    public static DockerComposeContainer<?> getHttpRequestLoggerContainer(ToStringConsumer toStringConsumer) {
+    public static HttpRequestLoggerContainer getHttpRequestLoggerContainer(ToStringConsumer toStringConsumer) {
         return getHttpRequestLoggerContainer()
-                .withLogConsumer(HTTP_REQUEST_LOGGER, toStringConsumer);
+                .withLogConsumer(toStringConsumer);
     }
 
+    private static ImageFromDockerfile getDockerImage() {
+        return new ImageFromDockerfile()
+                .withDockerfile(getFileFromRelativePath(HTTP_REQUEST_LOGGER_DOCKERFILE_PATH).toPath());
+    }
 }
