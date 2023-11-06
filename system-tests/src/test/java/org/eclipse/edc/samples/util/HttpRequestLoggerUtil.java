@@ -15,9 +15,9 @@
 package org.eclipse.edc.samples.util;
 
 import org.testcontainers.containers.output.ToStringConsumer;
-import org.testcontainers.images.builder.*;
+import org.testcontainers.images.builder.ImageFromDockerfile;
 
-import java.util.*;
+import java.util.List;
 
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
