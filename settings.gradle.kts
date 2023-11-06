@@ -46,14 +46,13 @@ include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
 include("transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
 include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 
+// advanced
 include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
-
-include("util:http-request-logger")
-
 
 // modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
 
+include("util:http-request-logger")
+
 include(":system-tests")
-include("advanced")

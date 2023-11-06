@@ -43,7 +43,3 @@ dependencies {
     testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-provider"))
     testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-consumer"))
 }
-
-tasks.test {
-    useJUnitPlatform()
-}
