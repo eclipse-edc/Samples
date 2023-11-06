@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequestDto",
+  "connectorId": "provider",
+  "connectorAddress": "http://provider:19194/protocol",
+  "contractId": "<contract agreement id>",
+  "assetId": "assetId",
+  "protocol": "dataspace-protocol-http",
+  "dataDestination": {
+    "type": "HttpProxy"
+  }
+}
