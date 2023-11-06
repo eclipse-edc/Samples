@@ -33,7 +33,6 @@ import static org.eclipse.edc.samples.common.NegotiationCommon.runNegotiation;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.util.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
@@ -49,7 +48,7 @@ public class Transfer04eventConsumerTest {
     static EdcRuntimeExtension consumer = getConsumer(CONSUMER_WITH_LISTENER_MODULE_PATH);
 
     @Container
-    static HttpRequestLoggerContainer httpRequestLoggerContainer = getHttpRequestLoggerContainer();
+    static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer();
 
     @BeforeAll
     static void setUp() {

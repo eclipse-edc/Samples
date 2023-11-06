@@ -38,7 +38,6 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_PUBLIC
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
-import static org.eclipse.edc.samples.util.HttpRequestLoggerUtil.getHttpRequestLoggerContainer;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 import static org.hamcrest.Matchers.emptyString;
@@ -59,7 +58,7 @@ public class Transfer02consumerPullTest {
     static EdcRuntimeExtension consumer = getConsumer();
 
     @Container
-    public static HttpRequestLoggerContainer httpRequestLoggerContainer = getHttpRequestLoggerContainer(LOG_CONSUMER);
+    public static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer(LOG_CONSUMER);
 
     @BeforeAll
     static void setUp() {
