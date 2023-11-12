@@ -88,7 +88,7 @@ Open a new terminal and execute:
 ```bash
 curl -H 'Content-Type: application/json' \
      -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
-     -X POST "http://localhost:19193/management/v2/dataplanes" | -s | jq
+     -X POST "http://localhost:19193/management/v2/dataplanes" -s | jq
 ```
 
 The connectors have been configured successfully and are ready to be used.
