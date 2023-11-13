@@ -51,7 +51,7 @@ All transfer samples are located in the `advanced` directory.
 
 ## Contributing
 
-See [how to contribute](CONTRIBUTING.md).
+See [how to contribute](https://github.com/eclipse-edc/docs/blob/main/CONTRIBUTING.md).
 
 ## License
 
