@@ -224,7 +224,7 @@ which protocol to use and which offer we want to negotiate. The request body is 
 [contractoffer.json](./contractoffer.json). To start the negotiation, run the following command:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d @policy/policy-01-policy-enforcement/contractoffer.json "http://localhost:9192/api/management/v2/contractnegotiations"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-01-policy-enforcement/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
 ```
 
 You'll get back a UUID. This is the ID of the contract negotiation process which is being asynchronously executed
@@ -236,7 +236,7 @@ Using the ID received in the previous step, we can now view the state of the neg
 of the consumer's data management API:
 
 ```bash
-curl -X GET "http://localhost:9192/api/management/v2/contractnegotiations/<UUID>"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/<UUID>"
 ```
 
 In the response we'll get a description of the negotiation, similar to the following:

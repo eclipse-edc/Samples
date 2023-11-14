@@ -10,6 +10,7 @@ dependencies {
 
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
+    implementation(libs.edc.data.plane.selector.core)
 
     implementation(libs.edc.dsp)
 
@@ -21,7 +22,7 @@ application {
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    exclude("**/pom.properties", "**/pom.xm")
+   // exclude("**/pom.properties", "**/pom.xm")
     mergeServiceFiles()
     archiveFileName.set("provider.jar")
 }

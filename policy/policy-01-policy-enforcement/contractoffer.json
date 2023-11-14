@@ -7,18 +7,18 @@
   "connectorId": "provider",
   "consumerId": "consumer",
   "providerId": "provider",
-  "connectorAddress": "http://localhost:8282/api/protocol",
+  "connectorAddress": "http://localhost:8282/protocol",
   "protocol": "dataspace-protocol-http",
   "offer": {
-    "offerId": "",
-    "assetId": "",
+    "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
+    "assetId": "test-document",
     "policy": {
-      "@id": "",
+      "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
       "@type": "set",
       "odrl:permission": [],
       "odrl:prohibition": [],
       "odrl:obligation": [],
-      "odrl:target": ""
+      "odrl:target": "test-document"
     }
   }
 }

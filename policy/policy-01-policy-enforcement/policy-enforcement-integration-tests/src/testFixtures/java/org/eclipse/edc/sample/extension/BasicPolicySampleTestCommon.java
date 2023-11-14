@@ -35,8 +35,8 @@ import static org.hamcrest.Matchers.not;
 public class BasicPolicySampleTestCommon {
 
     //region constant test settings
-    static final String INITIATE_CONTRACT_NEGOTIATION_URI = "http://localhost:8182/api/v1/management/contractnegotiations";
-    static final String LOOK_UP_CONTRACT_AGREEMENT_URI = "http://localhost:8182/api/v1/management/contractnegotiations/{id}";
+    private static final String INITIATE_CONTRACT_NEGOTIATION_URI = "http://localhost:9192/management/v2/contractnegotiations";
+    private static final String LOOK_UP_CONTRACT_AGREEMENT_URI = "http://localhost:9192/management/v2/contractnegotiations/{id}";
     static final String API_KEY_HEADER_KEY = "X-Api-Key";
     static final String API_KEY_HEADER_VALUE = "password";
     //endregion
