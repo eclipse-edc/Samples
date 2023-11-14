@@ -50,13 +50,13 @@ public class TransferProcessStartedListener implements TransferProcessListener {
 
 ## Run the sample
 
-Assuming your provider connector is still running, we can re-use the existing assets and contract definitions stored on 
+Assuming your provider connector and logging webserver are still running, we can re-use the existing assets and contract definitions stored on 
 provider side. If not, set up your assets and contract definitions as described in the [Negotiation](../transfer-01-negotiation/README.md) 
 chapter.
 
 ### 1. Build & launch the consumer with listener extension
 
-This consumer connector is based on a different build file, hence a new jar file will be produced. 
+This consumer connector is based on a different build file, hence a new JAR file will be built. 
 Make sure to terminate your current consumer connector from the previous chapters. 
 That way we unblock the ports and can reuse the known configuration files and API calls.
 
@@ -109,4 +109,4 @@ DEBUG 2023-10-16T09:29:46.27174 TransferProcess 762b5a0c-43fb-4b8b-8022-669043c8
 If you see the `TransferProcessStartedListener received STARTED event` log message, it means that your event consumer has been
 configured successfully.
 
-[Next Chapter](../transfer-05-open-telemetry/README.md)
+[Next Chapter](../transfer-05-file-transfer-cloud/README.md)

@@ -28,12 +28,10 @@ dependencyResolutionManagement {
     }
 }
 
-// basic
 include(":basic:basic-01-basic-connector")
 include(":basic:basic-02-health-endpoint")
 include(":basic:basic-03-configuration")
 
-// transfer
 include(":transfer:transfer-00-prerequisites:connector")
 
 include(":transfer:transfer-04-event-consumer:consumer-with-listener")
@@ -43,23 +41,20 @@ include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
 include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
 include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
 
-include("transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
-include("transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
+include(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
+include(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
+include(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime")
 
-// advanced
 include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
 
-
-//policy
 include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
 include(":policy:policy-01-policy-enforcement:policy-functions")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-integration-tests")
 
-// modules for code samples ------------------------------------------------------------------------
 include(":other:custom-runtime")
 
-include("util:http-request-logger")
+include(":util:http-request-logger")
 
 include(":system-tests")

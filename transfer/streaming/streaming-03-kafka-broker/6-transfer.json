@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequest",
+  "dataDestination": {
+    "type": "Kafka"
+  },
+  "protocol": "dataspace-protocol-http",
+  "assetId": "stream-asset",
+  "contractId": "{{contract-agreement-id}}",
+  "connectorId": "provider",
+  "connectorAddress": "http://localhost:18182/protocol"
+}
