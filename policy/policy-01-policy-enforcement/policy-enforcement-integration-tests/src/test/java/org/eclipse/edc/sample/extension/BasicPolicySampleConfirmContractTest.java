@@ -31,13 +31,13 @@ import static org.eclipse.edc.sample.extension.BasicPolicySampleTestCommon.getFi
 @EndToEndTest
 public class BasicPolicySampleConfirmContractTest {
 
-    static final String CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-contract-negotiation/policy-contract-negotiation-connector/config.properties";
-    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-contract-negotiation/contractoffer.json";
+    static final String CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-provider/config.properties";
+    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
     static EdcRuntimeExtension connector = new EdcRuntimeExtension(
-            ":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector",
-            "connector",
+            ":policy:policy-01-policy-enforcement:policy-enforcement-provider",
+            "provider",
             Map.of(
                     "edc.fs.config", getFileFromRelativePath(CONNECTOR_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
             )

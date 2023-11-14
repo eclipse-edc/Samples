@@ -30,13 +30,13 @@ import static org.eclipse.edc.sample.extension.BasicPolicySampleTestCommon.getFi
  */
 @EndToEndTest
 public class BasicPolicySampleDeclineContractTest {
-    static final String CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-contract-negotiation/policy-contract-negotiation-connector/config.properties";
-    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-contract-negotiation/policy-contract-negotiation-integration-tests/src/testFixtures/resources/contractoffer.json";
+    static final String CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-provider/config.properties";
+    static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
     static EdcRuntimeExtension connector = new EdcRuntimeExtension(
-            ":policy:policy-01-contract-negotiation:policy-contract-negotiation-connector",
-            "connector",
+            ":policy:policy-01-policy-enforcement:policy-enforcement-provider",
+            "provider",
             Map.of(
                     // Override 'edc.samples.policy-01.constraint.date.start' & 'edc.samples.policy-01.constraint.date.end' implicitly set via property 'edc.fs.config'.
                     "edc.samples.policy-01.constraint.date.start", "2022-01-01T00:00:00.000+02:00",
