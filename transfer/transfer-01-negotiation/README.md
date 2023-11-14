@@ -73,10 +73,10 @@ curl -d @transfer/transfer-01-negotiation/resources/create-policy.json \
 
 ### 3. Create a contract definition on Provider
 
-To ensure an exchange between providers and consumers, the supplier must create a contract offer for
-the good, on the basis of which a contract agreement can be negotiated. The contract definition
+To ensure an exchange between provider and consumer, the provider must create a contract offer for
+the asset, on the basis of which a contract agreement can be negotiated. The contract definition
 associates policies to a selection of assets to generate the contract offers that will be put in the
-catalog. In this case, the selection is empty, so every asset is attached to these policies
+catalog. In this case, the selection is empty, so every asset is attached to these policies.
 
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
@@ -98,7 +98,7 @@ Sample output:
 
 ### 4. How to fetch catalog on consumer side
 
-In order to offer any data, the consumer can fetch the catalog from the provider, that will contain
+In order to request any data, the consumer must fetch the catalog from the provider, which contains
 all the contract offers available for negotiation. In our case, it will contain a single contract
 offer, the so-called "catalog". To get the catalog from the consumer side, you can use the following
 request:
@@ -179,7 +179,7 @@ looks as follows:
    reference
 
 Of course, this is the simplest possible negotiation sequence. Later on, both connectors can also
-send counter offers in addition to just confirming or declining an offer.
+send counteroffers in addition to just confirming or declining an offer.
 
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
@@ -224,7 +224,7 @@ Sample output:
   "edc:state": "FINALIZED",
   "edc:counterPartyAddress": "http://localhost:19194/protocol",
   "edc:callbackAddresses": [],
-  "edc:contractAgreementId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",  <---------
+  "edc:contractAgreementId": "0b3150be-feaf-43bc-91e1-90f050de28bd",  <---------
   "@context": {
     "dct": "https://purl.org/dc/terms/",
     "edc": "https://w3id.org/edc/v0.0.1/ns/",

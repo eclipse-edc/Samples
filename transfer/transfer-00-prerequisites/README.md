@@ -21,8 +21,8 @@ This sample will go through:
 
 ### 1. Build the connector
 
-When we speak of a connector we actually mean a .jar file that is launched on a machine.
-Before we can launch a connector we'll have to build the .jar file.
+When we talk about a connector in the context of Eclipse Dataspace Components, we really mean a JAR file that runs on a machine.
+Before we can run a connector, we need to build the JAR file.
 
 Execute this command in project root:
 
