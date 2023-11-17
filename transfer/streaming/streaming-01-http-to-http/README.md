@@ -84,10 +84,10 @@ The output will be something like:
     },
     "dcat:accessService": "b24dfdbc-d17f-4d6e-9b5c-8fa71dacecfc"
   },
-  "edc:id": "stream-asset",
+  "id": "stream-asset",
   "@context": {
     "dct": "https://purl.org/dc/terms/",
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "dcat": "https://www.w3.org/ns/dcat/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
     "dspace": "https://w3id.org/dspace/v0.8/"

@@ -17,10 +17,9 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.transfer.spi)
-
     testImplementation(libs.edc.junit)
     testImplementation(libs.edc.json.ld)
+    testImplementation(libs.edc.control.plane.spi)
     testImplementation(libs.awaitility)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.restAssured)

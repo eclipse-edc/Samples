@@ -149,7 +149,7 @@ public class Streaming03KafkaToKafkaTest {
                 getFileContentFromRelativePath(SAMPLE_FOLDER.resolve("3-contract-definition.json").toString()));
 
         var destination = Json.createObjectBuilder()
-                .add("type", "Kafka")
+                .add("type", "KafkaBroker")
                 .build();
 
         var transferProcessPrivateProperties = Json.createObjectBuilder()

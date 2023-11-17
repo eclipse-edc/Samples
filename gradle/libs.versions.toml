@@ -57,7 +57,6 @@ edc-transfer-data-plane = { module = "org.eclipse.edc:transfer-data-plane", vers
 edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", version.ref = "edc" }
 edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-receiver", version.ref = "edc" }
 edc-transfer-pull-http-dynamic-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
-edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
 edc-util = { module = "org.eclipse.edc:util", version.ref = "edc" }
 edc-vault-azure = { module = "org.eclipse.edc:vault-azure", version.ref = "edc" }
 edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }

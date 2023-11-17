@@ -1,22 +1,18 @@
 {
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "odrl": "http://www.w3.org/ns/odrl/2/"
   },
   "@type": "NegotiationInitiateRequestDto",
-  "connectorAddress": "http://localhost:18182/protocol",
+  "counterPartyAddress": "http://localhost:18182/protocol",
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
-  "offer": {
-    "offerId": "{{offerId}}",
-    "assetId": "stream-asset",
-    "policy": {
-      "@id": "{{offerId}}",
-      "@type": "use",
-      "odrl:permission": [],
-      "odrl:prohibition": [],
-      "odrl:obligation": [],
-      "odrl:target": "stream-asset"
-    }
-  }
+  "policy": {
+    "@id": "{{offerId}}",
+    "@type": "use",
+    "odrl:permission": [],
+    "odrl:prohibition": [],
+    "odrl:obligation": [],
+    "odrl:target": "stream-asset"
+}
 }

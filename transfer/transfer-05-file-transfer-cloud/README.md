@@ -103,7 +103,7 @@ curl -X POST "http://localhost:9192/management/catalog/request" \
 --header 'X-Api-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "providerUrl": "http://localhost:8282/protocol"
+  "counterPartyAddress": "http://localhost:8282/protocol"
 }'
 ```
 
@@ -118,13 +118,9 @@ curl --location --request POST 'http://localhost:9192/management/v2/contractnego
 --header 'Content-Type: application/json' \
 --data-raw '{
   "connectorId": "provider",
-  "connectorAddress": "http://localhost:8282/protocol",
+  "counterPartyAddress": "http://localhost:8282/protocol",
   "protocol": "dataspace-protocol-http",
-  "offer": {
-    "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
-    "assetId": "1",
-    "policy": { <Copy the first policy from the previous response (the one with "target: 1")> }
-  }
+  "policy": { <Copy the first policy from the previous response (the one with "target: 1")> }
 }'
 ```
 
@@ -152,7 +148,7 @@ curl --location --request POST 'http://localhost:9192/management/v2/transferproc
 --header 'Content-Type: application/json' \
 --data-raw '
 {
-  "connectorAddress": "http://localhost:8282/protocol",
+  "counterPartyAddress": "http://localhost:8282/protocol",
   "protocol": "dataspace-protocol-http",
   "connectorId": "consumer",
   "assetId": "1",

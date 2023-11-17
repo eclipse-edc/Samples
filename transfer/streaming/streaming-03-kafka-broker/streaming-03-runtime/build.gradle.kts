@@ -35,7 +35,6 @@ dependencies {
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
     implementation(libs.edc.data.plane.kafka)
-
 }
 
 application {
