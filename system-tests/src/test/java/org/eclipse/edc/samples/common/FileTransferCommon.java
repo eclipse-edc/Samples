@@ -160,7 +160,7 @@ public class FileTransferCommon {
                 .get(String.format("%s/%s", MANAGEMENT_API_URL + "/v2/transferprocesses", processId))
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .extract().body().jsonPath().getString("'edc:state'");
+                .extract().body().jsonPath().getString("state");
     }
 
     /**
@@ -175,9 +175,9 @@ public class FileTransferCommon {
                 .get(MANAGEMENT_API_URL + "/v2/contractnegotiations/{id}", contractNegotiationId)
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .body("'edc:state'", equalTo("FINALIZED"))
-                .body("'edc:contractAgreementId'", not(emptyString()))
-                .extract().body().jsonPath().getString("'edc:contractAgreementId'")
+                .body("state", equalTo("FINALIZED"))
+                .body("contractAgreementId", not(emptyString()))
+                .extract().body().jsonPath().getString("contractAgreementId")
         );
     }
 

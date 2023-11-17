@@ -91,7 +91,7 @@ Sample output:
 {
   ...
   "@id": "1",
-  "edc:createdAt": 1674578184023,
+  "createdAt": 1674578184023,
   ...
 }
 ```
@@ -142,9 +142,9 @@ Sample output:
         "dcat:accessService": "2a5178c3-c937-4ac2-85be-c46dbc6c5642"
       }
     ],
-    "edc:name": "product description",
-    "edc:id": "assetId",
-    "edc:contenttype": "application/json"
+    "name": "product description",
+    "id": "assetId",
+    "contenttype": "application/json"
   },
   "dcat:service": {
     "@id": "2a5178c3-c937-4ac2-85be-c46dbc6c5642",
@@ -152,10 +152,10 @@ Sample output:
     "dct:terms": "connector",
     "dct:endpointUrl": "http://localhost:19194/protocol"
   },
-  "edc:participantId": "anonymous",
+  "participantId": "anonymous",
   "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "dct": "https://purl.org/dc/terms/",
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
     "dcat": "https://www.w3.org/ns/dcat/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
     "dspace": "https://w3id.org/dspace/v0.8/"
@@ -193,7 +193,7 @@ Sample output:
 {
   ...
   "@id": "254015f3-5f1e-4a59-9ad9-bf0e42d4819e",
-  "edc:createdAt": 1685525281848,
+  "createdAt": 1685525281848,
   ...
 }
 ```
@@ -217,17 +217,17 @@ Sample output:
 
 ```json
 {
-  "@type": "edc:ContractNegotiationDto",
+  "@type": "ContractNegotiationDto",
   "@id": "5ca21b82-075b-4682-add8-c26c9a2ced67",
-  "edc:type": "CONSUMER",
-  "edc:protocol": "dataspace-protocol-http",
-  "edc:state": "FINALIZED",
-  "edc:counterPartyAddress": "http://localhost:19194/protocol",
-  "edc:callbackAddresses": [],
-  "edc:contractAgreementId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",  <---------
+  "type": "CONSUMER",
+  "protocol": "dataspace-protocol-http",
+  "state": "FINALIZED",
+  "counterPartyAddress": "http://localhost:19194/protocol",
+  "callbackAddresses": [],
+  "contractAgreementId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",  <---------
   "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "dct": "https://purl.org/dc/terms/",
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
     "dcat": "https://www.w3.org/ns/dcat/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
     "dspace": "https://w3id.org/dspace/v0.8/"

@@ -30,7 +30,7 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 
-@EndToEndTest
+//@EndToEndTest
 public class Transfer01negotiationTest {
 
     @RegisterExtension

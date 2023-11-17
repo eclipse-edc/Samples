@@ -218,13 +218,9 @@ public class Participant {
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                 .add(TYPE, "ContractRequestDto")
                 .add("providerId", provider.id)
-                .add("connectorAddress", provider.protocolEndpoint.url.toString())
+                .add("counterPartyAddress", provider.protocolEndpoint.url.toString())
                 .add("protocol", DSP_PROTOCOL)
-                .add("offer", createObjectBuilder()
-                        .add("offerId", offerId)
-                        .add("assetId", assetId)
-                        .add("policy", jsonLd.compact(policy).getContent())
-                )
+                .add("policy", jsonLd.compact(policy).getContent())
                 .build();
 
         var negotiationId = managementEndpoint.baseRequest()
@@ -263,7 +259,7 @@ public class Participant {
                 .add("assetId", assetId)
                 .add("contractId", contractAgreementId)
                 .add("connectorId", provider.id)
-                .add("connectorAddress", provider.protocolEndpoint.url.toString())
+                .add("counterPartyAddress", provider.protocolEndpoint.url.toString())
                 .add("privateProperties", privateProperties)
                 .build();
 
@@ -314,7 +310,7 @@ public class Participant {
                 .get("/v2/transferprocesses/{id}/state", id)
                 .then()
                 .statusCode(200)
-                .extract().body().jsonPath().getString("'edc:state'");
+                .extract().body().jsonPath().getString("state");
     }
 
     private String getContractNegotiationState(String id) {
@@ -324,7 +320,7 @@ public class Participant {
                 .get("/v2/contractnegotiations/{id}/state", id)
                 .then()
                 .statusCode(200)
-                .extract().body().jsonPath().getString("'edc:state'");
+                .extract().body().jsonPath().getString("state");
     }
 
 
@@ -351,7 +347,7 @@ public class Participant {
                 .then()
                 .statusCode(200)
                 .extract().body().jsonPath()
-                .getString(format("'edc:%s'", fieldName));
+                .getString(fieldName);
     }
 
     /**
