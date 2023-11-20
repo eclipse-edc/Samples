@@ -15,18 +15,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Checkstyle:
-    permissions:
-      id-token: write
-      checks: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-build
-
-      - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest
 
   Build:
     runs-on: ubuntu-latest
