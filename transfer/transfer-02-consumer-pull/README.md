@@ -1,6 +1,6 @@
 # Implement a simple "Consumer Pull" Http transfer flow
 
-The purpose of this sample is to show a data exchange between 2 connectors, one representing the
+The purpose of this sample is to show a data exchange between two connectors, one representing the
 data provider and the other, the consumer. It's based on a "consumer pull" use case that you can find
 more details
 on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane).
@@ -25,7 +25,7 @@ order.
 
 ### 1. Start a http server
 
-As a pre-requisite, you need to have a http server that runs on port 4000 and logs all the incoming requests, it will
+As a pre-requisite, you need to have a logging webserver that runs on port 4000 and logs all the incoming requests, it will
 be mandatory to get the EndpointDataReference that will be used to get the data.
 
 ```bash
