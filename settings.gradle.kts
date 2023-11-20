@@ -48,11 +48,6 @@ include(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
 include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
 
-include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
-include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
-include(":policy:policy-01-policy-enforcement:policy-functions")
-include(":policy:policy-01-policy-enforcement:policy-enforcement-integration-tests")
-
 include(":other:custom-runtime")
 
 include(":util:http-request-logger")
