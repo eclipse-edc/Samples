@@ -49,7 +49,7 @@ public class HttpRequestLoggerServer {
             System.out.println("Body:");
             System.out.println(new String(exchange.getRequestBody().readAllBytes()));
             System.out.println("=============");
-            exchange.sendResponseHeaders(200, 0);
+            exchange.sendResponseHeaders(200, -1);
         }
     }
 
