@@ -3,11 +3,12 @@
 This sample will show you how you can:
 
 - generate traces with [OpenTelemetry](https://opentelemetry.io) and collect and visualize them with [Jaeger](https://www.jaegertracing.io/)
-- automatically collect metrics from infrastructure, server endpoints and client libraries with [Micrometer](https://micrometer.io)
-  and visualize them with [Prometheus](https://prometheus.io)
+- automatically collect metrics from infrastructure, server endpoints and client libraries
+  with [Micrometer](https://micrometer.io) and visualize them with [Prometheus](https://prometheus.io)
 
 For this, this sample uses the Open Telemetry Java Agent, which dynamically injects bytecode to capture telemetry from
-several popular [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation).
+several
+popular [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation).
 
 In order to visualize and analyze the traces and metrics, we use
 [OpenTelemetry exporters](https://opentelemetry.io/docs/instrumentation/js/exporters/) to export data into the Jaeger
@@ -18,22 +19,21 @@ tracing backend and a Prometheus endpoint.
 We will use a single docker-compose to run the consumer, the provider, and a Jaeger backend.
 Let's have a look to the [docker-compose.yaml](docker-compose.yaml). We created a consumer and a provider service with
 entry points specifying the OpenTelemetry Java Agent as a JVM parameter.
-In addition, the [Jaeger exporter](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#jaeger-exporter)
+In addition,
+the [Jaeger exporter](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#jaeger-exporter)
 is configured using environmental variables as required by OpenTelemetry. The
 [Prometheus exporter](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#prometheus-exporter)
 is configured to expose a Prometheus metrics endpoint.
 
 To run the consumer, the provider, and Jaeger execute the following commands in the project root folder:
 
-```bash
-docker-compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
+```shell
+docker compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
-Open a new terminal.
+Open a new terminal and register the dataplane for the provider and consumer:
 
-Register data planes for provider and consumer:
-
-```bash
+```shell
 curl -H 'Content-Type: application/json' \
   -H "X-Api-Key: password" \
   -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
@@ -41,7 +41,7 @@ curl -H 'Content-Type: application/json' \
   -s | jq
 ```
 
-```bash
+```shell
 curl -H 'Content-Type: application/json' \
   -H "X-Api-Key: password" \
   -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
@@ -49,36 +49,91 @@ curl -H 'Content-Type: application/json' \
   -s | jq
 ```
 
-Create an asset:
+Then use these three calls to create the Asset, the Policy Definition and the Contract Definition:
 
-```bash
+```shell
 curl -H "X-Api-Key: password" \
   -d @transfer/transfer-01-negotiation/resources/create-asset.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
   -s | jq
 ```
 
-Create a Policy on the provider connector:
-
-```bash
+```shell
 curl -H "X-Api-Key: password" \
   -d @transfer/transfer-01-negotiation/resources/create-policy.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/policydefinitions \
   -s | jq
 ```
 
-Follow up with the creation of a contract definition:
-
-```bash
+```shell
 curl -H "X-Api-Key: password" \
   -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/contractdefinitions \
   -s | jq
 ```
 
-Start a contract negotiation:
+### Negotiate the contract
 
-```bash
+The typical flow requires fetching the catalog from the consumer side and using the contract offer to negotiate a
+contract. However, in this sample case, we already have the provider asset `assetId` so we can get the related dataset
+directly with this call:
+
+
+```shell
+curl -H "X-Api-Key: password" \
+  -H "Content-Type: application/json" \
+  -d @advanced/advanced-01-open-telemetry/resources/get-dataset.json \
+  -X POST "http://localhost:29193/management/v2/catalog/dataset/request" \
+  -s | jq
+```
+
+The output will be something like:
+
+```json
+{
+  "@id": "assetId",
+  "@type": "dcat:Dataset",
+  "odrl:hasPolicy": {
+    "@id": "MQ==:YXNzZXRJZA==:YjI5ZDVkZDUtZWU0Mi00NWRiLWE2OTktYjNmMjlmMWNjODk3",
+    "@type": "odrl:Set",
+    "odrl:permission": [],
+    "odrl:prohibition": [],
+    "odrl:obligation": [],
+    "odrl:target": "assetId"
+  },
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpProxy"
+      },
+      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData"
+      },
+      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+    }
+  ],
+  "edc:name": "product description",
+  "edc:id": "assetId",
+  "edc:contenttype": "application/json",
+  "@context": {
+    "dct": "https://purl.org/dc/terms/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
+}
+```
+
+With the `odrl:hasPolicy/@id` we can now replace it in the [negotiate-contract.json](resources/negotiate-contract.json) file
+and request the contract negotiation:
+
+```shell
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/negotiate-contract.json \
@@ -86,20 +141,24 @@ curl -H "X-Api-Key: password" \
   -s | jq
 ```
 
-Wait until the negotiation is in `FINALIZED` state and call
+At this point the contract agreement should already been issued, to verify that, please check the contract negotiation
+state with this call, replacing `{{contract-negotiation-id}}` with the id returned by the negotiate contract call.
 
-```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:29193/management/v2/contractnegotiations/{UUID}"
+```shell
+curl -H 'X-Api-Key: password' \
+  -X GET "http://localhost:29193/management/v2/contractnegotiations/{{contract-negotiation-id}}" \
+  -s | jq
 ```
-to get the contract agreement id.
 
-Finally, update the contract agreement id in the [request body](resources/start-transfer.json) and execute a file transfer with the following command:
+Finally, update the contract agreement id in the [start-transfer.json](resources/start-transfer.json) and execute a file
+transfer with the following command:
 
-```bash
+```shell
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/start-transfer.json \
-  -X POST "http://localhost:29193/management/v2/transferprocesses"
+  -X POST "http://localhost:29193/management/v2/transferprocesses" \
+  -s | jq
 ```
 
 You can access the Jaeger UI on your browser at `http://localhost:16686`. In the search tool, we can select the service
@@ -112,18 +171,21 @@ Example contract negotiation trace:
 Example file transfer trace:
 ![File transfer](attachments/file-transfer-trace.png)
 
-OkHttp and Jetty are part of the [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation)
+OkHttp and Jetty are part of
+the [libraries and frameworks](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation)
 that OpenTelemetry can capture telemetry from. We can observe spans related to OkHttp and Jetty as EDC uses both
-frameworks internally. The `otel.library.name` tag of the different spans indicates the framework each span is coming from.
+frameworks internally. The `otel.library.name` tag of the different spans indicates the framework each span is coming
+from.
 
 You can access the Prometheus UI on your browser at `http://localhost:9090`. Click the globe icon near the top right
-corner (Metrics Explorer) and select a metric to display. Metrics include System (e.g. CPU usage), JVM (e.g. memory usage),
-Executor service (call timings and thread pools), and the instrumented OkHttp, Jetty and Jersey libraries (HTTP client and server).
+corner (Metrics Explorer) and select a metric to display. Metrics include System (e.g. CPU usage), JVM (e.g. memory
+usage), Executor service (call timings and thread pools), and the instrumented OkHttp, Jetty and Jersey libraries (HTTP
+client and server).
 
 ## Using another monitoring backend
 
-Other monitoring backends can be plugged in easily with OpenTelemetry. For instance, if you want to use Azure Application
-Insights instead of Jaeger, you can replace the OpenTelemetry Java Agent with the
+Other monitoring backends can be plugged in easily with OpenTelemetry. For instance, if you want to use Azure
+Application Insights instead of Jaeger, you can replace the OpenTelemetry Java Agent with the
 [Application Insights Java Agent](https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#download-the-jar-file),
 which has to be stored in the root folder of this sample as well. The only additional configuration required are the
 `APPLICATIONINSIGHTS_CONNECTION_STRING` and `APPLICATIONINSIGHTS_ROLE_NAME` env variables:
@@ -163,14 +225,17 @@ which has to be stored in the root folder of this sample as well. The only addit
       -jar /app/connector.jar
 ```
 
-The Application Insights Java agent will automatically collect metrics from Micrometer, without any configuration needed.
+The Application Insights Java agent will automatically collect metrics from Micrometer, without any configuration
+needed.
 
 ## Provide your own OpenTelemetry implementation
 
-In order to provide your own OpenTelemetry implementation, you have to "deploy an OpenTelemetry service provider on the class path":
+In order to provide your own OpenTelemetry implementation, you have to "deploy an OpenTelemetry service provider on the
+class path":
 
 - Create a module containing your OpenTelemetry implementation.
-- Add a file in the resource directory META-INF/services. The file should be called `io.opentelemetry.api.OpenTelemetry`.
+- Add a file in the resource directory META-INF/services. The file should be
+  called `io.opentelemetry.api.OpenTelemetry`.
 - Add to the file the fully qualified name of your custom OpenTelemetry implementation class.
 
 EDC uses a [ServiceLoader](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html)
@@ -179,5 +244,3 @@ it, otherwise it will use the registered global OpenTelemetry. You can look at t
 `Deploying service providers on the class path` of the
 [ServiceLoader documentation](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html)
 to have more information about service providers.
-
----
