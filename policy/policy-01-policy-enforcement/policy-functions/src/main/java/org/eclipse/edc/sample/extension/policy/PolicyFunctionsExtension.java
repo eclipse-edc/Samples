@@ -28,7 +28,6 @@ import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
-import org.eclipse.edc.spi.asset.AssetSelectorExpression;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
@@ -158,7 +157,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
                 .id("1")
                 .accessPolicyId(accessPolicy.getUid())
                 .contractPolicyId(contractPolicy.getUid())
-                .assetsSelectorCriterion(Criterion.criterion(Asset.PROPERTY_ID,"=", "test-document"))
+                .assetsSelectorCriterion(Criterion.criterion(Asset.PROPERTY_ID, "=", "test-document"))
                 .build();
         contractDefinitionStore.save(contractDefinition);
     }
