@@ -26,7 +26,7 @@ is configured to expose a Prometheus metrics endpoint.
 To run the consumer, the provider, and Jaeger execute the following commands in the project root folder:
 
 ```bash
-docker-compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
+docker compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
 Open a new terminal.
@@ -76,7 +76,63 @@ curl -H "X-Api-Key: password" \
   -s | jq
 ```
 
-Start a contract negotiation:
+The typical flow requires fetching the catalog from the consumer side and using the contract offer to negotiate a
+contract. However, in this sample case, we already have the provider asset `assetId` so we can get the related dataset
+directly with this call:
+
+```shell
+curl -H "X-Api-Key: password" \
+  -H "Content-Type: application/json" \
+  -d @advanced/advanced-01-open-telemetry/resources/get-dataset.json \
+  -X POST "http://localhost:29193/management/v2/catalog/dataset/request" \
+  -s | jq
+```
+
+The output will be something like:
+
+```json
+{
+  "@id": "assetId",
+  "@type": "dcat:Dataset",
+  "odrl:hasPolicy": {
+    "@id": "MQ==:YXNzZXRJZA==:YjI5ZDVkZDUtZWU0Mi00NWRiLWE2OTktYjNmMjlmMWNjODk3",
+    "@type": "odrl:Set",
+    "odrl:permission": [],
+    "odrl:prohibition": [],
+    "odrl:obligation": [],
+    "odrl:target": "assetId"
+  },
+  "dcat:distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpProxy"
+      },
+      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "dct:format": {
+        "@id": "HttpData"
+      },
+      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+    }
+  ],
+  "edc:name": "product description",
+  "edc:id": "assetId",
+  "edc:contenttype": "application/json",
+  "@context": {
+    "dct": "https://purl.org/dc/terms/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
+}
+```
+
+With the `odrl:hasPolicy/@id` we can now replace it in the [negotiate-contract.json](resources/negotiate-contract.json) file
+and request the contract negotiation:
 
 ```bash
 curl -H "X-Api-Key: password" \
@@ -86,20 +142,23 @@ curl -H "X-Api-Key: password" \
   -s | jq
 ```
 
-Wait until the negotiation is in `FINALIZED` state and call
+At this point the contract agreement should already been issued, to verify that, please check the contract negotiation
+state with this call, replacing `{{contract-negotiation-id}}` with the id returned by the negotiate contract call.
 
-```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:29193/management/v2/contractnegotiations/{UUID}"
+```shell
+curl -H 'X-Api-Key: password' \
+  -X GET "http://localhost:29193/management/v2/contractnegotiations/{{contract-negotiation-id}}" \
+  -s | jq
 ```
-to get the contract agreement id.
 
-Finally, update the contract agreement id in the [request body](resources/start-transfer.json) and execute a file transfer with the following command:
+Finally, update the contract agreement id in the [start-transfer.json](resources/start-transfer.json) and execute a file transfer with the following command:
 
 ```bash
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/start-transfer.json \
-  -X POST "http://localhost:29193/management/v2/transferprocesses"
+  -X POST "http://localhost:29193/management/v2/transferprocesses" \
+  -s | jq
 ```
 
 You can access the Jaeger UI on your browser at `http://localhost:16686`. In the search tool, we can select the service
