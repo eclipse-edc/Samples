@@ -49,6 +49,14 @@ Click the link above to learn about the transfer samples in more detail.
 
 All transfer samples are located in the `advanced` directory.
 
+### [Policy](./policy/README.md)
+
+These samples deal with the topic of policies and their evaluation and enforcement. They will teach you what
+configurations you need to make to enable the evaluation of specific policy rules and constraint and how to provide
+custom code for their enforcement.
+
+All policy samples are located in the `policy` directory.
+
 ## Contributing
 
 See [how to contribute](https://github.com/eclipse-edc/docs/blob/main/CONTRIBUTING.md).
