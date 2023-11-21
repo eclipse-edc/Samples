@@ -62,7 +62,7 @@ Sample output:
 {
   ...
   "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "edc:createdAt": 1674078357807,
+  "createdAt": 1674078357807,
   ...
 }
 ```
@@ -82,7 +82,7 @@ You should see the Transfer Process in `STARTED` state:
 {
   ...
   "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "edc:state": "STARTED",
+  "state": "STARTED",
   ...
 }
 

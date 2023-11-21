@@ -17,19 +17,21 @@ package org.eclipse.edc.samples.streaming;
 import org.eclipse.edc.connector.transfer.spi.flow.DataFlowController;
 import org.eclipse.edc.connector.transfer.spi.types.DataFlowResponse;
 import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
-import org.eclipse.edc.dataplane.kafka.schema.KafkaDataAddressSchema;
+import org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.jetbrains.annotations.NotNull;
 
+import static org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema.KAFKA_TYPE;
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
 class KafkaToKafkaDataFlowController implements DataFlowController {
+
     @Override
     public boolean canHandle(TransferProcess transferProcess) {
-        return "Kafka".equals(transferProcess.getContentDataAddress().getType()) && "Kafka".equals(transferProcess.getDestinationType());
+        return KAFKA_TYPE.equals(transferProcess.getContentDataAddress().getType()) && "KafkaBroker".equals(transferProcess.getDestinationType());
     }
 
     @Override
@@ -45,11 +47,17 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
                 .property(EndpointDataReference.ENDPOINT, contentDataAddress.getStringProperty("kafka.bootstrap.servers"))
                 .property(EndpointDataReference.AUTH_KEY, username)
                 .property(EndpointDataReference.AUTH_CODE, password)
+                .property(EndpointDataReference.CONTRACT_ID, transferProcess.getContractId())
                 .property(EDC_NAMESPACE + KafkaDataAddressSchema.TOPIC, contentDataAddress.getStringProperty(KafkaDataAddressSchema.TOPIC))
                 .build();
 
         return StatusResult.success(DataFlowResponse.Builder.newInstance().dataAddress(kafkaDataAddress).build());
     }
 
-    // TODO: terminate data flow method will available in the next EDC version, it will permit to remove permissions to the user to access the topic
+    @Override
+    public StatusResult<Void> terminate(TransferProcess transferProcess) {
+        // here the flow can be terminated, not something covered in this sample
+        return StatusResult.success();
+    }
+
 }

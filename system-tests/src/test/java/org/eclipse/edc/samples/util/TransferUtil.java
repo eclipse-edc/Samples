@@ -37,7 +37,7 @@ public class TransferUtil {
     private static final String TRANSFER_PROCESS_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID_KEY = "<contract agreement id>";
     private static final String V2_TRANSFER_PROCESSES_PATH = "/v2/transferprocesses/";
-    private static final String EDC_STATE = "'edc:state'";
+    private static final String EDC_STATE = "state";
 
     public static void get(String url) {
         given()
@@ -46,8 +46,7 @@ public class TransferUtil {
                 .when()
                 .get(url)
                 .then()
-                .log()
-                .ifError()
+                .log().ifError()
                 .statusCode(HttpStatus.SC_OK);
     }
 
@@ -58,8 +57,7 @@ public class TransferUtil {
                 .when()
                 .get(url)
                 .then()
-                .log()
-                .ifError()
+                .log().ifError()
                 .statusCode(HttpStatus.SC_OK)
                 .body(jsonPath, not(emptyString()))
                 .extract()
@@ -75,8 +73,7 @@ public class TransferUtil {
                 .when()
                 .post(url)
                 .then()
-                .log()
-                .ifError()
+                .log().ifError()
                 .statusCode(HttpStatus.SC_OK);
     }
 
@@ -88,8 +85,7 @@ public class TransferUtil {
                 .when()
                 .post(url)
                 .then()
-                .log()
-                .ifError()
+                .log().ifError()
                 .statusCode(HttpStatus.SC_OK)
                 .body(jsonPath, not(emptyString()))
                 .extract()

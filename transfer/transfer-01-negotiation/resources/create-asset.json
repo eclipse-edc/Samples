@@ -1,13 +1,11 @@
 {
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
-  "asset": {
-    "@id": "assetId",
-    "properties": {
-      "name": "product description",
-      "contenttype": "application/json"
-    }
+  "@id": "assetId",
+  "properties": {
+    "name": "product description",
+    "contenttype": "application/json"
   },
   "dataAddress": {
     "type": "HttpData",

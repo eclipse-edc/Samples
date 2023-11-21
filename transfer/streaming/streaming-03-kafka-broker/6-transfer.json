@@ -4,7 +4,7 @@
   },
   "@type": "TransferRequest",
   "dataDestination": {
-    "type": "Kafka"
+    "type": "KafkaBroker"
   },
   "protocol": "dataspace-protocol-http",
   "assetId": "stream-asset",

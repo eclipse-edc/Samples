@@ -1,6 +1,6 @@
 {
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/"
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "TransferRequest",
   "dataDestination": {
@@ -11,5 +11,5 @@
   "assetId": "stream-asset",
   "contractId": "{{contract-agreement-id}}",
   "connectorId": "provider",
-  "connectorAddress": "http://localhost:18182/protocol"
+  "counterPartyAddress": "http://localhost:18182/protocol"
 }
