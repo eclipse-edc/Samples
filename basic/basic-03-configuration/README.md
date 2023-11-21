@@ -3,8 +3,8 @@
 So far we have not had any way to configure our system other than directly modifying code, which generally is not an
 elegant way.
 
-The Eclipse Dataspace Connector exposes configuration through its `ConfigurationExtension` interface. That is a "
-special" extension in that sense that it gets loaded at a very early stage. There is also a default implementation
+The Eclipse Dataspace Connector exposes configuration through its `ConfigurationExtension` interface. That is a 
+special extension in that sense that it gets loaded at a very early stage. There is also a default implementation
 named [`FsConfigurationExtension.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/configuration/configuration-filesystem/src/main/java/org/eclipse/edc/configuration/filesystem/FsConfigurationExtension.java)
 which uses a standard Java properties file to store configuration entries.
 
@@ -21,14 +21,14 @@ dependencies {
 
 We compile and run the application with:
 
-```bash
+```shell
 ./gradlew clean basic:basic-03-configuration:build
 java -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
 
 you will notice an additional log line stating that the "configuration file does not exist":
 
-```bash
+```shell
 INFO 2021-09-07T08:26:08.282159 Configuration file does not exist: dataspaceconnector-configuration.properties. Ignoring.
 ```
 
@@ -41,7 +41,7 @@ file is configurable using the `edc.fs.config` property, so we can customize thi
 First, create a properties file in a location of your convenience,
 e.g. `/etc/eclipse/dataspaceconnector/config.properties`.
 
-```bash
+```shell
 mkdir -p /etc/eclipse/dataspaceconnector
 touch /etc/eclipse/dataspaceconnector/config.properties
 ```
@@ -56,17 +56,16 @@ web.http.port=9191
 An example file can be found [here](config.properties). Clean, rebuild and run the connector again, but this time
 passing the path to the config file:
 
-```bash
+```shell
 java -Dedc.fs.config=/etc/eclipse/dataspaceconnector/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
 ```
 
 Observing the log output we now see that the connector's REST API is exposed on port `9191` instead:
 
-```bash
+```shell
 INFO 2022-04-27T14:09:10.547662345 HTTP context 'default' listening on port 9191      <-- this is the relevant line
 DEBUG 2022-04-27T14:09:10.589738491 Port mappings: {alias='default', port=9191, path='/api'}   
 INFO 2022-04-27T14:09:10.589846121 Started Jetty Service
-
 ```
 
 ## Add your own configuration value

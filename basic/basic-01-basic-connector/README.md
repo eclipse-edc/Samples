@@ -31,7 +31,7 @@ installation._
 
 If everything works as intended you should see command-line output similar to this:
 
-```bash
+```shell
 INFO 2022-01-13T13:43:57.677973407 Secrets vault not configured. Defaulting to null vault.
 INFO 2022-01-13T13:43:57.680158117 Initialized Null Vault
 INFO 2022-01-13T13:43:57.851181615 Initialized Core Services

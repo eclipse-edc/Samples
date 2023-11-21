@@ -55,7 +55,7 @@ Then put the path in the [asset.json](asset.json) file replacing the `{{sourceFo
 {
   "dataAddress": {
     "type": "HttpStreaming",
-    "sourceFolder": "{{sourceFolder}}"
+    "sourceFolder": "/tmp/source"
   }
 }
 ```

@@ -138,15 +138,14 @@ docker run -p 4000:4000 http-request-logger
 It will run on port 4000.
 
 At this point the contract agreement should already been issued, to verify that, please check the contract negotiation
-state with
-this call, replacing `{{contract-negotiation-id}}` with the id returned by the negotiate contract call.
+state with this call, replacing `{{contract-negotiation-id}}` with the id returned by the negotiate contract call.
 
 ```shell
 curl "http://localhost:28181/management/v2/contractnegotiations/{{contract-negotiation-id}}" -s | jq
 ```
 
 If the `edc:contractAgreementId` is valued, it can be used to start the transfer, replacing it in
-the [6-transfer.json](6-transfer.json)
+the [transfer.json](6-transfer.json)
 file to `{{contract-agreement-id}}` and then calling the connector with this command:
 
 ```shell

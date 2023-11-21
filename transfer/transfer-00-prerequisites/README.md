@@ -26,7 +26,7 @@ Before we can run a connector, we need to build the JAR file.
 
 Execute this command in project root:
 
-```bash
+```shell
 ./gradlew transfer:transfer-00-prerequisites:connector:build
 ```
 
@@ -56,13 +56,13 @@ This property is used to define the endpoint exposed by the control plane to val
 
 To run the provider, just run the following command
 
-```bash
+```shell
 java -Dedc.keystore=transfer/transfer-00-prerequisites/resources/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-00-prerequisites/resources/configuration/provider-vault.properties -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/provider-configuration.properties -jar transfer/transfer-00-prerequisites/connector/build/libs/connector.jar
 ```
 
 To run the consumer, just run the following command (different terminal)
 
-```bash
+```shell
 java -Dedc.keystore=transfer/transfer-00-prerequisites/resources/certs/cert.pfx -Dedc.keystore.password=123456 -Dedc.vault=transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties -jar transfer/transfer-00-prerequisites/connector/build/libs/connector.jar
 ```
 
@@ -85,7 +85,7 @@ request to the management API of the connector.
 
 Open a new terminal and execute:
 
-```bash
+```shell
 curl -H 'Content-Type: application/json' \
      -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
      -X POST "http://localhost:19193/management/v2/dataplanes" -s | jq

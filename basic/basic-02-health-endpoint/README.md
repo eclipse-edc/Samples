@@ -7,7 +7,7 @@ An _extension_ typically consists of two things:
 
 1. a class implementing the `ServiceExtension` interface.
 2. a plugin file in the `src/main/resources/META-INF/services` directory. This file **must** be named exactly as the
-   interface's fully qualified class-name and it **must** contain the fully-qualified name of the implementing class (
+   interface's fully qualified class-name, and it **must** contain the fully-qualified name of the implementing class (
    =plugin class).
 
 Therefore, we require an extension class, which we'll name `HealthEndpointExtension`:
@@ -25,12 +25,13 @@ public class HealthEndpointExtension implements ServiceExtension {
 }
 ```
 
-The `@Inject` annotation indicates that the extension needs a service that is registered by another extension, in 
+The `@Inject` annotation indicates that the extension needs a service that is registered by another extension, in
 this case an implementation of `WebService.class`.
 
 For that, we can use Jakarta REST annotations to implement a simple REST API:
 
 ```java
+
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 @Path("/")
@@ -53,7 +54,7 @@ public class HealthApiController {
 
 Once we compile and run the application with
 
-```bash
+```shell
 ./gradlew clean basic:basic-02-health-endpoint:build
 java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar
 ```
@@ -66,8 +67,7 @@ and can be configured using the `web.http.port` property (more on that in the ne
 this whenever you have two connectors running on the same machine.
 
 Also, the default path is `/api/*`, which is defined in
-[`JettyConfiguration.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyConfiguration.java)
-.
+[`JettyConfiguration.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyConfiguration.java).
 
 ---
 

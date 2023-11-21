@@ -41,7 +41,7 @@ of resources offered, through a contract offer, the so-called "catalog".
 
 The following [request](resources/create-asset.json) creates an asset on the provider connector.
 
-```bash
+```shell
 curl -d @transfer/transfer-01-negotiation/resources/create-asset.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
   -s | jq
@@ -65,7 +65,7 @@ to keep things simple, we will choose a policy that gives direct access to all t
 associated within the contract definitions.
 This means that the consumer connector can request any asset from the provider connector.
 
-```bash
+```shell
 curl -d @transfer/transfer-01-negotiation/resources/create-policy.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/policydefinitions \
   -s | jq
@@ -78,21 +78,18 @@ the asset, on the basis of which a contract agreement can be negotiated. The con
 associates policies to a selection of assets to generate the contract offers that will be put in the
 catalog. In this case, the selection is empty, so every asset is attached to these policies.
 
-```bash
+```shell
 curl -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
   -H 'content-type: application/json' http://localhost:19193/management/v2/contractdefinitions \
   -s | jq
-
 ```
 
-Sample output:
+Part of sample output:
 
 ```json
 {
-  ...
   "@id": "1",
-  "edc:createdAt": 1674578184023,
-  ...
+  "edc:createdAt": 1674578184023
 }
 ```
 
@@ -103,7 +100,7 @@ all the contract offers available for negotiation. In our case, it will contain 
 offer, the so-called "catalog". To get the catalog from the consumer side, you can use the following
 request:
 
-```bash
+```shell
 curl -X POST "http://localhost:29193/management/v2/catalog/request" \
     -H 'Content-Type: application/json' \
     -d @transfer/transfer-01-negotiation/resources/fetch-catalog.json -s | jq
@@ -181,20 +178,18 @@ looks as follows:
 Of course, this is the simplest possible negotiation sequence. Later on, both connectors can also
 send counteroffers in addition to just confirming or declining an offer.
 
-```bash
+```shell
 curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
   -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
   -s | jq
 ```
 
-Sample output:
+Part of sample output:
 
 ```json
 {
-  ...
   "@id": "254015f3-5f1e-4a59-9ad9-bf0e42d4819e",
-  "edc:createdAt": 1685525281848,
-  ...
+  "edc:createdAt": 1685525281848
 }
 ```
 
@@ -207,7 +202,7 @@ state machine. Once both provider and consumer either reach the `confirmed` or t
 state, the negotiation is finished. We can now use the UUID to check the current status of the
 negotiation using an endpoint on the consumer side.
 
-```bash
+```shell
 curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
     --header 'Content-Type: application/json' \
     -s | jq
@@ -224,7 +219,7 @@ Sample output:
   "edc:state": "FINALIZED",
   "edc:counterPartyAddress": "http://localhost:19194/protocol",
   "edc:callbackAddresses": [],
-  "edc:contractAgreementId": "0b3150be-feaf-43bc-91e1-90f050de28bd",  <---------
+  "edc:contractAgreementId": "0b3150be-feaf-43bc-91e1-90f050de28bd",
   "@context": {
     "dct": "https://purl.org/dc/terms/",
     "edc": "https://w3id.org/edc/v0.0.1/ns/",
