@@ -28,7 +28,7 @@ order.
 As a pre-requisite, you need to have a logging webserver that runs on port 4000 and logs all the incoming requests, it will
 be mandatory to get the EndpointDataReference that will be used to get the data.
 
-```bash
+```shell
 docker build -t http-request-logger util/http-request-logger
 docker run -p 4000:4000 http-request-logger
 ```
@@ -39,12 +39,11 @@ In the [request body](resources/start-transfer.json), we need to specify which a
 provider connector and where we want the file transferred.
 Before executing the request, insert the `contractAgreementId` from the previous chapter. Then run:
 
-```bash
+```shell
 curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
   -H "Content-Type: application/json" \
   -d @transfer/transfer-02-consumer-pull/resources/start-transfer.json \
   -s | jq
-
 ```
 
 > the "HttpProxy" method is used for the consumer pull method, and it means that it will be up to
@@ -56,14 +55,12 @@ process id) created on the consumer
 side, because like the contract negotiation, the data transfer is handled in a state machine and
 performed asynchronously.
 
-Sample output:
+Part of sample output:
 
 ```json
 {
-  ...
   "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "edc:createdAt": 1674078357807,
-  ...
+  "edc:createdAt": 1674078357807
 }
 ```
 
@@ -72,20 +69,17 @@ Sample output:
 Due to the nature of the transfer, it will be very fast and most likely already done by the time you
 read the UUID.
 
-```bash
-curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
+```shell
+curl http://localhost:29193/management/v2/transferprocesses/{{transfer-process-id}} -s | jq
 ```
 
-You should see the Transfer Process in `STARTED` state: 
+You should see the Transfer Process in `STARTED` state:
 
 ```json
 {
-  ...
   "@id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "edc:state": "STARTED",
-  ...
+  "edc:state": "STARTED"
 }
-
 ```
 
 > Note that for the consumer pull scenario the TP will stay in STARTED state after the data has been transferred successfully.
@@ -101,28 +95,26 @@ to get the data from the provider:
   "id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
   "endpoint": "http://localhost:29291/public/",
   "authKey": "Authorization",
-  "authCode": "eyJhbGciOiJSUzI1NiJ9.eyJkYWQiOiJ7XCJwcm9wZXJ0aWVzXCI6e1wiYXV0aEtleVwiOlwiQXV0aG9yaXphdGlvblwiLFwiYmFzZVVybFwiOlwiaHR0cDpcL1wvbG9jYWxob3N0OjE5MjkxXC9wdWJsaWNcL1wiLFwiYXV0aENvZGVcIjpcImV5SmhiR2NpT2lKU1V6STFOaUo5LmV5SmtZV1FpT2lKN1hDSndjbTl3WlhKMGFXVnpYQ0k2ZTF3aVltRnpaVlZ5YkZ3aU9sd2lhSFIwY0hNNlhDOWNMMnB6YjI1d2JHRmpaV2h2YkdSbGNpNTBlWEJwWTI5a1pTNWpiMjFjTDNWelpYSnpYQ0lzWENKdVlXMWxYQ0k2WENKVVpYTjBJR0Z6YzJWMFhDSXNYQ0owZVhCbFhDSTZYQ0pJZEhSd1JHRjBZVndpZlgwaUxDSmxlSEFpT2pFMk56UTFPRGcwTWprc0ltTnBaQ0k2SWpFNk1XVTBOemc1TldZdE9UQXlOUzAwT1dVeExUazNNV1F0WldJNE5qVmpNemhrTlRRd0luMC5ITFJ6SFBkT2IxTVdWeWdYZi15a0NEMHZkU3NwUXlMclFOelFZckw5eU1tQjBzQThwMHFGYWV0ZjBYZHNHMG1HOFFNNUl5NlFtNVU3QnJFOUwxSE5UMktoaHFJZ1U2d3JuMVhGVUhtOERyb2dSemxuUkRlTU9ZMXowcDB6T2MwNGNDeFJWOEZoemo4UnVRVXVFODYwUzhqbU4wZk5sZHZWNlFpUVFYdy00QmRTQjNGYWJ1TmFUcFh6bDU1QV9SR2hNUGphS2w3RGsycXpJZ0ozMkhIdGIyQzhhZGJCY1pmRk12aEM2anZ2U1FieTRlZXU0OU1hclEydElJVmFRS1B4ajhYVnI3ZFFkYV95MUE4anNpekNjeWxyU3ljRklYRUV3eHh6Rm5XWmczV2htSUxPUFJmTzhna2RtemlnaXRlRjVEcmhnNjZJZzJPR0Eza2dBTUxtc3dcIixcInByb3h5TWV0aG9kXCI6XCJ0cnVlXCIsXCJwcm94eVF1ZXJ5UGFyYW1zXCI6XCJ0cnVlXCIsXCJwcm94eUJvZHlcIjpcInRydWVcIixcInR5cGVcIjpcIkh0dHBEYXRhXCIsXCJwcm94eVBhdGhcIjpcInRydWVcIn19IiwiZXhwIjoxNjc0NTg4NDI5LCJjaWQiOiIxOjFlNDc4OTVmLTkwMjUtNDllMS05NzFkLWViODY1YzM4ZDU0MCJ9.WhbTzERmM75mNMUG2Sh-8ZW6uDQCus_5uJPvGjAX16Ucc-2rDcOhAxrHjR_AAV4zWjKBHxQhYk2o9jD-9OiYb8Urv8vN4WtYFhxJ09A0V2c6lB1ouuPyCA_qKqJEWryTbturht4vf7W72P37ERo_HwlObOuJMq9CS4swA0GBqWupZHAnF-uPIQckaS9vLybJ-gqEhGxSnY4QAZ9-iwSUhkrH8zY2GCDkzAWIPmvtvRhAs9NqVkoUswG-ez1SUw5bKF0hn2OXv_KhfR8VsKKYUbKDQf5Wagk7rumlYbXMPNAEEagI4R0xiwKWVTfwwZPy_pYnHE7b4GQECz3NjhgdIw",
+  "authCode": "<auth-code>",
   "properties": {
     "cid": "1:1e47895f-9025-49e1-971d-eb865c38d540"
   }
 }
 ```
 
-Once this json is read, use a tool like postman or curl to execute the following query, to read the
-data
+Once this json is read, use a tool like postman or curl to execute the following query, to read the data
 
-```bash
-curl --location --request GET 'http://localhost:29291/public/' --header 'Authorization: <auth code>'
+```shell
+curl --location --request GET 'http://localhost:29291/public/' --header 'Authorization: {{auth-code}}' -s | jq
 ```
 
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
 is the same as the one you can get at https://jsonplaceholder.typicode.com/users
 
-
 Since we configured the `HttpData` with `proxyPath`, we could also ask for a specific user with:
 
-```bash
-curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: <auth code>'
+```shell
+curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: {{auth-code}}' -s | jq
 ```
 
 And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1

@@ -20,7 +20,7 @@ Hashicorp Terraform for deployment and maintenance.
 
 Also, you will need to be logged in to your Azure CLI as well as AWS CLI by entering the following commands in a shell:
 
-```bash
+```shell
 az login
 aws configure
 ```
@@ -33,7 +33,7 @@ and store all access credentials in an Azure Vault (learn more
 
 It's as simple as running the main terraform script:
 
-```bash
+```shell
 cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform init --upgrade
 terraform apply
@@ -48,7 +48,7 @@ It shouldn't take more than a couple of minutes, and when it's done it will log 
 
 Download the certificate used to authenticate the generated service principal against Azure Active Directory:
 
-```bash
+```shell
 terraform output -raw certificate | base64 --decode > cert.pfx
 ```
 
@@ -87,10 +87,12 @@ DataAddress.Builder.newInstance()
 While we have deployed several cloud resources in the previous chapter, the connectors themselves still run locally.
 Thus, we can simply rebuild and run them:
 
-```bash
+```shell
 ./gradlew clean build
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/build/libs/consumer.jar
-# in another terminal window:
+```
+
+```shell
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/build/libs/provider.jar
 ```
 
@@ -98,7 +100,7 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-pro
 
 To request data offers from the provider, run:
 
-```bash
+```shell
 curl -X POST "http://localhost:9192/management/catalog/request" \
 --header 'X-Api-Key: password' \
 --header 'Content-Type: application/json' \
@@ -112,7 +114,7 @@ curl -X POST "http://localhost:9192/management/catalog/request" \
 To negotiate a contract copy one of the contract offers into the statement below and execute it. At the time of writing
 it is only possible to negotiate an _unchanged_ contract, so counter offers are not supported.
 
-```bash
+```shell
 curl --location --request POST 'http://localhost:9192/management/v2/contractnegotiations' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
@@ -146,7 +148,7 @@ The EDC will return the current state of the contract negotiation. When the nego
 To initiate the data transfer, execute the statement below. Please take care of setting the contract agreement id
 obtained at previous step as well as a unique bucket name.
 
-```bash
+```shell
 curl --location --request POST 'http://localhost:9192/management/v2/transferprocesses' \
 --header 'X-API-Key: password' \
 --header 'Content-Type: application/json' \
@@ -176,13 +178,13 @@ This command will return a transfer process id which will used to request the de
 Deprovisioning is not necessary per se, but it will do some cleanup, delete the temporary AWS role and the S3 bucket, so
 it's generally advisable to do it.
 
-```bash
+```shell
 curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/management/v2/transferprocesses/{transferProcessId}/deprovision"
 ```
 
-Finally, run terraform to clean-up the vault and other remaining stuffs:
+Finally, run terraform to clean up the vault and other remaining stuffs:
 
-```bash
+```shell
 cd transfer/transfer-05-file-transfer-cloud/terraform
 terraform destroy
 ```

@@ -10,10 +10,10 @@
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "offer": {
-    "offerId": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
+    "offerId": "{{offerId}}",
     "assetId": "assetId",
     "policy": {
-      "@id": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
+      "@id": "{{offerId}}",
       "@type": "Set",
       "odrl:permission": [],
       "odrl:prohibition": [],
