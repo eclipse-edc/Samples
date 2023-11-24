@@ -17,6 +17,7 @@ plugins {
 }
 
 tasks.withType<Jar> {
+    from(sourceSets["main"].output)
     manifest {
         attributes["Main-Class"] = "org.eclipse.edc.samples.util.HttpRequestLoggerServer"
     }

@@ -114,8 +114,8 @@ curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-htt
 First we need to set up the logging webserver on the consumer side that will receive a call for every message. For this
 you'll need to open another terminal shell and run:
 ```shell
-docker build -t http-request-logger util/http-request-logger
-docker run -p 4000:4000 http-request-logger
+./gradlew util:http-request-logger:build
+HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
 ```
 It will run on port 4000.
 

@@ -148,8 +148,8 @@ First we need to set up the logging webserver on the consumer side that will rec
 the address and credentials to connect to the broker and poll the messages from the topic. For this you'll need to open
 another terminal shell and run:
 ```shell
-docker build -t http-request-logger util/http-request-logger
-docker run -p 4000:4000 http-request-logger
+./gradlew util:http-request-logger:build
+HTTP_SERVER_PORT=4000 java -jar util/http-request-logger/build/libs/http-request-logger.jar
 ```
 It will run on port 4000.
 
