@@ -101,9 +101,9 @@ public class LocationConstraintFunction implements AtomicConstraintFunction<Perm
     
     @Override
     public boolean evaluate(Operator operator, Object rightValue, Permission rule, PolicyContext context) {
-        var region = context.getParticipantAgent().getClaims().get("region");
+        var region = context.getContextData(ParticipantAgent.class).getClaims().get("region");
 
-        monitor.info(format("Evaluating constraint: location {} {}", operator, rightValue.toString()));
+        monitor.info(format("Evaluating constraint: location %s %s", operator, rightValue.toString()));
     
         return switch (operator) {
             case EQ -> Objects.equals(region, rightValue);

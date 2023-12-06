@@ -18,11 +18,15 @@ import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStor
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
 import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
-import org.eclipse.edc.policy.engine.spi.PolicyContext;
-import org.eclipse.edc.policy.engine.spi.PolicyContextImpl;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
-import org.eclipse.edc.policy.model.*;
+import org.eclipse.edc.policy.model.Action;
+import org.eclipse.edc.policy.model.AtomicConstraint;
+import org.eclipse.edc.policy.model.LiteralExpression;
+import org.eclipse.edc.policy.model.Operator;
+import org.eclipse.edc.policy.model.Permission;
+import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.policy.model.PolicyType;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.query.Criterion;
@@ -36,9 +40,6 @@ import java.nio.file.Path;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
 public class PolicyFunctionsExtension implements ServiceExtension {
-    private final String policyTimeKey = "POLICY_EVALUATION_TIME";
-    private final String policyStartDateSetting = "edc.samples.policy-01.constraint.date.start";
-    private final String policyEndDateSetting = "edc.samples.policy-01.constraint.date.end";
     private static final String EDC_ASSET_PATH = "edc.samples.policy-01.asset.path";
     private static final String LOCATION_POLICY_ID = "eu-policy";
     private static final String LOCATION_CONSTRAINT_KEY = "locationConstraints";
@@ -66,11 +67,10 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-        PolicyContext policyContext = new PolicyContextImpl();
 
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
         ruleBindingRegistry.bind("region", ALL_SCOPES);
-        policyEngine.registerFunction(ALL_SCOPES, Permission.class, "region", new LocationConstraintFunction(monitor, policyContext));
+        policyEngine.registerFunction(ALL_SCOPES, Permission.class, "region", new LocationConstraintFunction(monitor));
 
         registerDataEntries(context);
         registerContractDefinition(context);
@@ -80,7 +80,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         context.getMonitor().info("Policy Extension for Policy Sample (contract-negotiation) initialized!");
     }
 
-    private PolicyDefinition createAccessPolicy() {
+    private PolicyDefinition createContractPolicy() {
 
         var usePermission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type("USE").build())
@@ -94,7 +94,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
                 .build();
     }
 
-    private PolicyDefinition createContractPolicy(ServiceExtensionContext context) {
+    private PolicyDefinition createAccessPolicy(ServiceExtensionContext context) {
         var regionSetting = context.getSetting("edc.samples.policy-01.constraint.location.region", "eu");
         var locationConstraint = AtomicConstraint.Builder.newInstance()
                 .leftExpression(new LiteralExpression("region"))
@@ -134,15 +134,13 @@ public class PolicyFunctionsExtension implements ServiceExtension {
 
 
         assetIndex.create(asset);
-
     }
 
-
     private void registerContractDefinition(ServiceExtensionContext context) {
-        var accessPolicy = createAccessPolicy();
+        var accessPolicy = createAccessPolicy(context);
         policyStore.create(accessPolicy);
 
-        var contractPolicy = createContractPolicy(context);
+        var contractPolicy = createContractPolicy();
         policyStore.create(contractPolicy);
 
         var contractDefinition = ContractDefinition.Builder.newInstance()

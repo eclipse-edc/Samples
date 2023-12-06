@@ -27,7 +27,7 @@ import java.util.Date;
 
 public class TimeIntervalFunction implements AtomicConstraintFunction<Permission> {
 
-    private Monitor monitor;
+    private final Monitor monitor;
 
     public TimeIntervalFunction(Monitor monitor) {
         this.monitor = monitor;

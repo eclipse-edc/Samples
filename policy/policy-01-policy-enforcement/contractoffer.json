@@ -17,18 +17,10 @@
       "@type": "set",
       "odrl:permission": [
         {
-          "action": "USE",
-          "constraint": {
-            "operator": "EQ",
-            "rightExpression" :{
-              "value": "us",
-              "dataType": "literal"
-            }
-          }
+          "odrl:action": "USE",
+          "odrl:target": "test-document"
         }
       ],
-      "odrl:prohibition": [],
-      "odrl:obligation": [],
       "odrl:target": "test-document"
     }
   }
