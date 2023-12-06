@@ -15,7 +15,18 @@
     "policy": {
       "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
       "@type": "set",
-      "odrl:permission": [],
+      "odrl:permission": [
+        {
+          "action": "USE",
+          "constraint": {
+            "operator": "EQ",
+            "rightExpression" :{
+              "value": "us",
+              "dataType": "literal"
+            }
+          }
+        }
+      ],
       "odrl:prohibition": [],
       "odrl:obligation": [],
       "odrl:target": "test-document"

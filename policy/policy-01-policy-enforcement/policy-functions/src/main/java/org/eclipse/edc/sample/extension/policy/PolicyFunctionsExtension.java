@@ -18,14 +18,11 @@ import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStor
 import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
 import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
+import org.eclipse.edc.policy.engine.spi.PolicyContext;
+import org.eclipse.edc.policy.engine.spi.PolicyContextImpl;
 import org.eclipse.edc.policy.engine.spi.PolicyEngine;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
-import org.eclipse.edc.policy.model.Action;
-import org.eclipse.edc.policy.model.AtomicConstraint;
-import org.eclipse.edc.policy.model.LiteralExpression;
-import org.eclipse.edc.policy.model.Operator;
-import org.eclipse.edc.policy.model.Permission;
-import org.eclipse.edc.policy.model.Policy;
+import org.eclipse.edc.policy.model.*;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.query.Criterion;
@@ -43,6 +40,8 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     private final String policyStartDateSetting = "edc.samples.policy-01.constraint.date.start";
     private final String policyEndDateSetting = "edc.samples.policy-01.constraint.date.end";
     private static final String EDC_ASSET_PATH = "edc.samples.policy-01.asset.path";
+    private static final String LOCATION_POLICY_ID = "eu-policy";
+    private static final String LOCATION_CONSTRAINT_KEY = "locationConstraints";
 
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
@@ -67,13 +66,16 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
+        PolicyContext policyContext = new PolicyContextImpl();
 
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
-        ruleBindingRegistry.bind(policyTimeKey, ALL_SCOPES);
-        policyEngine.registerFunction(ALL_SCOPES, Permission.class, policyTimeKey, new TimeIntervalFunction(monitor));
+        ruleBindingRegistry.bind("region", ALL_SCOPES);
+        policyEngine.registerFunction(ALL_SCOPES, Permission.class, "region", new LocationConstraintFunction(monitor, policyContext));
 
         registerDataEntries(context);
         registerContractDefinition(context);
+        registerPolicy();
+        registerAsset();
 
         context.getMonitor().info("Policy Extension for Policy Sample (contract-negotiation) initialized!");
     }
@@ -93,30 +95,20 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     }
 
     private PolicyDefinition createContractPolicy(ServiceExtensionContext context) {
-        var startDate = context.getSetting(policyStartDateSetting, "2023-01-01T00:00:00.000+02:00");
-        var notBeforeConstraint = AtomicConstraint.Builder.newInstance()
-                .leftExpression(new LiteralExpression(policyTimeKey))
-                .operator(Operator.GT)
-                .rightExpression(new LiteralExpression(startDate))
+        var regionSetting = context.getSetting("edc.samples.policy-01.constraint.location.region", "eu");
+        var locationConstraint = AtomicConstraint.Builder.newInstance()
+                .leftExpression(new LiteralExpression("region"))
+                .operator(Operator.EQ)
+                .rightExpression(new LiteralExpression(regionSetting))
                 .build();
-
-        var endDate = context.getSetting(policyEndDateSetting, "2023-12-31T00:00:00.000+02:00");
-        var notAfterConstraint = AtomicConstraint.Builder.newInstance()
-                .leftExpression(new LiteralExpression(policyTimeKey))
-                .operator(Operator.LT)
-                .rightExpression(new LiteralExpression(endDate))
-                .build();
-
 
         var permission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type("USE").build())
-                .constraint(notBeforeConstraint)
-                .constraint(notAfterConstraint)
+                .constraint(locationConstraint)
                 .build();
 
-
         return PolicyDefinition.Builder.newInstance()
-                .id("use-time-restricted")
+                .id("use-region-restricted")
                 .policy(Policy.Builder.newInstance()
                         .permission(permission)
                         .build())
@@ -162,4 +154,37 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         contractDefinitionStore.save(contractDefinition);
     }
 
+    private void registerPolicy() {
+        var locationConstraint = AtomicConstraint.Builder.newInstance()
+                .leftExpression(new LiteralExpression(LOCATION_CONSTRAINT_KEY))
+                .operator(Operator.EQ)
+                .rightExpression(new LiteralExpression("eu"))
+                .build();
+        var permission = Permission.Builder.newInstance()
+                .action(Action.Builder.newInstance().type("USE").build())
+                .constraint(locationConstraint)
+                .build();
+        var policyDefinition = PolicyDefinition.Builder.newInstance()
+                .id(LOCATION_POLICY_ID)
+                .policy(Policy.Builder.newInstance()
+                        .type(PolicyType.SET)
+                        .permission(permission)
+                        .build())
+                .build();
+
+        policyStore.create(policyDefinition);
+    }
+
+    private void registerAsset() {
+        var dataAddress = DataAddress.Builder.newInstance()
+                .property("type", "test")
+                .build();
+        var assetId = "test-document";
+        var asset = Asset.Builder.newInstance()
+                .id(assetId)
+                .dataAddress(dataAddress)
+                .build();
+
+        assetIndex.create(asset);
+    }
 }
