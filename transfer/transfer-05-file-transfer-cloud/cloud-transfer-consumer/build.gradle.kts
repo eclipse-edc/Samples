@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.edc.management.api)
 
     implementation(libs.edc.dsp)
+    
+    implementation(libs.edc.data.plane.selector.core)
 }
 
 application {
