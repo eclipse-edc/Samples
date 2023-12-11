@@ -43,7 +43,7 @@ The following [request](resources/create-asset.json) creates an asset on the pro
 
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/create-asset.json \
-  -H 'content-type: application/json' http://localhost:19193/management/v2/assets \
+  -H 'content-type: application/json' http://localhost:19193/management/v3/assets \
   -s | jq
 ```
 
