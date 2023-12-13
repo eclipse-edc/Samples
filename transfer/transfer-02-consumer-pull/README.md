@@ -101,7 +101,7 @@ to get the data from the provider:
   "id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
   "endpoint": "http://localhost:29291/public/",
   "authKey": "Authorization",
-  "authCode": "<auth code>",
+  "authCode": "{{auth-code}}",
   "properties": {
     "cid": "1:1e47895f-9025-49e1-971d-eb865c38d540"
   }

@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Mercedes-Benz Tech Innovation GmbH - Initial implementation
+ *       Fraunhofer Institute for Software and Systems Engineering - use current ids instead of placeholder
  *
  */
 
@@ -35,7 +36,7 @@ public class TransferUtil {
     public static final Duration POLL_INTERVAL = Duration.ofMillis(500);
 
     private static final String TRANSFER_PROCESS_ID = "@id";
-    private static final String CONTRACT_AGREEMENT_ID_KEY = "<contract agreement id>";
+    private static final String CONTRACT_AGREEMENT_ID_KEY = "\\{\\{contract-agreement-id\\}\\}";
     private static final String V2_TRANSFER_PROCESSES_PATH = "/v2/transferprocesses/";
     private static final String EDC_STATE = "state";
 

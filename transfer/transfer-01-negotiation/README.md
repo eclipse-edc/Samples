@@ -208,7 +208,7 @@ state, the negotiation is finished. We can now use the UUID to check the current
 negotiation using an endpoint on the consumer side.
 
 ```bash
-curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
+curl -X GET "http://localhost:29193/management/v2/contractnegotiations/{{contract-negotiation-id}}" \
     --header 'Content-Type: application/json' \
     -s | jq
 ```
