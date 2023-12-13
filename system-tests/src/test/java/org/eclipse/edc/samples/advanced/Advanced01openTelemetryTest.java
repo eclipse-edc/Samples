@@ -36,9 +36,9 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelat
 import static org.eclipse.edc.samples.common.NegotiationCommon.createAsset;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
+import static org.eclipse.edc.samples.common.NegotiationCommon.fetchDatasetFromCatalog;
 import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreementId;
 import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
-import static org.eclipse.edc.samples.common.NegotiationCommon.fetchDatasetFromCatalog;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
