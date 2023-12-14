@@ -78,7 +78,7 @@ curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
 ### 3. Get the contract agreement id
 
 ```bash
-curl -X GET "http://localhost:29193/management/v2/contractnegotiations/<contract negotiation id, returned by the negotiation call>" \
+curl -X GET "http://localhost:29193/management/v2/contractnegotiations/{{contract-negotiation-id}}" \
     --header 'Content-Type: application/json' \
     -s | jq
 ```

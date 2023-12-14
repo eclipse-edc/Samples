@@ -10,7 +10,7 @@
   "protocol": "dataspace-protocol-http",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",
-    "@id": "MQ==:YXNzZXRJZA==:YTc4OGEwYjMtODRlZi00NWYwLTgwOWQtMGZjZTMwMGM3Y2Ey",
+    "@id": "{{contract-negotiation-id}}",
     "@type": "Set",
     "permission": [],
     "prohibition": [],

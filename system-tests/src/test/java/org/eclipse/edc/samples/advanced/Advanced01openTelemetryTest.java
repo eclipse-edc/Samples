@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Mercedes-Benz Tech Innovation GmbH - Sample workflow test
+ *       Fraunhofer Institute for Software and Systems Engineering - use current ids instead of placeholder
  *
  */
 
@@ -19,7 +20,7 @@ import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -35,6 +36,7 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelat
 import static org.eclipse.edc.samples.common.NegotiationCommon.createAsset;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
+import static org.eclipse.edc.samples.common.NegotiationCommon.fetchDatasetFromCatalog;
 import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreementId;
 import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
@@ -46,13 +48,14 @@ import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 public class Advanced01openTelemetryTest {
 
     private static final String DOCKER_COMPOSE_YAML = "advanced/advanced-01-open-telemetry/docker-compose.yaml";
+    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/get-dataset.json";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/negotiate-contract.json";
     private static final String START_TRANSFER_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/start-transfer.json";
     private static final String JAEGER_URL = "http://localhost:16686";
 
     @Container
-    public static DockerComposeContainer<?> environment =
-            new DockerComposeContainer<>(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
+    public static ComposeContainer environment =
+            new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
@@ -67,7 +70,8 @@ public class Advanced01openTelemetryTest {
         createAsset();
         createPolicy();
         createContractDefinition();
-        var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH);
+        var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);
+        var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH, catalogDatasetId);
         var contractAgreementId = getContractAgreementId(contractNegotiationId);
         var transferProcessId = startTransfer(getFileContentFromRelativePath(START_TRANSFER_FILE_PATH), contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
