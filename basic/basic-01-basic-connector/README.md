@@ -5,7 +5,7 @@ A runnable connector consists of a `Runtime` and a build file, in our case this 
 The first thing we need is the `Runtime` which is the main entry point to the connector application, same as with any
 other Java program. In this sample we use the
 [`BaseRuntime`](https://github.com/eclipse-edc/Connector/blob/releases/core/common/boot/src/main/java/org/eclipse/edc/boot/system/runtime/BaseRuntime.java),
-but this can be extended (take a look at the [`custom-runtime`](../../other/custom-runtime) sample for more information)
+but this can be extended (take a look at the [`custom-runtime`](../../advanced/advanced-02-custom-runtime) sample for more information)
 
 The second thing we need is a [gradle build file](build.gradle.kts)
 that contains the essential dependencies. We'll need at least the following things:
