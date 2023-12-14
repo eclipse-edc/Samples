@@ -14,6 +14,7 @@
 
 package org.eclipse.edc.samples.policy;
 
+import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -22,11 +23,11 @@ import java.util.Map;
 
 import static org.eclipse.edc.samples.policy.BasicPolicySampleTestCommon.getFileFromRelativePath;
 
-//@EndToEndTest
+@EndToEndTest
 public class Policy01BasicFinalizedTest {
 
     static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-provider/config.properties";
-    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-consumer/config.properties";
+    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/config-eu.properties";
     static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
