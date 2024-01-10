@@ -181,6 +181,9 @@ looks as follows:
 Of course, this is the simplest possible negotiation sequence. Later on, both connectors can also
 send counteroffers in addition to just confirming or declining an offer.
 
+Please replace the `{{contract-offer-id}}` placeholder in the [`negotiate-contract.json`](resources/negotiate-contract.json)
+file with the contract offer id you found in the catalog at the path `dcat:dataset.odrl:hasPolicy.@id`.
+
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
   -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
@@ -217,7 +220,7 @@ Sample output:
 
 ```json
 {
-  "@type": "ContractNegotiationDto",
+  "@type": "ContractNegotiation",
   "@id": "5ca21b82-075b-4682-add8-c26c9a2ced67",
   "type": "CONSUMER",
   "protocol": "dataspace-protocol-http",
