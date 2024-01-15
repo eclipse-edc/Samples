@@ -41,7 +41,7 @@ public class NegotiationCommon {
     private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v2/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
-    private static final String CONTRACT_NEGOTIATION_ID_KEY = "\\{\\{contract-negotiation-id\\}\\}";
+    private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
 
     public static void createAsset() {
         post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH));
@@ -67,7 +67,7 @@ public class NegotiationCommon {
 
     public static String negotiateContract(String negotiateContractFilePath, String catalogDatasetId) {
         var requestBody = getFileContentFromRelativePath(negotiateContractFilePath)
-                .replaceAll(CONTRACT_NEGOTIATION_ID_KEY, catalogDatasetId);
+                .replace(CONTRACT_OFFER_ID_KEY, catalogDatasetId);
         var contractNegotiationId = post(
                 PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
                 requestBody,

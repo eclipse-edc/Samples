@@ -23,6 +23,7 @@ import java.time.Duration;
 
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
@@ -35,8 +36,7 @@ public class TransferUtil {
     public static final Duration POLL_DELAY = Duration.ofMillis(1000);
     public static final Duration POLL_INTERVAL = Duration.ofMillis(500);
 
-    private static final String TRANSFER_PROCESS_ID = "@id";
-    private static final String CONTRACT_AGREEMENT_ID_KEY = "\\{\\{contract-agreement-id\\}\\}";
+    private static final String CONTRACT_AGREEMENT_ID_KEY = "{{contract-agreement-id}}";
     private static final String V2_TRANSFER_PROCESSES_PATH = "/v2/transferprocesses/";
     private static final String EDC_STATE = "state";
 
@@ -95,8 +95,8 @@ public class TransferUtil {
     }
 
     public static String startTransfer(String requestBody, String contractAgreementId) {
-        requestBody = requestBody.replaceAll(CONTRACT_AGREEMENT_ID_KEY, contractAgreementId);
-        return post(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH, requestBody, TRANSFER_PROCESS_ID);
+        requestBody = requestBody.replace(CONTRACT_AGREEMENT_ID_KEY, contractAgreementId);
+        return post(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH, requestBody, ID);
     }
 
     public static void checkTransferStatus(String transferProcessId, TransferProcessStates status) {
