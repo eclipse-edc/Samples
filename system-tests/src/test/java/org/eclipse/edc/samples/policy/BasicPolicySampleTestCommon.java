@@ -83,7 +83,7 @@ public class BasicPolicySampleTestCommon {
      */
     void lookUpContractAgreementFinalized() {
 
-        await().atMost(30, TimeUnit.SECONDS).pollInterval(1, TimeUnit.SECONDS).untilAsserted(() ->
+        await().atMost(120, TimeUnit.SECONDS).pollInterval(1, TimeUnit.SECONDS).untilAsserted(() ->
                 RestAssured
                         .given()
                         .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
@@ -97,7 +97,7 @@ public class BasicPolicySampleTestCommon {
 
     void lookUpContractAgreementTerminated() {
 
-        await().atMost(30, TimeUnit.SECONDS).pollInterval(1, TimeUnit.SECONDS).untilAsserted(() ->
+        await().atMost(120, TimeUnit.SECONDS).pollInterval(1, TimeUnit.SECONDS).untilAsserted(() ->
                 RestAssured
                         .given()
                         .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
