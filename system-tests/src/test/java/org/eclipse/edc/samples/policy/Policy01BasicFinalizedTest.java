@@ -27,7 +27,7 @@ import static org.eclipse.edc.samples.policy.BasicPolicySampleTestCommon.getFile
 public class Policy01BasicFinalizedTest {
 
     static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-provider/config.properties";
-    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/config-eu.properties";
+    static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-consumer/config-eu.properties";
     static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
