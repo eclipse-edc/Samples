@@ -52,10 +52,8 @@ include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
 include(":policy:policy-01-policy-enforcement:policy-functions")
-include(":policy:policy-01-policy-enforcement:policy-enforcement-integration-tests")
 
 // modules for code samples ------------------------------------------------------------------------
-include(":other:custom-runtime")
 include(":advanced:advanced-02-custom-runtime")
 
 include(":util:http-request-logger")
