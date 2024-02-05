@@ -40,10 +40,12 @@ public class Policy01BasicFinalizedTest {
     static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
-    static EdcRuntimeExtension provider = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-provider", "provider", Map.of("edc.fs.config", getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
+    static EdcRuntimeExtension provider = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-provider",
+            "provider", Map.of("edc.fs.config", getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-consumer", "consumer", Map.of("edc.fs.config", getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
+    static EdcRuntimeExtension consumer = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-consumer",
+            "consumer", Map.of("edc.fs.config", getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
 
     String contractNegotiationId;
 
