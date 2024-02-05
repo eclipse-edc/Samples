@@ -14,23 +14,23 @@
 
 package org.eclipse.edc.samples.policy;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
+
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
 import org.eclipse.edc.junit.testfixtures.TestUtils;
+import org.eclipse.edc.samples.util.TransferUtil;
+import org.hamcrest.Matchers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @EndToEndTest
 public class Policy01BasicTerminatedTest {
@@ -40,22 +40,10 @@ public class Policy01BasicTerminatedTest {
     static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
 
     @RegisterExtension
-    static EdcRuntimeExtension provider = new EdcRuntimeExtension(
-            ":policy:policy-01-policy-enforcement:policy-enforcement-provider",
-            "provider",
-            Map.of(
-                    "edc.fs.config", getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
-            )
-    );
+    static EdcRuntimeExtension provider = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-provider", "provider", Map.of("edc.fs.config", getFileFromRelativePath(PROVIDER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = new EdcRuntimeExtension(
-            ":policy:policy-01-policy-enforcement:policy-enforcement-consumer",
-            "consumer",
-            Map.of(
-                    "edc.fs.config", getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
-            )
-    );
+    static EdcRuntimeExtension consumer = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-consumer", "consumer", Map.of("edc.fs.config", getFileFromRelativePath(CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()));
 
     String contractNegotiationId;
 
@@ -71,35 +59,48 @@ public class Policy01BasicTerminatedTest {
     }
 
     void initiateContractNegotiation(String contractOfferFilePath) {
-        Response response = RestAssured
-                .given()
-                .headers("X-Api-Key", "password")
-                .contentType(ContentType.JSON)
-                .body(new File(TestUtils.findBuildRoot(), contractOfferFilePath))
-                .post("http://localhost:9192/management/v2/contractnegotiations")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract()
-                .response();
+        File file = new File(TestUtils.findBuildRoot(), contractOfferFilePath);
+        String fileContent = readFileContent(file);
 
-        String negotiationId = response.jsonPath().getString("@id");
-        if (negotiationId == null || negotiationId.isEmpty()) {
-            throw new IllegalStateException("Failed to get a valid contract negotiation ID from the response");
+        String url = "http://localhost:9192/management/v2/contractnegotiations";
+        contractNegotiationId = TransferUtil.post(url, fileContent, "@id");
+
+        if (contractNegotiationId == null || contractNegotiationId.isEmpty()) {
+            throw new IllegalStateException("failed to get a valid contract negotiation ID from the response");
         }
+    }
 
-        contractNegotiationId = negotiationId;
+    private String readFileContent(File file) {
+        try {
+            String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+            return content;
+        } catch (IOException e) {
+            throw new RuntimeException("error reading file content", e);
+        }
     }
 
     void lookUpContractAgreementTerminated() {
-        await().atMost(120, TimeUnit.SECONDS).pollInterval(1, TimeUnit.SECONDS).untilAsserted(() ->
-                RestAssured
-                        .given()
-                        .headers("X-Api-Key", "password")
-                        .when()
-                        .get("http://localhost:9192/management/v2/contractnegotiations/{id}", contractNegotiationId)
-                        .then()
-                        .statusCode(HttpStatus.SC_OK)
-                        .body("state", equalTo("TERMINATED"))
-        );
+        String url = "http://localhost:9192/management/v2/contractnegotiations/" + contractNegotiationId;
+        String state = "";
+        final long startTime = System.currentTimeMillis();
+        final long timeout = 300000;
+
+        do {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Thread interrupted", e);
+            }
+
+            state = TransferUtil.get(url, "state");
+
+            if (System.currentTimeMillis() - startTime > timeout) {
+                break;
+            }
+
+        } while (!"TERMINATED".equals(state));
+
+        assertThat(state, Matchers.equalTo("TERMINATED"));
     }
 }
