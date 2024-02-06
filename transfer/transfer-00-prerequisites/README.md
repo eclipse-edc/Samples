@@ -73,15 +73,17 @@ ports `12181`, `19182` (management API) and `19282` (DSP API).
 Running this sample consists of multiple steps, that are executed one by one and following the same
 order.
 
-### 3. Register data plane instance for provider
+### 3. Register data plane instance for provider and consumer
 
 Before a consumer can start talking to a provider, it is necessary to register the data plane
 instance of a connector. This is done by sending a POST request to the management API of the
-provider connector. The [request body](resources/dataplane/register-data-plane-provider.json) should contain the data plane instance of the consumer
-connector.
+provider and consumer connectors. 
 
-The registration of the provider data plane instance is done by sending a POST
-request to the management API of the connector.
+The [request body](resources/dataplane/register-data-plane-provider.json) should contain the data plane instance of the provider
+connector and [request body](resources/dataplane/register-data-plane-consumer.json) for the consumer.
+
+The registration of the provider and consumer data plane instances is done by sending a POST
+requests to the management API of the connector.
 
 Open a new terminal and execute:
 
@@ -89,7 +91,19 @@ Open a new terminal and execute:
 curl -H 'Content-Type: application/json' \
      -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
      -X POST "http://localhost:19193/management/v2/dataplanes" -s | jq
+     
 ```
+
+for the provider and
+
+```bash
+curl -H 'Content-Type: application/json' \
+     -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
+     -X POST "http://localhost:29193/management/v2/dataplanes" -s | jq
+     
+```
+
+for the consumer.
 
 The connectors have been configured successfully and are ready to be used.
 
