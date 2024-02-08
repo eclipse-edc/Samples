@@ -45,3 +45,11 @@ dependencies {
 
     testCompileOnly(project(":policy:policy-01-policy-enforcement"))
 }
+
+tasks {
+    test {
+        testLogging {
+            showStandardStreams = true
+        }
+    }
+}
