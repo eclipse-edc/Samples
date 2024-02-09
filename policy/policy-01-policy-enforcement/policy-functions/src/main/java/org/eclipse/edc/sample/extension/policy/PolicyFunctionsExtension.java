@@ -35,124 +35,55 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
 
-import java.nio.file.Path;
-
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
 public class PolicyFunctionsExtension implements ServiceExtension {
-    private static final String EDC_ASSET_PATH = "edc.samples.policy-01.asset.path";
+    private static final String ASSET_ID = "test-document";
     private static final String LOCATION_POLICY_ID = "eu-policy";
-    private static final String LOCATION_CONSTRAINT_KEY = "locationConstraints";
-
+    private static final String LOCATION_CONSTRAINT_KEY = "location";
+    
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
-
     @Inject
     private PolicyEngine policyEngine;
-
     @Inject
     private PolicyDefinitionStore policyStore;
-
     @Inject
     private ContractDefinitionStore contractDefinitionStore;
-
     @Inject
     private AssetIndex assetIndex;
-
+    
     @Override
     public String name() {
-        return "Policy - contract-negotiation policies";
+        return "Sample policy functions";
     }
-
+    
     @Override
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
-
+        
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
-        ruleBindingRegistry.bind("region", ALL_SCOPES);
-        policyEngine.registerFunction(ALL_SCOPES, Permission.class, "region", new LocationConstraintFunction(monitor));
-
-        registerDataEntries(context);
-        registerContractDefinition(context);
-        registerPolicy();
+        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, ALL_SCOPES);
+        policyEngine.registerFunction(ALL_SCOPES, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
+        
         registerAsset();
-
-        context.getMonitor().info("Policy Extension for Policy Sample (contract-negotiation) initialized!");
+        registerRestrictedPolicy();
+        registerContractDefinition();
     }
-
-    private PolicyDefinition createContractPolicy() {
-
-        var usePermission = Permission.Builder.newInstance()
-                .action(Action.Builder.newInstance().type("USE").build())
-                .build();
-
-        return PolicyDefinition.Builder.newInstance()
-                .id("use")
-                .policy(Policy.Builder.newInstance()
-                        .permission(usePermission)
-                        .build())
-                .build();
-    }
-
-    private PolicyDefinition createAccessPolicy(ServiceExtensionContext context) {
-        var regionSetting = context.getSetting("edc.samples.policy-01.constraint.location.region", "eu");
-        var locationConstraint = AtomicConstraint.Builder.newInstance()
-                .leftExpression(new LiteralExpression("region"))
-                .operator(Operator.EQ)
-                .rightExpression(new LiteralExpression(regionSetting))
-                .build();
-
-        var permission = Permission.Builder.newInstance()
-                .action(Action.Builder.newInstance().type("USE").build())
-                .constraint(locationConstraint)
-                .build();
-
-        return PolicyDefinition.Builder.newInstance()
-                .id("use-region-restricted")
-                .policy(Policy.Builder.newInstance()
-                        .permission(permission)
-                        .build())
-                .build();
-    }
-
-
-    private void registerDataEntries(ServiceExtensionContext context) {
-        var assetPathSetting = context.getSetting(EDC_ASSET_PATH, "/tmp/provider/test-document.txt");
-        var assetPath = Path.of(assetPathSetting);
-
+    
+    private void registerAsset() {
         var dataAddress = DataAddress.Builder.newInstance()
-                .property("type", "File")
-                .property("path", assetPath.getParent().toString())
-                .property("filename", assetPath.getFileName().toString())
+                .property("type", "test")
                 .build();
-
-        var assetId = "test-document";
         var asset = Asset.Builder.newInstance()
-                .id(assetId)
+                .id(ASSET_ID)
                 .dataAddress(dataAddress)
                 .build();
-
-
+        
         assetIndex.create(asset);
     }
-
-    private void registerContractDefinition(ServiceExtensionContext context) {
-        var accessPolicy = createAccessPolicy(context);
-        policyStore.create(accessPolicy);
-
-        var contractPolicy = createContractPolicy();
-        policyStore.create(contractPolicy);
-
-        var contractDefinition = ContractDefinition.Builder.newInstance()
-                .id("1")
-                .accessPolicyId(accessPolicy.getUid())
-                .contractPolicyId(contractPolicy.getUid())
-                .assetsSelectorCriterion(Criterion.criterion(Asset.PROPERTY_ID, "=", "test-document"))
-                .build();
-        contractDefinitionStore.save(contractDefinition);
-    }
-
-    private void registerPolicy() {
+    
+    private void registerRestrictedPolicy() {
         var locationConstraint = AtomicConstraint.Builder.newInstance()
                 .leftExpression(new LiteralExpression(LOCATION_CONSTRAINT_KEY))
                 .operator(Operator.EQ)
@@ -169,20 +100,18 @@ public class PolicyFunctionsExtension implements ServiceExtension {
                         .permission(permission)
                         .build())
                 .build();
-
+        
         policyStore.create(policyDefinition);
     }
-
-    private void registerAsset() {
-        var dataAddress = DataAddress.Builder.newInstance()
-                .property("type", "test")
+    
+    private void registerContractDefinition() {
+        var contractDefinition = ContractDefinition.Builder.newInstance()
+                .id("1")
+                .accessPolicyId(LOCATION_POLICY_ID)
+                .contractPolicyId(LOCATION_POLICY_ID)
+                .assetsSelectorCriterion(Criterion.criterion(Asset.PROPERTY_ID, "=", ASSET_ID))
                 .build();
-        var assetId = "test-document";
-        var asset = Asset.Builder.newInstance()
-                .id(assetId)
-                .dataAddress(dataAddress)
-                .build();
-
-        assetIndex.create(asset);
+        
+        contractDefinitionStore.save(contractDefinition);
     }
 }
