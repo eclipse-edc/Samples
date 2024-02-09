@@ -41,9 +41,7 @@ var locationConstraint = AtomicConstraint.Builder.newInstance()
         .rightExpression(new LiteralExpression("eu"))
         .build();
 var permission = Permission.Builder.newInstance()
-        .action(Action.Builder.newInstance()
-            .type("USE")
-            .build())
+        .action(Action.Builder.newInstance().type("USE").build())
         .constraint(locationConstraint)
         .build();
 var policyDefinition = PolicyDefinition.Builder.newInstance()
@@ -54,7 +52,7 @@ var policyDefinition = PolicyDefinition.Builder.newInstance()
             .build())
         .build();
         
-policyDefinitionStore.create(policyDefinition);
+policyStore.create(policyDefinition);
 ```
 
 Then, we create an `Asset` with a `DataAddress` of type *test*. This asset will **not** work for a data transfer,
@@ -254,7 +252,9 @@ We can see that the negotiation has been declined, and we did not receive a cont
 at the provider's logs, we'll see the following lines:
 
 ```bash
-[TODO: copy provider logs showing the failed policy evaluation]
+[provider] INFO 2024-02-08T14:38:34.19341838 Evaluating constraint: location EQ eu
+[provider] DEBUG 2024-02-08T14:38:34.204741587 Access not granted for 1:  Permission constraints: [Constraint 'region' EQ 'eu']
+[provider] DEBUG 2024-02-08T14:38:34.206193511 [Provider] Contract offer rejected as invalid: The ContractDefinition with id %s either does not exist or the access to it is not granted.
 ```
 
 The consumer was not able to get a contract agreement, because it does not fulfil the location-restricted policy. This
