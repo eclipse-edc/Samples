@@ -47,11 +47,3 @@ dependencies {
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-consumer"))
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-functions"))
 }
-
-tasks {
-    test {
-        testLogging {
-            showStandardStreams = true
-        }
-    }
-}
