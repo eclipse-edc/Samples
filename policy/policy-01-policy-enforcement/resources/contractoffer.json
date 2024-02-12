@@ -7,7 +7,7 @@
   "connectorId": "provider",
   "consumerId": "consumer",
   "providerId": "provider",
-  "connectorAddress": "http://localhost:8282/protocol",
+  "connectorAddress": "http://localhost:19194/protocol",
   "protocol": "dataspace-protocol-http",
   "offer": {
     "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",

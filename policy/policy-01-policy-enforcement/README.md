@@ -40,19 +40,19 @@ var locationConstraint = AtomicConstraint.Builder.newInstance()
         .operator(Operator.EQ)
         .rightExpression(new LiteralExpression("eu"))
         .build();
-        var permission = Permission.Builder.newInstance()
+var permission = Permission.Builder.newInstance()
         .action(Action.Builder.newInstance().type("USE").build())
         .constraint(locationConstraint)
         .build();
-        var policyDefinition = PolicyDefinition.Builder.newInstance()
+var policyDefinition = PolicyDefinition.Builder.newInstance()
         .id(LOCATION_POLICY_ID)
         .policy(Policy.Builder.newInstance()
-        .type(PolicyType.SET)
-        .permission(permission)
-        .build())
+            .type(PolicyType.SET)
+            .permission(permission)
+            .build())
         .build();
         
-        policyStore.create(policyDefinition);
+policyStore.create(policyDefinition);
 ```
 
 Then, we create an `Asset` with a `DataAddress` of type *test*. This asset will **not** work for a data transfer,
@@ -96,15 +96,15 @@ constraints as well as duties that may be associated with a permission). For our
 
 ```java
 public class LocationConstraintFunction implements AtomicConstraintFunction<Permission> {
-
+    
     //...
     
     @Override
     public boolean evaluate(Operator operator, Object rightValue, Permission rule, PolicyContext context) {
         var region = context.getContextData(ParticipantAgent.class).getClaims().get("region");
-
+        
         monitor.info(format("Evaluating constraint: location %s %s", operator, rightValue.toString()));
-    
+        
         return switch (operator) {
             case EQ -> Objects.equals(region, rightValue);
             case NEQ -> !Objects.equals(region, rightValue);
@@ -225,7 +225,7 @@ in the request. The request body is prepared in [catalog-request.json](resources
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
   -d @policy/policy-01-policy-enforcement/resources/catalog-request.json \
-   "http://localhost:9192/management/v2/catalog/request" | jq
+  "http://localhost:29193/management/v2/catalog/request" | jq
 ```
 
 We'll receive the following catalog in the response, where we can see the offer created in the provider's extension.
@@ -298,7 +298,7 @@ which protocol to use and which offer we want to negotiate. The request body is 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
   -d @policy/policy-01-policy-enforcement/resources/contractoffer.json \
-  "http://localhost:9192/management/v2/contractnegotiations" | jq
+  "http://localhost:29193/management/v2/contractnegotiations" | jq
 ```
 
 You'll get back a UUID. This is the ID of the contract negotiation process which is being asynchronously executed
