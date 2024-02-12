@@ -18,7 +18,15 @@
       "odrl:permission": [
         {
           "odrl:action": "USE",
-          "odrl:target": "test-document"
+          "odrl:target": "test-document",
+          "odrl:constraint": {
+            "@type": "AtomicConstraint",
+            "odrl:leftOperand": "location",
+            "odrl:operator": {
+              "@id": "odrl:eq"
+            },
+            "odrl:rightOperand": "eu"
+          }
         }
       ],
       "odrl:target": "test-document"

@@ -35,6 +35,7 @@ import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.spi.types.domain.asset.Asset;
 
+import static org.eclipse.edc.connector.contract.spi.validation.ContractValidationService.NEGOTIATION_SCOPE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
 public class PolicyFunctionsExtension implements ServiceExtension {
@@ -63,7 +64,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
         var monitor = context.getMonitor();
         
         ruleBindingRegistry.bind("USE", ALL_SCOPES);
-        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, ALL_SCOPES);
+        ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
         policyEngine.registerFunction(ALL_SCOPES, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
         
         registerAsset();

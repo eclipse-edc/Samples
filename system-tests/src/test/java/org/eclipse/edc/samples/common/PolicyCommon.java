@@ -30,7 +30,7 @@ import static org.eclipse.edc.samples.util.TransferUtil.post;
 public class PolicyCommon {
     
     private static final String CONSUMER_NEGOTIATIONS_URL = "http://localhost:9192/management/v2/contractnegotiations/";
-    private static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/contractoffer.json";
+    private static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/resources/contractoffer.json";
     
     @NotNull
     public static File getFileFromRelativePath(String relativePath) {

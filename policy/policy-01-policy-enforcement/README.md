@@ -40,26 +40,28 @@ var locationConstraint = AtomicConstraint.Builder.newInstance()
         .operator(Operator.EQ)
         .rightExpression(new LiteralExpression("eu"))
         .build();
-var permission = Permission.Builder.newInstance()
+        var permission = Permission.Builder.newInstance()
         .action(Action.Builder.newInstance().type("USE").build())
         .constraint(locationConstraint)
         .build();
-var policyDefinition = PolicyDefinition.Builder.newInstance()
+        var policyDefinition = PolicyDefinition.Builder.newInstance()
         .id(LOCATION_POLICY_ID)
         .policy(Policy.Builder.newInstance()
-            .type(PolicyType.SET)
-            .permission(permission)
-            .build())
+        .type(PolicyType.SET)
+        .permission(permission)
+        .build())
         .build();
         
-policyStore.create(policyDefinition);
+        policyStore.create(policyDefinition);
 ```
 
 Then, we create an `Asset` with a `DataAddress` of type *test*. This asset will **not** work for a data transfer,
 as *test* is not an actual transfer type. But, as we're not going to transfer any data in this sample, this is
-sufficient for our example. The last thing we create is a `ContractDefinition` that references the previously created
-policy definition and asset. With this, the provider offers the asset under the condition that the
-requesting participant is located in the EU.
+sufficient for our example. The last thing we create is a `ContractDefinition`, that references the previously created
+policy definition and asset. We will set the policy both as the access and the contract policy in the contract
+definition. To read up on the difference between the two, check out the
+[developer handbook](https://github.com/eclipse-edc/docs/blob/main/developer/handbook.md#contract-definitions).
+With this, the provider offers the asset under the condition that the requesting participant is located in the EU.
 
 ### Creating rule bindings
 
@@ -214,27 +216,101 @@ Consumer:
 java -Dedc.fs.config=policy/policy-01-policy-enforcement/policy-enforcement-consumer/config.properties -jar policy/policy-01-policy-enforcement/policy-enforcement-consumer/build/libs/consumer.jar
 ```
 
-### 2. Start a contract negotiation
+### 2. Make a catalog request
+
+After starting both connectors, we'll first make a catalog request from the consumer to the provider to see the
+provider's offers. For this, we'll use an endpoint of the consumer's management API, specifying the provider's address
+in the request. The request body is prepared in [catalog-request.json](resources/catalog-request.json).
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
+  -d @policy/policy-01-policy-enforcement/resources/catalog-request.json \
+   "http://localhost:9192/management/v2/catalog/request" | jq
+```
+
+We'll receive the following catalog in the response, where we can see the offer created in the provider's extension.
+
+```json
+{
+  "@id": "4462b621-fb77-4e8c-91a5-8cbd85b967c2",
+  "@type": "dcat:Catalog",
+  "dcat:dataset": {
+    "@id": "test-document",
+    "@type": "dcat:Dataset",
+    "odrl:hasPolicy": {
+      "@id": "MQ==:dGVzdC1kb2N1bWVudA==:NjUzNTA5M2QtYTFjMi00YTRmLWE5NjYtYTM0ZjE2NjFjOTYy",
+      "@type": "odrl:Set",
+      "odrl:permission": {
+        "odrl:target": "test-document",
+        "odrl:action": {
+          "odrl:type": "USE"
+        },
+        "odrl:constraint": {
+          "odrl:leftOperand": "location",
+          "odrl:operator": {
+            "@id": "odrl:eq"
+          },
+          "odrl:rightOperand": "eu"
+        }
+      },
+      "odrl:prohibition": [],
+      "odrl:obligation": [],
+      "odrl:target": {
+        "@id": "test-document"
+      }
+    },
+    "dcat:distribution": [],
+    "id": "test-document"
+  },
+  "dcat:service": {
+    "@id": "fe9581ee-b4ec-473c-b0b7-96f30d957e87",
+    "@type": "dcat:DataService",
+    "dct:terms": "connector",
+    "dct:endpointUrl": "http://localhost:8282/protocol"
+  },
+  "participantId": "provider",
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "dcat": "https://www.w3.org/ns/dcat/",
+    "dct": "https://purl.org/dc/terms/",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "dspace": "https://w3id.org/dspace/v0.8/"
+  }
+}
+
+```
+
+But why are we able to see this offer, even though we set the location restricted policy as the access policy and our
+consumer is not in the EU? While we did set the restricted policy as the access policy, we only bound the constraint to
+the `NEGOTIATION_SCOPE` using the `RuleBindingRegistry`, meaning it will not be regarded for evaluations in the
+cataloging phase.
+
+We can now use the offer details received in the catalog to start a contract negotiation with the provider.
+
+### 3. Start a contract negotiation
 
 To start the contract negotiation between provider and consumer, we'll use an endpoint of the consumer's management API.
 In the request body for this request, we need to provide information about which connector we want to negotiate with,
 which protocol to use and which offer we want to negotiate. The request body is prepared in
-[contractoffer.json](./contractoffer.json). To start the negotiation, run the following command:
+[contractoffer.json](resources/contractoffer.json). To start the negotiation, run the following command:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-01-policy-enforcement/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
+  -d @policy/policy-01-policy-enforcement/resources/contractoffer.json \
+  "http://localhost:9192/management/v2/contractnegotiations" | jq
 ```
 
 You'll get back a UUID. This is the ID of the contract negotiation process which is being asynchronously executed
 in the background.
 
-### 3. Get the contract negotiation state
+### 4. Get the contract negotiation state
 
 Using the ID received in the previous step, we can now view the state of the negotiation by calling another endpoint
 of the consumer's data management API:
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/<UUID>"
+curl -X GET -H "X-Api-Key: password" "http://localhost:9192/management/v2/contractnegotiations/<UUID>" | jq
 ```
 
 In the response we'll get a description of the negotiation, similar to the following:
@@ -243,7 +319,7 @@ In the response we'll get a description of the negotiation, similar to the follo
 {
   ...
   "edc:contractAgreementId": null,
-  "edc:state": "DECLINED",
+  "edc:state": "TERMINATED",
   ...
 }
 ```
@@ -252,9 +328,8 @@ We can see that the negotiation has been declined, and we did not receive a cont
 at the provider's logs, we'll see the following lines:
 
 ```bash
-[provider] INFO 2024-02-08T14:38:34.19341838 Evaluating constraint: location EQ eu
-[provider] DEBUG 2024-02-08T14:38:34.204741587 Access not granted for 1:  Permission constraints: [Constraint 'region' EQ 'eu']
-[provider] DEBUG 2024-02-08T14:38:34.206193511 [Provider] Contract offer rejected as invalid: The ContractDefinition with id %s either does not exist or the access to it is not granted.
+INFO 2024-02-12T11:07:32.954014912 Evaluating constraint: location EQ eu
+DEBUG 2024-02-12T11:07:32.9562391 [Provider] Contract offer rejected as invalid: Policy eu-policy not fulfilled
 ```
 
 The consumer was not able to get a contract agreement, because it does not fulfil the location-restricted policy. This
@@ -266,6 +341,9 @@ the respective functions for evaluation.
 
 You can play around with this sample a bit and run it in different variations, yielding different outcomes. Some
 possible variations are described in the following.
+
+**Note: the following variations do not build up on each other, so make sure to revert any changes done for one
+variation before proceeding with the next!**
 
 ### Set consumer region to `eu`
 
@@ -303,4 +381,19 @@ containing the constraint, and thus the whole permission node is disregarded dur
 ```java
 //ruleBindingRegistry.bind("USE", ALL_SCOPES);
 ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
+```
+
+### Bind the constraint to the cataloging scope
+
+In our example, we've bound the constraint to the `NEGOTIATION_SCOPE`. Let's remove this binding and instead bing the
+constraint to the `CATALOGING_SCOPE` and rebuild the provider. When running a sample again, you will not see the offer
+in the provider's catalog anymore. As the constraint is now evaluated during cataloging, the offer is filtered out
+because our consumer does not fulfil the location constraint. Since the request body for the negotiation is already
+prepared, you can still try to initiate a negotiation. Even though the constraint is not bound to the negotiation scope
+anymore, the negotiation will be terminated. When receiving a request for a negotiation, the provider will still
+evaluate its contract definitions' access policies using the catalog scope, to ensure that a consumer cannot negotiate
+an offer it is not allowed to see.
+
+```java
+ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, CATALOGING_SCOPE);
 ```
