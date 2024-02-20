@@ -31,7 +31,7 @@ class Policy01BasicFinalizedTest {
     
     private static final String CONTRACT_OFFER_FILE_PATH = "policy/policy-01-policy-enforcement/resources/contractoffer.json";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-provider/config.properties";
-    private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "policy/policy-01-policy-enforcement/policy-enforcement-consumer/config-eu.properties";
+    private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "system-tests/src/test/resources/policy/config-eu.properties";
     
     @RegisterExtension
     static EdcRuntimeExtension provider = new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-provider",
