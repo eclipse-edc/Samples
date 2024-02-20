@@ -385,15 +385,16 @@ ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
 
 ### Bind the constraint to the cataloging scope
 
-In our example, we've bound the constraint to the `NEGOTIATION_SCOPE`. Let's remove this binding and instead bing the
-constraint to the `CATALOGING_SCOPE` and rebuild the provider. When running a sample again, you will not see the offer
-in the provider's catalog anymore. As the constraint is now evaluated during cataloging, the offer is filtered out
-because our consumer does not fulfil the location constraint. Since the request body for the negotiation is already
-prepared, you can still try to initiate a negotiation. Even though the constraint is not bound to the negotiation scope
-anymore, the negotiation will be terminated. When receiving a request for a negotiation, the provider will still
-evaluate its contract definitions' access policies using the catalog scope, to ensure that a consumer cannot negotiate
-an offer it is not allowed to see.
+In our example, we've bound the constraint to the `NEGOTIATION_SCOPE`. Let's remove this binding and instead bind the
+constraint as well as our function to the `CATALOGING_SCOPE` and rebuild the provider. When running a sample again,
+you will not see the offer in the provider's catalog anymore. As the constraint is now evaluated during cataloging, the
+offer is filtered out because our consumer does not fulfil the location constraint. Since the request body for the
+negotiation is already prepared, you can still try to initiate a negotiation. Even though the constraint is not bound
+to the negotiation scope anymore, the negotiation will be terminated. When receiving a request for a negotiation,
+the provider will still evaluate its contract definitions' access policies using the catalog scope, to ensure that
+a consumer cannot negotiate an offer it is not allowed to see.
 
 ```java
 ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, CATALOGING_SCOPE);
+policyEngine.registerFunction(CATALOGING_SCOPE, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
 ```
