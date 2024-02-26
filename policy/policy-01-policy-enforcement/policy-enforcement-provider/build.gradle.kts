@@ -21,12 +21,11 @@ plugins {
 
 dependencies {
     implementation(libs.edc.control.plane.core)
-
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
     implementation(libs.edc.data.plane.selector.core)
-
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
+    implementation(libs.edc.iam.mock)
 
     implementation(project(":policy:policy-01-policy-enforcement:policy-functions"))
 }

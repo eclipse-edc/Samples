@@ -17,7 +17,7 @@
       "@type": "set",
       "odrl:permission": [
         {
-          "odrl:action": "USE",
+          "odrl:action": "use",
           "odrl:target": "test-document",
           "odrl:constraint": {
             "@type": "AtomicConstraint",

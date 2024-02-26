@@ -1,0 +1,25 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@id": "eu-policy",
+  "policy": {
+    "@type": "set",
+    "odrl:permission": [
+      {
+        "odrl:action": "use",
+        "odrl:constraint": {
+          "@type": "AtomicConstraint",
+          "odrl:leftOperand": "location",
+          "odrl:operator": {
+            "@id": "odrl:eq"
+          },
+          "odrl:rightOperand": "eu"
+        }
+      }
+    ],
+    "odrl:prohibition": [],
+    "odrl:obligation": []
+  }
+}

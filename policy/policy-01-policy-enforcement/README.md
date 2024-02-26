@@ -13,77 +13,31 @@ contract for requesting the asset or not. The sample consists of multiple module
 
 ## Creating the policy functions extension
 
-In this extension, we'll define the policy and create the provider's offer. In addition, we'll implement and register
-a function to evaluate the defined policy.
-
-### Creating the provider offer
-
-In order for the provider to offer any data, we need to create 3 things: an `Asset` (= what data should be offered),
-a `PolicyDefinition` (= under which conditions should data be offered), and a `ContractDefinition`, that links the
-`Asset` and `PolicyDefinition`.
-
-We'll start with creating the `PolicyDefinition`, which contains a `Policy` and an ID. Each `Policy` needs to contain
-at least one rule describing which actions are allowed, disallowed or required to perform. Each rule can optionally
-contain a set of constraints that further refine the actions. For more information on the policy model take a look at
-the [documentation](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/architecture/usage-control/policies.md)
-or the [policy section in the developer handbook](https://github.com/eclipse-edc/docs/blob/main/developer/handbook.md#policies).
-
-For our example, we create a `Permission` with action type `USE`, as we want to allow the usage of our offered data.
-But we only want to allow the usage under the condition that the requesting participant is in a certain location,
-therefore we define a constraint. In that constraint we state that the participant's location has to be equal to `eu`.
-We then add the constraint to our permission and the permission to our policy. Lastly, we give an ID to our policy to
-create the `PolicyDefinition`:
-
-```java
-var locationConstraint = AtomicConstraint.Builder.newInstance()
-        .leftExpression(new LiteralExpression(LOCATION_CONSTRAINT_KEY))
-        .operator(Operator.EQ)
-        .rightExpression(new LiteralExpression("eu"))
-        .build();
-var permission = Permission.Builder.newInstance()
-        .action(Action.Builder.newInstance().type("USE").build())
-        .constraint(locationConstraint)
-        .build();
-var policyDefinition = PolicyDefinition.Builder.newInstance()
-        .id(LOCATION_POLICY_ID)
-        .policy(Policy.Builder.newInstance()
-            .type(PolicyType.SET)
-            .permission(permission)
-            .build())
-        .build();
-        
-policyStore.create(policyDefinition);
-```
-
-Then, we create an `Asset` with a `DataAddress` of type *test*. This asset will **not** work for a data transfer,
-as *test* is not an actual transfer type. But, as we're not going to transfer any data in this sample, this is
-sufficient for our example. The last thing we create is a `ContractDefinition`, that references the previously created
-policy definition and asset. We will set the policy both as the access and the contract policy in the contract
-definition. To read up on the difference between the two, check out the
-[developer handbook](https://github.com/eclipse-edc/docs/blob/main/developer/handbook.md#contract-definitions).
-With this, the provider offers the asset under the condition that the requesting participant is located in the EU.
+In this extension, we'll implement and register a function to evaluate the location-restricted policy we will create
+later.
 
 ### Creating rule bindings
 
-The provider now offers an asset with a policy that imposes a constraint, but if we were to run the sample now,
-we would not see any policy evaluation happening. This is because the EDC do not regard any rules or constraints
-for evaluation unless we configure it. The EDC use the concept of *policy scopes* to define which rules and constraints
-should be evaluated in certain runtime contexts, as some rules or constraints may only make sense in some contexts,
-but not in others. A simple example is a rule that states *data must be anonymized*. Evaluating this during the
-contract negotiation would not make much sense, as at this point in time no data is being exchanged yet and therefore
-nothing can be anonymized. So we need to define which rules and constraints should be evaluated in which scopes.
-This is done by creating *rule bindings* at the `RuleBindingRegistry`. For our example, we create the following rule
-bindings:
+In this sample, the provider will offer an asset with a policy that imposes a constraint, but if we were to run the
+sample now, we would not see any policy evaluation happening. This is because the EDC do not regard any rules or
+constraints for evaluation unless we configure it. The EDC use the concept of *policy scopes* to define which rules
+and constraints should be evaluated in certain runtime contexts, as some rules or constraints may only make sense in
+some contexts, but not in others. A simple example is a rule that states *data must be anonymized*. Evaluating this
+during the contract negotiation would not make much sense, as at this point in time no data is being exchanged yet
+and therefore nothing can be anonymized. So we need to define which rules and constraints should be evaluated in which
+scopes. This is done by creating *rule bindings* at the `RuleBindingRegistry`. For our example, we create the following
+rule bindings:
 
 ```java
-ruleBindingRegistry.bind("USE", ALL_SCOPES);
+ruleBindingRegistry.bind("use", ALL_SCOPES);
 ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
 ```
 
 When creating a rule binding, we can bind an action type or constraint to either all scopes or just a specific one.
-Here, we bind the action type `USE` to all scopes, so that rules with this action type are always evaluated. For the
+Here, we bind the action type `use` to all scopes, so that rules with this action type are always evaluated. For the
 location constraint we choose the negotiation scope, meaning it will only be evaluated during the contract negotiation.
-Information on available scopes can be found [here](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/policy-engine.md).
+Information on available scopes can be found
+[here](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/policy-engine.md).
 
 ### Implementing the function for evaluation
 
@@ -158,6 +112,7 @@ In the build file, we define the following dependencies for both connectors:
 
 * `libs.edc.control.plane.core`: the core module for the control-plane
 * `libs.edc.configuration.filesystem`: enables configuration via a properties file
+* `libs.edc.management.api`: provides the API for interacting with the control-plane
 * `libs.edc.dsp`: enables connector-to-connector communication via the Dataspace Protocol
 * `libs.edc.iam.mock`: mocks an identity provider
 
@@ -168,15 +123,8 @@ the [transfer samples](../../transfer/README.md).
 
 #### Provider
 
-For the provider, we also add a dependency on our previously created `policy-functions` extension, so that it offers
-our asset with the location restricted policy and is able to enforce the latter.
-
-#### Consumer
-
-In addition, we add the following dependency on the consumer side, as we will use the management API to initiate a
-contract negotiation between provider and consumer:
-
-* `libs.edc.management.api`: provides the API for interacting with the control-plane
+For the provider, we also add a dependency on our previously created `policy-functions` extension, so that it is able
+to enforce a policy rule with a location constraint.
 
 ### Configuration files
 
@@ -216,7 +164,64 @@ Consumer:
 java -Dedc.fs.config=policy/policy-01-policy-enforcement/policy-enforcement-consumer/config.properties -jar policy/policy-01-policy-enforcement/policy-enforcement-consumer/build/libs/consumer.jar
 ```
 
-### 2. Make a catalog request
+### 2. Create the provider's offer
+
+In order for the provider to offer any data, we need to create 3 things: an `Asset` (= what data should be offered),
+a `PolicyDefinition` (= under which conditions should data be offered), and a `ContractDefinition`, that links the
+`Asset` and `PolicyDefinition`.
+
+#### 2.1 Create the asset
+
+We create an `Asset` with a `DataAddress` of type *test*. This asset will **not** work for a data transfer,
+as *test* is not an actual transfer type. But, as we're not going to transfer any data in this sample, this is
+sufficient for our example. You can view the request body for creating the asset in
+[create-asset.json](./resources/create-asset.json). Run the following command to create the asset:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
+  -d @policy/policy-01-policy-enforcement/resources/create-asset.json \
+  "http://localhost:19193/management/v3/assets" | jq
+```
+
+#### 2.2 Create the policy definition
+
+Next. we'll create the `PolicyDefinition`, which contains a `Policy` and an ID. Each `Policy` needs to contain
+at least one rule describing which actions are allowed, disallowed or required to perform. Each rule can optionally
+contain a set of constraints that further refine the actions. For more information on the policy model take a look at
+the [documentation](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/architecture/usage-control/policies.md)
+or the [policy section in the developer handbook](https://github.com/eclipse-edc/docs/blob/main/developer/handbook.md#policies).
+
+For our example, we create a `Permission` with action type `use`, as we want to allow the usage of our offered data.
+But we only want to allow the usage under the condition that the requesting participant is in a certain location,
+therefore we add a constraint to our permission. In that constraint we state that the participant's location has to
+be equal to `eu`. You can view the request body for creating the policy definition in
+[create-policy.json](./resources/create-policy.json). Run the following command to create the policy definition:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
+  -d @policy/policy-01-policy-enforcement/resources/create-policy.json \
+  "http://localhost:19193/management/v2/policydefinitions" | jq
+```
+
+#### 2.3 Create the contract definition
+
+The last thing we create is a `ContractDefinition`, that references the previously created
+policy definition and asset. We will set the policy both as the access and the contract policy in the contract
+definition. To read up on the difference between the two, check out the
+[developer handbook](https://github.com/eclipse-edc/docs/blob/main/developer/handbook.md#contract-definitions).
+You can view the request body for creating the contract definition in
+[create-contract-definition.json](./resources/create-contract-definition.json) Run the following command to create
+the contract definition:
+
+```bash
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
+  -d @policy/policy-01-policy-enforcement/resources/create-contract-definition.json \
+  "http://localhost:19193/management/v2/contractdefinitions" | jq
+```
+
+With this, the provider now offers the asset under the condition that the requesting participant is located in the EU.
+
+### 3. Make a catalog request
 
 After starting both connectors, we'll first make a catalog request from the consumer to the provider to see the
 provider's offers. For this, we'll use an endpoint of the consumer's management API, specifying the provider's address
@@ -243,7 +248,7 @@ We'll receive the following catalog in the response, where we can see the offer 
       "odrl:permission": {
         "odrl:target": "test-document",
         "odrl:action": {
-          "odrl:type": "USE"
+          "odrl:type": "use"
         },
         "odrl:constraint": {
           "odrl:leftOperand": "location",
@@ -288,29 +293,29 @@ cataloging phase.
 
 We can now use the offer details received in the catalog to start a contract negotiation with the provider.
 
-### 3. Start a contract negotiation
+### 4. Start a contract negotiation
 
 To start the contract negotiation between provider and consumer, we'll use an endpoint of the consumer's management API.
 In the request body for this request, we need to provide information about which connector we want to negotiate with,
 which protocol to use and which offer we want to negotiate. The request body is prepared in
-[contractoffer.json](resources/contractoffer.json). To start the negotiation, run the following command:
+[contractoffer.json](resources/contract-request.json). To start the negotiation, run the following command:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" \
-  -d @policy/policy-01-policy-enforcement/resources/contractoffer.json \
+  -d @policy/policy-01-policy-enforcement/resources/contract-request.json \
   "http://localhost:29193/management/v2/contractnegotiations" | jq
 ```
 
 You'll get back a UUID. This is the ID of the contract negotiation process which is being asynchronously executed
 in the background.
 
-### 4. Get the contract negotiation state
+### 5. Get the contract negotiation state
 
 Using the ID received in the previous step, we can now view the state of the negotiation by calling another endpoint
-of the consumer's data management API:
+of the consumer's management API:
 
 ```bash
-curl -X GET -H "X-Api-Key: password" "http://localhost:9192/management/v2/contractnegotiations/<UUID>" | jq
+curl -X GET -H "X-Api-Key: password" "http://localhost:29193/management/v2/contractnegotiations/<UUID>" | jq
 ```
 
 In the response we'll get a description of the negotiation, similar to the following:
@@ -364,7 +369,7 @@ our consumer is not in the correct location. This happens, as without the bindin
 will not regard it during evaluation.
 
 ```java
-ruleBindingRegistry.bind("USE", ALL_SCOPES);
+ruleBindingRegistry.bind("use", ALL_SCOPES);
 //ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
 ```
 
@@ -379,7 +384,7 @@ is not evaluated and our function never called. This happens because there is no
 containing the constraint, and thus the whole permission node is disregarded during evaluation.
 
 ```java
-//ruleBindingRegistry.bind("USE", ALL_SCOPES);
+//ruleBindingRegistry.bind("use", ALL_SCOPES);
 ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
 ```
 
