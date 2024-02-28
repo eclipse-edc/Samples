@@ -49,6 +49,7 @@ allprojects {
     configure<CheckstyleExtension> {
         configFile = rootProject.file("resources/edc-checkstyle-config.xml")
         configDirectory.set(rootProject.file("resources"))
+        maxWarnings = 0
     }
 
     // EdcRuntimeExtension uses this to determine the runtime classpath of the module to run.
