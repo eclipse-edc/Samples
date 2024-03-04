@@ -8,4 +8,4 @@ FROM openjdk:17-slim
 
 WORKDIR /app
 COPY --from=build /home/gradle/project/advanced/advanced-01-open-telemetry/open-telemetry-provider/build/libs/opentelemetry-javaagent-*.jar /app/opentelemetry-javaagent.jar
-COPY --from=build /home/gradle/project/advanced/advanced-01-open-telemetry/open-telemetry-provider/build/libs/provider.jar /app/connector.jar
+COPY --from=build /home/gradle/project/advanced/advanced-01-open-telemetry/open-telemetry-provider/build/libs/connector.jar /app/connector.jar
