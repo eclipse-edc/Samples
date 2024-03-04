@@ -40,8 +40,7 @@ dependencies {
     testCompileOnly(project(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"))
     testCompileOnly(project(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime"))
 
-    testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-provider"))
-    testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-consumer"))
+    testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-runtime"))
 
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-provider"))
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-consumer"))
