@@ -28,7 +28,6 @@ dependencies {
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
     implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.data.plane.selector.client)
     implementation(libs.edc.transfer.data.plane)
     implementation(libs.edc.transfer.pull.http.dynamic.receiver)
     implementation(libs.edc.data.plane.spi)

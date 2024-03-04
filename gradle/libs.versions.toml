@@ -37,7 +37,6 @@ edc-data-plane-core = { module = "org.eclipse.edc:data-plane-core", version.ref 
 edc-data-plane-http = { module = "org.eclipse.edc:data-plane-http", version.ref = "edc" }
 edc-data-plane-kafka = { module = "org.eclipse.edc:data-plane-kafka", version.ref = "edc" }
 edc-data-plane-selector-api = { module = "org.eclipse.edc:data-plane-selector-api", version.ref = "edc" }
-edc-data-plane-selector-client = { module = "org.eclipse.edc:data-plane-selector-client", version.ref = "edc" }
 edc-data-plane-selector-core = { module = "org.eclipse.edc:data-plane-selector-core", version.ref = "edc" }
 edc-data-plane-spi = { module = "org.eclipse.edc:data-plane-spi", version.ref = "edc" }
 edc-data-plane-util = { module = "org.eclipse.edc:data-plane-util", version.ref = "edc" }

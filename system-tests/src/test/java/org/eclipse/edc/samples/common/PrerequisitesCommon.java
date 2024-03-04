@@ -45,8 +45,6 @@ public class PrerequisitesCommon {
     private static final String PROVIDER_VAULT_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/provider-vault.properties";
     private static final String CONSUMER_VAULT_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties";
     private static final String REGISTER_DATA_PLANE_PROVIDER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json";
-    private static final String REGISTER_DATA_PLANE_CONSUMER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json";
-    private static final String V2_DATAPLANES_PATH = "/v2/dataplanes";
 
     public static EdcRuntimeExtension getProvider() {
         return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_VAULT_PROPERTIES_FILE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
@@ -95,7 +93,7 @@ public class PrerequisitesCommon {
                 .contentType(ContentType.JSON)
                 .body(requestBody)
                 .when()
-                .post(host + V2_DATAPLANES_PATH)
+                .post(host + "/v2/dataplanes")
                 .then()
                 .log()
                 .ifError()
