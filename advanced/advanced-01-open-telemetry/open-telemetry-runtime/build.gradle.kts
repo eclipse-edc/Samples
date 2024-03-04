@@ -40,7 +40,6 @@ dependencies {
 
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
-    implementation(libs.edc.data.plane.selector.client)
 
     implementation(libs.edc.data.plane.control.api)
     implementation(libs.edc.data.plane.public.api)
@@ -69,6 +68,7 @@ tasks.register("copyOpenTelemetryJar", Copy::class) {
 
     dependencies {
         openTelemetry(libs.opentelemetry.javaagent)
+        openTelemetry(libs.opentelemetry.exporter.jaeger)
     }
 
     from(openTelemetry)
