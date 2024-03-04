@@ -47,16 +47,20 @@ import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 @Testcontainers
 public class Advanced01openTelemetryTest {
 
-    private static final String DOCKER_COMPOSE_YAML = "advanced/advanced-01-open-telemetry/docker-compose.yaml";
-    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/get-dataset.json";
-    private static final String NEGOTIATE_CONTRACT_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/negotiate-contract.json";
-    private static final String START_TRANSFER_FILE_PATH = "advanced/advanced-01-open-telemetry/resources/start-transfer.json";
+    private static final String SAMPLE_FOLDER = "advanced/advanced-01-open-telemetry";
+    private static final String DOCKER_COMPOSE_YAML = SAMPLE_FOLDER + "/docker-compose.yaml";
+    private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = SAMPLE_FOLDER + "/resources/get-dataset.json";
+    private static final String NEGOTIATE_CONTRACT_FILE_PATH = SAMPLE_FOLDER + "/resources/negotiate-contract.json";
+    private static final String START_TRANSFER_FILE_PATH = SAMPLE_FOLDER + "/resources/start-transfer.json";
     private static final String JAEGER_URL = "http://localhost:16686";
 
     @Container
     public static ComposeContainer environment =
             new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
+                    .withLogConsumer("consumer", o -> {
+                        System.out.print(o.getUtf8String());
+                    })
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
 
     @BeforeAll

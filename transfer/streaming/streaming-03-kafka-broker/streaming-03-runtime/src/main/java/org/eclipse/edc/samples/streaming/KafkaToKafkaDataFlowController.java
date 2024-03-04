@@ -21,8 +21,11 @@ import org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
+import org.eclipse.edc.spi.types.domain.asset.Asset;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 import static org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema.KAFKA_TYPE;
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
@@ -58,6 +61,11 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     public StatusResult<Void> terminate(TransferProcess transferProcess) {
         // here the flow can be terminated, not something covered in this sample
         return StatusResult.success();
+    }
+
+    @Override
+    public Set<String> transferTypesFor(Asset asset) {
+        return Set.of("Kafka-PULL");
     }
 
 }

@@ -5,7 +5,7 @@
   },
   "@id": "aPolicy",
   "policy": {
-    "@type": "set",
+    "@type": "Set",
     "odrl:permission": [],
     "odrl:prohibition": [],
     "odrl:obligation": []
