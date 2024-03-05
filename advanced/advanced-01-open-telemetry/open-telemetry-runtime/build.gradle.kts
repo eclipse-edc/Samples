@@ -40,14 +40,16 @@ dependencies {
 
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
-    implementation(libs.edc.data.plane.selector.client)
 
-    implementation(libs.edc.data.plane.api)
+    implementation(libs.edc.data.plane.control.api)
+    implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
 
     implementation(libs.edc.api.observability)
     implementation(libs.edc.auth.tokenbased)
+
+    implementation(libs.opentelemetry.exporter.jaeger)
 
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
@@ -58,14 +60,15 @@ application {
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("consumer.jar")
+    archiveFileName.set("connector.jar")
 }
 
 tasks.register("copyOpenTelemetryJar", Copy::class) {
     val openTelemetry = configurations.create("open-telemetry")
 
     dependencies {
-        openTelemetry(libs.opentelemetry)
+        openTelemetry(libs.opentelemetry.javaagent)
+        openTelemetry(libs.opentelemetry.exporter.jaeger)
     }
 
     from(openTelemetry)

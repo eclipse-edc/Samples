@@ -5,7 +5,7 @@ services:
   consumer:
     build:
       context: ../..
-      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-consumer/Dockerfile
+      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-runtime/Dockerfile
     volumes:
       - ./:/open-telemetry
       - ../../transfer/transfer-00-prerequisites/:/prerequisites
@@ -15,7 +15,9 @@ services:
     environment:
       EDC_HOSTNAME: consumer
       OTEL_SERVICE_NAME: consumer
+      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-jaeger.jar
       OTEL_TRACES_EXPORTER: jaeger
+      OTEL_LOGS_EXPORTER: none
       OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
       OTEL_METRICS_EXPORTER: prometheus
       WEB_HTTP_PORT: 29191
@@ -44,7 +46,7 @@ services:
   provider:
     build:
       context: ../..
-      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-provider/Dockerfile
+      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-runtime/Dockerfile
     volumes:
       - ./:/open-telemetry
       - ../../transfer/transfer-00-prerequisites/:/prerequisites
@@ -54,6 +56,8 @@ services:
     environment:
       EDC_HOSTNAME: provider
       OTEL_SERVICE_NAME: provider
+      OTEL_LOGS_EXPORTER: none
+      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-jaeger.jar
       OTEL_TRACES_EXPORTER: jaeger
       OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
       WEB_HTTP_PORT: 19191

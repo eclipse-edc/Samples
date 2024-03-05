@@ -73,12 +73,10 @@ public class Transfer02consumerPullTest {
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
         var authCode = LOG_CONSUMER.getJsonValue(AUTH_CODE_KEY);
-        checkData(authCode);
-    }
 
-    private static void checkData(String authCode) {
         var result = given()
-                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE, AUTHORIZATION, authCode)
+                .header(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
+                .header(AUTHORIZATION, authCode)
                 .when()
                 .get(CONSUMER_PUBLIC_URL)
                 .then()
@@ -92,4 +90,5 @@ public class Transfer02consumerPullTest {
 
         assertThat(result).isEqualTo("Leanne Graham");
     }
+
 }

@@ -14,7 +14,7 @@
     "assetId": "test-document",
     "policy": {
       "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
-      "@type": "set",
+      "@type": "Set",
       "odrl:permission": [
         {
           "odrl:action": "use",

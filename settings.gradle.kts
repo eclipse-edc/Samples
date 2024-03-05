@@ -45,8 +45,7 @@ include(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
 include(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 include(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime")
 
-include(":advanced:advanced-01-open-telemetry:open-telemetry-consumer")
-include(":advanced:advanced-01-open-telemetry:open-telemetry-provider")
+include(":advanced:advanced-01-open-telemetry:open-telemetry-runtime")
 
 //policy
 include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")

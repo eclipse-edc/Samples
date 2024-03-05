@@ -5,7 +5,7 @@
   },
   "@id": "eu-policy",
   "policy": {
-    "@type": "set",
+    "@type": "Set",
     "odrl:permission": [
       {
         "odrl:action": "use",
