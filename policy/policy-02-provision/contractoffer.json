@@ -1,58 +1,35 @@
 {
+  "@context": {
+    "edc": "https://w3id.org/edc/v0.0.1/ns/",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "Offer",
   "connectorId": "provider",
-  "connectorAddress": "http://localhost:8282/api/v1/ids/data",
-  "protocol": "ids-multipart",
+  "connectorAddress": "http://localhost:8282/protocol",
+  "protocol": "dataspace-protocol-http",
   "offer": {
-    "offerId": "1:3a75736e-001d-4364-8bd4-9888490edb58",
+    "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
     "assetId": "test-document",
     "policy": {
-      "uid": "956e172f-2de1-4501-8881-057a57fd0e69",
-      "permissions": [
+      "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
+      "@type": "set",
+      "odrl:permission": [
         {
-          "edctype": "dataspaceconnector:permission",
-          "uid": null,
-          "target": "test-document",
-          "action": {
-            "type": "USE",
-            "includedIn": null,
-            "constraint": null
-          },
-          "assignee": null,
-          "assigner": null,
-          "constraints": [
+          "odrl:action": "USE",
+          "odrl:constraint": [
             {
-              "edctype": "AtomicConstraint",
-              "leftExpression": {
-                "edctype": "dataspaceconnector:literalexpression",
-                "value": "POLICY_REGULATE_FILE_PATH"
+              "odrl:leftOperand": "POLICY_REGULATE_FILE_PATH",
+              "odrl:operator": {
+                "@id": "http://www.w3.org/ns/odrl/2/eq"
               },
-              "rightExpression": {
-                "edctype": "dataspaceconnector:literalexpression",
-                "value": "path/to/desired/location/transfer.txt"
-              },
-              "operator": "EQ"
+              "odrl:rightOperand": "path/to/desired/location/transfer.txt",
+              "odrl:target": "test-document"
             }
           ],
-          "duties": []
+          "odrl:target": "test-document"
         }
       ],
-      "prohibitions": [],
-      "obligations": [],
-      "extensibleProperties": {},
-      "inheritsFrom": null,
-      "assigner": null,
-      "assignee": null,
-      "target": null,
-      "@type": {
-        "@policytype": "set"
-      }
-    },
-    "asset": {
-      "properties": {
-        "ids:byteSize": null,
-        "asset:prop:id": "test-document",
-        "ids:fileName": null
-      }
+      "odrl:target": "test-document"
     }
   }
 }

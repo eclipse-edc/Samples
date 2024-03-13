@@ -18,8 +18,6 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServ
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.sample.extension.api.FileTransferDataSinkFactory;
-import org.eclipse.edc.sample.extension.api.FileTransferDataSourceFactory;
 import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;

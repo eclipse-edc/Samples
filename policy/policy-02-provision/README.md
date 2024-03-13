@@ -181,7 +181,7 @@ Next, initiate a contract negotiation. The request body is prepared in [`contrac
 Then run:
 
 ```shell
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/contractoffer.json "http://localhost:9192/api/v1/management/contractnegotiations"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/contractoffer.json "http://localhost:9192/management/v2/contractnegotiations"
 ```
 
 ### 3. Look up the contract agreement ID
@@ -189,7 +189,7 @@ curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @po
 Look up the contract agreement ID:
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/contractnegotiations/{UUID}"
+curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contractnegotiations/<UUID>"
 ```
 
 ### 4. Request the file
@@ -197,7 +197,7 @@ curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/api/v1/management/co
 Request file transfer with the request body [`filetransfer.json`](policy/policy-02-provision/filetransfer.json):
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/filetransfer.json "http://localhost:9192/api/v1/management/transferprocess"
+curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/filetransfer.json "http://localhost:9192/management/v2/transferprocesses" 
 ```
 
 ### 5. See transferred file

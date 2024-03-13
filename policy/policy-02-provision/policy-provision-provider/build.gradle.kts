@@ -28,8 +28,11 @@ dependencies {
     implementation(libs.edc.dsp)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
+    implementation(libs.edc.control.plane.api.client)
+    implementation(libs.edc.data.plane.util)
+    implementation(libs.edc.data.plane.core)
 
-    implementation(project(":transfer:transfer-01-file-transfer:transfer-file-local"))
+    //implementation(project(":transfer:transfer-01-file-transfer:transfer-file-local"))
 }
 
 application {

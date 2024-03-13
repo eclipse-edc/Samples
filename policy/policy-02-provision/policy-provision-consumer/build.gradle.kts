@@ -29,8 +29,10 @@ dependencies {
     implementation(libs.edc.dsp)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
-
     implementation(libs.opentelemetry.annotations)
+    implementation(libs.edc.data.plane.spi)
+    implementation(libs.edc.data.plane.selector.core)
+    implementation(libs.edc.control.plane.api.client)
 }
 
 application {
