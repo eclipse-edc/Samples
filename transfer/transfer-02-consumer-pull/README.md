@@ -99,7 +99,7 @@ to get the data from the provider:
 ```json
 {
   "id": "591bb609-1edb-4a6b-babe-50f1eca3e1e9",
-  "endpoint": "http://localhost:29291/public/",
+  "endpoint": "http://localhost:19291/public/",
   "authKey": "Authorization",
   "authCode": "{{auth-code}}",
   "properties": {
@@ -112,7 +112,7 @@ Once this json is read, use a tool like postman or curl to execute the following
 data
 
 ```bash
-curl --location --request GET 'http://localhost:29291/public/' --header 'Authorization: <auth code>'
+curl --location --request GET 'http://localhost:19291/public/' --header 'Authorization: <auth code>'
 ```
 
 At the end, and to be sure that you correctly achieved the pull, you can check if the data you get
@@ -122,7 +122,7 @@ is the same as the one you can get at https://jsonplaceholder.typicode.com/users
 Since we configured the `HttpData` with `proxyPath`, we could also ask for a specific user with:
 
 ```bash
-curl --location --request GET 'http://localhost:29291/public/1' --header 'Authorization: <auth code>'
+curl --location --request GET 'http://localhost:19291/public/1' --header 'Authorization: <auth code>'
 ```
 
 And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1
