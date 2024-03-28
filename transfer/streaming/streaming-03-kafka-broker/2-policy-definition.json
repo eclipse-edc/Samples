@@ -5,6 +5,6 @@
   },
   "@id": "no-constraint-policy",
   "policy": {
-    "@type": "odrl:use"
+    "@type": "odrl:Set"
   }
 }

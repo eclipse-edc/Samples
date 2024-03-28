@@ -23,7 +23,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.eclipse.edc.junit.testfixtures.TestUtils;
+import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -98,7 +98,7 @@ public class Streaming02KafkaToHttpTest {
                             .getAbsolutePath()
             )
     );
-    private final int httpReceiverPort = TestUtils.getFreePort();
+    private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer consumerReceiverServer = new MockWebServer();
 
     @BeforeEach
@@ -128,7 +128,7 @@ public class Streaming02KafkaToHttpTest {
                 Json.createObjectBuilder().build(), destination);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
-            String state = CONSUMER.getTransferProcessState(transferProcessId);
+            var state = CONSUMER.getTransferProcessState(transferProcessId);
             assertThat(state).isEqualTo(STARTED.name());
         });
 

@@ -2,6 +2,7 @@ name: Test Code (Style, Tests)
 
 on:
   push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
     paths-ignore:

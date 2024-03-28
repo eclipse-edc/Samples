@@ -18,24 +18,21 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFr
 import static org.eclipse.edc.samples.util.TransferUtil.post;
 
 public class PolicyCommon {
-    
-    private static final String CREATE_ASSET_FILE_PATH = "policy/policy-01-policy-enforcement/resources/create-asset.json";
+
     private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String CREATE_POLICY_FILE_PATH = "policy/policy-01-policy-enforcement/resources/create-policy.json";
     private static final String V2_POLICY_DEFINITIONS_PATH = "/v2/policydefinitions";
-    private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "policy/policy-01-policy-enforcement/resources/create-contract-definition.json";
     private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v2/contractdefinitions";
     
-    public static void createAsset() {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH));
+    public static void createAsset(String createAssetFilePath) {
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));
     }
     
-    public static void createPolicy() {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_POLICY_FILE_PATH));
+    public static void createPolicy(String createPolicyFilePath) {
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
     }
     
-    public static void createContractDefinition() {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(CREATE_CONTRACT_DEFINITION_FILE_PATH));
+    public static void createContractDefinition(String createContractDefinitionFilePath) {
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
     }
     
 }

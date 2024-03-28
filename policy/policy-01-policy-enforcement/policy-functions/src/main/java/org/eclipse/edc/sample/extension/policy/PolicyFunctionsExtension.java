@@ -22,10 +22,12 @@ import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
 import static org.eclipse.edc.connector.contract.spi.validation.ContractValidationService.NEGOTIATION_SCOPE;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_USE_ACTION_ATTRIBUTE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
+import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 
 public class PolicyFunctionsExtension implements ServiceExtension {
-    private static final String LOCATION_CONSTRAINT_KEY = "location";
+    private static final String LOCATION_CONSTRAINT_KEY = EDC_NAMESPACE + "location";
     
     @Inject
     private RuleBindingRegistry ruleBindingRegistry;
@@ -41,7 +43,7 @@ public class PolicyFunctionsExtension implements ServiceExtension {
     public void initialize(ServiceExtensionContext context) {
         var monitor = context.getMonitor();
         
-        ruleBindingRegistry.bind("use", ALL_SCOPES);
+        ruleBindingRegistry.bind(ODRL_USE_ACTION_ATTRIBUTE, ALL_SCOPES);
         ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, NEGOTIATION_SCOPE);
         policyEngine.registerFunction(ALL_SCOPES, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
     }

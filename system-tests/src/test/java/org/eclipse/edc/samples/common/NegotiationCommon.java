@@ -78,20 +78,16 @@ public class NegotiationCommon {
     }
 
     public static String getContractAgreementId(String contractNegotiationId) {
-        String url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
         return await()
                 .atMost(TIMEOUT)
                 .pollInterval(POLL_INTERVAL)
                 .until(() -> get(url, CONTRACT_AGREEMENT_ID), Objects::nonNull);
     }
-    
-    public static void checkContractNegotiationState(String contractNegotiationId, String expectedState) {
+
+    public static String getContractNegotiationState(String contractNegotiationId) {
         var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
-        
-        await()
-                .atMost(TIMEOUT)
-                .pollInterval(POLL_INTERVAL)
-                .until(() -> get(url, "state"), state -> state.equals(expectedState));
+        return get(url, "state");
     }
 
     public static String runNegotiation() {

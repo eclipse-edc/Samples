@@ -19,7 +19,6 @@ import io.restassured.specification.RequestSpecification;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
-import org.eclipse.edc.connector.contract.spi.ContractOfferId;
 import org.eclipse.edc.jsonld.TitaniumJsonLd;
 import org.eclipse.edc.jsonld.spi.JsonLd;
 import org.eclipse.edc.jsonld.util.JacksonJsonLd;
@@ -46,7 +45,9 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.CONTEXT;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_ATTRIBUTE;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_ASSIGNER_ATTRIBUTE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_POLICY_ATTRIBUTE;
+import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_TARGET_ATTRIBUTE;
 import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
 import static org.eclipse.edc.spi.CoreConstants.EDC_PREFIX;
 
@@ -148,7 +149,7 @@ public class Participant {
                     .body(requestBody)
                     .post("/v2/catalog/request")
                     .then()
-                    .log().all()
+                    .log().ifValidationFails()
                     .statusCode(200)
                     .extract().body().asString();
 
@@ -189,7 +190,7 @@ public class Participant {
                     .body(requestBody)
                     .post("/v2/catalog/dataset/request")
                     .then()
-                    .log().all()
+                    .log().ifValidationFails()
                     .statusCode(200)
                     .extract().body().asString();
 
@@ -207,19 +208,17 @@ public class Participant {
      * Initiate negotiation with a provider.
      *
      * @param provider data provider
-     * @param offerId  contract definition id
-     * @param assetId  asset id
-     * @param policy   policy
+     * @param offer    the contract offer
      * @return id of the contract agreement.
      */
-    public String negotiateContract(Participant provider, String offerId, String assetId, JsonObject policy) {
+    public String negotiateContract(Participant provider, JsonObject offer) {
         var requestBody = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                 .add(TYPE, "ContractRequestDto")
                 .add("providerId", provider.id)
                 .add("counterPartyAddress", provider.protocolEndpoint.url.toString())
                 .add("protocol", DSP_PROTOCOL)
-                .add("policy", jsonLd.compact(policy).getContent())
+                .add("policy", jsonLd.compact(offer).getContent())
                 .build();
 
         var negotiationId = managementEndpoint.baseRequest()
@@ -228,6 +227,7 @@ public class Participant {
                 .when()
                 .post("/v2/contractnegotiations")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .extract().body().jsonPath().getString(ID);
 
@@ -286,14 +286,21 @@ public class Participant {
      * @return transfer process id.
      */
     public String requestAsset(Participant provider, String assetId, JsonObject privateProperties, JsonObject destination) {
-        var dataset = getDatasetForAsset(provider, assetId);
-        var policy = dataset.getJsonArray(ODRL_POLICY_ATTRIBUTE).get(0).asJsonObject();
-        var contractDefinitionId = ContractOfferId.parseId(policy.getString(ID))
-                .orElseThrow(failure -> new RuntimeException(failure.getFailureDetail()));
-        var contractAgreementId = negotiateContract(provider, contractDefinitionId.toString(), assetId, policy);
+        var offer = getOfferForAsset(provider, assetId);
+
+        var contractAgreementId = negotiateContract(provider, offer);
         var transferProcessId = initiateTransfer(provider, contractAgreementId, assetId, privateProperties, destination);
         assertThat(transferProcessId).isNotNull();
         return transferProcessId;
+    }
+
+    private JsonObject getOfferForAsset(Participant provider, String assetId) {
+        var dataset = getDatasetForAsset(provider, assetId);
+        var policy = dataset.getJsonArray(ODRL_POLICY_ATTRIBUTE).get(0).asJsonObject();
+        return createObjectBuilder(policy)
+                .add(ODRL_ASSIGNER_ATTRIBUTE, createObjectBuilder().add(ID, provider.id))
+                .add(ODRL_TARGET_ATTRIBUTE, createObjectBuilder().add(ID, dataset.get(ID)))
+                .build();
     }
 
     /**
