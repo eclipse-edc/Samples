@@ -45,7 +45,8 @@ edc-http = { module = "org.eclipse.edc:http", version.ref = "edc" }
 edc-iam-mock = { module = "org.eclipse.edc:iam-mock", version.ref = "edc" }
 edc-jersey-micrometer = { module = "org.eclipse.edc:jersey-micrometer", version.ref = "edc" }
 edc-jetty-micrometer = { module = "org.eclipse.edc:jetty-micrometer", version.ref = "edc" }
-edc-json-ld = { module = "org.eclipse.edc:json-ld", version.ref = "edc" }
+edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" }
+edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
 edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref = "edc" }
