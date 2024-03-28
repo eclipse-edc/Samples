@@ -13,8 +13,8 @@ strongly advise reading the [documentation](https://eclipse-edc.github.io/docs/#
 
 Also, a working knowledge of **Git**, **Gradle**, **Java** and **HTTP** is presumed.
 
-We'll assume that you've just checked out the samples code base and have **Java 11+** installed on your development
-machine. If not, please download and install JDK 11+ for your OS.
+We'll assume that you've just checked out the samples code base and have **Java 17+** installed on your development
+machine. If not, please download and install JDK 17+ for your OS.
 
 Command examples in this document will use the `bash` syntax and use Unix-style paths, but any other shell should be
 fine as well. If you're using Windows you either need to adapt the paths or use WSL2.

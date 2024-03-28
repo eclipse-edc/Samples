@@ -232,11 +232,11 @@ In order to provide your own OpenTelemetry implementation, you have to "deploy a
 - Add a file in the resource directory META-INF/services. The file should be called `io.opentelemetry.api.OpenTelemetry`.
 - Add to the file the fully qualified name of your custom OpenTelemetry implementation class.
 
-EDC uses a [ServiceLoader](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html)
+EDC uses a [ServiceLoader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html)
 to load an implementation of OpenTelemetry. If it finds an OpenTelemetry service provider on the class path it will use
 it, otherwise it will use the registered global OpenTelemetry. You can look at the section
 `Deploying service providers on the class path` of the
-[ServiceLoader documentation](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/ServiceLoader.html)
+[ServiceLoader documentation](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html)
 to have more information about service providers.
 
 ---
