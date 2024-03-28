@@ -38,7 +38,7 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     }
 
     @Override
-    public @NotNull StatusResult<DataFlowResponse> initiateFlow(TransferProcess transferProcess, Policy policy) {
+    public @NotNull StatusResult<DataFlowResponse> start(TransferProcess transferProcess, Policy policy) {
         // static credentials, in a production case these should be created dynamically and an ACLs entry should be added
         var username = "alice";
         var password = "alice-secret";
@@ -55,6 +55,12 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
                 .build();
 
         return StatusResult.success(DataFlowResponse.Builder.newInstance().dataAddress(kafkaDataAddress).build());
+    }
+
+    @Override
+    public StatusResult<Void> suspend(TransferProcess transferProcess) {
+        // here the flow can be suspended, not something covered in this sample
+        return StatusResult.success();
     }
 
     @Override

@@ -6,7 +6,6 @@
   "connectorId": "provider",
   "counterPartyAddress": "http://localhost:19194/protocol",
   "consumerId": "consumer",
-  "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",
@@ -15,6 +14,7 @@
     "permission": [],
     "prohibition": [],
     "obligation": [],
+    "assigner": "provider",
     "target": "assetId"
   }
 }
