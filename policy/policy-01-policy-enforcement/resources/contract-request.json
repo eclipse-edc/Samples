@@ -1,35 +1,27 @@
 {
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
-    "odrl": "http://www.w3.org/ns/odrl/2/"
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
-  "@type": "NegotiationInitiateRequestDto",
-  "connectorId": "provider",
-  "consumerId": "consumer",
-  "providerId": "provider",
-  "connectorAddress": "http://localhost:19194/protocol",
+  "@type": "ContractRequest",
+  "counterPartyAddress": "http://localhost:19194/protocol",
   "protocol": "dataspace-protocol-http",
-  "offer": {
-    "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
-    "assetId": "test-document",
-    "policy": {
-      "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
-      "@type": "Set",
-      "odrl:permission": [
-        {
-          "odrl:action": "use",
-          "odrl:target": "test-document",
-          "odrl:constraint": {
-            "@type": "AtomicConstraint",
-            "odrl:leftOperand": "location",
-            "odrl:operator": {
-              "@id": "odrl:eq"
-            },
-            "odrl:rightOperand": "eu"
-          }
+  "policy": {
+    "@context": "http://www.w3.org/ns/odrl.jsonld",
+    "@id": "1:test-document:13dce0f1-52ed-4554-a194-e83e92733ee5",
+    "@type": "Offer",
+    "permission": [
+      {
+        "action": "use",
+        "target": "test-document",
+        "constraint": {
+          "@type": "AtomicConstraint",
+          "leftOperand": "location",
+          "operator": "eq",
+          "rightOperand": "eu"
         }
-      ],
-      "odrl:target": "test-document"
-    }
+      }
+    ],
+    "assigner": "provider",
+    "target": "test-document"
   }
 }

@@ -18,7 +18,7 @@ import jakarta.json.Json;
 import okhttp3.mockwebserver.MockWebServer;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.eclipse.edc.junit.testfixtures.TestUtils;
+import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -79,7 +79,7 @@ public class Streaming01httpToHttpTest {
                     "edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-01-runtime/consumer.properties").getAbsolutePath()
             )
     );
-    private final int httpReceiverPort = TestUtils.getFreePort();
+    private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer consumerReceiverServer = new MockWebServer();
 
     @BeforeEach

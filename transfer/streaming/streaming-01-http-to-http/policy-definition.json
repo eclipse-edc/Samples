@@ -3,6 +3,6 @@
   "@id": "no-constraint-policy",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",
-    "@type": "use"
+    "@type": "Set"
   }
 }

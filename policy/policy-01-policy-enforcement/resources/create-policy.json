@@ -1,25 +1,25 @@
 {
   "@context": {
-    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
-    "odrl": "http://www.w3.org/ns/odrl/2/"
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@id": "eu-policy",
   "policy": {
+    "@context": "http://www.w3.org/ns/odrl.jsonld",
     "@type": "Set",
-    "odrl:permission": [
+    "permission": [
       {
-        "odrl:action": "use",
-        "odrl:constraint": {
+        "action": "use",
+        "constraint": {
           "@type": "AtomicConstraint",
-          "odrl:leftOperand": "location",
-          "odrl:operator": {
+          "leftOperand": "location",
+          "operator": {
             "@id": "odrl:eq"
           },
-          "odrl:rightOperand": "eu"
+          "rightOperand": "eu"
         }
       }
     ],
-    "odrl:prohibition": [],
-    "odrl:obligation": []
+    "prohibition": [],
+    "obligation": []
   }
 }

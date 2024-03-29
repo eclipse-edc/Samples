@@ -3,13 +3,13 @@
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "odrl": "http://www.w3.org/ns/odrl/2/"
   },
-  "@type": "NegotiationInitiateRequestDto",
+  "@type": "ContractRequest",
   "counterPartyAddress": "http://localhost:18182/protocol",
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "policy": {
     "@id": "{{offerId}}",
-    "@type": "use",
+    "@type": "Offer",
     "odrl:permission": [],
     "odrl:prohibition": [],
     "odrl:obligation": [],

@@ -40,8 +40,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.eclipse.edc.junit.testfixtures.TestUtils;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
+import org.eclipse.edc.util.io.Ports;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
@@ -126,7 +126,7 @@ public class Streaming03KafkaToKafkaTest {
             )
     );
 
-    private final int httpReceiverPort = TestUtils.getFreePort();
+    private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer edrReceiverServer = new MockWebServer();
 
     @BeforeEach
