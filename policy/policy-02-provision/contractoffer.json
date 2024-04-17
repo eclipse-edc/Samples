@@ -5,7 +5,10 @@
   },
   "@type": "Offer",
   "connectorId": "provider",
+  "consumerId": "cosumer",
+  "providerId": "provider",
   "connectorAddress": "http://localhost:8282/protocol",
+  "counterPartyAddress": "http://localhost:8282/protocol",
   "protocol": "dataspace-protocol-http",
   "offer": {
     "offerId": "1:test-document:3a75736e-001d-4364-8bd4-9888490edb58",
@@ -20,7 +23,7 @@
             {
               "odrl:leftOperand": "POLICY_REGULATE_FILE_PATH",
               "odrl:operator": {
-                "@id": "http://www.w3.org/ns/odrl/2/eq"
+                "@id": "odrl:eq"
               },
               "odrl:rightOperand": "path/to/desired/location/transfer.txt",
               "odrl:target": "test-document"

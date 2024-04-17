@@ -1,12 +1,11 @@
 {
   "@context": {
-    "edc": "https://w3id.org/edc/v0.0.1/ns/",
-    "odrl": "http://www.w3.org/ns/odrl/2/"
+    "edc": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "DataRequest",
   "protocol": "dataspace-protocol-http",
   "assetId": "test-document",
-  "contractId": "1:3d0c9f11-54bc-4b15-a078-a202679051e8",
+  "contractId": "{{contract-agreement-id}}",
   "dataDestination": {
     "type": "File"
   },
@@ -15,6 +14,6 @@
     "isFinite": true
   },
   "managedResources": true,
-  "connectorAddress": "http://localhost:8282/protocol",
+  "counterPartyAddress": "http://localhost:8282/protocol",
   "connectorId": "consumer"
 }

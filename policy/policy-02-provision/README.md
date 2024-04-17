@@ -194,7 +194,8 @@ curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v2/contra
 
 ### 4. Request the file
 
-Request file transfer with the request body [`filetransfer.json`](policy/policy-02-provision/filetransfer.json):
+To request a file transfer, you need to use the [`filetransfer.json`](policy/policy-02-provision/filetransfer.json). First, locate the `contractId` field in the [`filetransfer.json`](policy/policy-02-provision/filetransfer.json) file.
+Then, replace the `{{contract-agreement-id}}` placeholder with the actual contract agreement ID that you obtained from the previous step:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -H "X-Api-Key: password" -d @policy/policy-02-provision/filetransfer.json "http://localhost:9192/management/v2/transferprocesses" 
