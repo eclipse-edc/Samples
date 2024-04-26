@@ -99,11 +99,15 @@ java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-pro
 To request data offers from the provider, run:
 
 ```bash
-curl -X POST "http://localhost:9192/management/catalog/request" \
+curl -X POST "http://localhost:9192/management/v2/catalog/request" \
 --header 'X-Api-Key: password' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "counterPartyAddress": "http://localhost:8282/protocol"
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "counterPartyAddress": "http://localhost:8282/protocol",
+  "protocol": "dataspace-protocol-http"
 }'
 ```
 
