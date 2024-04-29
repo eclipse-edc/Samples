@@ -36,6 +36,18 @@ dependencies {
     implementation(libs.edc.dsp)
 
     implementation(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
+
+    implementation(libs.edc.control.plane.api.client)
+    implementation(libs.edc.control.plane.api)
+    implementation(libs.edc.transfer.data.plane)
+    implementation(libs.edc.transfer.pull.http.receiver)
+
+    implementation(libs.edc.data.plane.selector.api)
+
+    implementation(libs.edc.data.plane.control.api)
+    implementation(libs.edc.data.plane.public.api)
+    implementation(libs.edc.data.plane.core)
+    implementation(libs.edc.data.plane.http)
 }
 
 application {
