@@ -10,7 +10,7 @@ junit-pioneer = "2.2.0"
 jupiter = "5.10.2"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.4.0"
-rsApi = "3.1.0"
+rsApi = "4.0.0"
 testcontainers = "1.19.7"
 kafkaClients = "3.7.0"
 
