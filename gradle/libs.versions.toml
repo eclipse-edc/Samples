@@ -49,6 +49,7 @@ edc-json-ld-lib = { module = "org.eclipse.edc:json-ld-lib", version.ref = "edc" 
 edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" }
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
+edc-management-api-test-fixtures = { module = "org.eclipse.edc:management-api-test-fixtures", version.ref = "edc" }
 edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref = "edc" }
 edc-monitor-jdk-logger = { module = "org.eclipse.edc:monitor-jdk-logger", version.ref = "edc" }
 edc-provision-aws-s3 = { module = "org.eclipse.edc:provision-aws-s3", version.ref = "edc" }

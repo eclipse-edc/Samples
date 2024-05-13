@@ -46,20 +46,20 @@ public class Streaming01httpToHttpTest {
     private static final String SAMPLE_FOLDER = "transfer/streaming/streaming-01-http-to-http";
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
 
-    private static final Participant PROVIDER = Participant.Builder.newInstance()
+    private static final StreamingParticipant PROVIDER = StreamingParticipant.Builder.newStreamingInstance()
             .name("provider")
             .id("provider")
-            .managementEndpoint(new Participant.Endpoint(URI.create("http://localhost:18181/management")))
-            .protocolEndpoint(new Participant.Endpoint(URI.create("http://localhost:18182/protocol")))
-            .controlEndpoint(new Participant.Endpoint(URI.create("http://localhost:18183/control")))
+            .managementEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18181/management")))
+            .protocolEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18182/protocol")))
+            .controlEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18183/control")))
             .build();
 
-    private static final Participant CONSUMER = Participant.Builder.newInstance()
+    private static final StreamingParticipant CONSUMER = StreamingParticipant.Builder.newStreamingInstance()
             .name("consumer")
             .id("consumer")
-            .managementEndpoint(new Participant.Endpoint(URI.create("http://localhost:28181/management")))
-            .protocolEndpoint(new Participant.Endpoint(URI.create("http://localhost:28182/protocol")))
-            .controlEndpoint(new Participant.Endpoint(URI.create("http://localhost:28183/control")))
+            .managementEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28181/management")))
+            .protocolEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28182/protocol")))
+            .controlEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28183/control")))
             .build();
 
     @RegisterExtension
@@ -101,10 +101,13 @@ public class Streaming01httpToHttpTest {
                 .add("type", "HttpData")
                 .add("baseUrl", "http://localhost:" + httpReceiverPort)
                 .build();
-        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "stream-asset", Json.createObjectBuilder().build(), destination, "HttpData-PUSH");
+        var transferProcessId = CONSUMER.requestAssetFrom("stream-asset", PROVIDER)
+                .withDestination(destination)
+                .withTransferType("HttpData-PUSH")
+                .execute();
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
-            String state = CONSUMER.getTransferProcessState(transferProcessId);
+            var state = CONSUMER.getTransferProcessState(transferProcessId);
             assertThat(state).isEqualTo(STARTED.name());
         });
 

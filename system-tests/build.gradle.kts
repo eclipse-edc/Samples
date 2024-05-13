@@ -21,6 +21,7 @@ dependencies {
     testImplementation(libs.edc.json.ld.lib)
     testImplementation(libs.edc.json.ld.spi)
     testImplementation(libs.edc.control.plane.spi)
+    testImplementation(testFixtures(libs.edc.management.api.test.fixtures))
     testImplementation(libs.awaitility)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.restAssured)
