@@ -69,10 +69,10 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
+import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
-import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 @Testcontainers
 @EndToEndTest
@@ -155,7 +155,7 @@ public class Streaming03KafkaToKafkaTest {
         var transferProcessPrivateProperties = Json.createObjectBuilder()
                 .add("receiverHttpEndpoint", "http://localhost:" + httpReceiverPort)
                 .build();
-        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "kafka-stream-asset", transferProcessPrivateProperties, destination);
+        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "kafka-stream-asset", transferProcessPrivateProperties, destination, "KafkaBroker-PULL");
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var state = CONSUMER.getTransferProcessState(transferProcessId);

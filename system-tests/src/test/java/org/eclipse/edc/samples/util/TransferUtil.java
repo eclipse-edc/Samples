@@ -17,7 +17,7 @@ package org.eclipse.edc.samples.util;
 
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 
 import java.time.Duration;
 

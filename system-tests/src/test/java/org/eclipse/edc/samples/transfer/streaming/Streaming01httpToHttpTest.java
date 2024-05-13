@@ -36,7 +36,7 @@ import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
+import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
@@ -90,7 +90,7 @@ public class Streaming01httpToHttpTest {
     @Test
     void streamData() throws IOException {
         var source = Files.createTempDirectory("source");
-        PROVIDER.registerDataPlane(List.of("HttpStreaming"), List.of("HttpData"));
+        PROVIDER.registerDataPlane(List.of("HttpStreaming"), List.of("HttpData"), List.of("HttpData-PUSH"));
 
         PROVIDER.createAsset(getFileContentFromRelativePath(SAMPLE_FOLDER + "/asset.json")
                 .replace("{{sourceFolder}}", source.toString()));
@@ -101,7 +101,7 @@ public class Streaming01httpToHttpTest {
                 .add("type", "HttpData")
                 .add("baseUrl", "http://localhost:" + httpReceiverPort)
                 .build();
-        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "stream-asset", Json.createObjectBuilder().build(), destination);
+        var transferProcessId = CONSUMER.requestAsset(PROVIDER, "stream-asset", Json.createObjectBuilder().build(), destination, "HttpData-PUSH");
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             String state = CONSUMER.getTransferProcessState(transferProcessId);

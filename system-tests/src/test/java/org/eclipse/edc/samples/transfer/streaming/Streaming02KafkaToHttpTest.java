@@ -43,7 +43,7 @@ import java.util.concurrent.Executors;
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.connector.transfer.spi.types.TransferProcessStates.STARTED;
+import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
@@ -109,7 +109,7 @@ public class Streaming02KafkaToHttpTest {
     @Test
     void streamData() {
 
-        PROVIDER.registerDataPlane(List.of("Kafka"), List.of("HttpData"));
+        PROVIDER.registerDataPlane(List.of("Kafka"), List.of("HttpData"), List.of("HttpData-PUSH"));
 
         PROVIDER.createAsset(getFileContentFromRelativePath(SAMPLE_FOLDER + "/1-asset.json")
                 .replace("{{bootstrap.servers}}", kafkaContainer.getBootstrapServers())
@@ -125,7 +125,7 @@ public class Streaming02KafkaToHttpTest {
                 .build();
 
         var transferProcessId = CONSUMER.requestAsset(PROVIDER, "kafka-stream-asset",
-                Json.createObjectBuilder().build(), destination);
+                Json.createObjectBuilder().build(), destination, "HttpData-PUSH");
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var state = CONSUMER.getTransferProcessState(transferProcessId);

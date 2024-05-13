@@ -40,7 +40,7 @@ import static jakarta.json.Json.createArrayBuilder;
 import static jakarta.json.Json.createObjectBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.eclipse.edc.connector.contract.spi.types.negotiation.ContractNegotiationStates.FINALIZED;
+import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.FINALIZED;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.CONTEXT;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.TYPE;
@@ -48,8 +48,8 @@ import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.DCAT_DATASET_ATTRI
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_ASSIGNER_ATTRIBUTE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_POLICY_ATTRIBUTE;
 import static org.eclipse.edc.jsonld.spi.PropertyAndTypeNames.ODRL_TARGET_ATTRIBUTE;
-import static org.eclipse.edc.spi.CoreConstants.EDC_NAMESPACE;
-import static org.eclipse.edc.spi.CoreConstants.EDC_PREFIX;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_PREFIX;
 
 /**
  * Essentially a wrapper around the management API enabling to test interactions with other participants, eg. catalog, transfer...
@@ -74,13 +74,14 @@ public class Participant {
         return name;
     }
 
-    public void registerDataPlane(List<String> sourceTypes, List<String> destinationTypes) {
+    public void registerDataPlane(List<String> sourceTypes, List<String> destinationTypes, List<Object> transferTypes) {
         var jsonObject = Json.createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                 .add(ID, UUID.randomUUID().toString())
                 .add(EDC_NAMESPACE + "url", controlEndpoint.url + "/transfer")
                 .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(sourceTypes))
                 .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(destinationTypes))
+                .add(EDC_NAMESPACE + "allowedTransferTypes", createArrayBuilder(transferTypes))
                 .build();
 
         managementEndpoint.baseRequest()
@@ -247,20 +248,26 @@ public class Participant {
      * @param assetId             asset id
      * @param privateProperties   private properties
      * @param destination         data destination address
+     * @param transferType        transfer type
      * @return id of the transfer process.
      */
-    public String initiateTransfer(Participant provider, String contractAgreementId, String assetId, JsonObject privateProperties, JsonObject destination) {
-        var requestBody = createObjectBuilder()
+    public String initiateTransfer(Participant provider, String contractAgreementId, String assetId, JsonObject privateProperties, JsonObject destination, String transferType) {
+        var builder = createObjectBuilder()
                 .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
                 .add(TYPE, "TransferRequest")
-                .add("dataDestination", destination)
                 .add("protocol", DSP_PROTOCOL)
                 .add("assetId", assetId)
                 .add("contractId", contractAgreementId)
                 .add("connectorId", provider.id)
                 .add("counterPartyAddress", provider.protocolEndpoint.url.toString())
                 .add("privateProperties", privateProperties)
-                .build();
+                .add("transferType", transferType);
+
+        if (destination != null) {
+            builder.add("dataDestination", destination);
+        }
+
+        var requestBody = builder.build();
 
         return managementEndpoint.baseRequest()
                 .contentType(JSON)
@@ -283,13 +290,14 @@ public class Participant {
      * @param assetId           asset id
      * @param privateProperties private properties of the data request
      * @param destination       data destination
+     * @param transferType      transfer type
      * @return transfer process id.
      */
-    public String requestAsset(Participant provider, String assetId, JsonObject privateProperties, JsonObject destination) {
+    public String requestAsset(Participant provider, String assetId, JsonObject privateProperties, JsonObject destination, String transferType) {
         var offer = getOfferForAsset(provider, assetId);
 
         var contractAgreementId = negotiateContract(provider, offer);
-        var transferProcessId = initiateTransfer(provider, contractAgreementId, assetId, privateProperties, destination);
+        var transferProcessId = initiateTransfer(provider, contractAgreementId, assetId, privateProperties, destination, transferType);
         assertThat(transferProcessId).isNotNull();
         return transferProcessId;
     }

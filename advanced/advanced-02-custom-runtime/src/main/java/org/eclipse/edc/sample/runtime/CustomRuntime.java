@@ -17,11 +17,9 @@ package org.eclipse.edc.sample.runtime;
 import org.eclipse.edc.boot.system.DefaultServiceExtensionContext;
 import org.eclipse.edc.boot.system.runtime.BaseRuntime;
 import org.eclipse.edc.spi.monitor.Monitor;
-import org.eclipse.edc.spi.system.ConfigurationExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.spi.system.configuration.Config;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class CustomRuntime extends BaseRuntime {
 
@@ -34,18 +32,13 @@ public class CustomRuntime extends BaseRuntime {
     }
 
     @Override
-    protected String getRuntimeName(ServiceExtensionContext context) {
-        return "CUSTOM-RUNTIME";
-    }
-
-    @Override
-    protected @NotNull ServiceExtensionContext createContext(Monitor monitor) {
+    protected @NotNull ServiceExtensionContext createContext(Monitor monitor, Config config) {
         //override the default service extension context with a super customized one
-        return new SuperCustomExtensionContext(monitor, loadConfigurationExtensions());
+        return new SuperCustomExtensionContext(monitor, config);
     }
 
     @Override
-    protected void shutdown() {
+    public void shutdown() {
         super.shutdown();
 
         //this is the custom part here:
@@ -53,8 +46,8 @@ public class CustomRuntime extends BaseRuntime {
     }
 
     private static class SuperCustomExtensionContext extends DefaultServiceExtensionContext {
-        SuperCustomExtensionContext(Monitor monitor, List<ConfigurationExtension> configurationExtensions) {
-            super(monitor, configurationExtensions);
+        SuperCustomExtensionContext(Monitor monitor, Config config) {
+            super(monitor, config);
         }
     }
 }

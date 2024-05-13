@@ -8,6 +8,7 @@
   "contractId": "{{contract-agreement-id}}",
   "assetId": "assetId",
   "protocol": "dataspace-protocol-http",
+  "transferType": "HttpData-PUSH",
   "dataDestination": {
     "type": "HttpData",
     "baseUrl": "http://localhost:4000/api/consumer/store"

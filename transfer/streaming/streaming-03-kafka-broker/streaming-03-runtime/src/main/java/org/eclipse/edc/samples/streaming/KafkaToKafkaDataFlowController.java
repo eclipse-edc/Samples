@@ -14,14 +14,14 @@
 
 package org.eclipse.edc.samples.streaming;
 
-import org.eclipse.edc.connector.transfer.spi.flow.DataFlowController;
-import org.eclipse.edc.connector.transfer.spi.types.DataFlowResponse;
-import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
+import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
+import org.eclipse.edc.connector.controlplane.transfer.spi.flow.DataFlowController;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.DataFlowResponse;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-import org.eclipse.edc.spi.types.domain.asset.Asset;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +33,7 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
 
     @Override
     public boolean canHandle(TransferProcess transferProcess) {
-        return KAFKA_TYPE.equals(transferProcess.getContentDataAddress().getType()) && "KafkaBroker".equals(transferProcess.getTransferType());
+        return KAFKA_TYPE.equals(transferProcess.getContentDataAddress().getType()) && "KafkaBroker-PULL".equals(transferProcess.getTransferType());
     }
 
     @Override

@@ -8,7 +8,5 @@
   "contractId": "{{contract-agreement-id}}",
   "assetId": "assetId",
   "protocol": "dataspace-protocol-http",
-  "dataDestination": {
-    "type": "HttpProxy"
-  }
+  "transferType": "HttpData-PULL"
 }
