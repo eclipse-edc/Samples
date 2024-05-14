@@ -14,8 +14,8 @@
 
 package org.eclipse.edc.sample.extension.listener;
 
-import org.eclipse.edc.connector.transfer.spi.observe.TransferProcessListener;
-import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
+import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessListener;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 public class TransferProcessStartedListener implements TransferProcessListener {

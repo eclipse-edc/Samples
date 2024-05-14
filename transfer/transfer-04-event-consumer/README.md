@@ -101,7 +101,7 @@ The consumer should spew out logs similar to:
 
 ```bash
 DEBUG 2023-10-16T09:29:45.316908 [TransferProcessManagerImpl] TransferProcess 762b5a0c-43fb-4b8b-8022-669043c8fa81 is now in state REQUESTED
-DEBUG 2023-10-16T09:29:46.269998 DSP: Incoming TransferStartMessage for class org.eclipse.edc.connector.transfer.spi.types.TransferProcess process: 762b5a0c-43fb-4b8b-8022-669043c8fa81
+DEBUG 2023-10-16T09:29:46.269998 DSP: Incoming TransferStartMessage for class org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess process: 762b5a0c-43fb-4b8b-8022-669043c8fa81
 DEBUG 2023-10-16T09:29:46.271592 TransferProcessStartedListener received STARTED event   <----------------------------
 DEBUG 2023-10-16T09:29:46.27174 TransferProcess 762b5a0c-43fb-4b8b-8022-669043c8fa81 is now in state STARTED
 ```

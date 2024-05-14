@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.sample.extension.listener;
 
-import org.eclipse.edc.connector.transfer.spi.observe.TransferProcessObservable;
+import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessObservable;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 

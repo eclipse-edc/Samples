@@ -14,9 +14,9 @@
 
 package org.eclipse.edc.samples.transfer.streaming.http;
 
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSourceFactory;
-import org.eclipse.edc.connector.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +31,8 @@ import java.util.Optional;
 public class HttpStreamingDataSourceFactory implements DataSourceFactory {
 
     @Override
-    public boolean canHandle(DataFlowStartMessage dataFlowStartMessage) {
-        return dataFlowStartMessage.getSourceDataAddress().getType().equals("HttpStreaming");
+    public String supportedType() {
+        return "HttpStreaming";
     }
 
     @Override
