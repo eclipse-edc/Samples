@@ -39,7 +39,6 @@ import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.samples.common.NegotiationCommon.fetchDatasetFromCatalog;
 import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreementId;
 import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
@@ -67,14 +66,14 @@ public class Advanced01openTelemetryTest {
 
     @Test
     void runSampleSteps()  {
-        runPrerequisites();
         createAsset();
         createPolicy();
         createContractDefinition();
         var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);
         var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH, catalogDatasetId);
         var contractAgreementId = getContractAgreementId(contractNegotiationId);
-        var transferProcessId = startTransfer(getFileContentFromRelativePath(START_TRANSFER_FILE_PATH), contractAgreementId);
+        var transferRequest = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
+        var transferProcessId = startTransfer(transferRequest, contractAgreementId);
         checkTransferStatus(transferProcessId, STARTED);
         assertJaegerState();
     }

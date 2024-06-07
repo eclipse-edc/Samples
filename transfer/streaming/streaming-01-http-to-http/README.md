@@ -26,15 +26,6 @@ export EDC_FS_CONFIG=transfer/streaming/streaming-01-http-to-http/streaming-01-r
 java -jar transfer/streaming/streaming-01-http-to-http/streaming-01-runtime/build/libs/connector.jar
 ```
 
-#### Register Data Plane on provider
-The provider connector needs to be aware of the streaming capabilities of the embedded dataplane, which can be registered with 
-this call:
-```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-01-http-to-http/dataplane.json -X POST "http://localhost:18181/management/v2/dataplanes"
-```
-
-If you look at the `dataplane.json` you'll notice that the supported source is `HttpStreaming` and the supported sink is `HttpData`.
-
 #### Register Asset, Policy Definition and Contract Definition on provider
 A "source" folder must first be created where the data plane will get the messages to be sent to the consumers.
 To do this, create a temp folder:

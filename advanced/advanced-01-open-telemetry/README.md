@@ -31,24 +31,6 @@ docker compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --a
 
 Open a new terminal.
 
-Register data planes for provider and consumer:
-
-```bash
-curl -H 'Content-Type: application/json' \
-  -H "X-Api-Key: password" \
-  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
-  -X POST "http://localhost:19193/management/v2/dataplanes" \
-  -s | jq
-```
-
-```bash
-curl -H 'Content-Type: application/json' \
-  -H "X-Api-Key: password" \
-  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
-  -X POST "http://localhost:29193/management/v2/dataplanes" \
-  -s | jq
-```
-
 Create an asset:
 
 ```bash

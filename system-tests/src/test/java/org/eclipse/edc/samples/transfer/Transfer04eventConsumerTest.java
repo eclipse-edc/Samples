@@ -32,7 +32,6 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFr
 import static org.eclipse.edc.samples.common.NegotiationCommon.runNegotiation;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
@@ -59,7 +58,6 @@ public class Transfer04eventConsumerTest {
     void runSampleSteps() {
         var standardOutputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(standardOutputStream));
-        runPrerequisites();
         var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var contractAgreementId = runNegotiation();
         var transferProcessId = startTransfer(requestBody, contractAgreementId);

@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.data.plane.spi)
     implementation(libs.edc.data.plane.core)
+    implementation(libs.edc.data.plane.self.registration)
     implementation(libs.edc.data.plane.http)
 }
 

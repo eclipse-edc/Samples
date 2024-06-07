@@ -36,7 +36,6 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 import static org.hamcrest.Matchers.emptyString;
@@ -56,7 +55,6 @@ public class Transfer02consumerPullTest {
 
     @Test
     void runSampleSteps() {
-        runPrerequisites();
         var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var contractAgreementId = runNegotiation();
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
