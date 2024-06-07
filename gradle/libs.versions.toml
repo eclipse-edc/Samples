@@ -29,7 +29,7 @@ edc-control-plane-api = { module = "org.eclipse.edc:control-plane-api", version.
 edc-control-plane-core = { module = "org.eclipse.edc:control-plane-core", version.ref = "edc" }
 edc-control-plane-spi = { module = "org.eclipse.edc:control-plane-spi", version.ref = "edc" }
 edc-data-plane-control-api = { module = "org.eclipse.edc:data-plane-control-api", version.ref = "edc" }
-edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api", version.ref = "edc" }
+edc-data-plane-public-api = { module = "org.eclipse.edc:data-plane-public-api-v2", version.ref = "edc" }
 edc-data-plane-aws-s3 = { module = "org.eclipse.edc:data-plane-aws-s3", version.ref = "edc" }
 edc-data-plane-azure-storage = { module = "org.eclipse.edc:data-plane-azure-storage", version.ref = "edc" }
 edc-data-plane-client = { module = "org.eclipse.edc:data-plane-client", version.ref = "edc" }
@@ -54,13 +54,13 @@ edc-micrometer-core = { module = "org.eclipse.edc:micrometer-core", version.ref 
 edc-monitor-jdk-logger = { module = "org.eclipse.edc:monitor-jdk-logger", version.ref = "edc" }
 edc-provision-aws-s3 = { module = "org.eclipse.edc:provision-aws-s3", version.ref = "edc" }
 edc-runtime-metamodel = { module = "org.eclipse.edc:runtime-metamodel", version.ref = "edc" }
-edc-transfer-data-plane = { module = "org.eclipse.edc:transfer-data-plane", version.ref = "edc" }
+edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
 edc-transfer-process-api = { module = "org.eclipse.edc:transfer-process-api", version.ref = "edc" }
 edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-receiver", version.ref = "edc" }
 edc-transfer-pull-http-dynamic-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
 edc-util = { module = "org.eclipse.edc:util", version.ref = "edc" }
 edc-vault-azure = { module = "org.eclipse.edc:vault-azure", version.ref = "edc" }
-edc-vault-filesystem = { module = "org.eclipse.edc:vault-filesystem", version.ref = "edc" }
+edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 jakarta-rsApi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "rsApi" }
 jakartaJson = { module = "org.glassfish:jakarta.json", version.ref = "jakarta-json" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }

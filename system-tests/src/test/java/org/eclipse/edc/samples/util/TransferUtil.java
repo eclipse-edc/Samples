@@ -22,6 +22,7 @@ import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess
 import java.time.Duration;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
@@ -104,9 +105,9 @@ public class TransferUtil {
                 .atMost(TIMEOUT)
                 .pollDelay(POLL_DELAY)
                 .pollInterval(POLL_INTERVAL)
-                .until(
-                        () -> get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE),
-                        (result) -> status.name().equals(result)
-                );
+                .untilAsserted(() -> {
+                    var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
+                    assertThat(state).isEqualTo(status.name());
+                });
     }
 }

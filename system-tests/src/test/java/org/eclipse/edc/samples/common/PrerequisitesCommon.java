@@ -41,21 +41,19 @@ public class PrerequisitesCommon {
     private static final String KEYSTORE_PASSWORD = "123456";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/provider-configuration.properties";
     private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties";
-    private static final String PROVIDER_VAULT_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/provider-vault.properties";
-    private static final String CONSUMER_VAULT_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-vault.properties";
     private static final String REGISTER_DATA_PLANE_PROVIDER_JSON = "transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json";
 
     public static EdcRuntimeExtension getProvider() {
-        return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_VAULT_PROPERTIES_FILE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
+        return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
 
     }
 
     public static EdcRuntimeExtension getConsumer() {
-        return getConnector(CONNECTOR_MODULE_PATH, CONSUMER, CONSUMER_VAULT_PROPERTIES_FILE_PATH, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
+        return getConnector(CONNECTOR_MODULE_PATH, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     public static EdcRuntimeExtension getConsumer(String modulePath) {
-        return getConnector(modulePath, CONSUMER, CONSUMER_VAULT_PROPERTIES_FILE_PATH, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
+        return getConnector(modulePath, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     public static void registerDataPlaneProvider() {
@@ -69,7 +67,6 @@ public class PrerequisitesCommon {
     private static EdcRuntimeExtension getConnector(
             String modulePath,
             String moduleName,
-            String vaultPropertiesFilePath,
             String configPropertiesFilePath
     ) {
         return new EdcRuntimeExtension(
