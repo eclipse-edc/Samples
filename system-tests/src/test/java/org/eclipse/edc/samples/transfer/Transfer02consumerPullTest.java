@@ -15,17 +15,16 @@
 
 package org.eclipse.edc.samples.transfer;
 
+import io.restassured.common.mapper.TypeRef;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
-import org.eclipse.edc.samples.util.HttpRequestLoggerConsumer;
-import org.eclipse.edc.samples.util.HttpRequestLoggerContainer;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
@@ -34,7 +33,7 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFr
 import static org.eclipse.edc.samples.common.NegotiationCommon.runNegotiation;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_PUBLIC_URL;
+import static org.eclipse.edc.samples.common.PrerequisitesCommon.CONSUMER_MANAGEMENT_URL;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
@@ -47,23 +46,13 @@ import static org.hamcrest.Matchers.not;
 @Testcontainers
 public class Transfer02consumerPullTest {
 
-    private static final HttpRequestLoggerConsumer LOG_CONSUMER = new HttpRequestLoggerConsumer();
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
-    private static final String AUTH_CODE_KEY = "authCode";
 
     @RegisterExtension
     static EdcRuntimeExtension provider = getProvider();
 
     @RegisterExtension
     static EdcRuntimeExtension consumer = getConsumer();
-
-    @Container
-    public static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer(LOG_CONSUMER);
-
-    @BeforeAll
-    static void setUp() {
-        httpRequestLoggerContainer.start();
-    }
 
     @Test
     void runSampleSteps() {
@@ -72,17 +61,24 @@ public class Transfer02consumerPullTest {
         var contractAgreementId = runNegotiation();
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
-        var authCode = LOG_CONSUMER.getJsonValue(AUTH_CODE_KEY);
+
+        var edr = given()
+                .when()
+                .get(CONSUMER_MANAGEMENT_URL + "/v1/edrs/{id}/dataaddress", transferProcessId)
+                .then()
+                .log().ifValidationFails()
+                .statusCode(200)
+                .extract().body().as(new TypeRef<Map<String, Object>>() {
+                });
 
         var result = given()
                 .header(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
-                .header(AUTHORIZATION, authCode)
+                .header(AUTHORIZATION, edr.get("authorization"))
                 .when()
-                .get(CONSUMER_PUBLIC_URL)
+                .get(edr.get("endpoint").toString())
                 .then()
                 .statusCode(HttpStatus.SC_OK)
-                .log()
-                .ifError()
+                .log().ifValidationFails()
                 .body("[0].name", not(emptyString()))
                 .extract()
                 .jsonPath()

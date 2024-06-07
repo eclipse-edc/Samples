@@ -30,6 +30,10 @@ dependencies {
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)
 
+    implementation(libs.edc.edr.cache.api)
+    implementation(libs.edc.edr.store.core)
+    implementation(libs.edc.edr.store.receiver)
+
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
 

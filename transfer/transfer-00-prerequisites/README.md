@@ -40,18 +40,6 @@ Inspect the different configuration files below:
 * [provider-configuration.properties](resources/configuration/provider-configuration.properties)
 * [consumer-configuration.properties](resources/configuration/consumer-configuration.properties)
 
-The section bellow will show you some explanation about some of the properties that you can find in
-the configuration files.
-
-#### 1. edc.receiver.http.endpoint
-
-This property is used to define the endpoint where the connector consumer will send the
-EndpointDataReference.
-
-#### 2. edc.dataplane.token.validation.endpoint
-
-This property is used to define the endpoint exposed by the control plane to validate the token.
-
 ### 2. Run the connectors
 
 To run the provider, just run the following command
