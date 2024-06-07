@@ -35,7 +35,6 @@ public class PrerequisitesCommon {
     private static final String CONSUMER = "consumer";
     private static final String EDC_KEYSTORE = "edc.keystore";
     private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
-    private static final String EDC_VAULT = "edc.vault";
     private static final String EDC_FS_CONFIG = "edc.fs.config";
 
     private static final String CERT_PFX_FILE_PATH = "transfer/transfer-00-prerequisites/resources/certs/cert.pfx";
@@ -79,7 +78,6 @@ public class PrerequisitesCommon {
                 Map.of(
                         EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
                         EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
-                        EDC_VAULT, getFileFromRelativePath(vaultPropertiesFilePath).getAbsolutePath(),
                         EDC_FS_CONFIG, getFileFromRelativePath(configPropertiesFilePath).getAbsolutePath()
                 )
         );

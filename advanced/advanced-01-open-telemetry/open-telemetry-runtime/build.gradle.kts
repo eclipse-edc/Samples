@@ -31,7 +31,6 @@ dependencies {
 
     implementation(libs.edc.dsp)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.vault.filesystem)
 
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
