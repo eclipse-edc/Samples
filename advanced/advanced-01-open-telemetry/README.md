@@ -25,29 +25,17 @@ is configured to expose a Prometheus metrics endpoint.
 
 To run the consumer, the provider, and Jaeger execute the following commands in the project root folder:
 
+Build the connector
+```bash
+./gradlew :advanced:advanced-01-open-telemetry:open-telemetry-runtime:build
+```
+
+Start the docker compose
 ```bash
 docker compose -f advanced/advanced-01-open-telemetry/docker-compose.yaml up --abort-on-container-exit
 ```
 
 Open a new terminal.
-
-Register data planes for provider and consumer:
-
-```bash
-curl -H 'Content-Type: application/json' \
-  -H "X-Api-Key: password" \
-  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-provider.json \
-  -X POST "http://localhost:19193/management/v2/dataplanes" \
-  -s | jq
-```
-
-```bash
-curl -H 'Content-Type: application/json' \
-  -H "X-Api-Key: password" \
-  -d @transfer/transfer-00-prerequisites/resources/dataplane/register-data-plane-consumer.json \
-  -X POST "http://localhost:29193/management/v2/dataplanes" \
-  -s | jq
-```
 
 Create an asset:
 
@@ -95,40 +83,55 @@ The output will be something like:
   "@id": "assetId",
   "@type": "dcat:Dataset",
   "odrl:hasPolicy": {
-    "@id": "MQ==:YXNzZXRJZA==:YjI5ZDVkZDUtZWU0Mi00NWRiLWE2OTktYjNmMjlmMWNjODk3",
-    "@type": "odrl:Set",
+    "@id": "MQ==:YXNzZXRJZA==:NjdlNDFhM2EtYThjMS00YTBmLWFkNmYtMjk5NzkzNTE2OTE3",
+    "@type": "odrl:Offer",
     "odrl:permission": [],
     "odrl:prohibition": [],
-    "odrl:obligation": [],
-    "odrl:target": "assetId"
+    "odrl:obligation": []
   },
   "dcat:distribution": [
     {
       "@type": "dcat:Distribution",
       "dct:format": {
-        "@id": "HttpProxy"
+        "@id": "HttpData-PULL"
       },
-      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+      "dcat:accessService": {
+        "@id": "cb701b36-48ee-4132-8436-dba7b83c606c",
+        "@type": "dcat:DataService",
+        "dcat:endpointDescription": "dspace:connector",
+        "dcat:endpointUrl": "http://provider:19194/protocol",
+        "dct:terms": "dspace:connector",
+        "dct:endpointUrl": "http://provider:19194/protocol"
+      }
     },
     {
       "@type": "dcat:Distribution",
       "dct:format": {
-        "@id": "HttpData"
+        "@id": "HttpData-PUSH"
       },
-      "dcat:accessService": "06348bca-6bf0-47fe-8bb5-6741cff7a955"
+      "dcat:accessService": {
+        "@id": "cb701b36-48ee-4132-8436-dba7b83c606c",
+        "@type": "dcat:DataService",
+        "dcat:endpointDescription": "dspace:connector",
+        "dcat:endpointUrl": "http://provider:19194/protocol",
+        "dct:terms": "dspace:connector",
+        "dct:endpointUrl": "http://provider:19194/protocol"
+      }
     }
   ],
-  "edc:name": "product description",
-  "edc:id": "assetId",
-  "edc:contenttype": "application/json",
+  "name": "product description",
+  "id": "assetId",
+  "contenttype": "application/json",
   "@context": {
-    "dct": "https://purl.org/dc/terms/",
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
     "edc": "https://w3id.org/edc/v0.0.1/ns/",
-    "dcat": "https://www.w3.org/ns/dcat/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dct": "http://purl.org/dc/terms/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
     "dspace": "https://w3id.org/dspace/v0.8/"
   }
 }
+
 ```
 
 With the `odrl:hasPolicy/@id` we can now replace it in the [negotiate-contract.json](resources/negotiate-contract.json) file

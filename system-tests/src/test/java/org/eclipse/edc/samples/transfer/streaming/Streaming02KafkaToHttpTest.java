@@ -35,7 +35,6 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executors;
@@ -108,9 +107,6 @@ public class Streaming02KafkaToHttpTest {
 
     @Test
     void streamData() {
-
-        PROVIDER.registerDataPlane(List.of("Kafka"), List.of("HttpData"), List.of("HttpData-PUSH"));
-
         PROVIDER.createAsset(getFileContentFromRelativePath(SAMPLE_FOLDER + "/1-asset.json")
                 .replace("{{bootstrap.servers}}", kafkaContainer.getBootstrapServers())
                 .replace("{{max.duration}}", MAX_DURATION)

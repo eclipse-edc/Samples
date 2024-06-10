@@ -39,7 +39,7 @@ dependencies {
 
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
-    implementation(libs.edc.transfer.data.plane)
+    implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
 
     implementation(libs.edc.data.plane.selector.api)

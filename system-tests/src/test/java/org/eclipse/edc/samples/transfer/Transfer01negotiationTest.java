@@ -29,7 +29,6 @@ import static org.eclipse.edc.samples.common.NegotiationCommon.getContractAgreem
 import static org.eclipse.edc.samples.common.NegotiationCommon.negotiateContract;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getConsumer;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.runPrerequisites;
 
 @EndToEndTest
 public class Transfer01negotiationTest {
@@ -45,7 +44,6 @@ public class Transfer01negotiationTest {
 
     @Test
     void runSampleSteps() {
-        runPrerequisites();
         createAsset();
         createPolicy();
         createContractDefinition();

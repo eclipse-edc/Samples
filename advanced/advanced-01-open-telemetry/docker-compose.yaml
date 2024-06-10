@@ -4,8 +4,7 @@ services:
 
   consumer:
     build:
-      context: ../..
-      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-runtime/Dockerfile
+      context: open-telemetry-runtime
     volumes:
       - ./:/open-telemetry
       - ../../transfer/transfer-00-prerequisites/:/prerequisites
@@ -14,11 +13,10 @@ services:
       - "29194:29194"
     environment:
       EDC_HOSTNAME: consumer
-      OTEL_SERVICE_NAME: consumer
-      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-jaeger.jar
-      OTEL_TRACES_EXPORTER: jaeger
+      OTEL_SERVICE_NAME: provider
       OTEL_LOGS_EXPORTER: none
-      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
+      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-otlp.jar
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
       OTEL_METRICS_EXPORTER: prometheus
       WEB_HTTP_PORT: 29191
       WEB_HTTP_PATH: /api
@@ -36,7 +34,6 @@ services:
       EDC_API_AUTH_KEY: password
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
-      EDC_VAULT: /prerequisites/resources/configuration/provider-vault.properties
       EDC_FS_CONFIG: /prerequisites/resources/configuration/provider-configuration.properties
     entrypoint: java
       -javaagent:/app/opentelemetry-javaagent.jar
@@ -45,8 +42,7 @@ services:
 
   provider:
     build:
-      context: ../..
-      dockerfile: advanced/advanced-01-open-telemetry/open-telemetry-runtime/Dockerfile
+      context: open-telemetry-runtime
     volumes:
       - ./:/open-telemetry
       - ../../transfer/transfer-00-prerequisites/:/prerequisites
@@ -57,9 +53,8 @@ services:
       EDC_HOSTNAME: provider
       OTEL_SERVICE_NAME: provider
       OTEL_LOGS_EXPORTER: none
-      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-jaeger.jar
-      OTEL_TRACES_EXPORTER: jaeger
-      OTEL_EXPORTER_JAEGER_ENDPOINT: http://jaeger:14250
+      OTEL_JAVAAGENT_EXTENSIONS: /app/opentelemetry-exporter-otlp.jar
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
       WEB_HTTP_PORT: 19191
       WEB_HTTP_PATH: /api
       WEB_HTTP_PUBLIC_PORT: 19291
@@ -76,7 +71,6 @@ services:
       EDC_API_AUTH_KEY: password
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
-      EDC_VAULT: /prerequisites/resources/configuration/consumer-vault.properties
       EDC_FS_CONFIG: /prerequisites/resources/configuration/consumer-configuration.properties
       EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /open-telemetry/README.md
     entrypoint: java
@@ -86,7 +80,10 @@ services:
 
   jaeger:
     image: jaegertracing/all-in-one
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     ports:
+      - "4317:4317"
       - "16686:16686"
 
   prometheus:

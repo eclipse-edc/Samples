@@ -14,19 +14,10 @@
 
 package org.eclipse.edc.samples.transfer.streaming;
 
-import jakarta.json.Json;
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 
-import java.util.List;
-import java.util.UUID;
-
 import static io.restassured.http.ContentType.JSON;
-import static jakarta.json.Json.createArrayBuilder;
-import static jakarta.json.Json.createObjectBuilder;
-import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.CONTEXT;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
-import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
-import static org.eclipse.edc.spi.constants.CoreConstants.EDC_PREFIX;
 
 /**
  * Essentially a wrapper around the management API enabling to test interactions with other participants, eg. catalog, transfer...
@@ -40,25 +31,6 @@ public class StreamingParticipant extends Participant {
 
     public String getName() {
         return name;
-    }
-
-    public void registerDataPlane(List<String> sourceTypes, List<String> destinationTypes, List<Object> transferTypes) {
-        var jsonObject = Json.createObjectBuilder()
-                .add(CONTEXT, createObjectBuilder().add(EDC_PREFIX, EDC_NAMESPACE))
-                .add(ID, UUID.randomUUID().toString())
-                .add(EDC_NAMESPACE + "url", controlEndpoint.getUrl() + "/transfer")
-                .add(EDC_NAMESPACE + "allowedSourceTypes", createArrayBuilder(sourceTypes))
-                .add(EDC_NAMESPACE + "allowedDestTypes", createArrayBuilder(destinationTypes))
-                .add(EDC_NAMESPACE + "allowedTransferTypes", createArrayBuilder(transferTypes))
-                .build();
-
-        managementEndpoint.baseRequest()
-                .contentType(JSON)
-                .body(jsonObject.toString())
-                .when()
-                .post("/v2/dataplanes")
-                .then()
-                .statusCode(200);
     }
 
     public String createAsset(String requestBody) {

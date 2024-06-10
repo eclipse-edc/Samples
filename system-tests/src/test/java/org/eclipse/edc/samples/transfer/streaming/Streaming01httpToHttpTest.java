@@ -28,7 +28,6 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -90,7 +89,6 @@ public class Streaming01httpToHttpTest {
     @Test
     void streamData() throws IOException {
         var source = Files.createTempDirectory("source");
-        PROVIDER.registerDataPlane(List.of("HttpStreaming"), List.of("HttpData"), List.of("HttpData-PUSH"));
 
         PROVIDER.createAsset(getFileContentFromRelativePath(SAMPLE_FOLDER + "/asset.json")
                 .replace("{{sourceFolder}}", source.toString()));

@@ -24,15 +24,20 @@ dependencies {
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.vault.filesystem)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
-    implementation(libs.edc.transfer.data.plane)
+    implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
+    implementation(libs.edc.validator.data.address.http.data)
+
+    implementation(libs.edc.edr.cache.api)
+    implementation(libs.edc.edr.store.core)
+    implementation(libs.edc.edr.store.receiver)
 
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
 
+    implementation(libs.edc.data.plane.self.registration)
     implementation(libs.edc.data.plane.control.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)

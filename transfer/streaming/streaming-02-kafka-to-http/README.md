@@ -27,16 +27,6 @@ export EDC_FS_CONFIG=transfer/streaming/streaming-02-kafka-to-http/streaming-02-
 java -jar transfer/streaming/streaming-02-kafka-to-http/streaming-02-runtime/build/libs/connector.jar
 ```
 
-### Register Data Plane on provider
-
-The provider connector needs to be aware of the kafka streaming capabilities of the embedded dataplane, which can be registered with 
-this call:
-```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/0-dataplane.json -X POST "http://localhost:18181/management/v2/dataplanes" -s | jq
-```
-
-If you look at the `0-dataplane.json` you'll notice that the supported source is `Kafka` and the supported sink is `HttpData`.
-
 ### Register Asset, Policy Definition and Contract Definition on provider
 
 A "source" kafka topic must first be created where the data plane will get the event records to be sent to the consumers.
