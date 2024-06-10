@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.edc.api.observability)
     implementation(libs.edc.auth.tokenbased)
 
-    implementation(libs.opentelemetry.exporter.jaeger)
+    implementation(libs.opentelemetry.exporter.otlp)
 
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
@@ -68,7 +68,7 @@ tasks.register("copyOpenTelemetryJar", Copy::class) {
 
     dependencies {
         openTelemetry(libs.opentelemetry.javaagent)
-        openTelemetry(libs.opentelemetry.exporter.jaeger)
+        openTelemetry(libs.opentelemetry.exporter.otlp)
     }
 
     from(openTelemetry)

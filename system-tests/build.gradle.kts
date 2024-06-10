@@ -48,3 +48,7 @@ dependencies {
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-consumer"))
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-functions"))
 }
+
+tasks.compileJava {
+    dependsOn(":advanced:advanced-01-open-telemetry:open-telemetry-runtime:build")
+}
