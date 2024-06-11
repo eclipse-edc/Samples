@@ -18,7 +18,7 @@ import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSink;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSinkFactory;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.result.Result;
-import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -37,12 +37,17 @@ public class FileTransferDataSinkFactory implements DataSinkFactory {
     }
 
     @Override
-    public boolean canHandle(DataFlowRequest request) {
-        return "file".equalsIgnoreCase(request.getDestinationDataAddress().getType());
+    public String supportedType() {
+        return "File";
     }
 
     @Override
-    public DataSink createSink(DataFlowRequest request) {
+    public boolean canHandle(DataFlowStartMessage request) {
+        return "File".equalsIgnoreCase(request.getDestinationDataAddress().getType());
+    }
+
+    @Override
+    public DataSink createSink(DataFlowStartMessage request) {
         var destination = request.getDestinationDataAddress();
 
         // verify destination path
@@ -60,7 +65,7 @@ public class FileTransferDataSinkFactory implements DataSinkFactory {
     }
 
     @Override
-    public @NotNull Result<Void> validateRequest(DataFlowRequest request) {
+    public @NotNull Result<Void> validateRequest(DataFlowStartMessage request) {
         return Result.success();
     }
 }

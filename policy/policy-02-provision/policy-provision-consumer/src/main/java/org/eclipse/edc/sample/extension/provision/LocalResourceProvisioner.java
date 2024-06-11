@@ -15,11 +15,11 @@
 package org.eclipse.edc.sample.extension.provision;
 
 import dev.failsafe.RetryPolicy;
-import org.eclipse.edc.connector.transfer.spi.provision.Provisioner;
-import org.eclipse.edc.connector.transfer.spi.types.DeprovisionedResource;
-import org.eclipse.edc.connector.transfer.spi.types.ProvisionResponse;
-import org.eclipse.edc.connector.transfer.spi.types.ProvisionedResource;
-import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
+import org.eclipse.edc.connector.controlplane.transfer.spi.provision.Provisioner;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.DeprovisionedResource;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.ProvisionResponse;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.ProvisionedResource;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.ResourceDefinition;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.response.StatusResult;
@@ -92,7 +92,6 @@ public class LocalResourceProvisioner implements Provisioner<LocalResourceDefini
 
         monitor.debug("LocalResourceProvisioner: Resource request submitted: " + resourceDefinition.getPathName());
 
-        // not using the secret token
         var response = ProvisionResponse.Builder.newInstance().resource(resource).build();
         return StatusResult.success(response);
     }

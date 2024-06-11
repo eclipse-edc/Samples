@@ -23,7 +23,7 @@ import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-import static org.eclipse.edc.connector.transfer.spi.provision.ResourceManifestGenerator.MANIFEST_VERIFICATION_SCOPE;
+import static org.eclipse.edc.connector.controlplane.transfer.spi.provision.ResourceManifestGenerator.MANIFEST_VERIFICATION_SCOPE;
 import static org.eclipse.edc.policy.engine.spi.PolicyEngine.ALL_SCOPES;
 
 @Extension(value = ConsumerPolicyFunctionsExtension.NAME)

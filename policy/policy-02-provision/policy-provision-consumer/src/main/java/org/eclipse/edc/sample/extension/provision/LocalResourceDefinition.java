@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.sample.extension.provision;
 
-import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.ResourceDefinition;
 
 import java.util.Objects;
 

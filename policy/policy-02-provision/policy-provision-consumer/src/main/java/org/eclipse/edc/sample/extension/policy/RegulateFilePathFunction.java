@@ -14,7 +14,7 @@
 
 package org.eclipse.edc.sample.extension.policy;
 
-import org.eclipse.edc.connector.transfer.spi.provision.ResourceManifestContext;
+import org.eclipse.edc.connector.controlplane.transfer.spi.provision.ResourceManifestContext;
 import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
 import org.eclipse.edc.policy.engine.spi.PolicyContext;
 import org.eclipse.edc.policy.model.Operator;

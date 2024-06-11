@@ -14,10 +14,11 @@
 
 package org.eclipse.edc.sample.extension.policy;
 
-import org.eclipse.edc.connector.contract.spi.offer.store.ContractDefinitionStore;
-import org.eclipse.edc.connector.contract.spi.types.offer.ContractDefinition;
-import org.eclipse.edc.connector.policy.spi.PolicyDefinition;
-import org.eclipse.edc.connector.policy.spi.store.PolicyDefinitionStore;
+import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
+import org.eclipse.edc.connector.controlplane.contract.spi.offer.store.ContractDefinitionStore;
+import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractDefinition;
+import org.eclipse.edc.connector.controlplane.policy.spi.PolicyDefinition;
+import org.eclipse.edc.connector.controlplane.policy.spi.store.PolicyDefinitionStore;
 import org.eclipse.edc.policy.engine.spi.RuleBindingRegistry;
 import org.eclipse.edc.policy.model.Action;
 import org.eclipse.edc.policy.model.AtomicConstraint;
@@ -30,7 +31,6 @@ import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.query.Criterion;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-import org.eclipse.edc.spi.types.domain.asset.Asset;
 
 import java.util.List;
 
@@ -109,13 +109,13 @@ public class PolicyFunctionsExtension implements ServiceExtension {
 
         var contractDefinition = ContractDefinition.Builder.newInstance()
                 .id("1")
-                .accessPolicyId(accessPolicy.getUid())
-                .contractPolicyId(contractPolicy.getUid())
+                .accessPolicyId(accessPolicy.getId())
+                .contractPolicyId(contractPolicy.getId())
                 .assetsSelector(List.of(Criterion.Builder.newInstance()
-                                .operandLeft(Asset.PROPERTY_ID)
-                                .operator("=") // TODO changed to EQ?
-                                .operandRight(RIGHT_OPERAND)
-                                .build()))
+                        .operandLeft(Asset.PROPERTY_ID)
+                        .operator("=") // TODO changed to EQ?
+                        .operandRight(RIGHT_OPERAND)
+                        .build()))
                 .build();
         contractDefinitionStore.save(contractDefinition);
     }

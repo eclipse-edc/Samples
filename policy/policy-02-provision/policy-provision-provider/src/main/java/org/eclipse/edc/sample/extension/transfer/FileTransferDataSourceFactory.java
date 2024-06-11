@@ -17,35 +17,40 @@ package org.eclipse.edc.sample.extension.transfer;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSource;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataSourceFactory;
 import org.eclipse.edc.spi.result.Result;
-import org.eclipse.edc.spi.types.domain.transfer.DataFlowRequest;
+import org.eclipse.edc.spi.types.domain.transfer.DataFlowStartMessage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
 public class FileTransferDataSourceFactory implements DataSourceFactory {
     @Override
-    public boolean canHandle(DataFlowRequest dataRequest) {
-        return "file".equalsIgnoreCase(dataRequest.getSourceDataAddress().getType());
+    public String supportedType() {
+        return "File";
     }
 
     @Override
-    public DataSource createSource(DataFlowRequest request) {
+    public boolean canHandle(DataFlowStartMessage dataRequest) {
+        return "File".equalsIgnoreCase(dataRequest.getSourceDataAddress().getType());
+    }
+
+    @Override
+    public DataSource createSource(DataFlowStartMessage request) {
         var source = getFile(request);
         return new FileTransferDataSource(source);
     }
 
     @Override
-    public @NotNull Result<Void> validateRequest(DataFlowRequest request) {
+    public @NotNull Result<Void> validateRequest(DataFlowStartMessage request) {
         var source = getFile(request);
         if (!source.exists()) {
-            return Result.failure("Source file " + source.getName() + " does not exist!");
+            return Result.failure("Source file " + source.getName() + " does not exist at " + source.getAbsolutePath());
         }
 
         return Result.success();
     }
 
     @NotNull
-    private File getFile(DataFlowRequest request) {
+    private File getFile(DataFlowStartMessage request) {
         var dataAddress = request.getSourceDataAddress();
         // verify source path
         var sourceFileName = dataAddress.getStringProperty("filename");

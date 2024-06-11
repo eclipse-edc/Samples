@@ -14,16 +14,17 @@
 
 package org.eclipse.edc.sample.extension.transfer;
 
+import org.eclipse.edc.connector.controlplane.asset.spi.domain.Asset;
+import org.eclipse.edc.connector.controlplane.asset.spi.index.AssetIndex;
+import org.eclipse.edc.connector.controlplane.transfer.spi.flow.DataFlowManager;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.DataTransferExecutorServiceContainer;
 import org.eclipse.edc.connector.dataplane.spi.pipeline.PipelineService;
 import org.eclipse.edc.runtime.metamodel.annotation.Extension;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
-import org.eclipse.edc.spi.asset.AssetIndex;
 import org.eclipse.edc.spi.monitor.Monitor;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-import org.eclipse.edc.spi.types.domain.asset.Asset;
 
 import java.nio.file.Path;
 
@@ -41,6 +42,8 @@ public class FileTransferExtension implements ServiceExtension {
     private DataTransferExecutorServiceContainer executorContainer;
     @Inject
     private Monitor monitor;
+    @Inject
+    private DataFlowManager dataFlowManager;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
@@ -55,12 +58,15 @@ public class FileTransferExtension implements ServiceExtension {
     private void registerDataEntries(ServiceExtensionContext context) {
         var assetPathSetting = context.getSetting(EDC_ASSET_PATH, DEFAULT_PATH);
         var assetPath = Path.of(assetPathSetting);
+        var filename = assetPath.getFileName().toString();
+        var path = assetPath.getParent().toString();
 
         var dataAddress = DataAddress.Builder.newInstance()
                 .property("type", "File")
-                .property("path", assetPath.getParent().toString())
-                .property("filename", assetPath.getFileName().toString())
+                .property("filename", filename)
+                .property("path", path)
                 .build();
+
 
         var asset = Asset.Builder.newInstance()
                 .id("test-document")

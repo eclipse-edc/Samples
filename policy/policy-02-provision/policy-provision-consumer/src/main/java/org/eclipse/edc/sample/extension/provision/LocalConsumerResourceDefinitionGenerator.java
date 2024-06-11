@@ -14,9 +14,9 @@
 
 package org.eclipse.edc.sample.extension.provision;
 
-import org.eclipse.edc.connector.transfer.spi.provision.ConsumerResourceDefinitionGenerator;
-import org.eclipse.edc.connector.transfer.spi.types.DataRequest;
-import org.eclipse.edc.connector.transfer.spi.types.ResourceDefinition;
+import org.eclipse.edc.connector.controlplane.transfer.spi.provision.ConsumerResourceDefinitionGenerator;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.ResourceDefinition;
+import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess;
 import org.eclipse.edc.policy.model.Policy;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,8 +33,8 @@ public class LocalConsumerResourceDefinitionGenerator implements ConsumerResourc
     private static final String DESTINATION = "any path";
 
     @Override
-    public @Nullable ResourceDefinition generate(DataRequest dataRequest, Policy policy) {
-        Objects.requireNonNull(dataRequest, "dataRequest must always be provided");
+    public @Nullable ResourceDefinition generate(TransferProcess transferProcess, Policy policy) {
+        Objects.requireNonNull(transferProcess, "transferProcess must always be provided");
         Objects.requireNonNull(policy, "policy must always be provided");
 
         return LocalResourceDefinition.Builder.newInstance()
@@ -44,12 +44,11 @@ public class LocalConsumerResourceDefinitionGenerator implements ConsumerResourc
     }
 
     @Override
-    public boolean canGenerate(DataRequest dataRequest, Policy policy) {
-        Objects.requireNonNull(dataRequest, "dataRequest must always be provided");
+    public boolean canGenerate(TransferProcess transferProcess, Policy policy) {
+        Objects.requireNonNull(transferProcess, "dataRequest must always be provided");
         Objects.requireNonNull(policy, "policy must always be provided");
 
-        return TYPE.equals(dataRequest.getDestinationType());
+        return TYPE.equals(transferProcess.getDestinationType());
     }
-
 
 }

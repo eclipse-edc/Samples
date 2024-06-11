@@ -9,10 +9,7 @@
   "dataDestination": {
     "type": "File"
   },
-  "transferType": {
-    "contentType": "application/octet-stream",
-    "isFinite": true
-  },
+  "transferType": "File-PUSH",
   "managedResources": true,
   "counterPartyAddress": "http://localhost:8282/protocol",
   "connectorId": "consumer"
