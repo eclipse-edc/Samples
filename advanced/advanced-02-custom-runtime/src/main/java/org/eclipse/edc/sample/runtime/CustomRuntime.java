@@ -28,7 +28,7 @@ public class CustomRuntime extends BaseRuntime {
      * instantiate the {@code BaseRuntime}.
      */
     public static void main(String[] args) {
-        new CustomRuntime().boot();
+        new CustomRuntime().boot(true);
     }
 
     @Override

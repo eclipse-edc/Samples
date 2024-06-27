@@ -20,8 +20,8 @@ import static org.eclipse.edc.samples.util.TransferUtil.post;
 public class PolicyCommon {
 
     private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String V2_POLICY_DEFINITIONS_PATH = "/v2/policydefinitions";
-    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v2/contractdefinitions";
+    private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
+    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
     
     public static void createAsset(String createAssetFilePath) {
         post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));

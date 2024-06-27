@@ -62,7 +62,7 @@ public class Transfer02consumerPullTest {
 
         var edr = given()
                 .when()
-                .get(CONSUMER_MANAGEMENT_URL + "/v1/edrs/{id}/dataaddress", transferProcessId)
+                .get(CONSUMER_MANAGEMENT_URL + "/v3/edrs/{id}/dataaddress", transferProcessId)
                 .then()
                 .log().ifValidationFails()
                 .statusCode(200)

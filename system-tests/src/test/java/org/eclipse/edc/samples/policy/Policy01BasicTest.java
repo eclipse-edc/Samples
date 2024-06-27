@@ -15,7 +15,9 @@
 package org.eclipse.edc.samples.policy;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.samples.common.NegotiationCommon;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,14 +44,14 @@ class Policy01BasicTest {
     private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = SAMPLE_FOLDER + "/resources/create-contract-definition.json";
     private static final String CONTRACT_OFFER_FILE_PATH = SAMPLE_FOLDER + "/resources/contract-request.json";
 
-    @RegisterExtension
-    static final EdcRuntimeExtension PROVIDER_RUNTIME = provider();
-
     @Nested
     class Terminated {
 
         @RegisterExtension
-        static final EdcRuntimeExtension CONSUMER_RUNTIME = consumer("system-tests/src/test/resources/policy/config-us.properties");
+        static final RuntimeExtension PROVIDER_RUNTIME = provider();
+
+        @RegisterExtension
+        static final RuntimeExtension CONSUMER_RUNTIME = consumer("system-tests/src/test/resources/policy/config-us.properties");
 
         @Test
         void runSampleSteps() {
@@ -70,7 +72,10 @@ class Policy01BasicTest {
     class Finalized {
 
         @RegisterExtension
-        static final EdcRuntimeExtension CONSUMER_RUNTIME = consumer("system-tests/src/test/resources/policy/config-eu.properties");
+        static final RuntimeExtension PROVIDER_RUNTIME = provider();
+
+        @RegisterExtension
+        static final RuntimeExtension CONSUMER_RUNTIME = consumer("system-tests/src/test/resources/policy/config-eu.properties");
 
         @Test
         void runSampleSteps() {
@@ -85,16 +90,20 @@ class Policy01BasicTest {
 
     }
 
-    private static EdcRuntimeExtension provider() {
-        return new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-provider",
+    private static RuntimeExtension provider() {
+        return new RuntimePerClassExtension(new EmbeddedRuntime(
                 "provider",
-                Map.of("edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/policy-enforcement-provider/config.properties").getAbsolutePath())
-        );
+                Map.of("edc.fs.config", getFileFromRelativePath(SAMPLE_FOLDER + "/policy-enforcement-provider/config.properties").getAbsolutePath()),
+                ":policy:policy-01-policy-enforcement:policy-enforcement-provider"
+        ));
     }
 
-    private static EdcRuntimeExtension consumer(String configurationFilePath) {
-        return new EdcRuntimeExtension(":policy:policy-01-policy-enforcement:policy-enforcement-consumer",
-                "consumer", Map.of("edc.fs.config", getFileFromRelativePath(configurationFilePath).getAbsolutePath()));
+    private static RuntimeExtension consumer(String configurationFilePath) {
+        return new RuntimePerClassExtension(new EmbeddedRuntime(
+                "consumer",
+                Map.of("edc.fs.config", getFileFromRelativePath(configurationFilePath).getAbsolutePath()),
+                ":policy:policy-01-policy-enforcement:policy-enforcement-consumer"
+        ));
     }
 
 }
