@@ -19,6 +19,7 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
     implementation(libs.edc.control.plane.core)

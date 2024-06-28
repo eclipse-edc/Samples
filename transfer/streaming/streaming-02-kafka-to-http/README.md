@@ -53,11 +53,11 @@ curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kaf
 ```
 
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/2-policy-definition.json -X POST "http://localhost:18181/management/v2/policydefinitions" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/2-policy-definition.json -X POST "http://localhost:18181/management/v3/policydefinitions" -s | jq
 ```
 
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/3-contract-definition.json -X POST "http://localhost:18181/management/v2/contractdefinitions" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/3-contract-definition.json -X POST "http://localhost:18181/management/v3/contractdefinitions" -s | jq
 ```
 
 ### Negotiate the contract
@@ -66,7 +66,7 @@ The typical flow requires fetching the catalog from the consumer side and using 
 However, in this sample case, we already have the provider asset (`"kafka-stream-asset"`) so we can get the related dataset 
 directly with this call:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/4-get-dataset.json -X POST "http://localhost:28181/management/v2/catalog/dataset/request" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/4-get-dataset.json -X POST "http://localhost:28181/management/v3/catalog/dataset/request" -s | jq
 ```
 
 The output will be something like:
@@ -103,7 +103,7 @@ The output will be something like:
 With the `odrl:hasPolicy/@id` we can now replace it in the [negotiate-contract.json](5-negotiate-contract.json) file
 and request the contract negotiation:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/5-negotiate-contract.json  -X POST "http://localhost:28181/management/v2/contractnegotiations" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/5-negotiate-contract.json  -X POST "http://localhost:28181/management/v3/contractnegotiations" -s | jq
 ```
 
 ### Start the transfer
@@ -119,20 +119,20 @@ It will run on port 4000.
 At this point the contract agreement should already been issued, to verify that, please check the contract negotiation state with
 this call, replacing `{{contract-negotiation-id}}` with the id returned by the negotiate contract call.
 ```shell
-curl "http://localhost:28181/management/v2/contractnegotiations/{{contract-negotiation-id}}" -s | jq
+curl "http://localhost:28181/management/v3/contractnegotiations/{{contract-negotiation-id}}" -s | jq
 ```
 
 If the `edc:contractAgreementId` is valued, it can be used to start the transfer, replacing it in the [6-transfer.json](6-transfer.json)
 file to `{{contract-agreement-id}}` and then calling the connector with this command:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/6-transfer.json -X POST "http://localhost:28181/management/v2/transferprocesses" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-02-kafka-to-http/6-transfer.json -X POST "http://localhost:28181/management/v3/transferprocesses" -s | jq
 ```
 > Note that the destination address is `localhost:4000`, this because is where our logging webserver is listening.
 
 Let's wait until the transfer state is `STARTED` state executing this call, replacing to `{{transfer-process-id}}` the id returned
 by the start transfer call:
 ```shell
-curl "http://localhost:28181/management/v2/transferprocesses/{{transfer-process-id}}" -s | jq
+curl "http://localhost:28181/management/v3/transferprocesses/{{transfer-process-id}}" -s | jq
 ```
 
 ### Produce events

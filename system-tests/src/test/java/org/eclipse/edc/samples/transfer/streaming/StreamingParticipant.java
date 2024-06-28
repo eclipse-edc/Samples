@@ -50,7 +50,7 @@ public class StreamingParticipant extends Participant {
                 .contentType(JSON)
                 .body(requestBody)
                 .when()
-                .post("/v2/policydefinitions")
+                .post("/v3/policydefinitions")
                 .then()
                 .statusCode(200)
                 .contentType(JSON)
@@ -62,7 +62,7 @@ public class StreamingParticipant extends Participant {
                 .contentType(JSON)
                 .body(requestBody)
                 .when()
-                .post("/v2/contractdefinitions")
+                .post("/v3/contractdefinitions")
                 .then()
                 .statusCode(200)
                 .extract().jsonPath().getString(ID);

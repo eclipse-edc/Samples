@@ -15,7 +15,9 @@
 package org.eclipse.edc.samples.basic;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -28,14 +30,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class Basic01basicConnectorTest {
 
     @RegisterExtension
-    static EdcRuntimeExtension connector = new EdcRuntimeExtension(
-            ":basic:basic-01-basic-connector",
+    static RuntimeExtension connector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
-            emptyMap()
-    );
+            emptyMap(),
+            ":basic:basic-01-basic-connector"
+    ));
 
     @Test
     void shouldStartConnector() {
-        assertThat(connector.getContext().getService(Clock.class)).isNotNull();
+        assertThat(connector.getService(Clock.class)).isNotNull();
     }
 }

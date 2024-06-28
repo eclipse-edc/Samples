@@ -41,7 +41,7 @@ from the [Negotiation](../transfer-01-negotiation/README.md) chapter.
 You can re-use the same asset, policies and contract negotiation from before.
 
 ```bash
-curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
+curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
     -H "Content-Type: application/json" \
     -d @transfer/transfer-03-provider-push/resources/start-transfer.json \
     -s | jq
@@ -66,7 +66,7 @@ Due to the nature of the transfer, it will be very fast and most likely already 
 read the UUID. 
 
 ```bash
-curl http://localhost:29193/management/v2/transferprocesses/<transfer process id>
+curl http://localhost:29193/management/v3/transferprocesses/<transfer process id>
 ```
 
 Notice the transfer COMPLETED state

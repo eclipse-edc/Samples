@@ -71,14 +71,14 @@ java -Dedc.keystore=transfer/transfer-00-prerequisites/resources/certs/cert.pfx 
 
 ```bash
 curl -d @transfer/transfer-01-negotiation/resources/negotiate-contract.json \
-  -X POST -H 'content-type: application/json' http://localhost:29193/management/v2/contractnegotiations \
+  -X POST -H 'content-type: application/json' http://localhost:29193/management/v3/contractnegotiations \
   -s | jq
 ```
 
 ### 3. Get the contract agreement id
 
 ```bash
-curl -X GET "http://localhost:29193/management/v2/contractnegotiations/{{contract-negotiation-id}}" \
+curl -X GET "http://localhost:29193/management/v3/contractnegotiations/{{contract-negotiation-id}}" \
     --header 'Content-Type: application/json' \
     -s | jq
 ```
@@ -89,7 +89,7 @@ Replace the `contractId` property inside the [request body](../transfer-02-consu
 Afterward run:
 
 ```bash
-curl -X POST "http://localhost:29193/management/v2/transferprocesses" \
+curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
   -H "Content-Type: application/json" \
   -d @transfer/transfer-02-consumer-pull/resources/start-transfer.json \
   -s | jq
