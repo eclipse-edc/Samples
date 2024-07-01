@@ -12,7 +12,7 @@ okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.4.0"
 rsApi = "4.0.0"
 testcontainers = "1.19.8"
-kafkaClients = "3.7.0"
+kafkaClients = "3.7.1"
 
 [libraries]
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
