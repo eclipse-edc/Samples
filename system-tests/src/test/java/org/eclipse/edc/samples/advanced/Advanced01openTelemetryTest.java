@@ -15,21 +15,14 @@
 
 package org.eclipse.edc.samples.advanced;
 
-import org.apache.http.HttpStatus;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import static io.restassured.RestAssured.given;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
@@ -54,15 +47,10 @@ public class Advanced01openTelemetryTest {
     private static final String JAEGER_URL = "http://localhost:16686";
 
     @Container
-    public static ComposeContainer environment =
+    public ComposeContainer environment =
             new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
                     .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
-
-    @BeforeAll
-    static void setUp() {
-        environment.start();
-    }
 
     @Test
     void runSampleSteps()  {
@@ -75,16 +63,11 @@ public class Advanced01openTelemetryTest {
         var transferRequest = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
         var transferProcessId = startTransfer(transferRequest, contractAgreementId);
         checkTransferStatus(transferProcessId, STARTED);
-        assertJaegerState();
-    }
 
-    private void assertJaegerState() {
-        try {
-            var url = new URL(JAEGER_URL);
-            var huc = (HttpURLConnection) url.openConnection();
-            assertThat(huc.getResponseCode()).isEqualTo(HttpStatus.SC_OK);
-        } catch (IOException e) {
-            fail("Unable to assert Jaeger state", e);
-        }
+        given()
+                .baseUri(JAEGER_URL)
+                .get()
+                .then()
+                .statusCode(200);
     }
 }
