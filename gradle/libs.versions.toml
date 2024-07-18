@@ -11,7 +11,7 @@ jupiter = "5.10.3"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.5.0"
 rsApi = "4.0.0"
-testcontainers = "1.19.8"
+testcontainers = "1.20.0"
 kafkaClients = "3.7.1"
 
 [libraries]
