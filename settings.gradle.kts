@@ -52,6 +52,9 @@ include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
 include(":policy:policy-01-policy-enforcement:policy-functions")
 
+include(":transfer:transfer-06-file-transfer-docker:docker-transfer-consumer")
+include(":transfer:transfer-06-file-transfer-docker:docker-transfer-provider")
+
 // modules for code samples ------------------------------------------------------------------------
 include(":advanced:advanced-02-custom-runtime")
 
