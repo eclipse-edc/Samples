@@ -1,0 +1,20 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@id": "assetId",
+  "properties": {
+    "name": "provider-test-document",
+    "description": "This is a test file",
+    "contenttype": "text/plain",
+    "version": "1.0"
+  },
+  "dataAddress": {
+    "@type": "DataAddress",
+    "type": "AzureStorage",
+    "account": "provider",
+    "keyName": "provider-key",
+    "container": "src-container",
+    "blobName": "test-document.txt"
+  }
+}
