@@ -17,7 +17,7 @@ package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.samples.util.HttpRequestLoggerContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,10 +41,10 @@ public class Transfer04eventConsumerTest {
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
 
     @RegisterExtension
-    static EdcRuntimeExtension provider = getProvider();
+    static RuntimeExtension provider = getProvider();
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = getConsumer(CONSUMER_WITH_LISTENER_MODULE_PATH);
+    static RuntimeExtension consumer = getConsumer(CONSUMER_WITH_LISTENER_MODULE_PATH);
 
     @Container
     static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer();

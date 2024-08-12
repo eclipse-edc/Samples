@@ -22,7 +22,9 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,26 +79,26 @@ public class Streaming02KafkaToHttpTest {
             .withEnv("KAFKA_CREATE_TOPICS", TOPIC.concat(":1:1"));
 
     @RegisterExtension
-    static EdcRuntimeExtension providerConnector = new EdcRuntimeExtension(
-            ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime",
+    static RuntimeExtension providerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "provider",
             Map.of(
                     "edc.fs.config",
                     getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/provider.properties")
                             .getAbsolutePath()
-            )
-    );
+            ),
+            ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"
+    ));
 
     @RegisterExtension
-    static EdcRuntimeExtension consumerConnector = new EdcRuntimeExtension(
-            ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime",
+    static RuntimeExtension consumerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
             Map.of(
                     "edc.fs.config",
                     getFileFromRelativePath(SAMPLE_FOLDER + "/streaming-02-runtime/consumer.properties")
                             .getAbsolutePath()
-            )
-    );
+            ),
+            ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"
+    ));
     private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer consumerReceiverServer = new MockWebServer();
 

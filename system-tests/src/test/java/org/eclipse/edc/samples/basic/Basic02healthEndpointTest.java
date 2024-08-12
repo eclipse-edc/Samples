@@ -15,7 +15,9 @@
 package org.eclipse.edc.samples.basic;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -27,11 +29,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 class Basic02healthEndpointTest {
 
     @RegisterExtension
-    static EdcRuntimeExtension controlPlane = new EdcRuntimeExtension(
-            ":basic:basic-02-health-endpoint",
+    static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
-            emptyMap()
-    );
+            emptyMap(),
+            ":basic:basic-02-health-endpoint"
+    ));
 
     @Test
     void shouldStartConnector() {
