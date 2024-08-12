@@ -74,6 +74,7 @@ tasks.register("copyOpenTelemetryJar", Copy::class) {
 
     from(openTelemetry)
     into("build/libs")
+    rename { it -> it.substring(0, it.indexOfLast { it == '-' }) + ".jar"}
 }
 
 tasks.build {
