@@ -39,7 +39,9 @@ import org.apache.kafka.common.resource.ResourceType;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.eclipse.edc.util.io.Ports;
 import org.jetbrains.annotations.NotNull;
@@ -105,26 +107,26 @@ public class Streaming03KafkaToKafkaTest {
             .withLogConsumer(frame -> System.out.print(frame.getUtf8String()));
 
     @RegisterExtension
-    static EdcRuntimeExtension providerConnector = new EdcRuntimeExtension(
-            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME),
+    static RuntimeExtension providerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "provider",
             Map.of(
                     "edc.fs.config",
                     getFileFromRelativePath(RUNTIME_PATH.resolve("provider.properties").toString())
                             .getAbsolutePath()
-            )
-    );
+            ),
+            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
+    ));
 
     @RegisterExtension
-    static EdcRuntimeExtension consumerConnector = new EdcRuntimeExtension(
-            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME),
+    static RuntimeExtension consumerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
             Map.of(
                     "edc.fs.config",
                     getFileFromRelativePath(RUNTIME_PATH.resolve("consumer.properties").toString())
                             .getAbsolutePath()
-            )
-    );
+            ),
+            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
+    ));
 
     private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer edrReceiverServer = new MockWebServer();

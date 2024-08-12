@@ -19,7 +19,7 @@ import io.restassured.common.mapper.TypeRef;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -48,10 +48,10 @@ public class Transfer02consumerPullTest {
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
 
     @RegisterExtension
-    static EdcRuntimeExtension provider = getProvider();
+    static RuntimeExtension provider = getProvider();
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = getConsumer();
+    static RuntimeExtension consumer = getConsumer();
 
     @Test
     void runSampleSteps() {

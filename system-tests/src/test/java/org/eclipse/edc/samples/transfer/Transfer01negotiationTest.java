@@ -16,7 +16,7 @@
 package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -34,10 +34,10 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 public class Transfer01negotiationTest {
 
     @RegisterExtension
-    static EdcRuntimeExtension provider = getProvider();
+    static RuntimeExtension provider = getProvider();
 
     @RegisterExtension
-    static EdcRuntimeExtension consumer = getConsumer();
+    static RuntimeExtension consumer = getConsumer();
 
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "transfer/transfer-01-negotiation/resources/negotiate-contract.json";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "transfer/transfer-01-negotiation/resources/get-dataset.json";

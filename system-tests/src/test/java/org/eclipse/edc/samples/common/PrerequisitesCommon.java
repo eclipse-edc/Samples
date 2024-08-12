@@ -14,7 +14,9 @@
 
 package org.eclipse.edc.samples.common;
 
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 
 import java.util.Map;
 
@@ -38,31 +40,31 @@ public class PrerequisitesCommon {
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/provider-configuration.properties";
     private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties";
 
-    public static EdcRuntimeExtension getProvider() {
+    public static RuntimeExtension getProvider() {
         return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
-    public static EdcRuntimeExtension getConsumer() {
+    public static RuntimeExtension getConsumer() {
         return getConnector(CONNECTOR_MODULE_PATH, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
-    public static EdcRuntimeExtension getConsumer(String modulePath) {
+    public static RuntimeExtension getConsumer(String modulePath) {
         return getConnector(modulePath, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
     }
 
-    private static EdcRuntimeExtension getConnector(
+    private static RuntimeExtension getConnector(
             String modulePath,
             String moduleName,
             String configPropertiesFilePath
     ) {
-        return new EdcRuntimeExtension(
-                modulePath,
+        return new RuntimePerClassExtension(new EmbeddedRuntime(
                 moduleName,
                 Map.of(
                         EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
                         EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
                         EDC_FS_CONFIG, getFileFromRelativePath(configPropertiesFilePath).getAbsolutePath()
-                )
-        );
+                ),
+                modulePath
+        ));
     }
 }

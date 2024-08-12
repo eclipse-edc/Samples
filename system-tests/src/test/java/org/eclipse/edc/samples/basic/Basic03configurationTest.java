@@ -15,7 +15,9 @@
 package org.eclipse.edc.samples.basic;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
-import org.eclipse.edc.junit.extensions.EdcRuntimeExtension;
+import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
+import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -30,13 +32,13 @@ import static org.hamcrest.CoreMatchers.containsString;
 class Basic03configurationTest {
 
     @RegisterExtension
-    static EdcRuntimeExtension controlPlane = new EdcRuntimeExtension(
-            ":basic:basic-03-configuration",
+    static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
             Map.of(
                     "edc.fs.config", new File(findBuildRoot(), "basic/basic-03-configuration/config.properties").getAbsolutePath()
-            )
-    );
+            ),
+            ":basic:basic-03-configuration"
+    ));
 
     @Test
     void shouldStartConnector() {
