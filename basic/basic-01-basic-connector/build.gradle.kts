@@ -22,6 +22,7 @@ plugins {
 dependencies {
     implementation(libs.edc.boot)
     implementation(libs.edc.connector.core)
+    implementation(libs.edc.http)
 }
 
 application {
