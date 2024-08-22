@@ -21,33 +21,31 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.control.plane.core)
-
-    implementation(libs.edc.api.observability)
-
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
-    implementation(libs.edc.vault.azure)
-    implementation(libs.edc.http)
-
-    implementation(libs.edc.auth.tokenbased)
-    implementation(libs.edc.management.api)
-
-    implementation(libs.edc.dsp)
 
     implementation(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 
+    implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)
+    implementation(libs.edc.control.plane.core)
+    implementation(libs.edc.dsp)
+    implementation(libs.edc.configuration.filesystem)
+    implementation(libs.edc.iam.mock)
+    implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
+    implementation(libs.edc.validator.data.address.http.data)
 
     implementation(libs.edc.data.plane.selector.api)
+    implementation(libs.edc.data.plane.selector.core)
 
+    implementation(libs.edc.data.plane.self.registration)
     implementation(libs.edc.data.plane.control.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
+
+    implementation(libs.edc.vault.hashicorp)
 }
 
 application {
