@@ -42,7 +42,6 @@ dependencies {
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
 
-    implementation(libs.edc.vault.hashicorp)
 }
 
 application {
