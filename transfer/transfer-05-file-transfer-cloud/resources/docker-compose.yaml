@@ -16,8 +16,6 @@ services:
     ports:
       - "9000:9000"
       - "9001:9001"
-    volumes:
-      - minio_data:/data
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: consumer
@@ -32,7 +30,3 @@ services:
       - IPC_LOCK
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: "<root-token>"
-
-volumes:
-  minio_data:
-    driver: local

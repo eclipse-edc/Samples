@@ -11,7 +11,7 @@
   "transferType": "AmazonS3-PUSH",
   "dataDestination": {
     "type": "AmazonS3",
-    "region": "us-west-2",
+    "region": "eu-west-1",
     "bucketName": "src-bucket",
     "objectName": "test-document.txt",
     "endpointOverride": "http://localhost:9000"

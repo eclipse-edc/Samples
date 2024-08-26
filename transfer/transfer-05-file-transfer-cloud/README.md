@@ -19,7 +19,7 @@ Please check in the logs that minio, azurite and hashicorp-vault have started co
 
 ## Create bucket in minio
 
-Go to http://localhost:9001 and login with the credentials which you can find in the [docker-compose](resources/docker-compose.yaml) file (line 23-24), then go to 'Buckets' and create a bucket with the name “src-bucket”.
+Go to http://localhost:9001 and login with the credentials which you can find in the [docker-compose](resources/docker-compose.yaml) file (line 21-22), then go to 'Buckets' and create a bucket with the name “src-bucket”.
 
 ## Upload file to azurite
 Before we upload the file, you have to install Azure CLI. After that, you have to create a blob storage:
