@@ -9,9 +9,10 @@ This chapter improves on this by shifting the file transfer between cloud storag
 
 ## Prerequisites
 
-The following steps assume that you have Docker and the Azure CLI installed. If this is not the case, you can use the following links to access the installation instructions for both.
+The following steps assume that you have Docker, Vault and the Azure CLI installed. If this is not the case, you can use the following links to access the installation instructions for all three.
 
-- Docker Desktop: https://docs.docker.com/engine/install/
+- Docker: https://docs.docker.com/engine/install/
+- Vault: https://developer.hashicorp.com/vault/docs/install
 - Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
 
 ## Start the docker-compose file
