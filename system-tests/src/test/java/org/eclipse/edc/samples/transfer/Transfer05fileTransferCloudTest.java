@@ -14,15 +14,11 @@
 
 package org.eclipse.edc.samples.transfer;
 
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import io.minio.ListObjectsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
-import io.minio.Result;
-import io.minio.messages.Item;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
@@ -43,12 +39,13 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import static org.eclipse.edc.samples.common.FileTransferCloudCommon.runNegotiation;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
 @EndToEndTest
@@ -104,9 +101,9 @@ public class Transfer05fileTransferCloudTest {
             .withExposedPorts(VAULT_PORT)
             .withVaultToken(VAULT_TOKEN)
             .withInitCommand(
-                "vault kv put secret/accessKeyId content=" + MINIO_ACCOUNT_NAME,
-                "vault kv put secret/secretAccessKey content="  + MINIO_ACCOUNT_KEY,
-                "vault kv put secret/provider-key content=" + AZURITE_ACCOUNT_KEY
+                    "kv put secret/accessKeyId content=" + MINIO_ACCOUNT_NAME,
+                    "kv put secret/secretAccessKey content=" + MINIO_ACCOUNT_KEY,
+                    "kv put secret/provider-key content=" + AZURITE_ACCOUNT_KEY
             )
             .withLogConsumer((OutputFrame outputFrame) -> System.out.print(outputFrame.getUtf8String()));
         
@@ -151,9 +148,7 @@ public class Transfer05fileTransferCloudTest {
                     Map.entry("web.http.public.path", "/public"),
                     Map.entry("web.http.control.port", "19192"),
                     Map.entry("web.http.control.path", "/control"),
-                    Map.entry("edc.dataplane.api.public.baseurl", "http://localhost:19291/public"),
-                    Map.entry("edc.converter.usefilesystem", "false"),
-                    Map.entry("edc.vault.hashicorp.url", "http://127.0.0.1:8200"),
+                    Map.entry("edc.vault.hashicorp.url", "http://127.0.0.1:" + getVaultPort()),
                     Map.entry("edc.vault.hashicorp.token", "<root-token>"),
                     Map.entry("edc.vault.hashicorp.api.secret.path", "/v1/secret"),
                     Map.entry("edc.vault.hashicorp.health.check.enabled", "false"),
@@ -167,7 +162,7 @@ public class Transfer05fileTransferCloudTest {
     @Test
     void pushFile() throws Exception {
 
-        MinioClient minioClient =
+        var minioClient =
                 MinioClient.builder()
                 .endpoint("http://" + minioContainer.getHost() + ":" + minioContainer.getMappedPort(MINIO_PORT))
                 .credentials(MINIO_ACCOUNT_NAME, MINIO_ACCOUNT_KEY)
@@ -184,28 +179,31 @@ public class Transfer05fileTransferCloudTest {
 
         checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
 
-
-        Iterable<Result<Item>> results = minioClient.listObjects(
+        var objects = minioClient.listObjects(
                 ListObjectsArgs.builder().bucket(MINIO_BUCKET_NAME).build());
 
-        Result<Item> result = results.iterator().next();
-        Item item = result.get();
-
-        boolean objectFound = item.objectName().equals(FILE_NAME);
-
-        assertTrue(objectFound, "test-document.txt could not be found in minio");
-
+        assertThat(objects)
+                .isNotEmpty().first()
+                .extracting(result -> {
+                    try {
+                        return result.get();
+                    } catch (Exception e) {
+                        return fail();
+                    }
+                })
+                .satisfies(item -> assertThat(item.objectName()).isEqualTo(FILE_NAME));
     }
 
     private static void configureAzurite() {
-        String blobServiceUrl = String.format("http://%s:%d/%s", 
+
+        var blobServiceUrl = String.format("http://%s:%d/%s",
                 azuriteContainer.getHost(),
                 azuriteContainer.getMappedPort(AZURITE_PORT),
                 AZURITE_ACCOUNT_NAME);
 
-        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(AZURITE_ACCOUNT_NAME, AZURITE_ACCOUNT_KEY);
+        var credential = new StorageSharedKeyCredential(AZURITE_ACCOUNT_NAME, AZURITE_ACCOUNT_KEY);
 
-        BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+        var blobContainerClient = new BlobContainerClientBuilder()
                 .endpoint(blobServiceUrl)
                 .credential(credential)
                 .containerName(AZURITE_CONTAINER_NAME)
@@ -213,12 +211,11 @@ public class Transfer05fileTransferCloudTest {
         
         blobContainerClient.create();
 
-        BlobClient blobClient = blobContainerClient.getBlobClient(FILE_NAME);
-        String blobContent = "Test";
+        var blobClient = blobContainerClient.getBlobClient(FILE_NAME);
+        var blobContent = "Test";
 
         blobClient.upload(new ByteArrayInputStream(blobContent.getBytes(StandardCharsets.UTF_8)), blobContent.length());
 
-        assertTrue(blobClient.exists(), "Blob could not be created");
     }
 
     private static int getAzuritePort() {
@@ -229,6 +226,15 @@ public class Transfer05fileTransferCloudTest {
         configureAzurite();
 
         return azuriteContainer.getMappedPort(AZURITE_PORT);
+    }
+
+    private static int getVaultPort() {
+
+        if (!vaultContainer.isRunning()) {
+            vaultContainer.start();
+        }
+
+        return vaultContainer.getMappedPort(VAULT_PORT);
     }
 
 }

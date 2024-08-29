@@ -1,35 +1,40 @@
 # Improve the file transfer
 
-So far we have performed a file transfer on a local machine using the Eclipse Dataspace Connector. While that is already great progress, it probably won't be much use in a real-world production application.
+So far, we have performed a file transfer on a local machine using the Eclipse Dataspace Connector. While that is already great progress, it probably won't be much use in a real-world production application.
 
-This chapter improves on this by moving the file transfer "to the cloud". What we mean by that is that instead of reading and writing the file from/to the disk, we will now:
+This chapter improves on this by shifting the file transfer between cloud storage emulators. We will now:
 
-- read the source from an Azure Storage,
-- put the destination file into an AWS S3 Bucket.
+- read the source from an Azurite instance,
+- put the destination file into a MinIO instance.
 
-But instead of real clouds we will use docker containers for the transfer. For that, you have to install docker on your machine.
+## Prerequisites
+
+The following steps assume that you have Docker and the Azure CLI installed. If this is not the case, you can use the following links to access the installation instructions for both.
+
+- Docker Desktop: https://docs.docker.com/engine/install/
+- Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
 
 ## Start the docker-compose file
 
 ```bash
-docker-compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml up -d
+docker compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml up -d
 ```
 
 Please check in the logs that minio, azurite and hashicorp-vault have started correctly.  
 
 ## Create bucket in minio
 
-Go to http://localhost:9001 and login with the credentials which you can find in the [docker-compose](resources/docker-compose.yaml) file (line 21-22), then go to 'Buckets' and create a bucket with the name “src-bucket”.
+Go to http://localhost:9001 and login with the credentials which you can find in the [docker-compose](resources/docker-compose.yaml) file (line 20-21), then go to 'Buckets' and create a bucket with the name “src-bucket”.
 
 ## Upload file to azurite
-Before we upload the file, you have to install Azure CLI. After that, you have to create a blob storage:
+Let`s create a container with the following commands:
 
 ```bash
 conn_str="DefaultEndpointsProtocol=http;AccountName=provider;AccountKey=password;BlobEndpoint=http://127.0.0.1:10000/provider;"
 az storage container create --name src-container --connection-string $conn_str
 ```
 
-If the storage is created successfully, you will get this:
+If the container is created successfully, you will get this:
 ```json
 {
   "created": true
@@ -57,7 +62,7 @@ test-document.txt
 ```
 
 ## Configure the vault
-We already started the vault at the beginning with docker-compose. Now the following commands must be executed in a terminal window to add the necessary secrets.
+We already started the vault at the beginning with docker compose. Now the following commands must be executed in a terminal window to add the necessary secrets.
 
 ```bash
 export VAULT_ADDR='http://0.0.0.0:8200'
@@ -129,7 +134,7 @@ curl -H 'X-Api-Key: password' http://localhost:29193/management/v3/transferproce
 ## Stop docker container
 Execute the following command in a terminal window to stop the docker container:
 ```bash
-docker-compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml down
+docker compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml down
 ```
 
 
