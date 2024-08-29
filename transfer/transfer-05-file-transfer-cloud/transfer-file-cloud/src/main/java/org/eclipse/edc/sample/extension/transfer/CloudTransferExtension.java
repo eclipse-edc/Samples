@@ -55,20 +55,22 @@ public class CloudTransferExtension implements ServiceExtension {
     public void registerDataEntries() {
         var dataAddress = DataAddress.Builder.newInstance()
                 .type("AzureStorage")
-                .property("account", "<storage-account-name>")
+                .property("@type", "DataAddress")
+                .property("account", "provider")
                 .property("container", "src-container")
-                .property("blobname", "test-document.txt")
-                .keyName("<storage-account-name>-key1")
+                .property("blobName", "test-document.txt")
+                .keyName("provider-key")
                 .build();
         var asset = Asset.Builder.newInstance().id("1").dataAddress(dataAddress).build();
         assetIndex.create(asset);
 
         var dataAddress2 = DataAddress.Builder.newInstance()
                 .type("AzureStorage")
-                .property("account", "<storage-account-name>")
+                .property("@type", "DataAddress")
+                .property("account", "provider")
                 .property("container", "src-container")
-                .property("blobname", "test-document.txt")
-                .keyName("<storage-account-name>-key1")
+                .property("blobName", "test-document.txt")
+                .keyName("provider-key")
                 .build();
         var asset2 = Asset.Builder.newInstance().id("2").dataAddress(dataAddress2).build();
         assetIndex.create(asset2);

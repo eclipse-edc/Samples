@@ -29,6 +29,10 @@ dependencies {
     testImplementation(libs.testcontainers.junit)
     testImplementation(libs.testcontainers.kafka)
     testImplementation(libs.kafka.clients)
+    testImplementation(libs.testcontainers.minio)
+    testImplementation(libs.testcontainers.hashicorp.vault)
+    testImplementation(libs.azure.storage.blob)
+    testImplementation(libs.minio.io)
 
     // runtimes
     testCompileOnly(project(":basic:basic-01-basic-connector"))
@@ -47,6 +51,10 @@ dependencies {
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-provider"))
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-enforcement-consumer"))
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-functions"))
+
+    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider"))
+    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer"))
+    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 }
 
 tasks.compileJava {

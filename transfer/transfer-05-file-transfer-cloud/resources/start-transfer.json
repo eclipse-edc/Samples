@@ -1,0 +1,19 @@
+{
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  },
+  "@type": "TransferRequestDto",
+  "connectorId": "provider",
+  "counterPartyAddress": "http://localhost:19194/protocol",
+  "contractId": "{{contract-agreement-id}}",
+  "assetId": "1",
+  "protocol": "dataspace-protocol-http",
+  "transferType": "AmazonS3-PUSH",
+  "dataDestination": {
+    "type": "AmazonS3",
+    "region": "eu-west-1",
+    "bucketName": "src-bucket",
+    "objectName": "test-document.txt",
+    "endpointOverride": "http://localhost:9000"
+  }
+}

@@ -1,192 +1,144 @@
 # Improve the file transfer
 
-So far we have performed a file transfer on a local machine using the Eclipse Dataspace Connector. While that is already
-great progress, it probably won't be much use in a real-world production application.
+So far, we have performed a file transfer on a local machine using the Eclipse Dataspace Connector. While that is already great progress, it probably won't be much use in a real-world production application.
 
-This chapter improves on this by moving the file transfer "to the cloud". What we mean by that is that instead of
-reading and writing the file from/to the disk, we will now:
+This chapter improves on this by shifting the file transfer between cloud storage emulators. We will now:
 
-- read the source from an Azure Storage,
-- put the destination file into an AWS S3 Bucket.
+- read the source from an Azurite instance,
+- put the destination file into a MinIO instance.
 
-## Setup local dev environment
+## Prerequisites
 
-Before we get into the nitty-gritty of cloud-based data transfers, we need to set up cloud resources. While we could do
-that manually clicking through the Azure and AWS portals, there are simply more elegant solutions around. We use
-Hashicorp Terraform for deployment and maintenance.
+The following steps assume that you have Docker, Vault and the Azure CLI installed. If this is not the case, you can use the following links to access the installation instructions for all three.
 
-> You will need an active Azure Subscription and an AWS Account with root-user/admin access! Both platforms offer free
-> tiers, so no immediate cost incurs.
+- Docker: https://docs.docker.com/engine/install/
+- Vault: https://developer.hashicorp.com/vault/docs/install
+- Azure CLI: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
 
-Also, you will need to be logged in to your Azure CLI as well as AWS CLI by entering the following commands in a shell:
+## Start the docker-compose file
 
 ```bash
-az login
-aws configure
+docker compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml up -d
 ```
 
-The deployment scripts will provision all resources in Azure and AWS (that's why you need to be logged in to the CLIs)
-and store all access credentials in an Azure Vault (learn more
-[here](https://azure.microsoft.com/de-de/services/key-vault/#product-overview)).
+Please check in the logs that minio, azurite and hashicorp-vault have started correctly.  
 
-## Deploy cloud resources
+## Create bucket in minio
 
-It's as simple as running the main terraform script:
+Go to http://localhost:9001 and login with the credentials which you can find in the [docker-compose](resources/docker-compose.yaml) file (line 20-21), then go to 'Buckets' and create a bucket with the name “src-bucket”.
+
+## Upload file to azurite
+Let`s create a container with the following commands:
 
 ```bash
-cd transfer/transfer-05-file-transfer-cloud/terraform
-terraform init --upgrade
-terraform apply
+conn_str="DefaultEndpointsProtocol=http;AccountName=provider;AccountKey=password;BlobEndpoint=http://127.0.0.1:10000/provider;"
+az storage container create --name src-container --connection-string $conn_str
 ```
 
-it will prompt you to enter a unique name, which will serve as prefix for many resources both in Azure and in AWS. Then,
-enter "yes" and let terraform works its magic.
+If the container is created successfully, you will get this:
+```json
+{
+  "created": true
+}
+```
 
-It shouldn't take more than a couple of minutes, and when it's done it will log the `client_id`, `tenant_id`
-, `vault-name`, `storage-container-name` and `storage-account-name`.
-> Take a note of these values!
-
-Download the certificate used to authenticate the generated service principal against Azure Active Directory:
+Upload the file to the blob storage:
 
 ```bash
-terraform output -raw certificate | base64 --decode > cert.pfx
+az storage blob upload -f ./transfer/transfer-05-file-transfer-cloud/resources/test-document.txt --container-name src-container --name test-document.txt --connection-string $conn_str
 ```
 
-## Update connector config
+You can run the following command to check if the file was added successfully
 
-_Do the following for both the consumer's and the provider's `config.properties`!_
-
-Let's modify the following config values to the connector configuration `config.properties` and insert the values that
-terraform logged before:
-
-```properties
-edc.vault.clientid=<client_id>
-edc.vault.tenantid=<tenant_id>
-edc.vault.certificate=<path_to_pfx_file>
-edc.vault.name=<vault-name>
+```bash
+az storage blob list --container-name src-container --connection-string "DefaultEndpointsProtocol=http;AccountName=provider;AccountKey=password;BlobEndpoint=http://127.0.0.1:10000/provider;" --query "[].{name:name}" --output table
 ```
 
-## Update data seeder
+You should see the test-document.txt file.
 
-Put the storage account name into the `DataAddress` builders within the `CloudTransferExtension` class.
-
+```sh
+Name
+--------------------------
+test-document.txt
 ```
-DataAddress.Builder.newInstance()
-   .type("AzureStorage")
-   .property("account", "<storage-account-name>")
-   .property("container", "src-container")
-   .property("blobname", "test-document.txt")
-   .keyName("<storage-account-name>-key1")
-   .build();
+
+## Configure the vault
+We already started the vault at the beginning with docker compose. Now the following commands must be executed in a terminal window to add the necessary secrets.
+
+```bash
+export VAULT_ADDR='http://0.0.0.0:8200'
+vault kv put secret/accessKeyId content=consumer
+vault kv put secret/secretAccessKey content=password
+vault kv put secret/provider-key content=password
 ```
 
 ## Bringing it all together
 
 ### 1. Boot connectors
 
-While we have deployed several cloud resources in the previous chapter, the connectors themselves still run locally.
-Thus, we can simply rebuild and run them:
-
 ```bash
 ./gradlew clean build
-java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/build/libs/consumer.jar
-# in another terminal window:
 java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-provider/build/libs/provider.jar
+# in another terminal window:
+java -Dedc.fs.config=transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/config.properties -jar transfer/transfer-05-file-transfer-cloud/cloud-transfer-consumer/build/libs/consumer.jar
 ```
+
 
 ### 2. Retrieve provider Contract Offers
 
-To request data offers from the provider, run:
-
 ```bash
-curl -X POST "http://localhost:9192/management/v3/catalog/request" \
---header 'X-Api-Key: password' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "@context": {
-    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
-  },
-  "counterPartyAddress": "http://localhost:8282/protocol",
-  "protocol": "dataspace-protocol-http"
-}'
+curl -X POST "http://localhost:29193/management/v3/catalog/request" \
+    -H 'X-Api-Key: password' -H 'Content-Type: application/json' \
+    -d @transfer/transfer-05-file-transfer-cloud/resources/fetch-catalog.json -s | jq
 ```
 
-#### 3. Negotiate Contract
+Please replace the {{contract-offer-id}} placeholder in the [negotiate-contract.json](resources/negotiate-contract.json) file with the contract offer id you found in the catalog at the path dcat:dataset.odrl:hasPolicy.@id (the asset with "@id: 1").
 
-To negotiate a contract copy one of the contract offers into the statement below and execute it. At the time of writing
-it is only possible to negotiate an _unchanged_ contract, so counter offers are not supported.
-
-```bash
-curl --location --request POST 'http://localhost:9192/management/v3/contractnegotiations' \
---header 'X-API-Key: password' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "connectorId": "provider",
-  "counterPartyAddress": "http://localhost:8282/protocol",
-  "protocol": "dataspace-protocol-http",
-  "policy": { <Copy the first policy from the previous response (the one with "target: 1")> }
-}'
-```
-
-The EDC will answer with the contract negotiation id. This id will be used in step 4.
-
-#### 4. Get Contract Agreement Id
-
-To get the contract agreement id insert the negotiation id into the following statement end execute it.
+### 3. Negotiate Contract
 
 ```bash
-curl -X GET -H 'X-Api-Key: password' "http://localhost:9192/management/v3/contractnegotiations/{negotiationId}"
+curl -d @transfer/transfer-05-file-transfer-cloud/resources/negotiate-contract.json \
+  -H 'X-Api-Key: password' X POST -H 'content-type: application/json' http://localhost:29193/management/v3/contractnegotiations \
+  -s | jq
 ```
 
-The EDC will return the current state of the contract negotiation. When the negotiation is completed successfully
-(this may take a few seconds), the response will also contain an agreement id, that is required in the next step.
+We can now use the UUID to check the current status of the negotiation using an endpoint on the consumer side.
 
-#### 5. Transfer Data
-
-To initiate the data transfer, execute the statement below. Please take care of setting the contract agreement id
-obtained at previous step as well as a unique bucket name.
+### 4. Get Contract Agreement Id
 
 ```bash
-curl --location --request POST 'http://localhost:9192/management/v3/transferprocesses' \
---header 'X-API-Key: password' \
---header 'Content-Type: application/json' \
---data-raw '
-{
-  "counterPartyAddress": "http://localhost:8282/protocol",
-  "protocol": "dataspace-protocol-http",
-  "connectorId": "consumer",
-  "assetId": "1",
-  "contractId": "<ContractAgreementId>",
-  "dataDestination": {
-    "type": "AmazonS3",
-    "region": "us-east-1",
-    "bucketName": "<Unique bucket name>"
-  },
-  "transferType": {
-    "contentType": "application/octet-stream",
-    "isFinite": true
-  }
-}'
+curl -X GET "http://localhost:29193/management/v3/contractnegotiations/{{contract-negotiation-id}}" \
+    -H 'X-Api-Key: password' --header 'Content-Type: application/json' \
+    -s | jq
 ```
 
-This command will return a transfer process id which will used to request the deprovisioning of the resources.
+Please replace the {{contract-agreement-id}} placeholder in the [start-transfer.json](resources/start-transfer.json) file with the contractAgreementId from the previous response.
 
-#### 6. Deprovision resources
-
-Deprovisioning is not necessary per se, but it will do some cleanup, delete the temporary AWS role and the S3 bucket, so
-it's generally advisable to do it.
+### 5. Transfer Data
 
 ```bash
-curl -X POST -H 'X-Api-Key: password' "http://localhost:9192/management/v3/transferprocesses/{transferProcessId}/deprovision"
+curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
+  -H 'X-Api-Key: password' -H "Content-Type: application/json" \
+  -d @transfer/transfer-05-file-transfer-cloud/resources/start-transfer.json \
+  -s | jq
 ```
 
-Finally, run terraform to clean-up the vault and other remaining stuffs:
+With the given UUID, we can check the transfer process.
+
+### 6. Check Transfer Status
 
 ```bash
-cd transfer/transfer-05-file-transfer-cloud/terraform
-terraform destroy
+curl -H 'X-Api-Key: password' http://localhost:29193/management/v3/transferprocesses/<transfer-process-id> -s | jq
 ```
+
+
+## Stop docker container
+Execute the following command in a terminal window to stop the docker container:
+```bash
+docker compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-compose.yaml down
+```
+
 
 ---
 
-[Previous Chapter](../transfer-04-open-telemetry/README.md)
+[Previous Chapter](../transfer-04-event-consumer/README.md)
