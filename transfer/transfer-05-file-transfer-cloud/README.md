@@ -140,4 +140,4 @@ docker compose -f transfer/transfer-05-file-transfer-cloud/resources/docker-comp
 
 ---
 
-[Previous Chapter](../transfer-04-open-telemetry/README.md)
+[Previous Chapter](../transfer-04-event-consumer/README.md)
