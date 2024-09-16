@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
+    implementation(libs.edc.http)
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.data.plane.spi)
