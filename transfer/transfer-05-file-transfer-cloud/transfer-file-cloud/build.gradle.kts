@@ -22,7 +22,7 @@ dependencies {
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.azure.storage)
     implementation(libs.edc.data.plane.aws.s3)
-    implementation(libs.edc.data.plane.client)
+    implementation(libs.edc.data.plane.signaling.client)
     implementation(libs.edc.data.plane.selector.core)
     implementation(libs.edc.transfer.data.plane.signaling)
 

@@ -33,7 +33,7 @@ dependencies {
     implementation(libs.edc.data.plane.selector.api)
     implementation(libs.edc.data.plane.selector.core)
 
-    implementation(libs.edc.data.plane.control.api)
+    implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)

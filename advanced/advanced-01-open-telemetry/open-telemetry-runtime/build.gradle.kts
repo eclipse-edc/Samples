@@ -31,6 +31,7 @@ dependencies {
     implementation(libs.edc.control.plane.core)
 
     implementation(libs.edc.dsp)
+    implementation(libs.edc.http)
     implementation(libs.edc.configuration.filesystem)
 
     implementation(libs.edc.iam.mock)
@@ -42,10 +43,11 @@ dependencies {
     implementation(libs.edc.data.plane.selector.core)
 
     implementation(libs.edc.data.plane.self.registration)
-    implementation(libs.edc.data.plane.control.api)
+    implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)
+    implementation(libs.edc.data.plane.iam)
 
     implementation(libs.edc.api.observability)
     implementation(libs.edc.auth.tokenbased)

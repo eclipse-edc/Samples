@@ -24,7 +24,6 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.testcontainers.containers.GenericContainer;
@@ -79,22 +78,6 @@ public class Transfer05fileTransferCloudTest {
     private static final String VAULT_IMAGE_NAME = "hashicorp/vault:latest";
     private static final String VAULT_TOKEN = "<root-token>"; 
     private static final int VAULT_PORT = 8200;
-
-
-    @AfterAll
-    static void tearDown() {
-
-        if (vaultContainer != null) {
-            vaultContainer.stop();
-        }
-        if (azuriteContainer != null) {
-            azuriteContainer.stop();
-        }
-        if (minioContainer != null) {
-            minioContainer.stop();
-        }
-
-    }
 
     @Container
     protected static VaultContainer<?> vaultContainer = new VaultContainer<>(DockerImageName.parse(VAULT_IMAGE_NAME))
