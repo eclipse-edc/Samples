@@ -143,37 +143,4 @@ There are a few things worth mentioning here:
 - it's better to pass the config value directly into the business logic than passing the
   entire `ServiceExtensionContext`, using configuration objects when there are more than one
 
-## Management API
-
-Part of most connectors will be the management api defined in the
-[`management-api`](https://github.com/eclipse-edc/Connector/tree/releases/extensions/control-plane/api/management-api)
-module. Therefore, we need to add the following module to the dependency list in our `build.gradle.kts`:
-
-```kotlin
-dependencies {
-    // ...
-    implementation(libs.edc.management.api)
-    // ...
-}
-```
-
-As described in the [README.md](https://github.com/eclipse-edc/Connector/tree/releases/extensions/common/api/management-api-configuration)
-of the `api-configuration module`, the management api should be exposed on a separate jetty context. Therefore, it is
-necessary to provide the following configuration to the connector:
-
-> Note: The ports could be chosen arbitrarily. In this example, they are aligned to the already existing `web.http.port` setting described above.
-
-```properties
-web.http.port=9191
-web.http.path=/api
-web.http.management.port=9192
-web.http.management.path=/management
-```
-
-_**Caution**: If you do not provide this configuration, it leads to the problem that the authentication mechanism is
-also applied to EVERY request in the _default_ context of Jetty, which includes the DSP communication between two
-connectors._
-
----
-
 [Previous Chapter](../basic-02-health-endpoint/README.md) 
