@@ -28,6 +28,8 @@ services:
       WEB_HTTP_MANAGEMENT_PATH: /management
       WEB_HTTP_PROTOCOL_PORT: 29194
       WEB_HTTP_PROTOCOL_PATH: /protocol
+      WEB_HTTP_VERSION_PORT: 29195
+      WEB_HTTP_VERSION_PATH: /version
       EDC_CONTROL_ENDPOINT: http://consumer:29192/control
       EDC_DSP_CALLBACK_ADDRESS: http://consumer:29194/protocol
       EDC_PARTICIPANT_ID: consumer
@@ -65,6 +67,8 @@ services:
       WEB_HTTP_MANAGEMENT_PATH: /management
       WEB_HTTP_PROTOCOL_PORT: 19194
       WEB_HTTP_PROTOCOL_PATH: /protocol
+      WEB_HTTP_VERSION_PORT: 19195
+      WEB_HTTP_VERSION_PATH: /version
       EDC_CONTROL_ENDPOINT: http://provider:19192/control
       EDC_DSP_CALLBACK_ADDRESS: http://provider:19194/protocol
       EDC_PARTICIPANT_ID: provider

@@ -37,25 +37,25 @@ When creating a rule binding, we can bind an action type or constraint to either
 Here, we bind the action type `use` to all scopes, so that rules with this action type are always evaluated. For the
 location constraint we choose the negotiation scope, meaning it will only be evaluated during the contract negotiation.
 Information on available scopes can be found
-[here](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/policy-engine.md).
+[here](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/policy-engine/).
 
 ### Implementing the function for evaluation
 
 With the rule bindings in place, the provider will now try to evaluate our policy including the constraint during a
 contract negotiation, but it does not yet know *how* to evaluate this constraint. For this, we need to implement a
-function, for which the EDC offer two interfaces: `AtomicConstraintFunction` and `RuleFunction`. The former is meant
-for evaluating a single constraint of a rule, while is latter is meant for evaluating a complete rule node (including
-constraints as well as duties that may be associated with a permission). For our example, we choose to implement an
-`AtomicConstraintFunction`, as we want to evaluate our location constraint:
+function, for which the EDC offer two interfaces: `AtomicConstraintRuleFunction` and `PolicyRuleFunction`. The former is
+meant for evaluating a single constraint of a rule, while is latter is meant for evaluating a complete rule node 
+(including constraints as well as duties that may be associated with a permission). For our example, we choose to 
+implement an `AtomicConstraintRuleFunction`, as we want to evaluate our location constraint:
 
 ```java
-public class LocationConstraintFunction implements AtomicConstraintFunction<Permission> {
+public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, ContractNegotiationPolicyContext> {
     
     //...
     
     @Override
-    public boolean evaluate(Operator operator, Object rightValue, Permission rule, PolicyContext context) {
-        var region = context.getContextData(ParticipantAgent.class).getClaims().get("region");
+    public boolean evaluate(Operator operator, Object rightValue, Permission rule, ContractNegotiationPolicyContext context) {
+        var region = context.participantAgent().getClaims().get("region");
         
         monitor.info(format("Evaluating constraint: location %s %s", operator, rightValue.toString()));
         
@@ -70,12 +70,13 @@ public class LocationConstraintFunction implements AtomicConstraintFunction<Perm
 ```
 
 When implementing either of the function interfaces, we have to override the `evaluate` method. For the
-`AtomicConstraintFunction` we get the constraint's operator and right value as well as the containing rule node and
-a `PolicyContext` as parameters. Using these, we have to determine whether the constraint is fulfilled. Since we want
-to check the requesting participant's location, we need to access information about the participant. This is supplied
-through the `PolicyContext`. We get the participant's claim with key *region* to obtain information about the
-participant's location. We can then compare the location to the expected value depending on the operator used. The
-function should return true, if the constraint is fulfilled, and false otherwise.
+`AtomicConstraintRuleFunction` we get the constraint's operator and right value as well as the containing rule node and
+an extension of `PolicyContext` as parameters, determined by the policy scope on which the function the function will be
+registered (keep in mind that policy scopes and contexts are strictly bound to each other). Using these, we have to
+determine whether the constraint is fulfilled. Since we want to check the requesting participant's location, we need to
+access information about the participant. This is supplied through the context. We get the participant's claim with key
+*region* to obtain information about the participant's location. We can then compare the location to the expected value
+depending on the operator used. The function should return true, if the constraint is fulfilled, and false otherwise.
 
 **Note**: we can use the *region* claim here because our connectors use the `iam-mock` extension, which always adds
 a claim with this exact name to all tokens. Depending on the identity provider used, different claims may be present,
@@ -87,14 +88,14 @@ After creating our function for evaluation, the last thing we need to do is regi
 `PolicyEngine`, so that it is available for evaluation:
 
 ```java
-policyEngine.registerFunction(NEGOTIATION_SCOPE, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
+policyEngine.registerFunction(ContractNegotiationPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
 ```
 
-When registering the function, we again have to specify a scope. This allows for evaluating the same rule or
+When registering the function, we again have to specify a context class. This allows for evaluating the same rule or
 constraint differently in different runtime contexts. Since we bound our constraint to the negotiation scope, we also
 register our function for that scope. Next, we need to specify the type of rule our function should be used for. This
 is important, as the same constraint may have different implications as part of a permission, prohibition or duty.
-When registering an `AtomicConstraintFunction`, we also have to specify a key that the function is associated with.
+When registering an `AtomicConstraintRuleFunction`, we also have to specify a key that the function is associated with.
 This has to resolve to exactly the constraint's left operand, so that the correct function for evaluation of a
 constraint can be chosen depending on its left operand. So we set the key to the same value we used as our constraint's
 left operand. And lastly, we hand over an instance of our function.

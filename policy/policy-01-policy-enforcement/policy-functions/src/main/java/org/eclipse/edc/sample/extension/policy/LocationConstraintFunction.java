@@ -14,11 +14,10 @@
 
 package org.eclipse.edc.sample.extension.policy;
 
-import org.eclipse.edc.policy.engine.spi.AtomicConstraintFunction;
-import org.eclipse.edc.policy.engine.spi.PolicyContext;
+import org.eclipse.edc.connector.controlplane.contract.spi.policy.ContractNegotiationPolicyContext;
+import org.eclipse.edc.policy.engine.spi.AtomicConstraintRuleFunction;
 import org.eclipse.edc.policy.model.Operator;
 import org.eclipse.edc.policy.model.Permission;
-import org.eclipse.edc.spi.agent.ParticipantAgent;
 import org.eclipse.edc.spi.monitor.Monitor;
 
 import java.util.Collection;
@@ -26,7 +25,7 @@ import java.util.Objects;
 
 import static java.lang.String.format;
 
-public class LocationConstraintFunction implements AtomicConstraintFunction<Permission> {
+public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, ContractNegotiationPolicyContext> {
     
     private final Monitor monitor;
     
@@ -35,8 +34,8 @@ public class LocationConstraintFunction implements AtomicConstraintFunction<Perm
     }
     
     @Override
-    public boolean evaluate(Operator operator, Object rightValue, Permission rule, PolicyContext context) {
-        var region = context.getContextData(ParticipantAgent.class).getClaims().get("region");
+    public boolean evaluate(Operator operator, Object rightValue, Permission rule, ContractNegotiationPolicyContext context) {
+        var region = context.participantAgent().getClaims().get("region");
         
         monitor.info(format("Evaluating constraint: location %s %s", operator, rightValue.toString()));
         
