@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.management.api)
+    implementation(libs.edc.edr.store.core)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
     implementation(libs.edc.validator.data.address.http.data)

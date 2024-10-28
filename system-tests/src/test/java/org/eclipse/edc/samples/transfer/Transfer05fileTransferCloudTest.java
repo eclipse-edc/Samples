@@ -38,6 +38,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.eclipse.edc.samples.common.FileTransferCloudCommon.runNegotiation;
@@ -116,28 +117,30 @@ public class Transfer05fileTransferCloudTest {
     protected static RuntimeExtension provider = new RuntimePerClassExtension(new EmbeddedRuntime(
             PROVIDER,
             Map.ofEntries(
-                    Map.entry("edc.participant.id", "provider"),
-                    Map.entry("edc.dsp.callback.address", "http://localhost:19194/protocol"),
-                    Map.entry("web.http.port", "19191"),
-                    Map.entry("web.http.path", "/api"),
-                    Map.entry("web.http.management.port", "19193"),
-                    Map.entry("web.http.management.path", "/management"),
-                    Map.entry("web.http.protocol.port", "19194"),
-                    Map.entry("web.http.protocol.path", "/protocol"),
-                    Map.entry("edc.api.auth.key", "password"),
-                    Map.entry("edc.transfer.proxy.token.signer.privatekey.alias", "private-key"),
-                    Map.entry("edc.transfer.proxy.token.verifier.publickey.alias", "public-key"),
-                    Map.entry("web.http.public.port", "19291"),
-                    Map.entry("web.http.public.path", "/public"),
-                    Map.entry("web.http.control.port", "19192"),
-                    Map.entry("web.http.control.path", "/control"),
-                    Map.entry("edc.vault.hashicorp.url", "http://127.0.0.1:" + getVaultPort()),
-                    Map.entry("edc.vault.hashicorp.token", "<root-token>"),
-                    Map.entry("edc.vault.hashicorp.api.secret.path", "/v1/secret"),
-                    Map.entry("edc.vault.hashicorp.health.check.enabled", "false"),
-                    Map.entry("edc.blobstore.endpoint.template", "http://127.0.0.1:" + getAzuritePort() + "/%s"),
-                    Map.entry("edc.aws.access.key", "accessKeyId"),
-                    Map.entry("edc.aws.secret.access.key", "secretAccessKey")
+                    entry("edc.participant.id", "provider"),
+                    entry("edc.dsp.callback.address", "http://localhost:19194/protocol"),
+                    entry("web.http.port", "19191"),
+                    entry("web.http.path", "/api"),
+                    entry("web.http.management.port", "19193"),
+                    entry("web.http.management.path", "/management"),
+                    entry("web.http.protocol.port", "19194"),
+                    entry("web.http.protocol.path", "/protocol"),
+                    entry("web.http.version.port", "19195"),
+                    entry("web.http.version.path", "/version"),
+                    entry("edc.api.auth.key", "password"),
+                    entry("edc.transfer.proxy.token.signer.privatekey.alias", "private-key"),
+                    entry("edc.transfer.proxy.token.verifier.publickey.alias", "public-key"),
+                    entry("web.http.public.port", "19291"),
+                    entry("web.http.public.path", "/public"),
+                    entry("web.http.control.port", "19192"),
+                    entry("web.http.control.path", "/control"),
+                    entry("edc.vault.hashicorp.url", "http://127.0.0.1:" + getVaultPort()),
+                    entry("edc.vault.hashicorp.token", "<root-token>"),
+                    entry("edc.vault.hashicorp.api.secret.path", "/v1/secret"),
+                    entry("edc.vault.hashicorp.health.check.enabled", "false"),
+                    entry("edc.blobstore.endpoint.template", "http://127.0.0.1:" + getAzuritePort() + "/%s"),
+                    entry("edc.aws.access.key", "accessKeyId"),
+                    entry("edc.aws.secret.access.key", "secretAccessKey")
             ),
             PROVIDER_MODULE_PATH
     ));

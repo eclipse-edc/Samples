@@ -38,8 +38,10 @@ public class StreamingParticipant extends Participant {
                 .contentType(JSON)
                 .body(requestBody)
                 .when()
+                .header("x-api-key", "bau")
                 .post("/v3/assets")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .contentType(JSON)
                 .extract().jsonPath().getString(ID);

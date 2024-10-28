@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.9.1"
+edc = "0.10.0"
 jupiter = "5.11.3"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.5.0"
@@ -16,6 +16,8 @@ awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" 
 edc-api-observability = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
 edc-auth-tokenbased = { module = "org.eclipse.edc:auth-tokenbased", version.ref = "edc" }
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
+edc-bom-controlplane-base = { module = "org.eclipse.edc:controlplane-base-bom", version.ref = "edc" }
+edc-bom-dataplane-base = { module = "org.eclipse.edc:dataplane-base-bom", version.ref = "edc" }
 edc-build-plugin = { module = "org.eclipse.edc.edc-build:org.eclipse.edc.edc-build.gradle.plugin", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
@@ -49,6 +51,7 @@ edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
 edc-management-api-test-fixtures = { module = "org.eclipse.edc:management-api-test-fixtures", version.ref = "edc" }
 edc-monitor-jdk-logger = { module = "org.eclipse.edc:monitor-jdk-logger", version.ref = "edc" }
+edc-token-core = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
 edc-transfer-pull-http-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
 edc-transfer-pull-http-dynamic-receiver = { module = "org.eclipse.edc:transfer-pull-http-dynamic-receiver", version.ref = "edc" }
