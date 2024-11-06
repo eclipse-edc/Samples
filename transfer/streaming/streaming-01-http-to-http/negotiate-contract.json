@@ -1,18 +1,19 @@
 {
   "@context": {
-    "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
-    "odrl": "http://www.w3.org/ns/odrl/2/"
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "ContractRequest",
   "counterPartyAddress": "http://localhost:18182/protocol",
   "providerId": "provider",
   "protocol": "dataspace-protocol-http",
   "policy": {
+    "@context": "http://www.w3.org/ns/odrl.jsonld",
     "@id": "{{offerId}}",
     "@type": "Offer",
-    "odrl:permission": [],
-    "odrl:prohibition": [],
-    "odrl:obligation": [],
-    "odrl:target": "stream-asset"
-}
+    "permission": [],
+    "prohibition": [],
+    "obligation": [],
+    "assigner": "provider",
+    "target": "stream-asset"
+  }
 }
