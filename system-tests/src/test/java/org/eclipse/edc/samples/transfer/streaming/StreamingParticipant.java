@@ -18,6 +18,7 @@ import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
+import static org.hamcrest.Matchers.theInstance;
 
 /**
  * Essentially a wrapper around the management API enabling to test interactions with other participants, eg. catalog, transfer...
@@ -67,6 +68,53 @@ public class StreamingParticipant extends Participant {
                 .post("/v3/contractdefinitions")
                 .then()
                 .statusCode(200)
+                .extract().jsonPath().getString(ID);
+    }
+
+    public String fetchDatasetFromCatalog(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/catalog/dataset/request")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString("'odrl:hasPolicy'.@id");
+    }
+
+    public String negotiateContract(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/contractnegotiations/")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString(ID);
+    }
+
+    public String getContractAgreementId(String contractNegotiationId) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .when()
+                .get("/v3/contractnegotiations/" + contractNegotiationId)
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString("contractAgreementId");
+    }
+
+    public String startTransfer(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/transferprocesses")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
                 .extract().jsonPath().getString(ID);
     }
 
