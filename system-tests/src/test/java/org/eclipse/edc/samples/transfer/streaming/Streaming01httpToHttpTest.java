@@ -96,22 +96,21 @@ public class Streaming01httpToHttpTest {
         PROVIDER.createPolicyDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/policy-definition.json"));
         PROVIDER.createContractDefinition(getFileContentFromRelativePath(SAMPLE_FOLDER + "/contract-definition.json"));
 
-	var catalogDatasetId = CONSUMER.fetchDatasetFromCatalog(getFileContentFromRelativePath(SAMPLE_FOLDER + "/get-dataset.json"));
+        var catalogDatasetId = CONSUMER.fetchDatasetFromCatalog(getFileContentFromRelativePath(SAMPLE_FOLDER + "/get-dataset.json"));
         var negotiateContractBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/negotiate-contract.json")
                                         .replace("{{offerId}}", catalogDatasetId);
-	//assertThat(catalogDatasetId).isEqualTo("test", catalogDatasetId);
         
         var contractNegotiationId = CONSUMER.negotiateContract(negotiateContractBody);
     
         await().atMost(TIMEOUT).untilAsserted(() -> {
-                var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
-                assertThat(contractAgreementId).isNotNull();
+            var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
+            assertThat(contractAgreementId).isNotNull();
         });
         var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
         
-	var requestBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/transfer.json")
+        var requestBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/transfer.json")
                                 .replace("{{contract-agreement-id}}", contractAgreementId)
-                                .replace("4000", ""+httpReceiverPort);
+                                .replace("4000", "" + httpReceiverPort);
 
         var transferProcessId = CONSUMER.startTransfer(requestBody);
 
