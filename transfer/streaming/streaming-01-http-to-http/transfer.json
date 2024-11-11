@@ -11,5 +11,6 @@
   "assetId": "stream-asset",
   "contractId": "{{contract-agreement-id}}",
   "connectorId": "provider",
-  "counterPartyAddress": "http://localhost:18182/protocol"
+  "counterPartyAddress": "http://localhost:18182/protocol",
+  "transferType": "HttpData-PUSH"
 }

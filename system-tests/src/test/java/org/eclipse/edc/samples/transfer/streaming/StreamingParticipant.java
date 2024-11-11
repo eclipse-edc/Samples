@@ -70,6 +70,53 @@ public class StreamingParticipant extends Participant {
                 .extract().jsonPath().getString(ID);
     }
 
+    public String fetchDatasetFromCatalog(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/catalog/dataset/request")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString("'odrl:hasPolicy'.@id");
+    }
+
+    public String negotiateContract(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/contractnegotiations/")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString(ID);
+    }
+
+    public String getContractAgreementId(String contractNegotiationId) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .when()
+                .get("/v3/contractnegotiations/" + contractNegotiationId)
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString("contractAgreementId");
+    }
+
+    public String startTransfer(String requestBody) {
+        return managementEndpoint.baseRequest()
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/v3/transferprocesses")
+                .then()
+                .statusCode(200)
+                .contentType(JSON)
+                .extract().jsonPath().getString(ID);
+    }
+
     public static class Builder<P extends StreamingParticipant, B extends Builder<P, B>> extends Participant.Builder<P, B> {
 
         protected Builder(P participant) {
