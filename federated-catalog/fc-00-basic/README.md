@@ -11,7 +11,7 @@ It provides a fixed Target Catalog Node, which represents the `participant-conne
 
 
 ### federated-catalog-base
-The [federated-catalog-base](../../fc/fc-00-basic/federated-catalog-base) will be used as a foundational module in our upcoming samples to trigger the FC.
+The [federated-catalog-base](../fc-00-basic/federated-catalog-base) will be used as a foundational module in our upcoming samples to trigger the FC.
 It provides a [build.gradle.kts](./federated-catalog-base/build.gradle.kts) file that includes only the dependencies
 essential for FC, without any additional functionality.
 ```shell
@@ -48,7 +48,7 @@ of the federated catalogs that we are going to build in sample
 
 When the federated catalog boots up, the crawler begins periodically invoking the Target Nodes returned by the 
 Node Resolver and collecting the catalogs offered by these nodes. To test whether our federated catalogs 
-(which we will build in later samples: [fc-01-embedded](../../fc/fc-01-embedded) and [fc-02-standalone](../../fc/fc-02-standalone)) can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
+(which we will build in later samples: [fc-01-embedded](../fc-01-embedded) and [fc-02-standalone](../../fc/fc-02-standalone)) can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
 
 Therefore, in this section, we will start a connector and then create a contract 
 for this connector. In the future samples, we will refer to it as `participant-connector`.
