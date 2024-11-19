@@ -52,6 +52,13 @@ include(":policy:policy-01-policy-enforcement:policy-enforcement-provider")
 include(":policy:policy-01-policy-enforcement:policy-enforcement-consumer")
 include(":policy:policy-01-policy-enforcement:policy-functions")
 
+// federated catalog
+include(":federated-catalog:fc-00-basic:federated-catalog-base")
+include(":federated-catalog:fc-00-basic:fixed-node-resolver")
+include(":federated-catalog:fc-01-embedded:fc-connector")
+include(":federated-catalog:fc-02-standalone:standalone-fc")
+
+
 // modules for code samples ------------------------------------------------------------------------
 include(":advanced:advanced-02-custom-runtime")
 
