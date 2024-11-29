@@ -30,7 +30,7 @@ import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDef
 import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.*;
 
-//@EndToEndTest
+@EndToEndTest
 public class FederatedCatalog01embeddedTest {
 
     @RegisterExtension
