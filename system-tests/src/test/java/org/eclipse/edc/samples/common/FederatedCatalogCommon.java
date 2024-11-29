@@ -28,7 +28,8 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelat
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
 import static org.eclipse.edc.samples.util.TransferUtil.post;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.emptyString;
 
 public class FederatedCatalogCommon {
@@ -64,11 +65,11 @@ public class FederatedCatalogCommon {
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
     public static RuntimeExtension getFcEmbeddedConnector() {
-        return getRuntime(FC_CONNECTOR_MODULE_PATH, CONSUMER,FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
+        return getRuntime(FC_CONNECTOR_MODULE_PATH, CONSUMER, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     public static RuntimeExtension getStandaloneFc() {
-        return getRuntime(STANDALONE_FC_MODULE_PATH, STANDALONE_FC,STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH);
+        return getRuntime(STANDALONE_FC_MODULE_PATH, STANDALONE_FC, STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     private static RuntimeExtension getRuntime(
