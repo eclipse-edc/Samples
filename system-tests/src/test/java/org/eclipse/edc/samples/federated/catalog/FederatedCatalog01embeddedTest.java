@@ -42,15 +42,15 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 public class FederatedCatalog01embeddedTest {
 
     @RegisterExtension
-    static final RuntimeExtension participantConnector = getProvider();
+    static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
 
     @RegisterExtension
-    static final RuntimeExtension fcConnector = getFcEmbeddedConnector();
+    static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector();
 
     @Test
     void shouldStartConnector() {
-        Assertions.assertThat(participantConnector.getService(Clock.class)).isNotNull();
-        Assertions.assertThat(fcConnector.getService(Clock.class)).isNotNull();
+        Assertions.assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
+        Assertions.assertThat(FC_CONNECTOR.getService(Clock.class)).isNotNull();
     }
 
     @Test

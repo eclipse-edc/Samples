@@ -41,15 +41,15 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 @EndToEndTest
 public class FederatedCatalog02standaloneTest {
     @RegisterExtension
-    static final RuntimeExtension participantConnector = getProvider();
+    static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
 
     @RegisterExtension
-    static final RuntimeExtension standaloneFcRuntime = getStandaloneFc();
+    static final RuntimeExtension STANDALONE_FC_RUNTIME = getStandaloneFc();
 
     @Test
     void shouldStartRuntimes() {
-        Assertions.assertThat(participantConnector.getService(Clock.class)).isNotNull();
-        Assertions.assertThat(standaloneFcRuntime.getService(Clock.class)).isNotNull();
+        Assertions.assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
+        Assertions.assertThat(STANDALONE_FC_RUNTIME.getService(Clock.class)).isNotNull();
     }
 
     @Test

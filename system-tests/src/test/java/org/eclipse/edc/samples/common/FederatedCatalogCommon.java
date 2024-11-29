@@ -40,7 +40,7 @@ public class FederatedCatalogCommon {
     private static final String STANDALONE_FC_MODULE_PATH = ":federated-catalog:fc-02-standalone:standalone-fc";
     private static final String FC_CONNECTOR_MODULE_PATH = ":federated-catalog:fc-01-embedded:fc-connector";
     private static final String STANDALONE_FC = "standalone-fc";
-    private static final String CONSUMER = "consumer";
+    private static final String EMBEDDED_FC = "fc-connector";
 
     private static final String EDC_KEYSTORE = "edc.keystore";
     private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
@@ -65,7 +65,7 @@ public class FederatedCatalogCommon {
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
     public static RuntimeExtension getFcEmbeddedConnector() {
-        return getRuntime(FC_CONNECTOR_MODULE_PATH, CONSUMER, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
+        return getRuntime(FC_CONNECTOR_MODULE_PATH, EMBEDDED_FC, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     public static RuntimeExtension getStandaloneFc() {
