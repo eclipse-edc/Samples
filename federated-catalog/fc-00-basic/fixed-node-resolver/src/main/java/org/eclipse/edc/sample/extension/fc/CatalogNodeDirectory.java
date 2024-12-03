@@ -31,9 +31,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
                 "provider",
                 "http://localhost:19194/protocol", protocolList);
 
-        List<TargetNode> targetNodes = new ArrayList<>();
-        targetNodes.add(participantNode);
-        return targetNodes;
+        return List.of(participantNode);
     }
 
     @Override

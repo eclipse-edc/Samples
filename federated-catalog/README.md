@@ -15,8 +15,10 @@ The following samples shows how to
 * implement, build and run different versions of FC e.g.
     * standalone,
     * embedded.
-* implement TargetNodeDirectory and resolve Target Nodes,
-    * from a static file containing all participants' DSP endpoints,
+
+[//]: # (* implement TargetNodeDirectory and resolve Target Nodes,)
+
+[//]: # (    * from a static file containing all participants' DSP endpoints,)
 
 
 
@@ -42,13 +44,17 @@ exposes a catalog API that serves the list of catalogs.
 
 ---
 
-### Different Implementations of Node Resolver
+[//]: # (### Different Implementations of Node Resolver)
 
+[//]: # ()
+[//]: # ()
+[//]: # (In the following samples you will learn how to implement a TargetNodeDirectory depending on different use cases.)
 
-In the following samples you will learn how to implement a TargetNodeDirectory depending on different use cases.
+[//]: # ()
+[//]: # (### [FC sample 03]&#40;&#41;: Resolve Target Catalog Nodes from static participant file)
 
-### [FC sample 03](): Resolve Target Catalog Nodes from static participant file
-This sample demonstrates a Catalog Node resolver, that implements TargetNodeDirectory. It resolves the Target Catalog
-Nodes from a static participant file containing the DSP endpoints of the participants.
+[//]: # (This sample demonstrates a Catalog Node resolver, that implements TargetNodeDirectory. It resolves the Target Catalog)
+
+[//]: # (Nodes from a static participant file containing the DSP endpoints of the participants.)
 
 

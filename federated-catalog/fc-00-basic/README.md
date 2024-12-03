@@ -35,8 +35,7 @@ Check out [eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/Federate
 
 In this module, we've included a fixed Node Resolver, [fixed-node-resolver](./fixed-node-resolver)
 that simply returns a hard-coded Target Node of the `participant-connector`.
-However, we will not cover the implementation of the resolver in this sample; that will be explained in detail later in 
-[fc-03-static-node-directory](../fc-03-static-node-directory/README.md).
+However, we will not cover the implementation of the resolver in this sample; that will be explained in detail in later samples.
 
 
 The purpose of including this [`fixed-node-resolver`](./fixed-node-resolver)
@@ -48,7 +47,7 @@ of the federated catalogs that we are going to build in sample
 
 When the federated catalog boots up, the crawler begins periodically invoking the Target Nodes returned by the 
 Node Resolver and collecting the catalogs offered by these nodes. To test whether our federated catalogs 
-(which we will build in later samples: [fc-01-embedded](../fc-01-embedded) and [fc-02-standalone](../../fc/fc-02-standalone)) can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
+(which we will build in later samples: [fc-01-embedded](../fc-01-embedded) and [fc-02-standalone](../fc-02-standalone)) can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
 
 Therefore, in this section, we will start a connector and then create a contract 
 for this connector. In the future samples, we will refer to it as `participant-connector`.

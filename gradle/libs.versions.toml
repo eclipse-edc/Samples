@@ -75,9 +75,9 @@ azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.29
 minio-io = { module = "io.minio:minio", version = "8.5.13" }
 
 # federated catalog modules
-fc-spi-core = { module = "org.eclipse.edc:federated-catalog-spi", version.ref = "edc" }
-fc-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
+edc-fc-spi-core = { module = "org.eclipse.edc:federated-catalog-spi", version.ref = "edc" }
+edc-fc-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
+edc-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
 edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
 
 [plugins]

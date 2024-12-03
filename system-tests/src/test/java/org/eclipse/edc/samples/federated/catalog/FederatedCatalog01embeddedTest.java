@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.samples.federated.catalog;
 
-import org.assertj.core.api.Assertions;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
@@ -23,6 +22,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.time.Clock;
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_PERIOD_VALUE;
@@ -49,8 +49,8 @@ public class FederatedCatalog01embeddedTest {
 
     @Test
     void shouldStartConnector() {
-        Assertions.assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
-        Assertions.assertThat(FC_CONNECTOR.getService(Clock.class)).isNotNull();
+        assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
+        assertThat(FC_CONNECTOR.getService(Clock.class)).isNotNull();
     }
 
     @Test

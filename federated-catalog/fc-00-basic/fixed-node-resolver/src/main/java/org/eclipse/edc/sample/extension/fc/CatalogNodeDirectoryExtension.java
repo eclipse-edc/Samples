@@ -19,15 +19,10 @@ import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.system.ServiceExtension;
 
 public class CatalogNodeDirectoryExtension implements ServiceExtension {
-    private TargetNodeDirectory nodeDirectory;
-
 
     @Provider 
     public TargetNodeDirectory federatedCacheNodeDirectory() {
-        if (nodeDirectory == null) {
-            nodeDirectory = new CatalogNodeDirectory();
-        }
-        return nodeDirectory;
+        return new CatalogNodeDirectory();
     }
 
 }
