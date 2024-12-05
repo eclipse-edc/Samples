@@ -16,11 +16,6 @@ The following samples shows how to
     * standalone,
     * embedded.
 
-[//]: # (* implement TargetNodeDirectory and resolve Target Nodes,)
-
-[//]: # (    * from a static file containing all participants' DSP endpoints,)
-
-
 
 ## Samples
 
@@ -43,18 +38,3 @@ a standalone federated catalog will not have the added functionalities of a conn
 exposes a catalog API that serves the list of catalogs.
 
 ---
-
-[//]: # (### Different Implementations of Node Resolver)
-
-[//]: # ()
-[//]: # ()
-[//]: # (In the following samples you will learn how to implement a TargetNodeDirectory depending on different use cases.)
-
-[//]: # ()
-[//]: # (### [FC sample 03]&#40;&#41;: Resolve Target Catalog Nodes from static participant file)
-
-[//]: # (This sample demonstrates a Catalog Node resolver, that implements TargetNodeDirectory. It resolves the Target Catalog)
-
-[//]: # (Nodes from a static participant file containing the DSP endpoints of the participants.)
-
-
