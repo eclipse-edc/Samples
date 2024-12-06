@@ -74,5 +74,11 @@ testcontainers-hashicorp-vault = { module = "org.testcontainers:vault", version.
 azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.29.0" }
 minio-io = { module = "io.minio:minio", version = "8.5.14" }
 
+# federated catalog modules
+edc-fc-spi-core = { module = "org.eclipse.edc:federated-catalog-spi", version.ref = "edc" }
+edc-fc-core = { module = "org.eclipse.edc:federated-catalog-core", version.ref = "edc" }
+edc-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref = "edc" }
+edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
+
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }

@@ -9,6 +9,7 @@
  *
  *  Contributors:
  *       Bayerische Motoren Werke Aktiengesellschaft (BMW AG) - initial API and implementation
+ *       Fraunhofer-Gesellschaft - dependencies for Federated Catalog Tests
  *
  */
 
@@ -55,6 +56,10 @@ dependencies {
     testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider"))
     testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer"))
     testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
+
+    testCompileOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
+    testCompileOnly(project(":federated-catalog:fc-01-embedded:fc-connector"))
+    testCompileOnly(project(":federated-catalog:fc-02-standalone:standalone-fc"))
 }
 
 tasks.compileJava {
