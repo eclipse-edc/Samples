@@ -20,7 +20,7 @@ and resolves it into TargetNodes.
 The code in this sample has been organized into several Java modules:
 
 - `target-node-resolver`: contains `CatalogNodeDirectory`, an implementation of 
-`TargetNodeDirectory`, which accepts the [`participants.json`](../fc-00-basic/static-node-resolver/participants.json) 
+`TargetNodeDirectory`, which accepts the [`participants.json`](./target-node-resolver/resources/participants.json) 
 and returns a list of TargetNodes.
 - `embedded|standalone-fc-with-node-resolver`: the embedded/ standalone federated catalog that will be using the `catalog-node-resolver`.
 
@@ -31,8 +31,8 @@ and returns a list of TargetNodes.
 
 ### Participant file
 To keep things straightforward, in this sample we will store our participant list in a static
-json file, [participant.json](./target-node-resolver/participants.json).
-This [`participant.json`](./target-node-resolver/participants.json)
+json file, [participant.json](./target-node-resolver/resources/participants.json).
+This `participant.json`
 stores the [TargetNode](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNode.java)
 properties of the dataspace participants.
 As we will be using the `participant-connector` from [fc-00-basic](../fc-00-basic), 
@@ -59,7 +59,7 @@ more complex implementations like centralized participant registry can also be a
 #### TargetNodeResolver
 The [CatalogNodeResolver](./target-node-resolver/src/main/java/org/eclipse/edc/sample/extension/fc/CatalogNodeDirectory.java) 
 implements TargetNodeDirectory and overrides its `getAll()` method. 
-In our implementation, this method maps the array of Json objects from the [`participant.json`](./target-node-resolver/participants.json) 
+In our implementation, this method maps the array of Json objects from the [`participant.json`](./target-node-resolver/resources/participants.json) 
 to a list of TargetNodes.
 
 ```java
