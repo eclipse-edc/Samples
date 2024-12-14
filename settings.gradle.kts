@@ -57,6 +57,9 @@ include(":federated-catalog:fc-00-basic:federated-catalog-base")
 include(":federated-catalog:fc-00-basic:fixed-node-resolver")
 include(":federated-catalog:fc-01-embedded:fc-connector")
 include(":federated-catalog:fc-02-standalone:standalone-fc")
+include(":federated-catalog:fc-03-static-node-directory:target-node-resolver")
+include(":federated-catalog:fc-03-static-node-directory:standalone-fc-with-node-resolver")
+include(":federated-catalog:fc-03-static-node-directory:embedded-fc-with-node-resolver")
 
 
 // modules for code samples ------------------------------------------------------------------------
