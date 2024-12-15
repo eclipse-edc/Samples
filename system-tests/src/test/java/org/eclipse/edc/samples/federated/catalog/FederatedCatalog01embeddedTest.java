@@ -25,7 +25,6 @@ import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
-import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_PERIOD_VALUE;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.DATASET_ASSET_ID;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMBEDDED_FC_CATALOG_API_ENDPOINT;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMPTY_QUERY_FILE_PATH;
