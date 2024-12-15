@@ -45,7 +45,7 @@ public class FederatedCatalog01embeddedTest {
     static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
 
     @RegisterExtension
-    static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector();
+    static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector(":federated-catalog:fc-01-embedded:fc-connector");
 
     @Test
     void shouldStartConnector() {
@@ -62,7 +62,6 @@ public class FederatedCatalog01embeddedTest {
         await()
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
-                .pollInterval(Duration.ofSeconds(CRAWLER_EXECUTION_PERIOD_VALUE))
                 .ignoreExceptions()
                 .until(() -> postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID),
                         id -> id.equals(assetId));

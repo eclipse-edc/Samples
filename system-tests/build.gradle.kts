@@ -10,11 +10,16 @@
  *  Contributors:
  *       Bayerische Motoren Werke Aktiengesellschaft (BMW AG) - initial API and implementation
  *       Fraunhofer-Gesellschaft - dependencies for Federated Catalog Tests
+ *       Fraunhofer-Gesellschaft - set working directory to project directory
  *
  */
 
 plugins {
     `java-library`
+}
+
+tasks.test {
+    workingDir = rootProject.projectDir
 }
 
 dependencies {
@@ -60,6 +65,9 @@ dependencies {
     testCompileOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
     testCompileOnly(project(":federated-catalog:fc-01-embedded:fc-connector"))
     testCompileOnly(project(":federated-catalog:fc-02-standalone:standalone-fc"))
+    testCompileOnly(project(":federated-catalog:fc-03-static-node-directory:target-node-resolver"))
+    testCompileOnly(project(":federated-catalog:fc-03-static-node-directory:standalone-fc-with-node-resolver"))
+    testCompileOnly(project(":federated-catalog:fc-03-static-node-directory:embedded-fc-with-node-resolver"))
 }
 
 tasks.compileJava {

@@ -37,10 +37,10 @@ public class FederatedCatalogCommon {
     private static final String V3_ASSETS_PATH = "/v3/assets";
     private static final String ASSET_ID = "@id";
 
-    private static final String STANDALONE_FC_MODULE_PATH = ":federated-catalog:fc-02-standalone:standalone-fc";
-    private static final String FC_CONNECTOR_MODULE_PATH = ":federated-catalog:fc-01-embedded:fc-connector";
     private static final String STANDALONE_FC = "standalone-fc";
     private static final String EMBEDDED_FC = "fc-connector";
+    private static final String STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-02-standalone/standalone-fc/config.properties";
+    private static final String FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-01-embedded/fc-connector/config.properties";
 
     private static final String EDC_KEYSTORE = "edc.keystore";
     private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
@@ -48,13 +48,10 @@ public class FederatedCatalogCommon {
     private static final String CERT_PFX_FILE_PATH = "transfer/transfer-00-prerequisites/resources/certs/cert.pfx";
     private static final String KEYSTORE_PASSWORD = "123456";
 
-    private static final String STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-02-standalone/standalone-fc/config.properties";
-    private static final String FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-01-embedded/fc-connector/config.properties";
-
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
     private static final String CRAWLER_EXECUTION_PERIOD = "edc.catalog.cache.execution.period.seconds";
-    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 5;
+    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 10;
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
     public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29195/api/catalog/v1alpha/catalog/query";
@@ -64,12 +61,12 @@ public class FederatedCatalogCommon {
     public static final String CATALOG = "dcat:Catalog";
     public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
-    public static RuntimeExtension getFcEmbeddedConnector() {
-        return getRuntime(FC_CONNECTOR_MODULE_PATH, EMBEDDED_FC, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
+    public static RuntimeExtension getFcEmbeddedConnector(String modulePath) {
+        return getRuntime(modulePath, EMBEDDED_FC, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
     }
 
-    public static RuntimeExtension getStandaloneFc() {
-        return getRuntime(STANDALONE_FC_MODULE_PATH, STANDALONE_FC, STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH);
+    public static RuntimeExtension getStandaloneFc(String modulePath) {
+        return getRuntime(modulePath, STANDALONE_FC, STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH);
     }
 
     private static RuntimeExtension getRuntime(

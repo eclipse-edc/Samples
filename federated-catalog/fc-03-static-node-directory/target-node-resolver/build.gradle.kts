@@ -15,26 +15,8 @@
 plugins {
     `java-library`
     id("application")
-    alias(libs.plugins.shadow)
 }
 
 dependencies {
-//    comment out these dependencies and just use standalone-catalog
     implementation(libs.edc.fc.spi.crawler)
-    runtimeOnly(libs.edc.fc.core)
-    runtimeOnly(libs.edc.fc.ext.api)
-
-}
-
-application {
-    mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
-}
-
-var distTar = tasks.getByName("distTar")
-var distZip = tasks.getByName("distZip")
-
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    mergeServiceFiles()
-    archiveFileName.set("catalog-node-resolver.jar")
-    dependsOn(distTar, distZip)
 }
