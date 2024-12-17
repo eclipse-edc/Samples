@@ -64,7 +64,7 @@ a standalone runtime or as part of a connector. This also includes demonstration
 node resolver, which resolves the participant connectors in the dataspace and crawls these connectors to compile 
 a set of all offered catalogs.
 
-All federated catalog samples are located in the `federated-catalog` directory.
+All federated catalog samples are located in the [`federated-catalog`](./federated-catalog/README.md) directory.
 
 ## Contributing
 

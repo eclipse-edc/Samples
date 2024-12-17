@@ -1,11 +1,11 @@
 # Target Node Resolver - Static Node Directory
 The Federated Catalog requires a list of Target Catalog Nodes (TCN), which are essentially the participant connectors in the dataspace.
-The catalog crawler then crawls the DSP endpoints of these listed nodes, and stores the consolidated set of catalogs in a Fderated Catalog Cache (FCC).
+The catalog crawler then crawls the DSP endpoints of these listed nodes, and stores the consolidated set of catalogs in a Federated Catalog Cache (FCC).
 
 
-This list of Target Catalog Nodes, represented by [TargetNodes](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNode.java), 
-is provided by the [TargetNodeDirectory](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNodeDirectory.java).
-This TargetNodeDirectory serves as a 'phone book', maintaining specific information about the 
+This list of Target Catalog Nodes, represented by `TargetNodes`, 
+is provided by the `TargetNodeDirectory`.
+This `TargetNodeDirectory` serves as a 'phone book', maintaining specific information about the 
 dataspace participants. It accepts an initial list of participants (e.g. list of participants' 
 IDs), and resolves this input to a list of TargetNodes.
 
@@ -18,26 +18,20 @@ and resolves it into TargetNodes.
 
 
 The code in this sample has been organized into several Java modules:
-
 - `target-node-resolver`: contains `CatalogNodeDirectory`, an implementation of 
 `TargetNodeDirectory`, which accepts the [`participants.json`](./target-node-resolver/resources/participants.json) 
 and returns a list of TargetNodes.
 - `embedded|standalone-fc-with-node-resolver`: the embedded/ standalone federated catalog that will be using the `catalog-node-resolver`.
 
 
-
-
 ## Implement the Catalog Node Resolver
 
 ### Participant file
 To keep things straightforward, in this sample we will store our participant list in a static
-json file, [participant.json](./target-node-resolver/resources/participants.json).
-This `participant.json`
-stores the [TargetNode](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNode.java)
+json file, [participant.json](./target-node-resolver/resources/participants.json), that contains the `TargetNode`
 properties of the dataspace participants.
-As we will be using the `participant-connector` from [fc-00-basic](../fc-00-basic), 
-currently the `participant.json`
-contains only the TargetNode properties of the `participant-connector`, including its DSP endpoint.
+In this case, the file contains the properties of the `participant-connector` from [fc-00-basic](../fc-00-basic).
+
 ```json 
 {
     "name": "https://w3id.org/edc/v0.0.1/ns/",
@@ -46,13 +40,7 @@ contains only the TargetNode properties of the `participant-connector`, includin
     "supportedProtocols": ["dataspace-protocol-http"]
 }
 ```
-
-However, in a real-world scenario, this participant file should not directly 
-include these [`TargetNodes`](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNode.java)
-properties. Instead, it should contain some form of participant node identifier
-(e.g. participants' DIDs). 
-Additionally, instead of relying on a static file,
-more complex implementations like centralized participant registry can also be adapted.
+However, this solution is intended for use only within the sample scope; in production, it must be managed in different way.
 
 ### Target Node Resolver
 
@@ -80,9 +68,7 @@ During the preparation phase of a crawler run, the FC ExecutionManager invokes t
 to obtain the list of TargetNodes. 
 The crawler requests the DSP endpoints of the participants and stores the
 aggregated catalogs in a Federated Catalog Cache (FCC). 
-In this example we are using the default implementation of an FCC, [InMemoryFederatedCatalogCache](https://github.com/eclipse-edc/FederatedCatalog/blob/main/core/federated-catalog-core/src/main/java/org/eclipse/edc/catalog/store/InMemoryFederatedCatalogCache.java).
-
-
+In this example we are using the in-memory implementation of an FCC.
 
 ## Run Federated Catalog with Node Resolver
 
@@ -96,13 +82,12 @@ Before requesting each of the federated catalog APIs, make sure the `partcipant-
 
 ### Run standalone-fc with Node Resolver
 Apply the following steps to run a standalone federated catalog that uses the implemented static `target-node-resolver`.
+
 #### Build the standalone-fc JAR
 Execute this command in project root:
-
 ```bash
 ./gradlew federated-catalog:fc-03-static-node-directory:standalone-fc-with-node-resolver:build
 ```
-
 
 #### Run the standalone-fc
 
@@ -124,7 +109,6 @@ curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
   -s | jq
 ```
 
-
 ### Run embedded-FC with Node Resolver
 Apply the following steps to run an embedded federated catalog connector that uses the implemented static `target-node-resolver`.
 
@@ -134,7 +118,6 @@ Execute this command in project root:
 ```bash
 ./gradlew federated-catalog:fc-03-static-node-directory:embedded-fc-with-node-resolver:build
 ```
-
 
 #### Run the fc-connector
 

@@ -8,7 +8,8 @@ participants in the dataspace. To accomplish this, the FC utilizes crawlers
 that periodically crawl the catalogs from each participant and store this list
 of catalogs in a local cache.
 By maintaining this locally cached version of catalogs, it eliminates the need to query
-each participant individually, resulting in faster and more reliable queries.
+each participant individually, resulting in faster and more reliable queries. Refer to the 
+[eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/FederatedCatalog) for further details.
 
 
 The following samples shows how to
@@ -41,6 +42,6 @@ exposes a catalog API that serves the list of catalogs.
 ---
 ### Different Implementations of Node Resolver
 
-### [FC sample 03](): Resolve Target Catalog Nodes from static participant file
+### [FC sample 03](./fc-03-static-node-directory/README.md): Resolve Target Catalog Nodes from static participant file
 This sample demonstrates a Catalog Node resolver, that implements TargetNodeDirectory. It resolves the Target Catalog
 Nodes from a static participant file containing the DSP endpoints of the participants.

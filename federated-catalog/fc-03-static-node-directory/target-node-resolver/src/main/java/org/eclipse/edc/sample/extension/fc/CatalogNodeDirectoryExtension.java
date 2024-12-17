@@ -15,13 +15,17 @@
 package org.eclipse.edc.sample.extension.fc;
 
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
+import org.eclipse.edc.spi.types.TypeManager;
 
 import java.io.File;
 
 public class CatalogNodeDirectoryExtension implements ServiceExtension {
+    @Inject
+    private TypeManager typeManager;
 
     private File participantListFile;
 
@@ -31,13 +35,13 @@ public class CatalogNodeDirectoryExtension implements ServiceExtension {
 
         participantListFile = new File(participantsFilePath).getAbsoluteFile();
         if (!participantListFile.exists()) {
-            context.getMonitor().warning("Path '%s' does not exist.".formatted(participantsFilePath));
+            throw new RuntimeException("Participant list file does not exist: " + participantsFilePath);
         }
     }
 
     @Provider 
     public TargetNodeDirectory federatedCacheNodeDirectory() {
-        return new CatalogNodeDirectory(participantListFile);
+        return new CatalogNodeDirectory(typeManager.getMapper(), participantListFile);
     }
 
 }

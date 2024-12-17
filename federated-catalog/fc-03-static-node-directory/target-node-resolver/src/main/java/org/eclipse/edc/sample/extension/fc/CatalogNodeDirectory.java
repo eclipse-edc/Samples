@@ -28,8 +28,8 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     private final ObjectMapper objectMapper;
     private final File participantListFile;
 
-    public CatalogNodeDirectory(File participantListFile) {
-        this.objectMapper = new ObjectMapper();
+    public CatalogNodeDirectory(ObjectMapper objectMapper, File participantListFile) {
+        this.objectMapper = objectMapper;
         this.participantListFile = participantListFile;
     }
 
