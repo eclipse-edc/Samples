@@ -18,10 +18,6 @@ plugins {
     `java-library`
 }
 
-tasks.test {
-    workingDir = rootProject.projectDir
-}
-
 dependencies {
     testImplementation(libs.edc.junit)
     testImplementation(libs.edc.json.ld.lib)

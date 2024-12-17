@@ -18,30 +18,31 @@ import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
 import org.eclipse.edc.spi.system.ServiceExtension;
-import org.eclipse.edc.spi.system.ServiceExtensionContext;
 import org.eclipse.edc.spi.types.TypeManager;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class CatalogNodeDirectoryExtension implements ServiceExtension {
     @Inject
     private TypeManager typeManager;
 
-    private File participantListFile;
-
-    @Override
-    public void initialize(ServiceExtensionContext context) {
-        var participantsFilePath = "federated-catalog/fc-03-static-node-directory/target-node-resolver/resources/participants.json";
-
-        participantListFile = new File(participantsFilePath).getAbsoluteFile();
-        if (!participantListFile.exists()) {
-            throw new RuntimeException("Participant list file does not exist: " + participantsFilePath);
-        }
-    }
-
     @Provider 
     public TargetNodeDirectory federatedCacheNodeDirectory() {
-        return new CatalogNodeDirectory(typeManager.getMapper(), participantListFile);
-    }
+        String participantsFilePath = "participants.json";
 
+        ClassLoader classLoader = getClass().getClassLoader();
+        try (InputStream participantFileInputStream = classLoader.getResourceAsStream(participantsFilePath)) {
+            if (participantFileInputStream == null) {
+                throw new RuntimeException("Participant list file does not exist: " + participantsFilePath);
+            }
+
+            String participantFileContent = new String(participantFileInputStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            return new CatalogNodeDirectory(typeManager.getMapper(), participantFileContent);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read and map participant list file: " + participantsFilePath, e);
+        }
+    }
 }

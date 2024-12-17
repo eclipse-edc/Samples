@@ -44,10 +44,9 @@ However, this solution is intended for use only within the sample scope; in prod
 
 ### Target Node Resolver
 
-#### TargetNodeResolver
-The [CatalogNodeResolver](./target-node-resolver/src/main/java/org/eclipse/edc/sample/extension/fc/CatalogNodeDirectory.java) 
+The [CatalogNodeDirectory](./target-node-resolver/src/main/java/org/eclipse/edc/sample/extension/fc/CatalogNodeDirectory.java) 
 implements TargetNodeDirectory and overrides its `getAll()` method. 
-In our implementation, this method maps the array of Json objects from the [`participant.json`](./target-node-resolver/resources/participants.json) 
+In our implementation, this method maps the file content of [`participant.json`](./target-node-resolver/resources/participants.json) 
 to a list of TargetNodes.
 
 ```java
@@ -56,7 +55,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     @Override
     public List<TargetNode> getAll() {
         try {
-            return objectMapper.readValue(participantListFile, new TypeReference<>() {});
+            return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

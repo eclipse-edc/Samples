@@ -19,24 +19,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 public class CatalogNodeDirectory implements TargetNodeDirectory {
 
     private final ObjectMapper objectMapper;
-    private final File participantListFile;
+    private final String participantFileContent;
 
-    public CatalogNodeDirectory(ObjectMapper objectMapper, File participantListFile) {
+
+    public CatalogNodeDirectory(ObjectMapper objectMapper, String participantFileContent) {
         this.objectMapper = objectMapper;
-        this.participantListFile = participantListFile;
+        this.participantFileContent = participantFileContent;
     }
 
     @Override
     public List<TargetNode> getAll() {
         try {
-            return objectMapper.readValue(participantListFile, new TypeReference<>() {});
+            return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
