@@ -13,13 +13,13 @@ The initial participant list may vary in its source and format depending on spec
 To accommodate these variations, different implementations of the TargetNodeDirectory can be 
 adapted to customize the resolution process of Target Nodes from the provided participant list. 
 In this sample, we will build a Catalog Node Resolver that reads the participants' data from a 
-static file, [participants.json](./target-node-resolver/resources/participants.json) 
+static file, [participants.json](./target-node-resolver/src/main/resources/participants.json) 
 and resolves it into TargetNodes.
 
 
 The code in this sample has been organized into several Java modules:
 - `target-node-resolver`: contains `CatalogNodeDirectory`, an implementation of 
-`TargetNodeDirectory`, which accepts the [`participants.json`](./target-node-resolver/resources/participants.json) 
+`TargetNodeDirectory`, which accepts the [`participants.json`](./target-node-resolver/src/main/resources/participants.json) 
 and returns a list of TargetNodes.
 - `embedded|standalone-fc-with-node-resolver`: the embedded/ standalone federated catalog that will be using the `catalog-node-resolver`.
 
@@ -28,7 +28,7 @@ and returns a list of TargetNodes.
 
 ### Participant file
 To keep things straightforward, in this sample we will store our participant list in a static
-json file, [participant.json](./target-node-resolver/resources/participants.json), that contains the `TargetNode`
+json file, [participant.json](./target-node-resolver/src/main/resources/participants.json), that contains the `TargetNode`
 properties of the dataspace participants.
 In this case, the file contains the properties of the `participant-connector` from [fc-00-basic](../fc-00-basic).
 
@@ -46,7 +46,7 @@ However, this solution is intended for use only within the sample scope; in prod
 
 The [CatalogNodeDirectory](./target-node-resolver/src/main/java/org/eclipse/edc/sample/extension/fc/CatalogNodeDirectory.java) 
 implements TargetNodeDirectory and overrides its `getAll()` method. 
-In our implementation, this method maps the file content of [`participant.json`](./target-node-resolver/resources/participants.json) 
+In our implementation, this method maps the file content of [`participant.json`](./target-node-resolver/src/main/resources/participants.json) 
 to a list of TargetNodes.
 
 ```java
