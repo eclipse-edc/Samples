@@ -57,6 +57,15 @@ custom code for their enforcement.
 
 All policy samples are located in the `policy` directory.
 
+### [Federated Catalog](./federated-catalog/README.md)
+
+These samples focus on the implementation of federated catalogs, covering scenarios such as deploying it as 
+a standalone runtime or as part of a connector. This also includes demonstration of how to implement a target 
+node resolver, which resolves the participant connectors in the dataspace and crawls these connectors to compile 
+a set of all offered catalogs.
+
+All federated catalog samples are located in the [`federated-catalog`](./federated-catalog/README.md) directory.
+
 ## Contributing
 
 See [how to contribute](https://github.com/eclipse-edc/docs/blob/main/CONTRIBUTING.md).

@@ -18,8 +18,5 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(libs.edc.fc.core)
-    runtimeOnly(libs.edc.fc.ext.api)
+    implementation(libs.edc.fc.spi.crawler)
 }
-
-

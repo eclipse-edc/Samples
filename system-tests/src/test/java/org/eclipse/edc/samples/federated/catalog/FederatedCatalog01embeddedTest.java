@@ -25,7 +25,6 @@ import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
-import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_PERIOD_VALUE;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.DATASET_ASSET_ID;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMBEDDED_FC_CATALOG_API_ENDPOINT;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMPTY_QUERY_FILE_PATH;
@@ -45,7 +44,7 @@ public class FederatedCatalog01embeddedTest {
     static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
 
     @RegisterExtension
-    static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector();
+    static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector(":federated-catalog:fc-01-embedded:fc-connector");
 
     @Test
     void shouldStartConnector() {
@@ -62,7 +61,6 @@ public class FederatedCatalog01embeddedTest {
         await()
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
-                .pollInterval(Duration.ofSeconds(CRAWLER_EXECUTION_PERIOD_VALUE))
                 .ignoreExceptions()
                 .until(() -> postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID),
                         id -> id.equals(assetId));

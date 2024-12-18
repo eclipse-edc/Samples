@@ -29,8 +29,8 @@ Any further dependencies will be added in the later samples based on their use c
 ### fixed-node-resolver
 The Federated Catalog requires a list of Target Catalog Nodes, which are essentially the DSP endpoints of the dataspace participants.
 The catalog crawler then crawls these listed endpoints to collect their offered catalogs. 
-This list of Target Nodes is resolved by a Catalog Node Resolver which implements the [TargetNodeDirectory](https://github.com/eclipse-edc/FederatedCatalog/blob/main/spi/crawler-spi/src/main/java/org/eclipse/edc/crawler/spi/TargetNodeDirectory.java).
-Check out [eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/FederatedCatalog/tree/main) for further information on this topic.
+This list of Target Nodes is resolved by a Catalog Node Resolver which implements the `TargetNodeDirectory`.
+Check out [eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/FederatedCatalog) for further information on this topic.
 
 
 In this module, we've included a fixed Node Resolver, [fixed-node-resolver](./fixed-node-resolver)
@@ -47,7 +47,8 @@ of the federated catalogs that we are going to build in sample
 
 When the federated catalog boots up, the crawler begins periodically invoking the Target Nodes returned by the 
 Node Resolver and collecting the catalogs offered by these nodes. To test whether our federated catalogs 
-(which we will build in later samples: [fc-01-embedded](../fc-01-embedded) and [fc-02-standalone](../fc-02-standalone)) can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
+(which we will build in later samples: [fc-01-embedded](../fc-01-embedded) and [fc-02-standalone](../fc-02-standalone)) 
+can successfully request and retrieve these catalogs, we need at least one connector with a contract offer.
 
 Therefore, in this section, we will start a connector and then create a contract 
 for this connector. In the future samples, we will refer to it as `participant-connector`.
