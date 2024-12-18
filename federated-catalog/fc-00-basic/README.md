@@ -30,7 +30,7 @@ Any further dependencies will be added in the later samples based on their use c
 The Federated Catalog requires a list of Target Catalog Nodes, which are essentially the DSP endpoints of the dataspace participants.
 The catalog crawler then crawls these listed endpoints to collect their offered catalogs. 
 This list of Target Nodes is resolved by a Catalog Node Resolver which implements the `TargetNodeDirectory`.
-Check out [eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/FederatedCatalog/tree/main) for further information on this topic.
+Check out [eclipse-edc/FederatedCatalog](https://github.com/eclipse-edc/FederatedCatalog) for further information on this topic.
 
 
 In this module, we've included a fixed Node Resolver, [fixed-node-resolver](./fixed-node-resolver)
