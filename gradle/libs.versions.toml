@@ -81,4 +81,5 @@ edc-fc-ext-api = { module = "org.eclipse.edc:federated-catalog-api", version.ref
 edc-fc-spi-crawler = { module = "org.eclipse.edc:crawler-spi", version.ref = "edc" }
 
 [plugins]
-shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
+
