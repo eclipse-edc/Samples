@@ -24,6 +24,7 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
+import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.testcontainers.containers.GenericContainer;
@@ -43,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 import static org.eclipse.edc.samples.common.FileTransferCloudCommon.runNegotiation;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.util.ConfigPropertiesLoader.fromPropertiesFile;
 import static org.eclipse.edc.samples.util.TransferUtil.checkTransferStatus;
 import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
@@ -105,18 +106,15 @@ public class Transfer05fileTransferCloudTest {
             .withLogConsumer(frame -> System.out.print(frame.getUtf8String()));
 
     @RegisterExtension
-    protected static RuntimeExtension consumer = new RuntimePerClassExtension(new EmbeddedRuntime(
-             CONSUMER,
-             Map.of(
-                     EDC_FS_CONFIG, getFileFromRelativePath(CLOUD_CONSUMER_CONFIG_PROPERTIES_FILE_PATH).getAbsolutePath()
-             ),
-             CONSUMER_MODULE_PATH
-    ));
+    protected static RuntimeExtension consumer = new RuntimePerClassExtension(
+            new EmbeddedRuntime(CONSUMER, CONSUMER_MODULE_PATH)
+                    .configurationProvider(fromPropertiesFile(CLOUD_CONSUMER_CONFIG_PROPERTIES_FILE_PATH))
+    );
 
     @RegisterExtension
-    protected static RuntimeExtension provider = new RuntimePerClassExtension(new EmbeddedRuntime(
-            PROVIDER,
-            Map.ofEntries(
+    protected static RuntimeExtension provider = new RuntimePerClassExtension(
+            new EmbeddedRuntime(PROVIDER, PROVIDER_MODULE_PATH)
+                .configurationProvider(() -> ConfigFactory.fromMap(Map.ofEntries(
                     entry("edc.participant.id", "provider"),
                     entry("edc.dsp.callback.address", "http://localhost:19194/protocol"),
                     entry("web.http.port", "19191"),
@@ -140,10 +138,9 @@ public class Transfer05fileTransferCloudTest {
                     entry("edc.vault.hashicorp.health.check.enabled", "false"),
                     entry("edc.blobstore.endpoint.template", "http://127.0.0.1:" + getAzuritePort() + "/%s"),
                     entry("edc.aws.access.key", "accessKeyId"),
-                    entry("edc.aws.secret.access.key", "secretAccessKey")
-            ),
-            PROVIDER_MODULE_PATH
-    ));
+                    entry("edc.aws.secret.access.key", "secretAccessKey")))
+                )
+    );
 
     @Test
     void pushFile() throws Exception {

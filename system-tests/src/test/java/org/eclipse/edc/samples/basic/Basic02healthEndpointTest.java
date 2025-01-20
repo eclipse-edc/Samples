@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import static io.restassured.RestAssured.given;
-import static java.util.Collections.emptyMap;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @EndToEndTest
@@ -31,7 +30,6 @@ class Basic02healthEndpointTest {
     @RegisterExtension
     static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
-            emptyMap(),
             ":basic:basic-02-health-endpoint"
     ));
 

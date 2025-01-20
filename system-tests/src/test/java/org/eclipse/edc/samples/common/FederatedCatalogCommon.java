@@ -19,6 +19,7 @@ import io.restassured.http.ContentType;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
+import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFr
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
+import static org.eclipse.edc.samples.util.ConfigPropertiesLoader.fromPropertiesFile;
 import static org.eclipse.edc.samples.util.TransferUtil.post;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -74,17 +76,15 @@ public class FederatedCatalogCommon {
             String moduleName,
             String configPropertiesFilePath
     ) {
-        return new RuntimePerClassExtension(new EmbeddedRuntime(
-                moduleName,
-                Map.of(
-                        EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                        EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
-                        EDC_FS_CONFIG, getFileFromRelativePath(configPropertiesFilePath).getAbsolutePath(),
-                        CRAWLER_EXECUTION_DELAY, Integer.toString(CRAWLER_EXECUTION_DELAY_VALUE),
-                        CRAWLER_EXECUTION_PERIOD, Integer.toString(CRAWLER_EXECUTION_PERIOD_VALUE)
-                ),
-                modulePath
-        ));
+        return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
+                .configurationProvider(fromPropertiesFile(configPropertiesFilePath))
+                .configurationProvider(() -> ConfigFactory.fromMap(Map.of(
+                    EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
+                    EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
+                    CRAWLER_EXECUTION_DELAY, Integer.toString(CRAWLER_EXECUTION_DELAY_VALUE),
+                    CRAWLER_EXECUTION_PERIOD, Integer.toString(CRAWLER_EXECUTION_PERIOD_VALUE)))
+                )
+        );
     }
 
     public static String createAsset() {

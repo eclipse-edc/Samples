@@ -21,11 +21,8 @@ import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.File;
-import java.util.Map;
-
 import static io.restassured.RestAssured.given;
-import static org.eclipse.edc.junit.testfixtures.TestUtils.findBuildRoot;
+import static org.eclipse.edc.samples.util.ConfigPropertiesLoader.fromPropertiesFile;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @EndToEndTest
@@ -34,11 +31,8 @@ class Basic03configurationTest {
     @RegisterExtension
     static RuntimeExtension controlPlane = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
-            Map.of(
-                    "edc.fs.config", new File(findBuildRoot(), "basic/basic-03-configuration/config.properties").getAbsolutePath()
-            ),
             ":basic:basic-03-configuration"
-    ));
+    ).configurationProvider(fromPropertiesFile("basic/basic-03-configuration/config.properties")));
 
     @Test
     void shouldStartConnector() {

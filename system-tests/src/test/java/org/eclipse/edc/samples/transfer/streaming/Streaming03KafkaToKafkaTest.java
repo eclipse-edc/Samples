@@ -38,6 +38,7 @@ import org.apache.kafka.common.resource.ResourcePattern;
 import org.apache.kafka.common.resource.ResourceType;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.eclipse.edc.connector.controlplane.test.system.utils.LazySupplier;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
@@ -60,7 +61,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -74,6 +74,7 @@ import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
+import static org.eclipse.edc.samples.util.ConfigPropertiesLoader.fromPropertiesFile;
 import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 @Testcontainers
@@ -89,16 +90,14 @@ public class Streaming03KafkaToKafkaTest {
     private static final StreamingParticipant PROVIDER = StreamingParticipant.Builder.newStreamingInstance()
             .name("provider")
             .id("provider")
-            .managementEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18181/management")))
-            .protocolEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18182/protocol")))
-            .controlEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:18183/control")))
+            .controlPlaneManagement(new LazySupplier<>(() -> URI.create("http://localhost:18181/management")))
+            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:18182/protocol")))
             .build();
     private static final StreamingParticipant CONSUMER = StreamingParticipant.Builder.newStreamingInstance()
             .name("consumer")
             .id("consumer")
-            .managementEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28181/management")))
-            .protocolEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28182/protocol")))
-            .controlEndpoint(new StreamingParticipant.Endpoint(URI.create("http://localhost:28183/control")))
+            .controlPlaneManagement(new LazySupplier<>(() -> URI.create("http://localhost:28181/management")))
+            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:28182/protocol")))
             .build();
     private static final String GROUP_ID = "group_id";
 
@@ -109,24 +108,14 @@ public class Streaming03KafkaToKafkaTest {
     @RegisterExtension
     static RuntimeExtension providerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "provider",
-            Map.of(
-                    "edc.fs.config",
-                    getFileFromRelativePath(RUNTIME_PATH.resolve("provider.properties").toString())
-                            .getAbsolutePath()
-            ),
             ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
-    ));
+    ).configurationProvider(fromPropertiesFile(RUNTIME_PATH.resolve("provider.properties").toString())));
 
     @RegisterExtension
     static RuntimeExtension consumerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
-            Map.of(
-                    "edc.fs.config",
-                    getFileFromRelativePath(RUNTIME_PATH.resolve("consumer.properties").toString())
-                            .getAbsolutePath()
-            ),
             ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
-    ));
+    ).configurationProvider(fromPropertiesFile(RUNTIME_PATH.resolve("consumer.properties").toString())));
 
     private final int httpReceiverPort = Ports.getFreePort();
     private final MockWebServer edrReceiverServer = new MockWebServer();

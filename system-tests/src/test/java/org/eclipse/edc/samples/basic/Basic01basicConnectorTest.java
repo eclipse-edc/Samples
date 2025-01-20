@@ -23,7 +23,6 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.time.Clock;
 
-import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EndToEndTest
@@ -32,7 +31,6 @@ class Basic01basicConnectorTest {
     @RegisterExtension
     static RuntimeExtension connector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "connector",
-            emptyMap(),
             ":basic:basic-01-basic-connector"
     ));
 
