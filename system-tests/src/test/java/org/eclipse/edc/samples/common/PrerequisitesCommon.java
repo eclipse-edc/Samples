@@ -17,6 +17,8 @@ package org.eclipse.edc.samples.common;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
+import org.eclipse.edc.samples.util.ConfigPropertiesLoader;
+import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 
 import java.util.Map;
 
@@ -57,14 +59,12 @@ public class PrerequisitesCommon {
             String moduleName,
             String configPropertiesFilePath
     ) {
-        return new RuntimePerClassExtension(new EmbeddedRuntime(
-                moduleName,
-                Map.of(
-                        EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                        EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
-                        EDC_FS_CONFIG, getFileFromRelativePath(configPropertiesFilePath).getAbsolutePath()
-                ),
-                modulePath
-        ));
+        return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
+                .configurationProvider(ConfigPropertiesLoader.fromPropertiesFile(configPropertiesFilePath))
+                .configurationProvider(() -> ConfigFactory.fromMap(Map.of(
+                    EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
+                    EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD))
+                )
+        );
     }
 }
