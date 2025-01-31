@@ -35,7 +35,6 @@ public class PrerequisitesCommon {
     private static final String CONSUMER = "consumer";
     private static final String EDC_KEYSTORE = "edc.keystore";
     private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
-    private static final String EDC_FS_CONFIG = "edc.fs.config";
 
     private static final String CERT_PFX_FILE_PATH = "transfer/transfer-00-prerequisites/resources/certs/cert.pfx";
     private static final String KEYSTORE_PASSWORD = "123456";
@@ -43,11 +42,15 @@ public class PrerequisitesCommon {
     private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties";
 
     public static RuntimeExtension getProvider() {
-        return getConnector(CONNECTOR_MODULE_PATH, PROVIDER, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
+        return getProvider(CONNECTOR_MODULE_PATH, PROVIDER_CONFIG_PROPERTIES_FILE_PATH);
+    }
+
+    public static RuntimeExtension getProvider(String modulePath, String configPath) {
+        return getConnector(modulePath, PROVIDER, configPath);
     }
 
     public static RuntimeExtension getConsumer() {
-        return getConnector(CONNECTOR_MODULE_PATH, CONSUMER, CONSUMER_CONFIG_PROPERTIES_FILE_PATH);
+        return getConsumer(CONNECTOR_MODULE_PATH);
     }
 
     public static RuntimeExtension getConsumer(String modulePath) {
