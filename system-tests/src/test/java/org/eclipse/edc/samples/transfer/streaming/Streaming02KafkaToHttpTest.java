@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.samples.transfer.streaming;
 
-import jakarta.json.Json;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -30,9 +29,9 @@ import org.eclipse.edc.util.io.Ports;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
@@ -71,10 +70,12 @@ public class Streaming02KafkaToHttpTest {
             .build();
 
     @Container
-    static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse(KAFKA_IMAGE_NAME))
-            .withKraft()
+    static ConfluentKafkaContainer kafkaContainer = new ConfluentKafkaContainer(DockerImageName.parse(KAFKA_IMAGE_NAME))
             .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
             .withEnv("KAFKA_CREATE_TOPICS", TOPIC.concat(":1:1"));
+
+    private final int httpReceiverPort = Ports.getFreePort();
+    private final MockWebServer consumerReceiverServer = new MockWebServer();
 
     @RegisterExtension
     static RuntimeExtension providerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
@@ -87,9 +88,6 @@ public class Streaming02KafkaToHttpTest {
             "consumer",
             ":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime"
     ).configurationProvider(fromPropertiesFile(SAMPLE_FOLDER + "/streaming-02-runtime/consumer.properties")));
-
-    private final int httpReceiverPort = Ports.getFreePort();
-    private final MockWebServer consumerReceiverServer = new MockWebServer();
 
     @BeforeEach
     void setUp() throws IOException {
@@ -106,15 +104,23 @@ public class Streaming02KafkaToHttpTest {
         PROVIDER.createContractDefinition(
                 getFileContentFromRelativePath(SAMPLE_FOLDER + "/3-contract-definition.json"));
 
-        var destination = Json.createObjectBuilder()
-                .add("type", "HttpData")
-                .add("baseUrl", "http://localhost:" + httpReceiverPort)
-                .build();
+        var catalogDatasetId = CONSUMER.fetchDatasetFromCatalog(getFileContentFromRelativePath(SAMPLE_FOLDER + "/4-get-dataset.json"));
+        var negotiateContractBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/5-negotiate-contract.json")
+                .replace("{{offerId}}", catalogDatasetId);
 
-        var transferProcessId = CONSUMER.requestAssetFrom("kafka-stream-asset", PROVIDER)
-                .withDestination(destination)
-                .withTransferType("HttpData-PUSH")
-                .execute();
+        var contractNegotiationId = CONSUMER.negotiateContract(negotiateContractBody);
+
+        await().atMost(TIMEOUT).untilAsserted(() -> {
+            var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
+            assertThat(contractAgreementId).isNotNull();
+        });
+        var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
+
+        var requestBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/6-transfer.json")
+                .replace("{{contract-agreement-id}}", contractAgreementId)
+                .replace("4000", "" + httpReceiverPort);
+
+        var transferProcessId = CONSUMER.startTransfer(requestBody);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var state = CONSUMER.getTransferProcessState(transferProcessId);
@@ -122,7 +128,7 @@ public class Streaming02KafkaToHttpTest {
         });
 
         var producer = createKafkaProducer();
-        var message = "message";
+        var message = "message from producer";
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> producer
                 .send(new ProducerRecord<>(TOPIC, "key", message)), 0L, 100L, MICROSECONDS);
 
