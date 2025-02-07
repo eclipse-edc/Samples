@@ -18,7 +18,6 @@ package org.eclipse.edc.samples.transfer;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
-import org.eclipse.edc.samples.util.HttpRequestLoggerConsumer;
 import org.eclipse.edc.samples.util.HttpRequestLoggerContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,6 @@ import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 @Testcontainers
 public class Transfer03providerPushTest {
 
-    private static final HttpRequestLoggerConsumer LOG_CONSUMER = new HttpRequestLoggerConsumer();
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-03-provider-push/resources/start-transfer.json";
 
     @RegisterExtension
@@ -48,7 +46,7 @@ public class Transfer03providerPushTest {
     static RuntimeExtension consumer = getConsumer();
 
     @Container
-    public static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer(LOG_CONSUMER);
+    public static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer();
 
     @BeforeAll
     static void setUp() {
@@ -58,9 +56,10 @@ public class Transfer03providerPushTest {
     @Test
     void runSampleSteps() {
         var contractAgreementId = runNegotiation();
-        var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH);
+        var requestBody = getFileContentFromRelativePath(START_TRANSFER_FILE_PATH)
+                .replace("4000", String.valueOf(httpRequestLoggerContainer.getPort()));
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
-        assertThat(LOG_CONSUMER.toUtf8String()).contains("Leanne Graham");
+        assertThat(httpRequestLoggerContainer.getLogConsumerUtf8String()).contains("Leanne Graham");
     }
 }
