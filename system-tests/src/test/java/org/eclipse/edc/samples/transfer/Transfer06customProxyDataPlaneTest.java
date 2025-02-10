@@ -21,7 +21,6 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
@@ -39,16 +38,15 @@ import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 @EndToEndTest
-@Testcontainers
 public class Transfer06customProxyDataPlaneTest {
 
-    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
     private static final String SAMPLE_NAME = "transfer-06-custom-proxy-data-plane";
+    private static final String START_TRANSFER_FILE_PATH = "transfer/%s/resources/start-transfer.json".formatted(SAMPLE_NAME);
 
     @RegisterExtension
     static RuntimeExtension provider = getProvider(
-            ":transfer:" + SAMPLE_NAME + ":provider-proxy-data-plane",
-            "transfer/" + SAMPLE_NAME + "/resources/configuration/provider.properties"
+            ":transfer:%s:provider-proxy-data-plane".formatted(SAMPLE_NAME),
+            "transfer/%s/resources/configuration/provider.properties".formatted(SAMPLE_NAME)
     );
 
     @RegisterExtension

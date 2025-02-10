@@ -35,6 +35,10 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
+tasks.withType<CreateStartScripts> {
+    dependsOn(":transfer:transfer-00-prerequisites:connector:shadowJar")
+}
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")

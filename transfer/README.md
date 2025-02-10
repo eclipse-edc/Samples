@@ -45,3 +45,7 @@ different cloud providers. In this sample you will set up
 a provider that offers a file located in an `Azure Blob Storage`, and a consumer that requests to
 transfer this file to an `AWS S3 bucket`. Terraform is used for creating all required cloud
 resources.
+
+### [Transfer sample 06](./transfer-06-custom-proxy-data-plane): Implement a custom Http Proxy for PULL transfer
+
+This sample demonstrates how a custom HTTP Proxy Data Plane can be implemented to address PULL transfer type.

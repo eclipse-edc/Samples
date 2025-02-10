@@ -18,11 +18,6 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
 import org.eclipse.edc.samples.util.ConfigPropertiesLoader;
-import org.eclipse.edc.spi.system.configuration.ConfigFactory;
-
-import java.util.Map;
-
-import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 
 public class PrerequisitesCommon {
     public static final String API_KEY_HEADER_KEY = "X-Api-Key";
@@ -33,11 +28,6 @@ public class PrerequisitesCommon {
     private static final String CONNECTOR_MODULE_PATH = ":transfer:transfer-00-prerequisites:connector";
     private static final String PROVIDER = "provider";
     private static final String CONSUMER = "consumer";
-    private static final String EDC_KEYSTORE = "edc.keystore";
-    private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
-
-    private static final String CERT_PFX_FILE_PATH = "transfer/transfer-00-prerequisites/resources/certs/cert.pfx";
-    private static final String KEYSTORE_PASSWORD = "123456";
     private static final String PROVIDER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/provider-configuration.properties";
     private static final String CONSUMER_CONFIG_PROPERTIES_FILE_PATH = "transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties";
 
@@ -64,10 +54,6 @@ public class PrerequisitesCommon {
     ) {
         return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
                 .configurationProvider(ConfigPropertiesLoader.fromPropertiesFile(configPropertiesFilePath))
-                .configurationProvider(() -> ConfigFactory.fromMap(Map.of(
-                    EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                    EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD))
-                )
         );
     }
 }
