@@ -14,7 +14,6 @@
 
 package org.eclipse.edc.samples.util;
 
-import org.eclipse.edc.util.io.Ports;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.ToStringConsumer;
 import org.testcontainers.images.builder.ImageFromDockerfile;
@@ -27,21 +26,19 @@ public class HttpRequestLoggerContainer extends GenericContainer<HttpRequestLogg
     private static final ImageFromDockerfile IMAGE_FROM_DOCKERFILE = new ImageFromDockerfile()
             .withDockerfile(getFileFromRelativePath(HTTP_REQUEST_LOGGER_DOCKERFILE_PATH).toPath());
     private final ToStringConsumer toStringConsumer;
-    private final int port;
 
     public HttpRequestLoggerContainer() {
         super(IMAGE_FROM_DOCKERFILE);
         this.toStringConsumer =  new HttpRequestLoggerConsumer();
-        this.port =  Ports.getFreePort();
         this.withLogConsumer(toStringConsumer)
-                .addFixedExposedPort(this.port, 4000);
+                .withExposedPorts(4000);
     }
 
-    public String getLogConsumerUtf8String() {
+    public String getLog() {
         return this.toStringConsumer.toUtf8String();
     }
 
     public int getPort() {
-        return this.port;
+        return this.getFirstMappedPort();
     }
 }

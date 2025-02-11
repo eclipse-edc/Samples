@@ -48,11 +48,6 @@ public class Transfer03providerPushTest {
     @Container
     public static HttpRequestLoggerContainer httpRequestLoggerContainer = new HttpRequestLoggerContainer();
 
-    @BeforeAll
-    static void setUp() {
-        httpRequestLoggerContainer.start();
-    }
-
     @Test
     void runSampleSteps() {
         var contractAgreementId = runNegotiation();
@@ -60,6 +55,6 @@ public class Transfer03providerPushTest {
                 .replace("4000", String.valueOf(httpRequestLoggerContainer.getPort()));
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.COMPLETED);
-        assertThat(httpRequestLoggerContainer.getLogConsumerUtf8String()).contains("Leanne Graham");
+        assertThat(httpRequestLoggerContainer.getLog()).contains("Leanne Graham");
     }
 }
