@@ -7,7 +7,6 @@
     "type": "KafkaBroker"
   },
   "protocol": "dataspace-protocol-http",
-  "assetId": "stream-asset",
   "contractId": "{{contract-agreement-id}}",
   "connectorId": "provider",
   "connectorAddress": "http://localhost:18182/protocol"

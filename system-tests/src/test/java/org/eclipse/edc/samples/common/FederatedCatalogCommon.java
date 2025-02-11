@@ -25,7 +25,6 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
-import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
 import static org.eclipse.edc.samples.util.ConfigPropertiesLoader.fromPropertiesFile;
@@ -43,12 +42,6 @@ public class FederatedCatalogCommon {
     private static final String EMBEDDED_FC = "fc-connector";
     private static final String STANDALONE_FC_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-02-standalone/standalone-fc/config.properties";
     private static final String FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-01-embedded/fc-connector/config.properties";
-
-    private static final String EDC_KEYSTORE = "edc.keystore";
-    private static final String EDC_KEYSTORE_PASSWORD = "edc.keystore.password";
-    private static final String EDC_FS_CONFIG = "edc.fs.config";
-    private static final String CERT_PFX_FILE_PATH = "transfer/transfer-00-prerequisites/resources/certs/cert.pfx";
-    private static final String KEYSTORE_PASSWORD = "123456";
 
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
     public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
@@ -79,8 +72,6 @@ public class FederatedCatalogCommon {
         return new RuntimePerClassExtension(new EmbeddedRuntime(moduleName, modulePath)
                 .configurationProvider(fromPropertiesFile(configPropertiesFilePath))
                 .configurationProvider(() -> ConfigFactory.fromMap(Map.of(
-                    EDC_KEYSTORE, getFileFromRelativePath(CERT_PFX_FILE_PATH).getAbsolutePath(),
-                    EDC_KEYSTORE_PASSWORD, KEYSTORE_PASSWORD,
                     CRAWLER_EXECUTION_DELAY, Integer.toString(CRAWLER_EXECUTION_DELAY_VALUE),
                     CRAWLER_EXECUTION_PERIOD, Integer.toString(CRAWLER_EXECUTION_PERIOD_VALUE)))
                 )

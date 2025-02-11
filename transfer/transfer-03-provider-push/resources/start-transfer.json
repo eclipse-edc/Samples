@@ -6,7 +6,6 @@
   "connectorId": "provider",
   "counterPartyAddress": "http://localhost:19194/protocol",
   "contractId": "{{contract-agreement-id}}",
-  "assetId": "assetId",
   "protocol": "dataspace-protocol-http",
   "transferType": "HttpData-PUSH",
   "dataDestination": {

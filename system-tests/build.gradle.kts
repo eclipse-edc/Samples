@@ -58,6 +58,8 @@ dependencies {
     testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer"))
     testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 
+    testCompileOnly(project(":transfer:transfer-06-custom-proxy-data-plane:provider-proxy-data-plane"))
+
     testCompileOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
     testCompileOnly(project(":federated-catalog:fc-01-embedded:fc-connector"))
     testCompileOnly(project(":federated-catalog:fc-02-standalone:standalone-fc"))

@@ -41,6 +41,8 @@ include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
 include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
 include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
 
+include(":transfer:transfer-06-custom-proxy-data-plane:provider-proxy-data-plane")
+
 include(":transfer:streaming:streaming-01-http-to-http:streaming-01-runtime")
 include(":transfer:streaming:streaming-02-kafka-to-http:streaming-02-runtime")
 include(":transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime")
