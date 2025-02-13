@@ -17,7 +17,7 @@ This samples consists of:
 The following steps assume your provider and consumer connectors are still up and running and contract
 negotiation has taken place successfully. Furthermore, the http server should be up as well.
 If not, re-visit the [Prerequisites](../transfer-00-prerequisites/README.md)
-, [Negotiation](../transfer-01-negotiation/README.md) and [Consumer Pull](../transfer-02-consumer-pull/README.md) chapters.
+, [Negotiation](../transfer-01-negotiation/README.md) and [Consumer Pull](../transfer-03-consumer-pull/README.md) chapters.
 
 # Run the sample
 
