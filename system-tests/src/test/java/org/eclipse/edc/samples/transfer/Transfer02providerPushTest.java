@@ -34,9 +34,9 @@ import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
 @EndToEndTest
 @Testcontainers
-public class Transfer03providerPushTest {
+public class Transfer02providerPushTest {
 
-    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-03-provider-push/resources/start-transfer.json";
+    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-provider-push/resources/start-transfer.json";
 
     @RegisterExtension
     static RuntimeExtension provider = getProvider();

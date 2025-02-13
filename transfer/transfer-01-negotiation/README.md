@@ -242,4 +242,4 @@ The connectors are now ready to enter the data transfer phase.
 
 Note down the `contractAgreementId`. You will need it in the next chapters.
 
-[Next Chapter](../transfer-02-consumer-pull/README.md)
+[Next Chapter](../transfer-02-provider-push/README.md)

@@ -43,7 +43,7 @@ You can re-use the same asset, policies and contract negotiation from before.
 ```bash
 curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
     -H "Content-Type: application/json" \
-    -d @transfer/transfer-03-provider-push/resources/start-transfer.json \
+    -d @transfer/transfer-02-provider-push/resources/start-transfer.json \
     -s | jq
 ```
 > keep in mind that, to make a transfer with a provider push method, the dataDestination type should
@@ -76,4 +76,4 @@ Notice the transfer COMPLETED state
 At this step, you can check the data by checking the log of the http server exposed on port 4000, you should see a log
 that shows the same data that you can get from https://jsonplaceholder.typicode.com/users.
 
-[Next Chapter](../transfer-04-event-consumer/README.md)
+[Next Chapter](../transfer-03-consumer-pull/README.md)

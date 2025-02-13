@@ -125,4 +125,4 @@ curl --location --request GET 'http://localhost:19291/public/1' --header 'Author
 And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1
 
 Your first data transfer has been completed successfully.
-Continue with the [next chapter](../transfer-03-provider-push/README.md) to run through a "provider push" scenario.
+Continue with the [next chapter](../transfer-02-provider-push/README.md) to run through a "provider push" scenario.
