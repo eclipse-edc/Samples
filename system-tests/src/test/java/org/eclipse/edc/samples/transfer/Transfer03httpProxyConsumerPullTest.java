@@ -15,16 +15,12 @@
 
 package org.eclipse.edc.samples.transfer;
 
-import io.restassured.common.mapper.TypeRef;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
-import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
@@ -42,13 +38,16 @@ import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.not;
 
 @EndToEndTest
-@Testcontainers
-public class Transfer02consumerPullTest {
+public class Transfer03httpProxyConsumerPullTest {
 
-    private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-consumer-pull/resources/start-transfer.json";
+    private static final String SAMPLE_NAME = "transfer-03-consumer-pull";
+    private static final String START_TRANSFER_FILE_PATH = "transfer/%s/resources/start-transfer.json".formatted(SAMPLE_NAME);
 
     @RegisterExtension
-    static RuntimeExtension provider = getProvider();
+    static RuntimeExtension provider = getProvider(
+            ":transfer:%s:provider-proxy-data-plane".formatted(SAMPLE_NAME),
+            "transfer/%s/resources/configuration/provider.properties".formatted(SAMPLE_NAME)
+    );
 
     @RegisterExtension
     static RuntimeExtension consumer = getConsumer();
@@ -66,14 +65,13 @@ public class Transfer02consumerPullTest {
                 .then()
                 .log().ifValidationFails()
                 .statusCode(200)
-                .extract().body().as(new TypeRef<Map<String, Object>>() {
-                });
+                .extract().body().jsonPath();
 
         var result = given()
                 .header(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
-                .header(AUTHORIZATION, edr.get("authorization"))
+                .header(AUTHORIZATION, edr.getString("authorization"))
                 .when()
-                .get(edr.get("endpoint").toString())
+                .get(edr.getString("endpoint"))
                 .then()
                 .statusCode(HttpStatus.SC_OK)
                 .log().ifValidationFails()

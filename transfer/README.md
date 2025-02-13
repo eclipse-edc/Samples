@@ -20,17 +20,15 @@ Before two connectors can exchange actual data, negotiation has to take place.
 The final goal of this example is to showcase the negotiation workflow between two connectors so that
 the actual data transfer can take place. This chapter is a prerequisite to the following chapters.
 
-### [Transfer sample 02](./transfer-02-consumer-pull/README.md): Perform a consumer pull exchange between a consumer and a provider
+### [Transfer sample 02](transfer-02-provider-push/README.md): Perform a provider push exchange between a consumer and a provider
 
-In this sample you will perform your first actual data transfer.
-The purpose of this sample is to show a data exchange between 2 connectors, one representing the
-data provider and the other, the consumer. It's based on a "consumer pull" use case that you can find
-more details on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane).
+This sample demonstrates the "provider push" use case. 
+More details on [Consumer Pull and Provider Push Transfers](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/#consumer-pull-and-provider-push-transfers).
 
-### [Transfer sample 03](transfer-03-provider-push/README.md): Perform a provider push exchange between a consumer and a provider
+### [Transfer sample 03](./transfer-03-consumer-pull): Implement a custom Http Proxy for PULL transfer
 
-This sample demonstrates the "provider push" use case that you can find more details
-on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane).
+This sample demonstrates how a custom HTTP Proxy Data Plane can be implemented to address PULL transfer type.
+More details on [Consumer Pull and Provider Push Transfers](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/#consumer-pull-and-provider-push-transfers).
 
 ### [Transfer sample 04](transfer-04-event-consumer/README.md): Consuming connector events
 
@@ -46,6 +44,3 @@ a provider that offers a file located in an `Azure Blob Storage`, and a consumer
 transfer this file to an `AWS S3 bucket`. Terraform is used for creating all required cloud
 resources.
 
-### [Transfer sample 06](./transfer-06-custom-proxy-data-plane): Implement a custom Http Proxy for PULL transfer
-
-This sample demonstrates how a custom HTTP Proxy Data Plane can be implemented to address PULL transfer type.

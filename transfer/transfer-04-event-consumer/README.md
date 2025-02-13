@@ -1,6 +1,6 @@
 # Implement a simple event consumer
 
-In this sample, we build upon the [Consumer Pull](../transfer-02-consumer-pull/README.md) chapter to add functionality
+In this sample, we build upon the [Consumer Pull](../transfer-03-consumer-pull/README.md) chapter to add functionality
 to react to transfer completion on the consumer connector side.
 
 Also, in order to keep things organized, the code in this example has been separated into several Java modules:
@@ -85,13 +85,13 @@ curl -X GET "http://localhost:29193/management/v3/contractnegotiations/{{contrac
 
 ### 4. Perform a file transfer
 
-Replace the `contractId` property inside the [request body](../transfer-02-consumer-pull/resources/start-transfer.json) with the contract agreement id from the previous call.
+Replace the `contractId` property inside the [request body](../transfer-03-consumer-pull/resources/start-transfer.json) with the contract agreement id from the previous call.
 Afterward run:
 
 ```bash
 curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
   -H "Content-Type: application/json" \
-  -d @transfer/transfer-02-consumer-pull/resources/start-transfer.json \
+  -d @transfer/transfer-03-consumer-pull/resources/start-transfer.json \
   -s | jq
 ```
 

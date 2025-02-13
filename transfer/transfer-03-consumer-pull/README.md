@@ -1,8 +1,7 @@
 # Implement a simple "Consumer Pull" Http transfer flow
 
 The purpose of this sample is to show a data exchange between two connectors, one representing the
-data provider and the other, the consumer. It's based on a "consumer pull" use case that you can find
-more details
+data provider and the other, the consumer. You can find more details
 on [consumer pull and provider push transfers documentation](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/#consumer-pull-and-provider-push-transfers).
 
 This sample consists of the following steps:
@@ -11,6 +10,10 @@ This sample consists of the following steps:
 * Perform a file transfer initiated by the consumer
 * The provider will send an EndpointDataReference to the consumer
 * The consumer will call the endpoint and fetch the data
+
+The Http Proxy functionality is not provided by EDC because out there is plenty of FOSS proxy implementations that can
+be extended to being able to interact with the EDC, but for example purposes we will implement a really basic Http Proxy
+that, please note, it's not meant to be used in production.
 
 ## Prerequisites
 
@@ -64,7 +67,7 @@ order.
 ### Build the provider connector
 
 ```bash
-./gradlew transfer:transfer-06-custom-proxy-data-plane:provider-proxy-data-plane:build
+./gradlew transfer:transfer-03-consumer-pull:provider-proxy-data-plane:build
 ```
 
 ### Run the connectors
@@ -72,8 +75,8 @@ order.
 To run the provider, just run the following command
 
 ```bash
-java -Dedc.fs.config=transfer/transfer-06-custom-proxy-data-plane/resources/configuration/provider.properties \
-    -jar transfer/transfer-06-custom-proxy-data-plane/provider-proxy-data-plane/build/libs/connector.jar
+java -Dedc.fs.config=transfer/transfer-03-consumer-pull/resources/configuration/provider.properties \
+    -jar transfer/transfer-03-consumer-pull/provider-proxy-data-plane/build/libs/connector.jar
 ```
 
 To run the consumer, just run the following command (different terminal). Note that the consumer is the same that was built
@@ -86,7 +89,7 @@ java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/
 
 ### Negotiate the contract
 
-You can follow the instructions in the [`transfer-01-negotiation`](../transfer-01-negotiation/README.md) to setup a
+You can follow the instructions in the [`transfer-01-negotiation`](../transfer-01-negotiation/README.md) to set up a
 Contract Negotiation between the two parts.
 
 ### Start the transfer
@@ -98,7 +101,7 @@ Before executing the request, insert the `contractAgreementId` from the previous
 ```bash
 curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
   -H "Content-Type: application/json" \
-  -d @transfer/transfer-06-custom-proxy-data-plane/resources/start-transfer.json \
+  -d @transfer/transfer-03-consumer-pull/resources/start-transfer.json \
   -s | jq
 ```
 
@@ -189,4 +192,5 @@ curl --location --request GET 'http://localhost:19291/public/1' --header 'Author
 And the data returned will be the same as in https://jsonplaceholder.typicode.com/users/1
 
 Your first data transfer has been completed successfully.
-Continue with the [next chapter](../transfer-03-provider-push/README.md) to run through a "provider push" scenario.
+
+[Next Chapter](../transfer-04-event-consumer/README.md)
