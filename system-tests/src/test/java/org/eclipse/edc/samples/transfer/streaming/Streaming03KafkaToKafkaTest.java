@@ -16,7 +16,6 @@ package org.eclipse.edc.samples.transfer.streaming;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.json.Json;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.admin.AdminClient;
@@ -139,18 +138,28 @@ public class Streaming03KafkaToKafkaTest {
         PROVIDER.createContractDefinition(
                 getFileContentFromRelativePath(SAMPLE_FOLDER.resolve("3-contract-definition.json").toString()));
 
-        var destination = Json.createObjectBuilder()
-                .add("type", "KafkaBroker")
-                .build();
+        var catalogDatasetId = CONSUMER.fetchDatasetFromCatalog(getFileContentFromRelativePath(SAMPLE_FOLDER + "/4-get-dataset.json"));
+        var negotiateContractBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/5-negotiate-contract.json")
+                .replace("{{offerId}}", catalogDatasetId);
+        var contractNegotiationId = CONSUMER.negotiateContract(negotiateContractBody);
 
-        var transferProcessPrivateProperties = Json.createObjectBuilder()
-                .add("receiverHttpEndpoint", "http://localhost:" + httpReceiverPort)
-                .build();
-        var transferProcessId = CONSUMER.requestAssetFrom("kafka-stream-asset", PROVIDER)
-                .withPrivateProperties(transferProcessPrivateProperties)
-                .withDestination(destination)
-                .withTransferType("KafkaBroker-PULL")
-                .execute();
+        await().atMost(TIMEOUT).untilAsserted(() -> {
+            var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
+            assertThat(contractAgreementId).isNotNull();
+        });
+
+        var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
+
+        var requestBody = getFileContentFromRelativePath(SAMPLE_FOLDER + "/6-transfer.json")
+                .replace("{{contract-agreement-id}}", contractAgreementId)
+                .replace("4000", "" + httpReceiverPort);
+
+        var transferProcessId = CONSUMER.startTransfer(requestBody);
+
+        await().atMost(TIMEOUT).untilAsserted(() -> {
+            var state = CONSUMER.getTransferProcessState(transferProcessId);
+            assertThat(state).isEqualTo(STARTED.name());
+        });
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
             var state = CONSUMER.getTransferProcessState(transferProcessId);
