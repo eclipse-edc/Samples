@@ -51,13 +51,6 @@ curl -d @transfer/transfer-01-negotiation/resources/create-asset.json \
 > the purpose of this example. It will be the data that the consumer will pull on the sample
 > execution.
 
-Additional properties on `HttpData` can be used to allow consumers to enrich the data request:
-
-- `proxyPath`: allows specifying additional path segments.
-- `proxyQueryParams`: allows specifying query params.
-- `proxyBody`: allows attaching a body.
-- `proxyMethod`: allows specifying the Http Method (default `GET`)
-
 ### 2. Create a Policy on the provider
 
 In order to manage the accessibility rules of an asset, it is essential to create a policy. However,

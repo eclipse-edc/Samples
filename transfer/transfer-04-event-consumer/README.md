@@ -1,6 +1,6 @@
 # Implement a simple event consumer
 
-In this sample, we build upon the [Consumer Pull](../transfer-03-consumer-pull/README.md) chapter to add functionality
+In this sample, we build upon the [Provider push](../transfer-02-provider-push/README.md) chapter to add functionality
 to react to transfer completion on the consumer connector side.
 
 Also, in order to keep things organized, the code in this example has been separated into several Java modules:
@@ -85,13 +85,24 @@ curl -X GET "http://localhost:29193/management/v3/contractnegotiations/{{contrac
 
 ### 4. Perform a file transfer
 
-Replace the `contractId` property inside the [request body](../transfer-03-consumer-pull/resources/start-transfer.json) with the contract agreement id from the previous call.
+#### Start a http server
+
+As a pre-requisite, you need to have a logging webserver that runs on port 4000 and logs all the incoming requests, the
+data will be sent to this server.
+
+```bash
+docker build -t http-request-logger util/http-request-logger
+docker run -p 4000:4000 http-request-logger
+```
+
+Replace the `contractId` property inside the [request body](../transfer-02-provider-push/resources/start-transfer.json)
+with the contract agreement id from the previous call.
 Afterward run:
 
 ```bash
 curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
   -H "Content-Type: application/json" \
-  -d @transfer/transfer-03-consumer-pull/resources/start-transfer.json \
+  -d @transfer/transfer-02-provider-push/resources/start-transfer.json \
   -s | jq
 ```
 
@@ -100,10 +111,7 @@ curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
 The consumer should spew out logs similar to:
 
 ```bash
-DEBUG 2023-10-16T09:29:45.316908 [TransferProcessManagerImpl] TransferProcess 762b5a0c-43fb-4b8b-8022-669043c8fa81 is now in state REQUESTED
-DEBUG 2023-10-16T09:29:46.269998 DSP: Incoming TransferStartMessage for class org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcess process: 762b5a0c-43fb-4b8b-8022-669043c8fa81
-DEBUG 2023-10-16T09:29:46.271592 TransferProcessStartedListener received STARTED event   <----------------------------
-DEBUG 2023-10-16T09:29:46.27174 TransferProcess 762b5a0c-43fb-4b8b-8022-669043c8fa81 is now in state STARTED
+INFO 2023-10-16T09:29:46.271592 TransferProcessStartedListener received STARTED event   <----------------------------
 ```
 
 If you see the `TransferProcessStartedListener received STARTED event` log message, it means that your event consumer has been

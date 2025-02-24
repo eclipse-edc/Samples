@@ -33,7 +33,7 @@ public class TransferProcessStartedListener implements TransferProcessListener {
      */
     @Override
     public void preStarted(final TransferProcess process) {
-        monitor.debug("TransferProcessStartedListener received STARTED event");
+        monitor.info("TransferProcessStartedListener received STARTED event");
         // do something meaningful before transfer start
     }
 }
