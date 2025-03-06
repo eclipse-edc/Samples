@@ -23,9 +23,7 @@ dependencies {
     implementation(libs.edc.data.plane.spi)
     implementation(libs.edc.web.spi)
 
-    runtimeOnly(project(":transfer:transfer-00-prerequisites:connector")) {
-        exclude("org.eclipse.edc", "data-plane-public-api-v2")
-    }
+    runtimeOnly(project(":transfer:transfer-00-prerequisites:connector"))
 }
 
 application {
