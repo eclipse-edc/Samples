@@ -24,6 +24,7 @@ services:
       WEB_HTTP_PUBLIC_PATH: /public
       WEB_HTTP_CONTROL_PORT: 29192
       WEB_HTTP_CONTROL_PATH: /control
+      WEB_HTTP_MANAGEMENT_AUTH_KEY: password
       WEB_HTTP_MANAGEMENT_PORT: 29193
       WEB_HTTP_MANAGEMENT_PATH: /management
       WEB_HTTP_PROTOCOL_PORT: 29194
@@ -33,7 +34,6 @@ services:
       EDC_CONTROL_ENDPOINT: http://consumer:29192/control
       EDC_DSP_CALLBACK_ADDRESS: http://consumer:29194/protocol
       EDC_PARTICIPANT_ID: consumer
-      EDC_API_AUTH_KEY: password
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
       EDC_FS_CONFIG: /prerequisites/resources/configuration/provider-configuration.properties
@@ -65,6 +65,7 @@ services:
       WEB_HTTP_CONTROL_PATH: /control
       WEB_HTTP_MANAGEMENT_PORT: 19193
       WEB_HTTP_MANAGEMENT_PATH: /management
+      WEB_HTTP_MANAGEMENT_AUTH_KEY: password
       WEB_HTTP_PROTOCOL_PORT: 19194
       WEB_HTTP_PROTOCOL_PATH: /protocol
       WEB_HTTP_VERSION_PORT: 19195
@@ -72,7 +73,6 @@ services:
       EDC_CONTROL_ENDPOINT: http://provider:19192/control
       EDC_DSP_CALLBACK_ADDRESS: http://provider:19194/protocol
       EDC_PARTICIPANT_ID: provider
-      EDC_API_AUTH_KEY: password
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
       EDC_FS_CONFIG: /prerequisites/resources/configuration/consumer-configuration.properties

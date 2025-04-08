@@ -8,7 +8,13 @@
   "contractId": "{{contract-agreement-id}}",
   "connectorId": "provider",
   "counterPartyAddress": "http://localhost:18182/protocol",
-  "privateProperties": {
-    "receiverHttpEndpoint" : "http://localhost:4000"
-  }
+  "callbackAddresses": [
+    {
+      "transactional": false,
+      "uri": "http://localhost:4000",
+      "events": [
+        "transfer.process.started"
+      ]
+    }
+  ]
 }
