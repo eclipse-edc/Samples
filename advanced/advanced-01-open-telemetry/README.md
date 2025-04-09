@@ -214,11 +214,11 @@ which has to be stored in the root folder of this sample as well. The only addit
       WEB_HTTP_PATH: /api
       WEB_HTTP_MANAGEMENT_PORT: 9192
       WEB_HTTP_MANAGEMENT_PATH: /management
+      WEB_HTTP_MANAGEMENT_AUTH_KEY: password
       WEB_HTTP_PROTOCOL_PORT: 9292
       WEB_HTTP_PROTOCOL_PATH: /protocol
       EDC_DSP_CALLBACK_ADDRESS: http://consumer:9292/protocol
       EDC_PARTICIPANT_ID: consumer
-      EDC_API_AUTH_KEY: password
     entrypoint: java
       -javaagent:/resources/opentelemetry-javaagent.jar
       -Djava.util.logging.config.file=/resources/logging.properties

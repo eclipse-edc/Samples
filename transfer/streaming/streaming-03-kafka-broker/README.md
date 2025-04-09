@@ -173,16 +173,41 @@ curl "http://localhost:28181/management/v3/transferprocesses/{{transfer-process-
 ```
 
 ### Consume events
-Now in the console of the `http-request-logger` we started before, the `EndpointDataReference` should have appeared:
+Now in the console of the `http-request-logger` we started before, the `TransferProcessStarted` event should have appeared,
+containing the EDR in the `payload.dataAddress.properties` field.
 ```json
 {
-  "id":"8c52a781-2588-4c9b-8c70-4e5ad428eea9",
-  "endpoint": "localhost:9093",
-  "authKey": "alice",
-  "authCode": "alice-secret",
-  "properties": {
-    "https://w3id.org/edc/v0.0.1/ns/topic": "kafka-stream-topic"
-  }
+  "id": "8afc0e1d-3f4d-4aea-a58f-01658946c2fa",
+  "at": 1744189281207,
+  "payload": {
+    "transferProcessId": "1475e24b-ce19-4913-ac32-e47014ae090e",
+    "callbackAddresses": [
+      {
+        "uri": "http://localhost:64359",
+        "events": [
+          "transfer.process.started"
+        ],
+        "transactional": false,
+        "authKey": null,
+        "authCodeId": null
+      }
+    ],
+    "assetId": "kafka-stream-asset",
+    "type": "CONSUMER",
+    "contractId": "ef587d3b-8ca0-4c09-a72a-edb18aea96dd",
+    "dataAddress": {
+      "properties": {
+        "https://w3id.org/edc/v0.0.1/ns/type": "EDR",
+        "https://w3id.org/edc/v0.0.1/ns/endpoint": "PLAINTEXT://localhost:32783",
+        "https://w3id.org/edc/v0.0.1/ns/authCode": "alice-secret",
+        "https://w3id.org/edc/v0.0.1/ns/contractId": "ef587d3b-8ca0-4c09-a72a-edb18aea96dd",
+        "https://w3id.org/edc/v0.0.1/ns/topic": "topic-a49ac783-d008-41f7-81f2-8dd0a6a726d4",
+        "https://w3id.org/edc/v0.0.1/ns/id": "1475e24b-ce19-4913-ac32-e47014ae090e",
+        "https://w3id.org/edc/v0.0.1/ns/authKey": "alice"
+      }
+    }
+  },
+  "type": "TransferProcessStarted"
 }
 ```
 

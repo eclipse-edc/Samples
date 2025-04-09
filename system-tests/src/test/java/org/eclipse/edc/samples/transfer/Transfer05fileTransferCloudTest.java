@@ -125,7 +125,7 @@ public class Transfer05fileTransferCloudTest {
                     entry("web.http.protocol.path", "/protocol"),
                     entry("web.http.version.port", "19195"),
                     entry("web.http.version.path", "/version"),
-                    entry("edc.api.auth.key", "password"),
+                    entry("web.http.management.auth.key", "password"),
                     entry("edc.transfer.proxy.token.signer.privatekey.alias", "private-key"),
                     entry("edc.transfer.proxy.token.verifier.publickey.alias", "public-key"),
                     entry("web.http.public.port", "19291"),

@@ -24,10 +24,6 @@ dependencies {
 
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.configuration.filesystem)
-
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-
 }
 
 application {

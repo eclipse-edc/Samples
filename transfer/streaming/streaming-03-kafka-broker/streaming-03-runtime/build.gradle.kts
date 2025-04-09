@@ -19,19 +19,10 @@ plugins {
 }
 
 dependencies {
+    implementation(libs.edc.bom.controlplane.base)
     implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.data.plane.selector.core)
-    implementation(libs.edc.api.observability)
-    implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.http)
-    implementation(libs.edc.edr.store.core)
-    implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.transfer.pull.http.dynamic.receiver)
+
     implementation(libs.edc.data.plane.spi)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.http)

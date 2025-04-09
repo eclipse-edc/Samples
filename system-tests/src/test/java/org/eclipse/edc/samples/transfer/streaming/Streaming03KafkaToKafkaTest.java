@@ -42,7 +42,7 @@ import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
-import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
+import org.eclipse.edc.spi.types.domain.DataAddress;
 import org.eclipse.edc.util.io.Ports;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,6 +70,7 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.eclipse.edc.connector.controlplane.contract.spi.types.negotiation.ContractNegotiationStates.FINALIZED;
 import static org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates.STARTED;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileFromRelativePath;
@@ -144,8 +145,8 @@ public class Streaming03KafkaToKafkaTest {
         var contractNegotiationId = CONSUMER.negotiateContract(negotiateContractBody);
 
         await().atMost(TIMEOUT).untilAsserted(() -> {
-            var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
-            assertThat(contractAgreementId).isNotNull();
+            var state = CONSUMER.getContractNegotiationState(contractNegotiationId);
+            assertThat(state).isEqualTo(FINALIZED.name());
         });
 
         var contractAgreementId = CONSUMER.getContractAgreementId(contractNegotiationId);
@@ -161,11 +162,6 @@ public class Streaming03KafkaToKafkaTest {
             assertThat(state).isEqualTo(STARTED.name());
         });
 
-        await().atMost(TIMEOUT).untilAsserted(() -> {
-            var state = CONSUMER.getTransferProcessState(transferProcessId);
-            assertThat(state).isEqualTo(STARTED.name());
-        });
-
         var producer = createKafkaProducer();
         var message = "message";
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> producer
@@ -173,7 +169,11 @@ public class Streaming03KafkaToKafkaTest {
 
         var endpointDataReference = readEndpointDataReference();
 
-        try (var clientConsumer = createKafkaConsumer(endpointDataReference.getEndpoint(), endpointDataReference.getAuthKey(), endpointDataReference.getAuthCode())) {
+        var endpoint = endpointDataReference.getStringProperty("endpoint");
+        var authKey = endpointDataReference.getStringProperty("authKey");
+        var authCode = endpointDataReference.getStringProperty("authCode");
+
+        try (var clientConsumer = createKafkaConsumer(endpoint, authKey, authCode)) {
             clientConsumer.subscribe(List.of(endpointDataReference.getProperties().get(EDC_NAMESPACE + "topic").toString()));
 
             await().atMost(TIMEOUT).untilAsserted(() -> {
@@ -186,10 +186,11 @@ public class Streaming03KafkaToKafkaTest {
         producer.close();
     }
 
-    private EndpointDataReference readEndpointDataReference() throws InterruptedException, JsonProcessingException {
+    private DataAddress readEndpointDataReference() throws InterruptedException, JsonProcessingException {
         var request = edrReceiverServer.takeRequest(TIMEOUT.getSeconds(), SECONDS);
         var body = request.getBody().readString(Charset.defaultCharset());
-        return new ObjectMapper().readValue(body, EndpointDataReference.class);
+        var jsonNode = new ObjectMapper().readTree(body).get("payload").get("dataAddress");
+        return new ObjectMapper().convertValue(jsonNode, DataAddress.class);
     }
 
     private AclBinding userCanAccess(String principal, ResourceType resourceType, String resourceName) {
