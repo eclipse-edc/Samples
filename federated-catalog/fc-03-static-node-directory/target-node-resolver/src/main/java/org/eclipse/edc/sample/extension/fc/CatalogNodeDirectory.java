@@ -46,4 +46,9 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     public void insert(TargetNode targetNode) {
 
     }
+
+    @Override
+    public TargetNode remove(String s) {
+        return null;
+    }
 }

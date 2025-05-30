@@ -15,6 +15,7 @@ that contains the essential dependencies. We'll need at least the following thin
 ```kotlin
 dependencies {
     implementation(libs.edc.boot)
+    implementation(libs.edc.runtime.core)
     implementation(libs.edc.connector.core)
 }
 ```

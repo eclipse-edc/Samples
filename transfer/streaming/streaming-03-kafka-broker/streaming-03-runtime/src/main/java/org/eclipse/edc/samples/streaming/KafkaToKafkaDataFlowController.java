@@ -37,6 +37,12 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     }
 
     @Override
+    public StatusResult<DataFlowResponse> provision(TransferProcess transferProcess, Policy policy) {
+        // here the flow can be provisioned, not something covered in this sample
+        return StatusResult.success(null);
+    }
+
+    @Override
     public @NotNull StatusResult<DataFlowResponse> start(TransferProcess transferProcess, Policy policy) {
         // static credentials, in a production case these should be created dynamically and an ACLs entry should be added
         var username = "alice";

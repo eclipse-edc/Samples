@@ -20,6 +20,7 @@ plugins {
 
 
 dependencies {
+    implementation(libs.edc.runtime.core)
     implementation(libs.edc.connector.core)
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.edr.store.core)
