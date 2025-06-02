@@ -7,7 +7,7 @@ edc = "0.12.0"
 okhttp-mockwebserver = "5.0.0-alpha.14"
 restAssured = "5.5.5"
 rsApi = "4.0.0"
-testcontainers = "1.21.0"
+testcontainers = "1.21.1"
 kafkaClients = "4.0.0"
 
 [libraries]
