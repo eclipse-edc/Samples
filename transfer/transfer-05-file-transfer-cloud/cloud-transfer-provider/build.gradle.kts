@@ -21,9 +21,10 @@ plugins {
 }
 
 dependencies {
-
     implementation(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
 
+    implementation(libs.edc.runtime.core)
+    implementation(libs.edc.connector.core)
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.control.plane.api)

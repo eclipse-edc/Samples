@@ -17,19 +17,15 @@ package org.eclipse.edc.sample.extension.fc;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogNodeDirectory implements TargetNodeDirectory {
 
     @Override
     public List<TargetNode> getAll() {
-        List<String> protocolList = new ArrayList<>();
-        protocolList.add("dataspace-protocol-http");
-
-        TargetNode participantNode = new TargetNode("https://w3id.org/edc/v0.0.1/ns/",
+        var participantNode = new TargetNode("https://w3id.org/edc/v0.0.1/ns/",
                 "provider",
-                "http://localhost:19194/protocol", protocolList);
+                "http://localhost:19194/protocol", List.of("dataspace-protocol-http"));
 
         return List.of(participantNode);
     }
@@ -37,5 +33,10 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     @Override
     public void insert(TargetNode targetNode) {
 
+    }
+
+    @Override
+    public TargetNode remove(String s) {
+        return null;
     }
 }

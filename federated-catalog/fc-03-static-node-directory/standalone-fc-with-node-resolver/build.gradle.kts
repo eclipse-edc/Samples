@@ -22,6 +22,7 @@ dependencies {
     runtimeOnly(project(":federated-catalog:fc-00-basic:federated-catalog-base"))
     runtimeOnly(project(":federated-catalog:fc-03-static-node-directory:target-node-resolver"))
 
+    implementation(libs.edc.runtime.core)
     implementation(libs.edc.connector.core)
     runtimeOnly(libs.edc.boot)
     runtimeOnly(libs.edc.control.plane.core)
