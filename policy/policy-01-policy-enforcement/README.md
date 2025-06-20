@@ -411,7 +411,7 @@ a consumer cannot negotiate an offer it is not allowed to see.
   policyEngine.registerFunction(CatalogPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
 ```
 
-Let's change ContractNegotiationPolicyContext by CatalogPolicyContext in LocationConstraintFunction.java
+Let's change ContractNegotiationPolicyContext with CatalogPolicyContext in LocationConstraintFunction.java
 
 ```java
     public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, CatalogPolicyContext>
