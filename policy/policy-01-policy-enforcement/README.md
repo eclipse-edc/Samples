@@ -404,7 +404,9 @@ a consumer cannot negotiate an offer it is not allowed to see.
 ```java
   import org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext;
   import static org.eclipse.edc.connector.controlplane.catalog.spi.policy.CatalogPolicyContext.CATALOG_SCOPE;
-
+  
+  //...
+          
   ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, CATALOG_SCOPE);
   policyEngine.registerFunction(CatalogPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
 ```
