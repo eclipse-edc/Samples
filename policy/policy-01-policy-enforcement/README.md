@@ -415,5 +415,5 @@ Let's change ContractNegotiationPolicyContext with CatalogPolicyContext in Locat
 
 ```java
     public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, CatalogPolicyContext>
-    public boolean evaluate(Operator operator, Object rightValue, Permission rule, CatalogPolicyContext context) 
+        public boolean evaluate(Operator operator, Object rightValue, Permission rule, CatalogPolicyContext context) 
 ```
