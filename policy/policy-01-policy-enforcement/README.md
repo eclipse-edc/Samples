@@ -400,7 +400,15 @@ to the negotiation scope anymore, the negotiation will be terminated. When recei
 the provider will still evaluate its contract definitions' access policies using the catalog scope, to ensure that
 a consumer cannot negotiate an offer it is not allowed to see.
 
+
 ```java
-ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, CATALOGING_SCOPE);
-policyEngine.registerFunction(CATALOGING_SCOPE, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
+  ruleBindingRegistry.bind(LOCATION_CONSTRAINT_KEY, CATALOG_SCOPE);
+  policyEngine.registerFunction(CatalogPolicyContext.class, Permission.class, LOCATION_CONSTRAINT_KEY, new LocationConstraintFunction(monitor));
+```
+
+Let's change ContractNegotiationPolicyContext with CatalogPolicyContext in LocationConstraintFunction.java
+
+```java
+    public class LocationConstraintFunction implements AtomicConstraintRuleFunction<Permission, CatalogPolicyContext>
+        public boolean evaluate(Operator operator, Object rightValue, Permission rule, CatalogPolicyContext context) 
 ```
