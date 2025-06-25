@@ -1,4 +1,4 @@
-# Streaming KAFKA to KAFKA
+# Transfer data through Kafka
 
 This sample demonstrates how to set up the Eclipse Dataspace Connector to stream messages through Kafka.
 This code is only for demonstration purposes and should not be used in production.
@@ -8,7 +8,7 @@ This code is only for demonstration purposes and should not be used in productio
 In this sample the dataplane is not used, the consumer will set up a kafka client to poll the messages from the broker
 using some credentials obtained from the transfer process.
 
-The DataFlow is managed by the [KafkaToKafkaDataFlowController](streaming-03-runtime/src/main/java/org/eclipse/edc/samples/streaming/KafkaToKafkaDataFlowController.java),
+The DataFlow is managed by the [KafkaToKafkaDataFlowController](kafka-runtime/src/main/java/org/eclipse/edc/samples/streaming/KafkaToKafkaDataFlowController.java),
 that on flow initialization creates an `EndpointDataReference` containing the credentials that the consumer would then use
 to poll the messages.
 
@@ -16,20 +16,20 @@ to poll the messages.
 
 Build the connector runtime, which will be used both for the provider and consumer:
 ```shell
-./gradlew :transfer:streaming:streaming-03-kafka-broker:streaming-03-runtime:build
+./gradlew :transfer:transfer-06-kafka-broker:kafka-runtime:build
 ```
 
 Run the provider and the consumer with their own configuration, which will need to be started from different terminals:
 
 ```shell
-export EDC_FS_CONFIG=transfer/streaming/streaming-03-kafka-broker/streaming-03-runtime/provider.properties
-java -jar transfer/streaming/streaming-03-kafka-broker/streaming-03-runtime/build/libs/connector.jar
+export EDC_FS_CONFIG=transfer/transfer-06-kafka-broker/kafka-runtime/provider.properties
+java -jar transfer/transfer-06-kafka-broker/kafka-runtime/build/libs/connector.jar
 ```
 
 ```shell
 #consumer
-export EDC_FS_CONFIG=transfer/streaming/streaming-03-kafka-broker/streaming-03-runtime/consumer.properties
-java -jar transfer/streaming/streaming-03-kafka-broker/streaming-03-runtime/build/libs/connector.jar
+export EDC_FS_CONFIG=transfer/transfer-06-kafka-broker/kafka-runtime/consumer.properties
+java -jar transfer/transfer-06-kafka-broker/kafka-runtime/build/libs/connector.jar
 ```
 
 ### Start Kafka and configure ACLs
@@ -41,8 +41,8 @@ messages, and `alice`, that will be used by the consumer to consume the messages
 Run the Kafka container:
 ```shell
 docker run --rm --name=kafka-kraft -h kafka-kraft -p 9093:9093 \
-    -v "$PWD/transfer/streaming/streaming-03-kafka-broker/kafka-config":/config \
-    --env-file transfer/streaming/streaming-03-kafka-broker/kafka.env \
+    -v "$PWD/transfer/transfer-06-kafka-broker/kafka-config":/config \
+    --env-file transfer/transfer-06-kafka-broker/kafka.env \
     -e KAFKA_NODE_ID=1 \
     -e KAFKA_LISTENERS='PLAINTEXT://0.0.0.0:9093,BROKER://0.0.0.0:9092,CONTROLLER://0.0.0.0:9094' \
     -e KAFKA_ADVERTISED_LISTENERS='PLAINTEXT://localhost:9093,BROKER://localhost:9092' \
@@ -91,15 +91,15 @@ their placeholders this way:
 
 Then use these three calls to create the Asset, the Policy Definition and the Contract Definition:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/1-asset.json -X POST "http://localhost:18181/management/v3/assets" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/1-asset.json -X POST "http://localhost:18181/management/v3/assets" -s | jq
 ```
 
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/2-policy-definition.json  -X POST "http://localhost:18181/management/v3/policydefinitions" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/2-policy-definition.json  -X POST "http://localhost:18181/management/v3/policydefinitions" -s | jq
 ```
 
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/3-contract-definition.json  -X POST "http://localhost:18181/management/v3/contractdefinitions" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/3-contract-definition.json  -X POST "http://localhost:18181/management/v3/contractdefinitions" -s | jq
 ```
 
 ### Negotiate the contract
@@ -108,7 +108,7 @@ The typical flow requires fetching the catalog from the consumer side and using 
 However, in this sample case, we already have the provider asset (`"kafka-stream-asset"`) so we can get the related dataset 
 directly with this call:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/4-get-dataset.json -X POST "http://localhost:28181/management/v3/catalog/dataset/request" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/4-get-dataset.json -X POST "http://localhost:28181/management/v3/catalog/dataset/request" -s | jq
 ```
 
 The output will be something like:
@@ -139,7 +139,7 @@ The output will be something like:
 With the `odrl:hasPolicy/@id` we can now replace it in the [negotiate-contract.json](5-negotiate-contract.json) file
 and negotiate the contract:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/5-negotiate-contract.json  -X POST "http://localhost:28181/management/v3/contractnegotiations" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/5-negotiate-contract.json  -X POST "http://localhost:28181/management/v3/contractnegotiations" -s | jq
 ```
 
 ### Start the transfer
@@ -162,7 +162,7 @@ curl "http://localhost:28181/management/v3/contractnegotiations/{{contract-negot
 If the `edc:contractAgreementId` is valued, it can be used to start the transfer, replacing it in the [6-transfer.json](6-transfer.json)
 file to `{{contract-agreement-id}}` and then calling the connector with this command:
 ```shell
-curl -H 'Content-Type: application/json' -d @transfer/streaming/streaming-03-kafka-broker/6-transfer.json -X POST "http://localhost:28181/management/v3/transferprocesses" -s | jq
+curl -H 'Content-Type: application/json' -d @transfer/transfer-06-kafka-broker/6-transfer.json -X POST "http://localhost:28181/management/v3/transferprocesses" -s | jq
 ```
 > Note that the destination address is `localhost:4000`, this because is where our logging webserver is listening.
 

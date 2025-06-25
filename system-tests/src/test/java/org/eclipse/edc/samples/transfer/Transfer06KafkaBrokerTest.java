@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.streaming;
+package org.eclipse.edc.samples.transfer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +49,6 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -79,12 +78,12 @@ import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 @Testcontainers
 @EndToEndTest
-public class Streaming03KafkaToKafkaTest {
+public class Transfer06KafkaBrokerTest {
 
     private static final String TOPIC = "topic-" + UUID.randomUUID();
-    private static final String SAMPLE_NAME = "streaming-03-kafka-broker";
-    private static final String RUNTIME_NAME = "streaming-03-runtime";
-    private static final Path SAMPLE_FOLDER = Path.of("transfer", "streaming", SAMPLE_NAME);
+    private static final String SAMPLE_NAME = "transfer-06-kafka-broker";
+    private static final String RUNTIME_NAME = "kafka-runtime";
+    private static final Path SAMPLE_FOLDER = Path.of("transfer", SAMPLE_NAME);
     private static final Path RUNTIME_PATH = SAMPLE_FOLDER.resolve(RUNTIME_NAME);
     private static final Duration TIMEOUT = Duration.ofSeconds(60);
     private static final StreamingParticipant PROVIDER = StreamingParticipant.Builder.newStreamingInstance()
@@ -102,19 +101,18 @@ public class Streaming03KafkaToKafkaTest {
     private static final String GROUP_ID = "group_id";
 
     @Container
-    static KafkaContainer kafkaContainer = new KafkaSaslContainer(getFileFromRelativePath(SAMPLE_FOLDER.resolve("kafka.env").toString()))
-            .withLogConsumer(frame -> System.out.print(frame.getUtf8String()));
+    static KafkaSaslContainer kafkaContainer = new KafkaSaslContainer(getFileFromRelativePath(SAMPLE_FOLDER.resolve("kafka.env").toString()));
 
     @RegisterExtension
     static RuntimeExtension providerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "provider",
-            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
+            ":transfer:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
     ).configurationProvider(fromPropertiesFile(RUNTIME_PATH.resolve("provider.properties").toString())));
 
     @RegisterExtension
     static RuntimeExtension consumerConnector = new RuntimePerClassExtension(new EmbeddedRuntime(
             "consumer",
-            ":transfer:streaming:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
+            ":transfer:%s:%s".formatted(SAMPLE_NAME, RUNTIME_NAME)
     ).configurationProvider(fromPropertiesFile(RUNTIME_PATH.resolve("consumer.properties").toString())));
 
     private final int httpReceiverPort = Ports.getFreePort();

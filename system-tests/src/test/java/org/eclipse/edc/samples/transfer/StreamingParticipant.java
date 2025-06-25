@@ -12,7 +12,7 @@
  *
  */
 
-package org.eclipse.edc.samples.transfer.streaming;
+package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.connector.controlplane.test.system.utils.LazySupplier;
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
