@@ -1,7 +1,7 @@
 # Implement a simple "Provider Push" Http transfer flow
 
 This sample demonstrates the "provider push" use case that you can find more details
-on [Transfer data plane documentation](https://github.com/eclipse-edc/Connector/tree/main/extensions/control-plane/transfer/transfer-data-plane).
+on [Transfer data plane documentation](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/#transfer-processes).
 
 This samples consists of:
 
