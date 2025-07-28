@@ -20,16 +20,6 @@ dependencies {
 }
 ```
 
-However, the connector would directly shut down after the successful boot due to no extension is loaded and nothing
-happens. To avoid this behavior the [gradle build file](build.gradle.kts) includes already another dependency that we
-will re-use in the next samples:
-
-```kotlin
-dependencies {
-    implementation(libs.edc.http)
-}
-```
-
 > _Additional dependencies will be added to this list in the future, so be sure to check back regularly!_
 
 With that we can build and run the connector from the root directory:
@@ -67,7 +57,7 @@ INFO 2022-01-13T13:43:57.865146132 Started In-Memory Contract Negotiation Store
 INFO 2022-01-13T13:43:57.866073376 edc-e796b518-35f0-4c45-a333-79ca20a6be06 ready
 ```
 
-This basic connector - while perfectly fine - does not offer any outward-facing API, nor does it provide any
+This basic connector - while perfectly fine - directly shuts down as it does not offer any outward-facing API, nor does it provide any
 connector-to-connector communication protocols. However, it will serve us as platform to build out more complex
 scenarios.
 
