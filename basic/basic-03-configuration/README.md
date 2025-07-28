@@ -1,11 +1,11 @@
 # Use the filesystem-based configuration
 
-So far we have not had any way to configure our system other than directly modifying code, which generally is not an
+So far we have not had any way to configure our system and use the default hard-coded values, which generally is not an
 elegant way.
 
-The Eclipse Dataspace Connector exposes configuration through its `ConfigurationExtension` interface. That is a "
-special" extension in that sense that it gets loaded at a very early stage. There is also a default implementation
-named [`FsConfigurationExtension.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/configuration/configuration-filesystem/src/main/java/org/eclipse/edc/configuration/filesystem/FsConfigurationExtension.java)
+The Eclipse Dataspace Connector exposes configuration through its `ConfigurationExtension` interface. That is a ["
+special" extension](https://github.com/eclipse-edc/Connector/blob/main/spi/common/boot-spi/src/main/java/org/eclipse/edc/spi/system/ConfigurationExtension.java) in that sense that it gets loaded at a very early stage. There is also a default implementation
+named [`FsConfigurationExtension.java`](https://github.com/eclipse-edc/Connector/blob/main/extensions/common/configuration/configuration-filesystem/src/main/java/org/eclipse/edc/configuration/filesystem/FsConfigurationExtension.java)
 which uses a standard Java properties file to store configuration entries.
 
 In the previous steps we had not included that in the JAR file, so we need to add
@@ -23,7 +23,7 @@ We compile and run the application with:
 
 ```bash
 ./gradlew clean basic:basic-03-configuration:build
-java -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
+java -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar --log-level=DEBUG
 ```
 
 you will notice an additional log line stating that the "configuration file does not exist":
@@ -57,16 +57,20 @@ An example file can be found [here](config.properties). Clean, rebuild and run t
 passing the path to the config file:
 
 ```bash
-java -Dedc.fs.config=/etc/eclipse/dataspaceconnector/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar
+java -Dedc.fs.config=/etc/eclipse/dataspaceconnector/config.properties -jar basic/basic-03-configuration/build/libs/filesystem-config-connector.jar --log-level=DEBUG
 ```
 
-Observing the log output we now see that the connector's REST API is exposed on port `9191` instead:
+Observing the log output we now see that 
 
 ```bash
-INFO 2022-04-27T14:09:10.547662345 HTTP context 'default' listening on port 9191      <-- this is the relevant line
-DEBUG 2022-04-27T14:09:10.589738491 Port mappings: {alias='default', port=9191, path='/api'}   
-INFO 2022-04-27T14:09:10.589846121 Started Jetty Service
+INFO 2021-09-07T08:26:08.282159 ConfigurationExtension Initialized: FS Configuration
+```
+ and that the connector's REST API is exposed on port `9191` instead:
 
+```bash
+DEBUG 2025-07-28T12:39:14.710420377 HTTP context 'default' listening on port 9191
+DEBUG 2025-07-28T12:39:14.770991316 Port mappings: PortMapping[name=default, port=9191, path=/api]
+DEBUG 2025-07-28T12:39:14.771240769 Started Jetty Service
 ```
 
 ## Add your own configuration value
@@ -86,7 +90,7 @@ edc.samples.basic.03.logprefix=MyLogPrefix
 
 ### 2. Access the config value
 
-The `ServiceExtensionContext` exposes a method `getSettings(String, String)` to read settings (i.e. config values)'.
+The `ServiceExtensionContext` exposes a method `getSettings(String, Object)` to read settings (i.e. config values)'.
 Modify the code from the `HealthEndpointExtension.java` as shown below (use the one from the `03-configuration`
 of course):
 

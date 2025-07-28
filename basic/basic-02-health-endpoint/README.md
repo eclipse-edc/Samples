@@ -26,9 +26,22 @@ public class HealthEndpointExtension implements ServiceExtension {
 ```
 
 The `@Inject` annotation indicates that the extension needs a service that is registered by another extension, in 
-this case an implementation of `WebService.class`.
+this case an implementation of `WebService.class`, here provided by the JettyExtension in the [edc.http module](https://github.com/eclipse-edc/Connector/tree/main/extensions/common/http). Thus, this is added to the [gradle build file](build.gradle.kts) 
 
-For that, we can use Jakarta REST annotations to implement a simple REST API:
+```kotlin
+dependencies {
+    implementation(libs.edc.http)
+}
+```
+
+Further, in [build.gradle.kts](build.gradle.kts) we add another dependency to make use of Jakarta REST annotations while implementing a simple REST API:
+
+```kotlin
+dependencies {
+    implementation(libs.jakarta.rsApi)
+}
+```
+With this setup, we can start implementing the Endpoint through the `HealthApiController.class`:
 
 ```java
 @Consumes({MediaType.APPLICATION_JSON})
@@ -55,18 +68,18 @@ Once we compile and run the application with
 
 ```bash
 ./gradlew clean basic:basic-02-health-endpoint:build
-java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar
+java -jar basic/basic-02-health-endpoint/build/libs/connector-health.jar --log-level=DEBUG
 ```
 
 we can issue a GET request to `http://localhost:8181/api/health` and receive the aforementioned string as a result.
 
 It is worth noting that by default the webserver listens on port `8181`, which is defined in
-[`JettyConfiguration.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyConfiguration.java)
+[`JettyExtension.java`](https://github.com/eclipse-edc/Connector/blob/main/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyExtension.java)
 and can be configured using the `web.http.port` property (more on that in the next chapter). You will need to configure
 this whenever you have two connectors running on the same machine.
 
 Also, the default path is `/api/*`, which is defined in
-[`JettyConfiguration.java`](https://github.com/eclipse-edc/Connector/blob/releases/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyConfiguration.java).
+[`JettyExtension.java`](https://github.com/eclipse-edc/Connector/blob/main/extensions/common/http/jetty-core/src/main/java/org/eclipse/edc/web/jetty/JettyExtension.java).
 
 ---
 

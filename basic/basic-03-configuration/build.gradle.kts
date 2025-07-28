@@ -27,9 +27,9 @@ dependencies {
     
     implementation(libs.edc.http)
 
-    implementation(libs.edc.configuration.filesystem)
-
     implementation(libs.jakarta.rsApi)
+
+    implementation(libs.edc.configuration.filesystem)
 }
 
 application {
