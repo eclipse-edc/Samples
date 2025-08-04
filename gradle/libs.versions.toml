@@ -68,7 +68,7 @@ testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "tes
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 testcontainers-minio = { module = "org.testcontainers:minio", version.ref = "testcontainers" }
 testcontainers-hashicorp-vault = { module = "org.testcontainers:vault", version.ref = "testcontainers" }
-azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.30.1" }
+azure-storage-blob = { module = "com.azure:azure-storage-blob", version = "12.31.1" }
 minio-io = { module = "io.minio:minio", version = "8.5.17" }
 
 # federated catalog modules
