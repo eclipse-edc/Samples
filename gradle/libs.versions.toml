@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.13.0"
+edc = "0.13.2"
 okhttp-mockwebserver = "5.1.0"
 restAssured = "5.5.5"
 rsApi = "4.0.0"
