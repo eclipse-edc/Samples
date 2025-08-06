@@ -9,7 +9,7 @@
  *
  *  Contributors:
  *       Mercedes-Benz Tech Innovation GmbH - Initial implementation
- *       Fraunhofer Institute for Software and Systems Engineering - use current ids instead of placeholder
+ *       Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V. - use current ids instead of placeholder
  *
  */
 
