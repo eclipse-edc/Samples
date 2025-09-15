@@ -14,12 +14,11 @@
 
 plugins {
     `java-library`
-    id("application")
+    application
 }
 
 dependencies {
-    runtimeOnly(libs.edc.fc.core)
-    runtimeOnly(libs.edc.fc.ext.api)
+    runtimeOnly(libs.edc.federatedcatalog.base.bom)
 }
 
 

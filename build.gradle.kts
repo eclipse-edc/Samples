@@ -15,28 +15,17 @@
 
 plugins {
     `java-library`
+    alias(libs.plugins.edc.build)
 }
 
 repositories {
     mavenCentral()
 }
 
-buildscript {
-    dependencies {
-        classpath(libs.edc.build.plugin)
-    }
-}
-
 val edcVersion = libs.versions.edc
 
 allprojects {
-    apply(plugin = "$group.edc-build")
-
-    // configure which version of the annotation processor to use. defaults to the same version as the plugin
-    configure<org.eclipse.edc.plugins.autodoc.AutodocExtension> {
-        processorVersion.set(edcVersion)
-        outputDirectory.set(project.layout.buildDirectory.asFile.get())
-    }
+    apply(plugin = "org.eclipse.edc.edc-build")
 
     configure<org.eclipse.edc.plugins.edcbuild.extensions.BuildExtension> {
         publish.set(false)
