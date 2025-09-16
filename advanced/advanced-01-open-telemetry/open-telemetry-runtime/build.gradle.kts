@@ -1,7 +1,3 @@
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-
 /*
  *  Copyright (c) 2022 Microsoft Corporation
  *
@@ -46,7 +42,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-tasks.register("copyOpenTelemetryJar", Copy::class) {
+val copyOpenTelemetryJar = tasks.register("copyOpenTelemetryJar", Copy::class) {
     val openTelemetry = configurations.create("open-telemetry")
 
     dependencies {
@@ -55,10 +51,10 @@ tasks.register("copyOpenTelemetryJar", Copy::class) {
     }
 
     from(openTelemetry)
-    into("build/libs")
+    into("build/otel")
     rename { it -> it.take(it.indexOfLast { it == '-' }) + ".jar"}
 }
 
-tasks.build {
-    finalizedBy("copyOpenTelemetryJar")
+tasks.shadowJar {
+    dependsOn(copyOpenTelemetryJar)
 }
