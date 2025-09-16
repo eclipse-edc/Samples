@@ -50,7 +50,7 @@ public class Advanced01openTelemetryTest {
     public ComposeContainer environment =
             new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .withLocalCompose(true)
-                    .waitingFor("consumer", Wait.forLogMessage(".*ready.*", 1));
+                    .waitingFor("provider", Wait.forLogMessage(".*Runtime.*ready.*", 1));
 
     @Test
     void runSampleSteps()  {

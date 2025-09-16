@@ -19,44 +19,20 @@ import java.nio.file.StandardCopyOption
 
 plugins {
     `java-library`
-    id("application")
+    application
     alias(libs.plugins.shadow)
 }
 
 dependencies {
 
-    implementation(libs.edc.runtime.core)
-    implementation(libs.edc.connector.core)
-    implementation(libs.edc.control.api.configuration)
-    implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.control.plane.api)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.edr.store.core)
-    implementation(libs.edc.token.core)
-
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.http)
-    implementation(libs.edc.configuration.filesystem)
+    runtimeOnly(libs.edc.bom.controlplane.base) {
+        exclude(module = "org.eclipse.edc.data-plane-selector-client")
+    }
+    runtimeOnly(libs.edc.bom.dataplane.base)
 
     implementation(libs.edc.iam.mock)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.transfer.data.plane.signaling)
-
-    implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.data.plane.selector.core)
-
-    implementation(libs.edc.data.plane.self.registration)
-    implementation(libs.edc.data.plane.signaling.api)
     implementation(libs.edc.data.plane.public.api)
-    implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http)
-    implementation(libs.edc.data.plane.iam)
-
-    implementation(libs.edc.api.observability)
-    implementation(libs.edc.auth.tokenbased)
-
     implementation(libs.opentelemetry.exporter.otlp)
-
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
 
@@ -67,6 +43,7 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.register("copyOpenTelemetryJar", Copy::class) {
@@ -79,7 +56,7 @@ tasks.register("copyOpenTelemetryJar", Copy::class) {
 
     from(openTelemetry)
     into("build/libs")
-    rename { it -> it.substring(0, it.indexOfLast { it == '-' }) + ".jar"}
+    rename { it -> it.take(it.indexOfLast { it == '-' }) + ".jar"}
 }
 
 tasks.build {

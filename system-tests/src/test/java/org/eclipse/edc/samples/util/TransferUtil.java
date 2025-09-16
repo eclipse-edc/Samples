@@ -75,7 +75,7 @@ public class TransferUtil {
                 .when()
                 .post(url)
                 .then()
-                .log().ifError()
+                .log().ifValidationFails()
                 .statusCode(HttpStatus.SC_OK);
     }
 
@@ -87,7 +87,7 @@ public class TransferUtil {
                 .when()
                 .post(url)
                 .then()
-                .log().ifError()
+                .log().ifValidationFails()
                 .statusCode(HttpStatus.SC_OK)
                 .body(jsonPath, not(emptyString()))
                 .extract()

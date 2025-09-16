@@ -37,6 +37,7 @@ services:
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
       EDC_FS_CONFIG: /prerequisites/resources/configuration/provider-configuration.properties
+      EDC_DPF_SELECTOR_URL: http://localhost:29192/control
     entrypoint: java
       -javaagent:/app/opentelemetry-javaagent.jar
       -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
@@ -77,6 +78,7 @@ services:
       EDC_KEYSTORE_PASSWORD: 123456
       EDC_FS_CONFIG: /prerequisites/resources/configuration/consumer-configuration.properties
       EDC_SAMPLES_TRANSFER_01_ASSET_PATH: /open-telemetry/README.md
+      EDC_DPF_SELECTOR_URL: http://localhost:29192/control
     entrypoint: java
       -javaagent:/app/opentelemetry-javaagent.jar
       -Djava.util.logging.config.file=/open-telemetry/resources/logging.properties
