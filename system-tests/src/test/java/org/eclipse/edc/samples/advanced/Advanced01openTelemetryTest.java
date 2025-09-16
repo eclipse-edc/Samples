@@ -47,9 +47,7 @@ public class Advanced01openTelemetryTest {
     private static final String JAEGER_URL = "http://localhost:16686";
 
     @Container
-    public ComposeContainer environment =
-            new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
-                    .withLocalCompose(true)
+    public ComposeContainer environment = new ComposeContainer(getFileFromRelativePath(DOCKER_COMPOSE_YAML))
                     .waitingFor("provider", Wait.forLogMessage(".*Runtime.*ready.*", 1));
 
     @Test
