@@ -16,6 +16,7 @@
 package org.eclipse.edc.samples.util;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.eclipse.edc.connector.controlplane.transfer.spi.types.TransferProcessStates;
 
@@ -67,8 +68,8 @@ public class TransferUtil {
                 .get(jsonPath);
     }
 
-    public static void post(String url, String requestBody) {
-        given()
+    public static ValidatableResponse post(String url, String requestBody) {
+        return given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
                 .body(requestBody)
@@ -80,15 +81,7 @@ public class TransferUtil {
     }
 
     public static String post(String url, String requestBody, String jsonPath) {
-        return given()
-                .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when()
-                .post(url)
-                .then()
-                .log().ifValidationFails()
-                .statusCode(HttpStatus.SC_OK)
+        return post(url, requestBody)
                 .body(jsonPath, not(emptyString()))
                 .extract()
                 .jsonPath()
