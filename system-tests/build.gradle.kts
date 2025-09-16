@@ -36,6 +36,9 @@ dependencies {
     testImplementation(libs.azure.storage.blob)
     testImplementation(libs.minio.io)
 
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    testImplementation("ch.qos.logback:logback-classic:1.5.18")
+
     // runtimes
     testCompileOnly(project(":basic:basic-01-basic-connector"))
     testCompileOnly(project(":basic:basic-02-health-endpoint"))
