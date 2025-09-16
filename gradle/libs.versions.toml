@@ -11,10 +11,9 @@ testcontainers = "1.21.3"
 kafkaClients = "4.1.0"
 
 [libraries]
-edc-api-observability = { module = "org.eclipse.edc:api-observability", version.ref = "edc" }
-edc-auth-tokenbased = { module = "org.eclipse.edc:auth-tokenbased", version.ref = "edc" }
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
 edc-bom-controlplane-base = { module = "org.eclipse.edc:controlplane-base-bom", version.ref = "edc" }
+edc-bom-dataplane-base = { module = "org.eclipse.edc:dataplane-base-bom", version.ref = "edc" }
 edc-configuration-filesystem = { module = "org.eclipse.edc:configuration-filesystem", version.ref = "edc" }
 edc-connector-core = { module = "org.eclipse.edc:connector-core", version.ref = "edc" }
 edc-control-api-configuration = { module = "org.eclipse.edc:control-api-configuration", version.ref = "edc" }
@@ -74,5 +73,5 @@ testcontainers-minio = { module = "org.testcontainers:minio", version.ref = "tes
 
 [plugins]
 edc-build = { id = "org.eclipse.edc.edc-build", version = "1.0.0" }
-shadow = { id = "com.gradleup.shadow", version = "8.3.8" }
+shadow = { id = "com.gradleup.shadow", version = "9.1.0" }
 

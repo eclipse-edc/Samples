@@ -1,4 +1,4 @@
-name: Test Code (Style, Tests)
+name: Test and Build
 
 on:
   push:
@@ -23,36 +23,4 @@ jobs:
       - uses: ./.github/actions/setup-build
 
       - name: Build project
-        run: ./gradlew build
-
-  End-To-End-Tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: ./.github/actions/setup-build
-
-      - name: End to End Integration Tests
-        uses: ./.github/actions/run-tests
-        with:
-          command: ./gradlew test -DincludeTags="EndToEndTest"
-
-  Upload-Test-Report:
-    needs:
-      - End-To-End-Tests
-
-    permissions:
-      checks: write
-      pull-requests: write
-
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v5
-        with:
-          path: artifacts
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          junit_files: "**/test-results/**/*.xml"
+        run: ./gradlew build -DrunAllTests="true"
