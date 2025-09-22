@@ -36,4 +36,5 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("connector-health.jar")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

@@ -33,4 +33,5 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("basic-connector.jar")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
