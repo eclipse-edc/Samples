@@ -324,8 +324,8 @@ In the response we'll get a description of the negotiation, similar to the follo
 ```json
 {
   ...
-  "edc:contractAgreementId": null,
   "edc:state": "TERMINATED",
+  "edc:errorDetail": "Failed to send termination to counter party: Value in JsonObjects name/value pair cannot be null",
   ...
 }
 ```
