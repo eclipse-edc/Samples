@@ -54,4 +54,5 @@ application {
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("consumer.jar")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

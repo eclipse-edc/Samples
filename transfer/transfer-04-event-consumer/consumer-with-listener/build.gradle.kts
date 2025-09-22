@@ -62,4 +62,5 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")
     dependsOn(distTar, distZip)
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
