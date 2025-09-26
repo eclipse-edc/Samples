@@ -325,7 +325,7 @@ In the response we'll get a description of the negotiation, similar to the follo
 {
   ...
   "edc:state": "TERMINATED",
-  "edc:errorDetail": "Failed to send termination to counter party: Value in JsonObjects name/value pair cannot be null",
+  "edc:errorDetail": "Contract offer is not valid: Policy in scope contract.negotiation not fulfilled: [Permission constraints: [Constraint 'https://w3id.org/edc/v0.0.1/ns/location' EQ 'eu']]",
   ...
 }
 ```
