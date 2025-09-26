@@ -324,8 +324,8 @@ In the response we'll get a description of the negotiation, similar to the follo
 ```json
 {
   ...
-  "edc:contractAgreementId": null,
   "edc:state": "TERMINATED",
+  "edc:errorDetail": "Contract offer is not valid: Policy in scope contract.negotiation not fulfilled: [Permission constraints: [Constraint 'https://w3id.org/edc/v0.0.1/ns/location' EQ 'eu']]",
   ...
 }
 ```
