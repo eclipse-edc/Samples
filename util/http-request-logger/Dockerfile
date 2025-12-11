@@ -4,7 +4,7 @@ WORKDIR /home/gradle/project
 COPY --chown=gradle:gradle . /home/gradle/project
 RUN gradle build
 
-FROM openjdk:17-slim
+FROM eclipse-temurin:25-alpine
 
 WORKDIR /app
 COPY --from=build /home/gradle/project/build/libs/http-request-logger.jar /app/http-request-logger.jar

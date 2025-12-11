@@ -1,4 +1,4 @@
-FROM openjdk:17-slim
+FROM eclipse-temurin:25-alpine
 
 WORKDIR /app
 COPY build/otel/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
