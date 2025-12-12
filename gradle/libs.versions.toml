@@ -4,7 +4,7 @@ format.version = "1.1"
 [versions]
 awaitility = "4.2.2"
 edc = "0.14.1"
-okhttp-mockwebserver = "5.3.0"
+okhttp-mockwebserver = "5.3.2"
 restAssured = "5.5.6"
 rsApi = "4.0.0"
 testcontainers = "1.21.3"
