@@ -8,7 +8,7 @@ okhttp-mockwebserver = "5.3.2"
 restAssured = "6.0.0"
 rsApi = "4.0.0"
 testcontainers = "1.21.4"
-kafkaClients = "4.1.1"
+kafkaClients = "4.2.0"
 
 [libraries]
 edc-boot = { module = "org.eclipse.edc:boot", version.ref = "edc" }
