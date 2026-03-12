@@ -27,7 +27,6 @@ dependencies {
     runtimeOnly(libs.edc.bom.dataplane.base)
 
     implementation(libs.edc.iam.mock)
-    implementation(libs.edc.data.plane.public.api)
     implementation(libs.opentelemetry.exporter.otlp)
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
