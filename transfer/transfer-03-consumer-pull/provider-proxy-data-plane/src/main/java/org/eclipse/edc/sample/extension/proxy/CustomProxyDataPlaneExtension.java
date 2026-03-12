@@ -27,8 +27,6 @@ import org.eclipse.edc.web.spi.WebService;
 import org.eclipse.edc.web.spi.configuration.PortMapping;
 import org.eclipse.edc.web.spi.configuration.PortMappingRegistry;
 
-import static org.eclipse.edc.web.spi.configuration.ApiContext.PUBLIC;
-
 public class CustomProxyDataPlaneExtension implements ServiceExtension {
 
     private static final int DEFAULT_PUBLIC_PORT = 8185;
@@ -51,18 +49,18 @@ public class CustomProxyDataPlaneExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        portMappingRegistry.register(new PortMapping(PUBLIC, apiConfiguration.port(), apiConfiguration.path()));
+        portMappingRegistry.register(new PortMapping("public", apiConfiguration.port(), apiConfiguration.path()));
 
         generatorService.addGeneratorFunction("HttpData", dataAddress -> Endpoint.url(proxyPublicEndpoint));
 
-        webService.registerResource(PUBLIC, new ProxyController(authorizationService));
+        webService.registerResource("public", new ProxyController(authorizationService));
     }
 
     @Settings
     record PublicApiConfiguration(
-            @Setting(key = "web.http." + PUBLIC + ".port", description = "Port for " + PUBLIC + " api context", defaultValue = DEFAULT_PUBLIC_PORT + "")
+            @Setting(key = "web.http.public.port", description = "Port for public api context", defaultValue = DEFAULT_PUBLIC_PORT + "")
             int port,
-            @Setting(key = "web.http." + PUBLIC + ".path", description = "Path for " + PUBLIC + " api context", defaultValue = DEFAULT_PUBLIC_PATH)
+            @Setting(key = "web.http.public.path", description = "Path for public api context", defaultValue = DEFAULT_PUBLIC_PATH)
             String path
     ) {
 
