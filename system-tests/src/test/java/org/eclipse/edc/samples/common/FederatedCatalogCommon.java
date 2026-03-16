@@ -16,6 +16,7 @@ package org.eclipse.edc.samples.common;
 
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.junit.extensions.RuntimePerClassExtension;
@@ -24,6 +25,7 @@ import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_KEY;
 import static org.eclipse.edc.samples.common.PrerequisitesCommon.API_KEY_HEADER_VALUE;
@@ -36,7 +38,6 @@ import static org.hamcrest.Matchers.emptyString;
 public class FederatedCatalogCommon {
     private static final String CREATE_ASSET_FILE_PATH = "transfer/transfer-01-negotiation/resources/create-asset.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String ASSET_ID = "@id";
 
     private static final String STANDALONE_FC = "standalone-fc";
     private static final String EMBEDDED_FC = "fc-connector";
@@ -44,17 +45,16 @@ public class FederatedCatalogCommon {
     private static final String FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-01-embedded/fc-connector/config.properties";
 
     private static final String CRAWLER_EXECUTION_DELAY = "edc.catalog.cache.execution.delay.seconds";
-    public static final int CRAWLER_EXECUTION_DELAY_VALUE = 5;
+    public static final int CRAWLER_EXECUTION_DELAY_VALUE = 1;
     private static final String CRAWLER_EXECUTION_PERIOD = "edc.catalog.cache.execution.period.seconds";
-    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 40;
+    public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 5;
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
     public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29195/api/catalog/v1alpha/catalog/query";
     public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:39195/api/catalog/v1alpha/catalog/query";
     public static final String EMPTY_QUERY_FILE_PATH = "federated-catalog/fc-01-embedded/resources/empty-query.json";
     public static final String TYPE = "[0].@type";
-    public static final String CATALOG = "dcat:Catalog";
-    public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
+    public static final String DATASET_ASSET_ID = "[0].dataset[0].@id";
 
     public static RuntimeExtension getFcEmbeddedConnector(String modulePath) {
         return getRuntime(modulePath, EMBEDDED_FC, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
@@ -81,10 +81,10 @@ public class FederatedCatalogCommon {
     public static String createAsset() {
         return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
                 getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH),
-                ASSET_ID);
+                ID);
     }
 
-    public static String postAndAssertType(String url, String requestBody, String jsonPath) {
+    public static JsonPath postAndAssertType(String url, String requestBody) {
         return given()
                 .headers(API_KEY_HEADER_KEY, API_KEY_HEADER_VALUE)
                 .contentType(ContentType.JSON)
@@ -92,13 +92,12 @@ public class FederatedCatalogCommon {
                 .when()
                 .post(url)
                 .then()
-                .log().ifError()
+                .log().ifValidationFails()
                 .statusCode(HttpStatus.SC_OK)
                 .body(TYPE, not(emptyString()))
-                .body(TYPE, is(CATALOG))
+                .body(TYPE, is("Catalog"))
                 .extract()
-                .jsonPath()
-                .get(jsonPath);
+                .jsonPath();
     }
 
 }

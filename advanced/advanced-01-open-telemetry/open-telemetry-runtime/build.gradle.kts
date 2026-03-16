@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly(libs.edc.bom.dataplane.base)
 
     implementation(libs.edc.iam.mock)
+    implementation(libs.edc.data.plane.spi)
     implementation(libs.opentelemetry.exporter.otlp)
     runtimeOnly(libs.edc.monitor.jdk.logger)
 }
@@ -35,7 +36,7 @@ application {
     mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

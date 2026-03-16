@@ -30,6 +30,7 @@ dependencies {
     runtimeOnly(libs.edc.token.core)
     implementation(libs.edc.http)
     runtimeOnly(libs.edc.dsp)
+    runtimeOnly(libs.edc.participant.context.single.core)
     implementation(libs.edc.iam.mock)
 
 }
@@ -42,7 +43,7 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("standalone-fc-with-node-resolver.jar")
     dependsOn(distTar, distZip)

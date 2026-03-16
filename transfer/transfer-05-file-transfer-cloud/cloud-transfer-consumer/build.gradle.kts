@@ -21,28 +21,16 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.runtime.core)
-    implementation(libs.edc.connector.core)
-    implementation(libs.edc.control.api.configuration)
-    implementation(libs.edc.control.plane.api.client)
-    implementation(libs.edc.control.plane.api)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.http)
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.edr.store.core)
-    implementation(libs.edc.transfer.data.plane.signaling)
-    implementation(libs.edc.validator.data.address.http.data)
+    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.iam.mock)
+    runtimeOnly(libs.edc.transfer.data.plane.signaling)
+    runtimeOnly(libs.edc.control.plane.api.client)
+    runtimeOnly(libs.edc.validator.data.address.http.data)
 
-    implementation(libs.edc.data.plane.selector.api)
-    implementation(libs.edc.data.plane.selector.core)
-
-    implementation(libs.edc.data.plane.self.registration)
-    implementation(libs.edc.data.plane.signaling.api)
-    implementation(libs.edc.data.plane.core)
-    implementation(libs.edc.data.plane.http)
+    runtimeOnly(libs.edc.data.plane.self.registration)
+    runtimeOnly(libs.edc.data.plane.signaling.api)
+    runtimeOnly(libs.edc.data.plane.core)
+    runtimeOnly(libs.edc.data.plane.http)
 
 }
 
@@ -50,7 +38,7 @@ application {
     mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("consumer.jar")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

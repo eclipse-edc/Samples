@@ -37,7 +37,7 @@ tasks.withType<CreateStartScripts> {
     dependsOn(":transfer:transfer-00-prerequisites:connector:shadowJar")
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")
     dependsOn(distTar, distZip)

@@ -17,9 +17,7 @@ essential for FC, without any additional functionality.
 ```shell
 ...
 dependencies {
-    implementation(libs.edc.fc.spi.crawler)
-    runtimeOnly(libs.fc.core)
-    runtimeOnly(libs.fc.ext.api)
+    runtimeOnly(libs.edc.federatedcatalog.base.bom)
 }
 ...
 ```

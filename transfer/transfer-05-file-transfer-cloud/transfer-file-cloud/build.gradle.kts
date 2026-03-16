@@ -18,7 +18,6 @@ plugins {
 
 dependencies {
     implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.data.plane.core)
     implementation(libs.edc.data.plane.azure.storage)
     implementation(libs.edc.data.plane.aws.s3)

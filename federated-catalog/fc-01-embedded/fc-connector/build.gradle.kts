@@ -19,18 +19,11 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(project(":federated-catalog:fc-00-basic:federated-catalog-base"))
-    runtimeOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
+    implementation(project(":federated-catalog:fc-00-basic:federated-catalog-base"))
+    implementation(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
 
-    implementation(libs.edc.runtime.core)
-    implementation(libs.edc.connector.core)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.iam.mock)
-    implementation(libs.edc.http)
-    implementation(libs.edc.edr.store.core)
+    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.iam.mock)
 
 }
 
@@ -41,7 +34,7 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("fc-connector.jar")
     dependsOn(distTar, distZip)

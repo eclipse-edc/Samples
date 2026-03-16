@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.token.core)
     implementation(libs.edc.dsp)
+    implementation(libs.edc.participant.context.single.core)
     implementation(libs.edc.http)
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.iam.mock)
@@ -55,7 +56,7 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("connector.jar")
     dependsOn(distTar, distZip)
