@@ -37,7 +37,7 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     }
 
     @Override
-    public StatusResult<DataFlowResponse> provision(TransferProcess transferProcess, Policy policy) {
+    public StatusResult<DataFlowResponse> prepare(TransferProcess transferProcess, Policy policy) {
         // here the flow can be provisioned, not something covered in this sample
         return StatusResult.success(null);
     }

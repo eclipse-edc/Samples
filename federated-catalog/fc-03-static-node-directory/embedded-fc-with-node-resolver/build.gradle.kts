@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
+    implementation(libs.edc.participant.context.single.core)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.http)
     implementation(libs.edc.edr.store.core)
@@ -41,7 +42,7 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("fc-connector-with-node-resolver.jar")
     dependsOn(distTar, distZip)

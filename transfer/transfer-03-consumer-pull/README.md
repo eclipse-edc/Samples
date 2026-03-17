@@ -22,13 +22,10 @@ that will be used for the "consumer" instance.
 
 ## Implement a simple Http Proxy data plane
 
-In the [provider-proxy-data-plane](provider-proxy-data-plane) there's a connector based on the [basic one](../transfer-00-prerequisites/connector)
-but with the `data-plane-api-v2` module excluded, because that one has been deprecated:
+In the [provider-proxy-data-plane](provider-proxy-data-plane) there's a connector based on the [basic one](../transfer-00-prerequisites/connector):
 
 ```kotlin
-    runtimeOnly(project(":transfer:transfer-00-prerequisites:connector")) {
-        exclude("org.eclipse.edc", "data-plane-public-api-v2")
-    }
+    runtimeOnly(project(":transfer:transfer-00-prerequisites:connector"))
 ```
 
 The proxy implementation provided in this runtime is really bare-bone and it supports only `GET`. Needless to say, it is

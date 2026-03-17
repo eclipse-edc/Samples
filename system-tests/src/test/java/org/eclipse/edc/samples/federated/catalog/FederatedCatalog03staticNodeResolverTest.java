@@ -19,10 +19,8 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.Clock;
 import java.time.Duration;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.DATASET_ASSET_ID;
@@ -52,15 +50,8 @@ public class FederatedCatalog03staticNodeResolverTest {
     static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector(":federated-catalog:fc-03-static-node-directory:embedded-fc-with-node-resolver");
 
     @Test
-    void shouldStartRuntimes() {
-        assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
-        assertThat(STANDALONE_FC_RUNTIME.getService(Clock.class)).isNotNull();
-        assertThat(FC_CONNECTOR.getService(Clock.class)).isNotNull();
-    }
-
-    @Test
     void runSampleSteps() {
-        String assetId = createAsset();
+        var assetId = createAsset();
         createPolicy();
         createContractDefinition();
 
@@ -69,7 +60,7 @@ public class FederatedCatalog03staticNodeResolverTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(STANDALONE_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID),
+                .until(() -> postAndAssertType(STANDALONE_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH)).get(DATASET_ASSET_ID),
                         id -> id.equals(assetId));
 
         // call catalog API from embedded FC
@@ -77,7 +68,7 @@ public class FederatedCatalog03staticNodeResolverTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID),
+                .until(() -> postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH)).get(DATASET_ASSET_ID),
                         id -> id.equals(assetId));
     }
 }

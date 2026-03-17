@@ -20,6 +20,7 @@ import org.eclipse.edc.connector.controlplane.contract.spi.offer.store.ContractD
 import org.eclipse.edc.connector.controlplane.contract.spi.types.offer.ContractDefinition;
 import org.eclipse.edc.connector.controlplane.policy.spi.PolicyDefinition;
 import org.eclipse.edc.connector.controlplane.policy.spi.store.PolicyDefinitionStore;
+import org.eclipse.edc.participantcontext.single.spi.SingleParticipantContextSupplier;
 import org.eclipse.edc.policy.model.Action;
 import org.eclipse.edc.policy.model.Permission;
 import org.eclipse.edc.policy.model.Policy;
@@ -37,6 +38,8 @@ public class CloudTransferExtension implements ServiceExtension {
     private PolicyDefinitionStore policyDefinitionStore;
     @Inject
     private ContractDefinitionStore contractDefinitionStore;
+    @Inject
+    private SingleParticipantContextSupplier participantContextSupplier;
 
     @Override
     public String name() {
@@ -45,14 +48,17 @@ public class CloudTransferExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var policy = createPolicy();
+        var participantContextId = participantContextSupplier.get().getContent().getParticipantContextId();
+        var policy = createPolicy()
+                .participantContextId(participantContextId)
+                .build();
         policyDefinitionStore.create(policy);
 
-        registerDataEntries();
-        registerContractDefinition(policy.getId());
+        registerDataEntries(participantContextId);
+        registerContractDefinition(policy.getId(), participantContextId);
     }
 
-    public void registerDataEntries() {
+    public void registerDataEntries(String participantContextId) {
         var dataAddress = DataAddress.Builder.newInstance()
                 .type("AzureStorage")
                 .property("@type", "DataAddress")
@@ -61,7 +67,8 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobName", "test-document.txt")
                 .keyName("provider-key")
                 .build();
-        var asset = Asset.Builder.newInstance().id("1").dataAddress(dataAddress).build();
+        var asset = Asset.Builder.newInstance().id("1").dataAddress(dataAddress)
+                .participantContextId(participantContextId).build();
         assetIndex.create(asset);
 
         var dataAddress2 = DataAddress.Builder.newInstance()
@@ -72,13 +79,15 @@ public class CloudTransferExtension implements ServiceExtension {
                 .property("blobName", "test-document.txt")
                 .keyName("provider-key")
                 .build();
-        var asset2 = Asset.Builder.newInstance().id("2").dataAddress(dataAddress2).build();
+        var asset2 = Asset.Builder.newInstance().id("2").dataAddress(dataAddress2)
+                .participantContextId(participantContextId).build();
         assetIndex.create(asset2);
     }
 
-    public void registerContractDefinition(String policyId) {
+    public void registerContractDefinition(String policyId, String participantContextId) {
         var contractDefinition1 = ContractDefinition.Builder.newInstance()
                 .id("1")
+                .participantContextId(participantContextId)
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
                 .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "1"))
@@ -86,6 +95,7 @@ public class CloudTransferExtension implements ServiceExtension {
 
         var contractDefinition2 = ContractDefinition.Builder.newInstance()
                 .id("2")
+                .participantContextId(participantContextId)
                 .accessPolicyId(policyId)
                 .contractPolicyId(policyId)
                 .assetsSelectorCriterion(criterion(Asset.PROPERTY_ID, "=", "2"))
@@ -95,7 +105,7 @@ public class CloudTransferExtension implements ServiceExtension {
         contractDefinitionStore.save(contractDefinition2);
     }
 
-    private PolicyDefinition createPolicy() {
+    private PolicyDefinition.Builder createPolicy() {
         var usePermission = Permission.Builder.newInstance()
                 .action(Action.Builder.newInstance().type("USE").build())
                 .build();
@@ -103,7 +113,6 @@ public class CloudTransferExtension implements ServiceExtension {
         return PolicyDefinition.Builder.newInstance()
                 .policy(Policy.Builder.newInstance()
                         .permission(usePermission)
-                        .build())
-                .build();
+                        .build());
     }
 }

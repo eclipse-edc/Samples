@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
+    implementation(libs.edc.participant.context.single.core)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.http)
 
@@ -37,7 +38,7 @@ application {
     mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
 }
 
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+tasks.shadowJar {
     mergeServiceFiles()
     archiveFileName.set("provider.jar")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

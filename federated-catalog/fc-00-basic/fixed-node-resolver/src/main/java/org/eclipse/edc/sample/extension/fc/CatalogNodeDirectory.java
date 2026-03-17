@@ -25,7 +25,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     public List<TargetNode> getAll() {
         var participantNode = new TargetNode("https://w3id.org/edc/v0.0.1/ns/",
                 "provider",
-                "http://localhost:19194/protocol", List.of("dataspace-protocol-http"));
+                "http://localhost:19194/protocol/2025-1", List.of("dataspace-protocol-http:2025-1"));
 
         return List.of(participantNode);
     }

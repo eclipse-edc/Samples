@@ -19,7 +19,6 @@ import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.time.Clock;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,14 +46,8 @@ public class FederatedCatalog01embeddedTest {
     static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector(":federated-catalog:fc-01-embedded:fc-connector");
 
     @Test
-    void shouldStartConnector() {
-        assertThat(PARTICIPANT_CONNECTOR.getService(Clock.class)).isNotNull();
-        assertThat(FC_CONNECTOR.getService(Clock.class)).isNotNull();
-    }
-
-    @Test
     void runSampleSteps() {
-        String assetId = createAsset();
+        var assetId = createAsset();
         createPolicy();
         createContractDefinition();
 
@@ -62,8 +55,11 @@ public class FederatedCatalog01embeddedTest {
                 .atMost(Duration.ofSeconds(TIMEOUT))
                 .pollDelay(Duration.ofSeconds(CRAWLER_EXECUTION_DELAY_VALUE))
                 .ignoreExceptions()
-                .until(() -> postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH), DATASET_ASSET_ID),
-                        id -> id.equals(assetId));
+                .untilAsserted(() -> {
+                    var datasetId = postAndAssertType(EMBEDDED_FC_CATALOG_API_ENDPOINT, getFileContentFromRelativePath(EMPTY_QUERY_FILE_PATH))
+                            .get(DATASET_ASSET_ID);
+                    assertThat(datasetId).isEqualTo(assetId);
+                });
     }
 
 }
