@@ -99,9 +99,9 @@ The output will be something like:
         "@id": "cb701b36-48ee-4132-8436-dba7b83c606c",
         "@type": "dcat:DataService",
         "dcat:endpointDescription": "dspace:connector",
-        "dcat:endpointUrl": "http://provider:19194/protocol",
+        "dcat:endpointUrl": "http://provider:19194/protocol/2025-1",
         "dct:terms": "dspace:connector",
-        "dct:endpointUrl": "http://provider:19194/protocol"
+        "dct:endpointUrl": "http://provider:19194/protocol/2025-1"
       }
     },
     {
@@ -113,9 +113,9 @@ The output will be something like:
         "@id": "cb701b36-48ee-4132-8436-dba7b83c606c",
         "@type": "dcat:DataService",
         "dcat:endpointDescription": "dspace:connector",
-        "dcat:endpointUrl": "http://provider:19194/protocol",
+        "dcat:endpointUrl": "http://provider:19194/protocol/2025-1",
         "dct:terms": "dspace:connector",
-        "dct:endpointUrl": "http://provider:19194/protocol"
+        "dct:endpointUrl": "http://provider:19194/protocol/2025-1"
       }
     }
   ],
@@ -128,7 +128,7 @@ The output will be something like:
     "dcat": "http://www.w3.org/ns/dcat#",
     "dct": "http://purl.org/dc/terms/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dspace": "https://w3id.org/dspace/v0.8/"
+    "dspace": "https://w3id.org/dspace/2025/1/"
   }
 }
 
@@ -217,7 +217,7 @@ which has to be stored in the root folder of this sample as well. The only addit
       WEB_HTTP_MANAGEMENT_AUTH_KEY: password
       WEB_HTTP_PROTOCOL_PORT: 9292
       WEB_HTTP_PROTOCOL_PATH: /protocol
-      EDC_DSP_CALLBACK_ADDRESS: http://consumer:9292/protocol
+      EDC_DSP_CALLBACK_ADDRESS: http://consumer:9292/protocol/2025-1
       EDC_PARTICIPANT_ID: consumer
     entrypoint: java
       -javaagent:/resources/opentelemetry-javaagent.jar

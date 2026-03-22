@@ -32,7 +32,7 @@ services:
       WEB_HTTP_VERSION_PORT: 29195
       WEB_HTTP_VERSION_PATH: /version
       EDC_CONTROL_ENDPOINT: http://consumer:29192/control
-      EDC_DSP_CALLBACK_ADDRESS: http://consumer:29194/protocol
+      EDC_DSP_CALLBACK_ADDRESS: http://consumer:29194/protocol/2025-1
       EDC_PARTICIPANT_ID: consumer
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456
@@ -72,7 +72,7 @@ services:
       WEB_HTTP_VERSION_PORT: 19195
       WEB_HTTP_VERSION_PATH: /version
       EDC_CONTROL_ENDPOINT: http://provider:19192/control
-      EDC_DSP_CALLBACK_ADDRESS: http://provider:19194/protocol
+      EDC_DSP_CALLBACK_ADDRESS: http://provider:19194/protocol/2025-1
       EDC_PARTICIPANT_ID: provider
       EDC_KEYSTORE: /prerequisites/resources/certs/cert.pfx
       EDC_KEYSTORE_PASSWORD: 123456

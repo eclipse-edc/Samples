@@ -2,6 +2,6 @@
     "@context": { "@vocab": "https://w3id.org/edc/v0.0.1/ns/"},
     "@type": "DatasetRequest",
     "@id": "1",
-    "counterPartyAddress": "http://localhost:19194/protocol",
-    "protocol": "dataspace-protocol-http"
+    "counterPartyAddress": "http://localhost:19194/protocol/2025-1",
+    "protocol": "dataspace-protocol-http:2025-1"
 }

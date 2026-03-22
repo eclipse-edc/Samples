@@ -116,7 +116,7 @@ public class Transfer05fileTransferCloudTest {
             new EmbeddedRuntime(PROVIDER, PROVIDER_MODULE_PATH)
                 .configurationProvider(() -> ConfigFactory.fromMap(Map.ofEntries(
                     entry("edc.participant.id", "provider"),
-                    entry("edc.dsp.callback.address", "http://localhost:19194/protocol"),
+                    entry("edc.dsp.callback.address", "http://localhost:19194/protocol/2025-1"),
                     entry("web.http.port", "19191"),
                     entry("web.http.path", "/api"),
                     entry("web.http.management.port", "19193"),
