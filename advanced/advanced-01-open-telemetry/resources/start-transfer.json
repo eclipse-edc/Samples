@@ -4,8 +4,8 @@
   },
   "@type": "TransferRequestDto",
   "connectorId": "provider",
-  "counterPartyAddress": "http://provider:19194/protocol",
+  "counterPartyAddress": "http://provider:19194/protocol/2025-1",
   "contractId": "{{contract-agreement-id}}",
-  "protocol": "dataspace-protocol-http",
+  "protocol": "dataspace-protocol-http:2025-1",
   "transferType": "HttpData-PULL"
 }
