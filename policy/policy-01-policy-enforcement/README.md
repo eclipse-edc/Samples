@@ -272,7 +272,7 @@ We'll receive the following catalog in the response, where we can see the offer 
     "@id": "fe9581ee-b4ec-473c-b0b7-96f30d957e87",
     "@type": "dcat:DataService",
     "dct:terms": "connector",
-    "dct:endpointUrl": "http://localhost:8282/protocol"
+    "dct:endpointUrl": "http://localhost:8282/protocol/2025-1"
   },
   "participantId": "provider",
   "@context": {
@@ -281,7 +281,7 @@ We'll receive the following catalog in the response, where we can see the offer 
     "dcat": "https://www.w3.org/ns/dcat/",
     "dct": "https://purl.org/dc/terms/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dspace": "https://w3id.org/dspace/v0.8/"
+    "dspace": "https://w3id.org/dspace/2025/1/"
   }
 }
 

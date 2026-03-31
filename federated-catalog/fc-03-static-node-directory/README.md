@@ -36,8 +36,8 @@ In this case, the file contains the properties of the `participant-connector` fr
 {
     "name": "https://w3id.org/edc/v0.0.1/ns/",
     "id": "provider",
-    "url": "http://localhost:19194/protocol",
-    "supportedProtocols": ["dataspace-protocol-http"]
+    "url": "http://localhost:19194/protocol/2025-1",
+    "supportedProtocols": ["dataspace-protocol-http:2025-1"]
 }
 ```
 However, this solution is intended for use only within the sample scope; in production, it must be managed in different way.

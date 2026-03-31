@@ -3,11 +3,11 @@
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
   "@type": "TransferRequest",
-  "protocol": "dataspace-protocol-http",
+  "protocol": "dataspace-protocol-http:2025-1",
   "transferType": "KafkaBroker-PULL",
   "contractId": "{{contract-agreement-id}}",
   "connectorId": "provider",
-  "counterPartyAddress": "http://localhost:18182/protocol",
+  "counterPartyAddress": "http://localhost:18182/protocol/2025-1",
   "callbackAddresses": [
     {
       "transactional": false,

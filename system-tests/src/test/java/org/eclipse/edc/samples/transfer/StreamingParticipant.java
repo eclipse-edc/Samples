@@ -16,6 +16,7 @@ package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 import org.eclipse.edc.junit.utils.LazySupplier;
+import org.eclipse.edc.samples.util.TransferUtil;
 
 import java.net.URI;
 
@@ -72,15 +73,14 @@ public class StreamingParticipant extends Participant {
     }
 
     public String fetchDatasetFromCatalog(String requestBody) {
-        return baseManagementRequest()
+        return TransferUtil.extractContractOfferId(baseManagementRequest()
                 .contentType(JSON)
                 .body(requestBody)
                 .when()
                 .post("/v3/catalog/dataset/request")
                 .then()
                 .statusCode(200)
-                .contentType(JSON)
-                .extract().jsonPath().getString("'odrl:hasPolicy'.@id");
+                .contentType(JSON));
     }
 
     public String negotiateContract(String requestBody) {
