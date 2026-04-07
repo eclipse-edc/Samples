@@ -16,7 +16,6 @@ package org.eclipse.edc.samples.transfer;
 
 import org.eclipse.edc.connector.controlplane.test.system.utils.Participant;
 import org.eclipse.edc.junit.utils.LazySupplier;
-import org.eclipse.edc.samples.util.TransferUtil;
 
 import java.net.URI;
 
@@ -27,7 +26,6 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
  * Essentially a wrapper around the management API enabling to test interactions with other participants, eg. catalog, transfer...
  */
 public class StreamingParticipant extends Participant {
-
     protected StreamingParticipant() {
     }
 
@@ -73,14 +71,15 @@ public class StreamingParticipant extends Participant {
     }
 
     public String fetchDatasetFromCatalog(String requestBody) {
-        return TransferUtil.extractContractOfferId(baseManagementRequest()
+        return baseManagementRequest()
                 .contentType(JSON)
                 .body(requestBody)
                 .when()
                 .post("/v3/catalog/dataset/request")
                 .then()
                 .statusCode(200)
-                .contentType(JSON));
+                .contentType(JSON)
+                .extract().jsonPath().getString("hasPolicy[0].@id");
     }
 
     public String negotiateContract(String requestBody) {

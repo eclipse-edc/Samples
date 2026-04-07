@@ -15,7 +15,6 @@
 
 package org.eclipse.edc.samples.common;
 
-
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +22,6 @@ import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.util.TransferUtil.POLL_INTERVAL;
 import static org.eclipse.edc.samples.util.TransferUtil.TIMEOUT;
-import static org.eclipse.edc.samples.util.TransferUtil.extractContractOfferId;
 import static org.eclipse.edc.samples.util.TransferUtil.get;
 import static org.eclipse.edc.samples.util.TransferUtil.post;
 
@@ -37,6 +35,7 @@ public class NegotiationCommon {
     private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
     private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "transfer/transfer-01-negotiation/resources/get-dataset.json";
+    private static final String CATALOG_DATASET_ID = "\"hasPolicy\"[0].'@id'";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "transfer/transfer-01-negotiation/resources/negotiate-contract.json";
     private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";
@@ -56,11 +55,11 @@ public class NegotiationCommon {
     }
 
     public static String fetchDatasetFromCatalog(String fetchDatasetFromCatalogFilePath) {
-        var response = post(
+        var catalogDatasetId = post(
                 PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_DATASET_REQUEST_PATH,
-                getFileContentFromRelativePath(fetchDatasetFromCatalogFilePath)
+                getFileContentFromRelativePath(fetchDatasetFromCatalogFilePath),
+                CATALOG_DATASET_ID
         );
-        var catalogDatasetId = extractContractOfferId(response);
         assertThat(catalogDatasetId).isNotEmpty();
         return catalogDatasetId;
     }

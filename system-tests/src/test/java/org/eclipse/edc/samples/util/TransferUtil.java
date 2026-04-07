@@ -15,9 +15,6 @@
 
 package org.eclipse.edc.samples.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
@@ -40,7 +37,6 @@ public class TransferUtil {
     public static final Duration TIMEOUT = Duration.ofSeconds(30);
     public static final Duration POLL_DELAY = Duration.ofMillis(1000);
     public static final Duration POLL_INTERVAL = Duration.ofMillis(500);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static final String CONTRACT_AGREEMENT_ID_KEY = "{{contract-agreement-id}}";
     private static final String V2_TRANSFER_PROCESSES_PATH = "/v3/transferprocesses/";
@@ -92,36 +88,6 @@ public class TransferUtil {
                 .get(jsonPath);
     }
 
-    public static String extractContractOfferId(ValidatableResponse response) {
-        try {
-            var body = response.extract().asString();
-            var root = OBJECT_MAPPER.readTree(body);
-            var offerId = readPolicyId(root, "odrl:hasPolicy");
-            if (offerId != null) {
-                return offerId;
-            }
-
-            offerId = readPolicyId(root, "hasPolicy");
-            if (offerId != null) {
-                return offerId;
-            }
-
-            offerId = readPolicyId(root, "dcat:dataset", "odrl:hasPolicy");
-            if (offerId != null) {
-                return offerId;
-            }
-
-            offerId = readPolicyId(root, "dcat:dataset", "hasPolicy");
-            if (offerId != null) {
-                return offerId;
-            }
-
-            throw new IllegalStateException("Cannot extract contract offer id from response: " + body);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static String startTransfer(String requestBody, String contractAgreementId) {
         requestBody = requestBody.replace(CONTRACT_AGREEMENT_ID_KEY, contractAgreementId);
         return post(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH, requestBody, ID);
@@ -136,24 +102,5 @@ public class TransferUtil {
                     var state = get(CONSUMER_MANAGEMENT_URL + V2_TRANSFER_PROCESSES_PATH + transferProcessId, EDC_STATE);
                     assertThat(state).isEqualTo(status.name());
                 });
-    }
-
-    private static String readText(JsonNode root, String... path) {
-        var node = root;
-        for (var key : path) {
-            node = node.path(key);
-        }
-        return node.isMissingNode() || node.isNull() ? null : node.asText();
-    }
-
-    private static String readPolicyId(JsonNode root, String... path) {
-        var node = root;
-        for (var key : path) {
-            node = node.path(key);
-        }
-        if (node.isArray()) {
-            node = node.isEmpty() ? null : node.get(0);
-        }
-        return node == null ? null : readText(node, ID);
     }
 }
