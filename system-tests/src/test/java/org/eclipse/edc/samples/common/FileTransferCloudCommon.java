@@ -29,7 +29,7 @@ public class FileTransferCloudCommon {
     private static final String CONSUMER_MANAGEMENT_URL = "http://localhost:29193/management";
     private static final String V3_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = "transfer/transfer-05-file-transfer-cloud/resources/get-dataset.json";
-    private static final String CATALOG_DATASET_ID = "\"odrl:hasPolicy\".'@id'";
+    private static final String CATALOG_DATASET_ID = "\"hasPolicy\"[0].'@id'";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = "transfer/transfer-05-file-transfer-cloud/resources/negotiate-contract.json";
     private static final String V3_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";

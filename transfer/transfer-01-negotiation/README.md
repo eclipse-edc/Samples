@@ -143,7 +143,7 @@ Sample output:
     "@id": "2a5178c3-c937-4ac2-85be-c46dbc6c5642",
     "@type": "dcat:DataService",
     "dct:terms": "connector",
-    "dct:endpointUrl": "http://localhost:19194/protocol"
+    "dct:endpointUrl": "http://localhost:19194/protocol/2025-1"
   },
   "participantId": "anonymous",
   "@context": {
@@ -151,7 +151,7 @@ Sample output:
     "dct": "https://purl.org/dc/terms/",
     "dcat": "https://www.w3.org/ns/dcat/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dspace": "https://w3id.org/dspace/v0.8/"
+    "dspace": "https://w3id.org/dspace/2025/1/"
   }
 }
 ```
@@ -216,9 +216,9 @@ Sample output:
   "@type": "ContractNegotiation",
   "@id": "5ca21b82-075b-4682-add8-c26c9a2ced67",
   "type": "CONSUMER",
-  "protocol": "dataspace-protocol-http",
+  "protocol": "dataspace-protocol-http:2025-1",
   "state": "FINALIZED",
-  "counterPartyAddress": "http://localhost:19194/protocol",
+  "counterPartyAddress": "http://localhost:19194/protocol/2025-1",
   "callbackAddresses": [],
   "contractAgreementId": "0b3150be-feaf-43bc-91e1-90f050de28bd",  <---------
   "@context": {
@@ -226,7 +226,7 @@ Sample output:
     "dct": "https://purl.org/dc/terms/",
     "dcat": "https://www.w3.org/ns/dcat/",
     "odrl": "http://www.w3.org/ns/odrl/2/",
-    "dspace": "https://w3id.org/dspace/v0.8/"
+    "dspace": "https://w3id.org/dspace/2025/1/"
   }
 }
 ```

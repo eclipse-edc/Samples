@@ -98,7 +98,7 @@ Sample output:
       
     },
     "dspace:participantId": "provider",
-    "originator": "http://localhost:19194/protocol",
+    "originator": "http://localhost:19194/protocol/2025-1",
     "@context": {
       
     }

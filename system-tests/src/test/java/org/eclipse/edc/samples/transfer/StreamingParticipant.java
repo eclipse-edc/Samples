@@ -26,7 +26,6 @@ import static org.eclipse.edc.jsonld.spi.JsonLdKeywords.ID;
  * Essentially a wrapper around the management API enabling to test interactions with other participants, eg. catalog, transfer...
  */
 public class StreamingParticipant extends Participant {
-
     protected StreamingParticipant() {
     }
 
@@ -80,7 +79,7 @@ public class StreamingParticipant extends Participant {
                 .then()
                 .statusCode(200)
                 .contentType(JSON)
-                .extract().jsonPath().getString("'odrl:hasPolicy'.@id");
+                .extract().jsonPath().getString("hasPolicy[0].@id");
     }
 
     public String negotiateContract(String requestBody) {

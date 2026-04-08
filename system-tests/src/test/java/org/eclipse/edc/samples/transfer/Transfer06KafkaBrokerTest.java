@@ -90,13 +90,13 @@ public class Transfer06KafkaBrokerTest {
             .name("provider")
             .id("provider")
             .controlPlaneManagement(new LazySupplier<>(() -> URI.create("http://localhost:18181/management")))
-            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:18182/protocol")))
+            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:18182/protocol/2025-1")))
             .build();
     private static final StreamingParticipant CONSUMER = StreamingParticipant.Builder.newStreamingInstance()
             .name("consumer")
             .id("consumer")
             .controlPlaneManagement(new LazySupplier<>(() -> URI.create("http://localhost:28181/management")))
-            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:28182/protocol")))
+            .controlPlaneProtocol(new LazySupplier<>(() -> URI.create("http://localhost:28182/protocol/2025-1")))
             .build();
     private static final String GROUP_ID = "group_id";
 
