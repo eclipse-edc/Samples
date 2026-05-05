@@ -19,7 +19,9 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.bom.controlplane.base)
+    implementation(libs.edc.bom.controlplane.base) {
+        exclude("org.eclipse.edc", "transfer-data-plane-signaling")
+    }
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.iam.mock)
 

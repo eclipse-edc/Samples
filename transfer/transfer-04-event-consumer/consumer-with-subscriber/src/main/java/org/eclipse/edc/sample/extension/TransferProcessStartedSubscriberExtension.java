@@ -12,19 +12,24 @@
  *
  */
 
-package org.eclipse.edc.sample.extension.listener;
+package org.eclipse.edc.sample.extension;
 
-import org.eclipse.edc.connector.controlplane.transfer.spi.observe.TransferProcessObservable;
+import org.eclipse.edc.connector.controlplane.transfer.spi.event.TransferProcessStarted;
+import org.eclipse.edc.runtime.metamodel.annotation.Inject;
+import org.eclipse.edc.spi.event.EventRouter;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
 
-public class TransferProcessStartedListenerExtension implements ServiceExtension {
+public class TransferProcessStartedSubscriberExtension implements ServiceExtension {
+
+    @Inject
+    private EventRouter eventRouter;
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var transferProcessObservable = context.getService(TransferProcessObservable.class);
         var monitor = context.getMonitor();
-        transferProcessObservable.registerListener(new TransferProcessStartedListener(monitor));
+
+        eventRouter.register(TransferProcessStarted.class, new TransferProcessStartedSubscriber(monitor));
     }
 
 }

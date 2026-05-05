@@ -1,49 +1,42 @@
 # Implement a simple event consumer
 
-In this sample, we build upon the [Provider push](../transfer-02-provider-push/README.md) chapter to add functionality
-to react to transfer completion on the consumer connector side.
+In this sample, we build upon the [Provider push](../transfer-02-provider-push/README.md) sample to add functionality
+to react to transfer startup on the consumer connector side.
 
-Also, in order to keep things organized, the code in this example has been separated into several Java modules:
+The relevant code in this example has been put into this module
+- `consumer-with-subscriber`: the consumer connector which an extension that subscribe to events.
 
-- `consumer-with-listener`: the consumer connector which will be extended by the event consumer
-- `listener`: contains the `TransferProcessListener` implementation which will consume an event
+## Subscribe to events
 
-## Inspect the listener
-
-A `TransferProcessListener` may define methods that are invoked after a transfer changes state, for example, to notify an
-external application on the consumer side after data has been produced (i.e. the transfer moves to the completed state).
-
+The `EventRouter` service is the gateway for all the EDC domain events, so we can register an `EventSubscriber` on a 
+particular event implementation:
 ```java
-// in TransferListenerExtension.java
-    @Override
-    public void initialize(ServiceExtensionContext context) {
-        // ...
-        var transferProcessObservable = context.getService(TransferProcessObservable.class);
-        transferProcessObservable.registerListener(new MarkerFileCreator(monitor));
-    }
+eventRouter.register(TransferProcessStarted.class, new TransferProcessStartedSubscriber(monitor));
 ```
 
-The `TransferProcessStartedListener` implements the `TransferProcessListener` interface. 
-It will consume the transfer `STARTED` event and write a log message.
+By doing this, every time a `TransferProcessStarted` gets published, the `TransferProcessStartedSubscriber` gets invoked.
+
+> NOTE: `register` register an async subscriber. To register a sync subscriber that execs logic in the same transaction
+> boundary of the code that emitted the event, `registerSync` can be used instead.
+
+> NOTE: the hierarchy of the `Event` class can be used to subscribe to multiple events, e.g. by using `Event`, the subscriber
+> will receive all the events.
+
+The `TransferProcessStartedSubscriber` implements the `EventSubscriber` interface. 
+The method `on` will be triggered when a `TransferProcessStarted` event gets published.
 
 ```java
-public class TransferProcessStartedListener implements TransferProcessListener {
-
+class TransferProcessStartedSubscriber implements EventSubscriber {
     private final Monitor monitor;
 
-    public TransferProcessStartedListener(Monitor monitor) {
+    public TransferProcessStartedSubscriber(Monitor monitor) {
         this.monitor = monitor;
     }
 
-    /**
-     * Callback invoked by the EDC framework when a transfer is about to be completed.
-     *
-     * @param process the transfer process that is about to be completed.
-     */
     @Override
-    public void preStarted(final TransferProcess process) {
-        monitor.debug("TransferProcessStartedListener received STARTED event");
-        // do something meaningful before transfer start
+    public <E extends Event> void on(EventEnvelope<E> event) {
+        monitor.info("TransferProcessStarted event has been emitted.");
+        // do something after transfer has been started
     }
 }
 ```
@@ -64,7 +57,8 @@ Run this to build and launch the consumer with listener extension:
 
 ```bash
 ./gradlew transfer:transfer-04-event-consumer:consumer-with-listener:build
-java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties -jar transfer/transfer-04-event-consumer/consumer-with-listener/build/libs/connector.jar
+java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties -jar \
+  transfer/transfer-04-event-consumer/consumer-with-subscriber/build/libs/connector.jar
 ````
 
 ### 2. Negotiate a new contract
@@ -111,10 +105,10 @@ curl -X POST "http://localhost:29193/management/v3/transferprocesses" \
 The consumer should spew out logs similar to:
 
 ```bash
-INFO 2023-10-16T09:29:46.271592 TransferProcessStartedListener received STARTED event   <----------------------------
+INFO 2023-10-16T09:29:46.271592 TransferProcessStarted event has been emitted.   <----------------------------
 ```
 
-If you see the `TransferProcessStartedListener received STARTED event` log message, it means that your event consumer has been
+If you see the `TransferProcessStarted event has been emitted.` log message, it means that your event consumer has been
 configured successfully.
 
 [Next Chapter](../transfer-05-file-transfer-cloud/README.md)
