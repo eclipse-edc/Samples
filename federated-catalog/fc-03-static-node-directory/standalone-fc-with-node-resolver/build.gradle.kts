@@ -30,7 +30,6 @@ dependencies {
     runtimeOnly(libs.edc.token.core)
     implementation(libs.edc.http)
     runtimeOnly(libs.edc.dsp)
-    runtimeOnly(libs.edc.participant.context.single.core)
     implementation(libs.edc.iam.mock)
 
 }

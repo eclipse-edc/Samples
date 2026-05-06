@@ -96,7 +96,7 @@ To run the federated catalog, execute the following command
 java -Dedc.fs.config=federated-catalog/fc-02-standalone/standalone-fc/config.properties -jar federated-catalog/fc-03-static-node-directory/standalone-fc-with-node-resolver/build/libs/standalone-fc-with-node-resolver.jar
 ```
 
-If the execution is successful, then the Catalog API of our standalone FC will listen on port `39195`.
+If the execution is successful, then the Management API of our standalone FC will listen on port `39193`.
 
 #### Test catalog query API
 
@@ -104,7 +104,8 @@ To get the combined set of catalogs, use the following request:
 
 ```http request
 curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
-  -H 'content-type: application/json' http://localhost:39195/api/catalog/v1alpha/catalog/query \
+  -H 'content-type: application/json' \
+  http://localhost:39193/api/management/v3/catalogs/request \
   -s | jq
 ```
 
@@ -126,7 +127,7 @@ To run the federated catalog, execute the following command
 java -Dedc.fs.config=federated-catalog/fc-01-embedded/fc-connector/config.properties -jar federated-catalog/fc-03-static-node-directory/embedded-fc-with-node-resolver/build/libs/fc-connector-with-node-resolver.jar
 ```
 
-If the execution is successful, then the Catalog API of our standalone FC will listen on port `29195`.
+If the execution is successful, then the Management API of our embedded FC connector will listen on port `29193`.
 
 #### Test catalog query API
 
@@ -134,6 +135,8 @@ To get the combined set of catalogs, use the following request:
 
 ```http request
 curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
-  -H 'content-type: application/json' http://localhost:29195/api/catalog/v1alpha/catalog/query \
+  -H 'content-type: application/json' \
+  -H 'x-api-key: password' \
+  http://localhost:29193/api/management/v3/catalogs/request \
   -s | jq
 ```

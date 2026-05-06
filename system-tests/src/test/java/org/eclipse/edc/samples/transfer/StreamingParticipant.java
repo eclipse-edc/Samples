@@ -54,6 +54,7 @@ public class StreamingParticipant extends Participant {
                 .when()
                 .post("/policydefinitions")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .contentType(JSON)
                 .extract().jsonPath().getString(ID);
@@ -66,6 +67,7 @@ public class StreamingParticipant extends Participant {
                 .when()
                 .post("/contractdefinitions")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .extract().jsonPath().getString(ID);
     }

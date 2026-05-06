@@ -28,7 +28,6 @@ dependencies {
     implementation(libs.edc.configuration.filesystem)
     implementation(libs.edc.management.api)
     implementation(libs.edc.dsp)
-    implementation(libs.edc.participant.context.single.core)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.http)
     implementation(libs.edc.edr.store.core)

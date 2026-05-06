@@ -22,12 +22,12 @@ import org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema;
 import org.eclipse.edc.policy.model.Policy;
 import org.eclipse.edc.spi.response.StatusResult;
 import org.eclipse.edc.spi.types.domain.DataAddress;
-import org.eclipse.edc.spi.types.domain.edr.EndpointDataReference;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 import static org.eclipse.edc.dataaddress.kafka.spi.KafkaDataAddressSchema.KAFKA_TYPE;
+import static org.eclipse.edc.spi.constants.CoreConstants.EDC_NAMESPACE;
 
 class KafkaToKafkaDataFlowController implements DataFlowController {
 
@@ -50,12 +50,12 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
 
         var contentDataAddress = transferProcess.getContentDataAddress();
         var kafkaDataAddress = DataAddress.Builder.newInstance()
-                .type(EndpointDataReference.EDR_SIMPLE_TYPE)
-                .property(EndpointDataReference.ID, transferProcess.getCorrelationId())
-                .property(EndpointDataReference.ENDPOINT, contentDataAddress.getStringProperty("kafka.bootstrap.servers"))
-                .property(EndpointDataReference.AUTH_KEY, username)
-                .property(EndpointDataReference.AUTH_CODE, password)
-                .property(EndpointDataReference.CONTRACT_ID, transferProcess.getContractId())
+                .type("EDR")
+                .property(EDC_NAMESPACE + "id", transferProcess.getCorrelationId())
+                .property(EDC_NAMESPACE + "endpoint", contentDataAddress.getStringProperty("kafka.bootstrap.servers"))
+                .property(EDC_NAMESPACE + "authKey", username)
+                .property(EDC_NAMESPACE + "authCode", password)
+                .property(EDC_NAMESPACE + "contractId", transferProcess.getContractId())
                 .property(KafkaDataAddressSchema.TOPIC, contentDataAddress.getStringProperty(KafkaDataAddressSchema.TOPIC))
                 .build();
 
