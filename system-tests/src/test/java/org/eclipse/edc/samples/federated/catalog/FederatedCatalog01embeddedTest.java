@@ -16,6 +16,7 @@ package org.eclipse.edc.samples.federated.catalog;
 
 import org.eclipse.edc.junit.annotations.EndToEndTest;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -40,9 +41,11 @@ import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 public class FederatedCatalog01embeddedTest {
 
     @RegisterExtension
+    @Order(0)
     static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
 
     @RegisterExtension
+    @Order(1)
     static final RuntimeExtension FC_CONNECTOR = getFcEmbeddedConnector(":federated-catalog:fc-01-embedded:fc-connector");
 
     @Test

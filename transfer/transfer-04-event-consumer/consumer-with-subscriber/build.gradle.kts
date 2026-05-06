@@ -21,7 +21,6 @@ plugins {
 dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base)
     implementation(libs.edc.control.plane.api.client)
-    runtimeOnly(libs.edc.participant.context.single.core)
     runtimeOnly(libs.edc.iam.mock)
     runtimeOnly(libs.edc.transfer.data.plane.signaling)
     runtimeOnly(libs.edc.validator.data.address.http.data)

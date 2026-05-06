@@ -34,11 +34,11 @@ dependencies {
 The [config.properties](../fc-01-embedded/fc-connector/config.properties) 
 file contains the necessary configurations 
 for this `fc-connector`, including the standard settings for a regular connector, along with additional configurations for a 
-federated catalog, such as catalog api endpoint and crawler execution interval.
+federated catalog, such as the management API path and crawler execution interval.
 
 ```properties
-web.http.catalog.path=/api/catalog
-web.http.catalog.port=29195
+web.http.management.port=29193
+web.http.management.path=/api/management
 
 edc.catalog.cache.execution.delay.seconds=5
 edc.catalog.cache.execution.period.seconds=5
@@ -62,7 +62,7 @@ To run the connector, execute the following command
 java -Dedc.fs.config=federated-catalog/fc-01-embedded/fc-connector/config.properties -jar federated-catalog/fc-01-embedded/fc-connector/build/libs/fc-connector.jar
 ```
 
-If the execution is successful, then the Catalog API of our `fc-connector` will listen on port `29195`.
+If the execution is successful, then the Management API of our `fc-connector` will listen on port `29193`.
 
 If you observe the logs, you can see the following recurring lines,
 
@@ -83,12 +83,14 @@ This means our FC crawler is running, and the crawler found one node, which is t
 
 ### 3. Test catalog query API
 
-To query the catalogs from `fc-connector` side, we can now call the catalog API of our embedded federated catalog. 
+To query the catalogs from `fc-connector` side, we can now call the catalog API through the management API of our embedded federated catalog. 
 Use the following request to invoke the catalog API:
 
 ```http request
 curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
-  -H 'content-type: application/json' http://localhost:29195/api/catalog/v1alpha/catalog/query \
+  -H 'content-type: application/json' \
+  -H 'x-api-key: password' \
+  http://localhost:29193/api/management/v3/catalogs/request \
   -s | jq
 ```
 

@@ -33,11 +33,11 @@ a single target catalog node; the `participant-connector` that we had set up in 
 Querying the catalog API will therefore yield just one catalog, which is the contract offered by this connector.
 
 The [config.properties](./standalone-fc/config.properties) file contains the necessary configurations, 
-like the `web.http.catalog.path`, which is the catalog API endpoint of this standalone FC.
+like the `web.http.management.path`, which is the management API endpoint of this standalone FC.
 
 ```properties
-web.http.catalog.path=/api/catalog
-web.http.catalog.port=39195
+web.http.management.path=/api/management
+web.http.management.port=39193
 ```
 
 ### 2. Start the fc-connector
@@ -57,7 +57,7 @@ To run the federated catalog, execute the following command
 java -Dedc.fs.config=federated-catalog/fc-02-standalone/standalone-fc/config.properties -jar federated-catalog/fc-02-standalone/standalone-fc/build/libs/standalone-fc.jar
 ```
 
-If the execution is successful, then the Catalog API of our standalone FC will listen on port `39195`.
+If the execution is successful, then the Management API of our standalone FC will listen on port `39193`.
 
 
 
@@ -69,7 +69,8 @@ To get the combined set of catalogs, use the following request:
 
 ```http request
 curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
-  -H 'content-type: application/json' http://localhost:39195/api/catalog/v1alpha/catalog/query \
+  -H 'content-type: application/json' \
+  http://localhost:39193/api/management/v3/catalogs/request \
   -s | jq
 ```
 

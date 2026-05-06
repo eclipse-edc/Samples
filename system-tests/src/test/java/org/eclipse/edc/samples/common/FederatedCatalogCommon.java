@@ -50,8 +50,8 @@ public class FederatedCatalogCommon {
     public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 5;
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
-    public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29195/api/catalog/v1alpha/catalog/query";
-    public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:39195/api/catalog/v1alpha/catalog/query";
+    public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29193/api/management/v3/catalogs/request";
+    public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:39193/api/management/v3/catalogs/request";
     public static final String EMPTY_QUERY_FILE_PATH = "federated-catalog/fc-01-embedded/resources/empty-query.json";
     public static final String TYPE = "[0].@type";
     public static final String DATASET_ASSET_ID = "[0].dataset[0].@id";
