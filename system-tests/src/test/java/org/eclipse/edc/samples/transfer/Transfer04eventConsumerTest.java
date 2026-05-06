@@ -37,7 +37,7 @@ import static org.eclipse.edc.samples.util.TransferUtil.startTransfer;
 
 @EndToEndTest
 public class Transfer04eventConsumerTest {
-    private static final String CONSUMER_WITH_LISTENER_MODULE_PATH = ":transfer:transfer-04-event-consumer:consumer-with-listener";
+    private static final String CONSUMER_WITH_LISTENER_MODULE_PATH = ":transfer:transfer-04-event-consumer:consumer-with-subscriber";
     private static final String START_TRANSFER_FILE_PATH = "transfer/transfer-02-provider-push/resources/start-transfer.json";
 
     @RegisterExtension
@@ -63,6 +63,6 @@ public class Transfer04eventConsumerTest {
         var transferProcessId = startTransfer(requestBody, contractAgreementId);
         checkTransferStatus(transferProcessId, TransferProcessStates.STARTED);
         var standardOutput = standardOutputStream.toString();
-        assertThat(standardOutput).contains("TransferProcessStartedListener received STARTED event");
+        assertThat(standardOutput).contains("TransferProcessStarted event has been emitted.");
     }
 }

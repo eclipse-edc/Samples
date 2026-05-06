@@ -20,16 +20,8 @@ plugins {
 
 
 dependencies {
-    implementation(libs.edc.runtime.core)
-    implementation(libs.edc.connector.core)
-    implementation(libs.edc.control.plane.core)
-    implementation(libs.edc.edr.store.core)
-    implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.management.api)
-    implementation(libs.edc.dsp)
-    implementation(libs.edc.participant.context.single.core)
-    implementation(libs.edc.iam.mock)
-    implementation(libs.edc.http)
+    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.iam.mock)
 
     implementation(project(":policy:policy-01-policy-enforcement:policy-functions"))
 }

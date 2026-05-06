@@ -39,7 +39,7 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     @Override
     public StatusResult<DataFlowResponse> prepare(TransferProcess transferProcess, Policy policy) {
         // here the flow can be provisioned, not something covered in this sample
-        return StatusResult.success(null);
+        return StatusResult.success(DataFlowResponse.Builder.newInstance().build());
     }
 
     @Override
@@ -75,8 +75,25 @@ class KafkaToKafkaDataFlowController implements DataFlowController {
     }
 
     @Override
+    public StatusResult<Void> started(TransferProcess transferProcess) {
+        // data flow started notification
+        return StatusResult.success();
+    }
+
+    @Override
+    public StatusResult<Void> completed(TransferProcess transferProcess) {
+        // data flow completed notification
+        return StatusResult.success();
+    }
+
+    @Override
     public Set<String> transferTypesFor(Asset asset) {
-        return Set.of("Kafka-PULL");
+        return Set.of("KafkaBroker-PULL");
+    }
+
+    @Override
+    public Set<String> transferTypesFor(String assetId) {
+        return Set.of("KafkaBroker-PULL");
     }
 
 }

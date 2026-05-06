@@ -77,7 +77,7 @@ public class Transfer05fileTransferCloudTest {
     private static final String MINIO_BUCKET_NAME = "src-bucket";
     private static final int MINIO_PORT = 9000;
 
-    private static final String VAULT_IMAGE_NAME = "hashicorp/vault:latest";
+    private static final String VAULT_IMAGE_NAME = "hashicorp/vault:1.21";
     private static final String VAULT_TOKEN = "<root-token>"; 
     private static final int VAULT_PORT = 8200;
 
@@ -90,7 +90,7 @@ public class Transfer05fileTransferCloudTest {
                     "kv put secret/secretAccessKey content=" + MINIO_ACCOUNT_KEY,
                     "kv put secret/provider-key content=" + AZURITE_ACCOUNT_KEY
             )
-            .withLogConsumer((OutputFrame outputFrame) -> System.out.print(outputFrame.getUtf8String()));
+            .withLogConsumer((OutputFrame frame) -> System.out.print(frame.getUtf8String()));
         
     @Container
     protected static MinIOContainer minioContainer = new MinIOContainer(DockerImageName.parse(MINIO_IMAGE_NAME))
@@ -123,8 +123,6 @@ public class Transfer05fileTransferCloudTest {
                     entry("web.http.management.path", "/management"),
                     entry("web.http.protocol.port", "19194"),
                     entry("web.http.protocol.path", "/protocol"),
-                    entry("web.http.version.port", "19195"),
-                    entry("web.http.version.path", "/version"),
                     entry("web.http.management.auth.key", "password"),
                     entry("edc.transfer.proxy.token.signer.privatekey.alias", "private-key"),
                     entry("edc.transfer.proxy.token.verifier.publickey.alias", "public-key"),
