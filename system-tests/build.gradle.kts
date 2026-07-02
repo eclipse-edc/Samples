@@ -44,10 +44,6 @@ dependencies {
     testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
     testCompileOnly(project(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane"))
     testCompileOnly(project(":transfer:transfer-04-event-consumer:consumer-with-subscriber"))
-    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer"))
-    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider"))
-    testCompileOnly(project(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud"))
-    testCompileOnly(project(":transfer:transfer-06-kafka-broker:kafka-runtime"))
 
     testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-runtime"))
 

@@ -35,10 +35,6 @@ include(":basic:basic-03-configuration")
 include(":transfer:transfer-00-prerequisites:connector")
 include(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane")
 include(":transfer:transfer-04-event-consumer:consumer-with-subscriber")
-include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-consumer")
-include(":transfer:transfer-05-file-transfer-cloud:cloud-transfer-provider")
-include(":transfer:transfer-05-file-transfer-cloud:transfer-file-cloud")
-include(":transfer:transfer-06-kafka-broker:kafka-runtime")
 
 include(":advanced:advanced-01-open-telemetry:open-telemetry-runtime")
 

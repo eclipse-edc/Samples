@@ -5,6 +5,9 @@ onboarding process for new community members. The samples are sorted by scope fo
 step-by-step guide for getting familiar with the project. The code and a detailed documentation for each sample reside
 in the respective module.
 
+Please note that these samples are EDC specific and meant to show how the EDC platform can be extended. If you are looking
+for more hi-level Dataspace scoped samples, please check out the [Dataspace Hub project](https://github.com/eclipse-dataspace-hub)
+
 ## Prerequisites
 
 The samples assume a working knowledge of the **EDC nomenclature**. If you do not know about the EDC nomenclature we

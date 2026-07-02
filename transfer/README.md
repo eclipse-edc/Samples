@@ -33,18 +33,3 @@ More details on [Consumer Pull and Provider Push Transfers](https://eclipse-edc.
 ### [Transfer sample 04](transfer-04-event-consumer/README.md): Consuming connector events
 
 In this sample you will learn how to react to certain connector events.
-
-### [Transfer sample 05](./transfer-05-file-transfer-cloud/README.md): Perform a file transfer between cloud providers
-
-While performing a local file transfer is a simple and thereby good first transfer example, you will
-likely never encounter this in a real-world scenario. So now we'll move on to a more complex
-transfer scenario, where a file is transferred not in the local file system, but between two
-different cloud providers. In this sample you will set up
-a provider that offers a file located in an `Azure Blob Storage`, and a consumer that requests to
-transfer this file to an `AWS S3 bucket`. Terraform is used for creating all required cloud
-resources.
-
-### [Transfer sample 06](./transfer-06-kafka-broker/README.md): Perform a transfer through Kafka
-
-This sample will show how the connector could be set up to enable transfers through message brokers, in this case using
-[Kafka](https://kafka.apache.org/)
