@@ -20,22 +20,9 @@ plugins {
 
 dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base)
-    implementation(libs.edc.control.plane.api.client)
     runtimeOnly(libs.edc.iam.mock)
-    runtimeOnly(libs.edc.transfer.data.plane.signaling)
-    runtimeOnly(libs.edc.validator.data.address.http.data)
 
-    runtimeOnly(libs.edc.edr.cache.api)
-    runtimeOnly(libs.edc.edr.store.core)
-    runtimeOnly(libs.edc.edr.store.receiver)
-
-    runtimeOnly(libs.edc.data.plane.self.registration)
-    runtimeOnly(libs.edc.data.plane.signaling.api)
-    runtimeOnly(libs.edc.data.plane.core)
-    runtimeOnly(libs.edc.data.plane.http)
-    runtimeOnly(libs.edc.data.plane.iam)
-
-    implementation(libs.edc.control.plane.spi)
+    implementation(libs.edc.asset.spi)
 }
 
 application {

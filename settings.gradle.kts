@@ -31,10 +31,10 @@ dependencyResolutionManagement {
 include(":basic:basic-01-basic-connector")
 include(":basic:basic-02-health-endpoint")
 include(":basic:basic-03-configuration")
+include(":basic:basic-04-event-consumer:connector-with-event-subscriber")
 
 include(":transfer:transfer-00-prerequisites:connector")
 include(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane")
-include(":transfer:transfer-04-event-consumer:consumer-with-subscriber")
 
 include(":advanced:advanced-01-open-telemetry:open-telemetry-runtime")
 
