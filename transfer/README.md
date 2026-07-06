@@ -29,7 +29,3 @@ More details on [Consumer Pull and Provider Push Transfers](https://eclipse-edc.
 
 This sample demonstrates how a custom HTTP Proxy Data Plane can be implemented to address PULL transfer type.
 More details on [Consumer Pull and Provider Push Transfers](https://eclipse-edc.github.io/documentation/for-adopters/control-plane/#consumer-pull-and-provider-push-transfers).
-
-### [Transfer sample 04](transfer-04-event-consumer/README.md): Consuming connector events
-
-In this sample you will learn how to react to certain connector events.
