@@ -29,8 +29,6 @@ dependencies {
     testImplementation(libs.restAssured)
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.junit)
-    testImplementation(libs.testcontainers.kafka)
-    testImplementation(libs.kafka.clients)
     testImplementation(libs.testcontainers.minio)
     testImplementation(libs.testcontainers.hashicorp.vault)
     testImplementation(libs.azure.storage.blob)
@@ -43,7 +41,7 @@ dependencies {
 
     testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
     testCompileOnly(project(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane"))
-    testCompileOnly(project(":transfer:transfer-04-event-consumer:consumer-with-subscriber"))
+    testCompileOnly(project(":basic:basic-04-event-consumer:connector-with-event-subscriber"))
 
     testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-runtime"))
 

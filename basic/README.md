@@ -22,3 +22,8 @@ endpoint.
 The EDC uses many configurable values, so that we e.g. do not have to recompile the entire code just to start a 
 component on a different port. In this sample you will learn how to provide configuration values at start up by using
 a properties file as well as how to use configuration values in your own extensions.
+
+### [Basic sample 04](./basic-04-event-consumer/README.md): Subscribe to EDC events
+
+In this sample you will learn how to subscribe to EDC domain events using the `EventRouter`. You will register a
+subscriber for the `AssetCreated` event and observe it being triggered when an asset is created.

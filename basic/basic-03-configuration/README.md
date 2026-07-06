@@ -143,4 +143,4 @@ There are a few things worth mentioning here:
 - it's better to pass the config value directly into the business logic than passing the
   entire `ServiceExtensionContext`, using configuration objects when there are more than one
 
-[Previous Chapter](../basic-02-health-endpoint/README.md) 
+[Previous Chapter](../basic-02-health-endpoint/README.md) | [Next Chapter](../basic-04-event-consumer/README.md) 
