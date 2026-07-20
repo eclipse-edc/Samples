@@ -3,7 +3,7 @@ format.version = "1.1"
 
 [versions]
 awaitility = "4.2.2"
-edc = "0.17.0"
+edc = "0.18.0"
 okhttp-mockwebserver = "5.4.0"
 restAssured = "6.0.0"
 rsApi = "4.0.0"
@@ -39,8 +39,10 @@ edc-json-ld-spi = { module = "org.eclipse.edc:json-ld-spi", version.ref = "edc" 
 edc-junit = { module = "org.eclipse.edc:junit", version.ref = "edc" }
 edc-management-api = { module = "org.eclipse.edc:management-api", version.ref = "edc" }
 edc-management-api-test-fixtures = { module = "org.eclipse.edc:management-api-test-fixtures", version.ref = "edc" }
+edc-participant-context-config-spi = { module = "org.eclipse.edc:participant-context-config-spi", version.ref = "edc" }
 edc-runtime-core = { module = "org.eclipse.edc:runtime-core", version.ref = "edc" }
 edc-token-core = { module = "org.eclipse.edc:token-core", version.ref = "edc" }
+edc-transfer-spi = { module = "org.eclipse.edc:transfer-spi", version.ref = "edc" }
 edc-transfer-data-plane-signaling = { module = "org.eclipse.edc:transfer-data-plane-signaling", version.ref = "edc" }
 edc-validator-data-address-http-data = { module = "org.eclipse.edc:validator-data-address-http-data", version.ref = "edc" }
 edc-web-spi = { module = "org.eclipse.edc:web-spi", version.ref = "edc" }

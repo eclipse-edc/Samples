@@ -1,2 +1,2 @@
-org.eclipse.edc.sample.runtime.DummyEndpointGeneratorFunctionExtension
+org.eclipse.edc.sample.runtime.NoOpDataFlowControllerExtension
 org.eclipse.edc.sample.runtime.SeedVaultExtension

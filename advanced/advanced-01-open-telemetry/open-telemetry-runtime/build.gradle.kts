@@ -22,12 +22,12 @@ plugins {
 dependencies {
 
     runtimeOnly(libs.edc.bom.controlplane.base) {
-        exclude(module = "org.eclipse.edc.data-plane-selector-client")
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-core")
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-oauth2")
     }
-    runtimeOnly(libs.edc.bom.dataplane.base)
 
     implementation(libs.edc.iam.mock)
-    implementation(libs.edc.data.plane.spi)
+    implementation(libs.edc.transfer.spi)
     implementation(libs.opentelemetry.exporter.otlp)
 }
 
