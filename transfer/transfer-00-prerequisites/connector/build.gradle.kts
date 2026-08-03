@@ -19,7 +19,10 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.bom.controlplane.base) {
+        exclude(group = "org.eclipse.edc", module = "data-plane-signaling-core")
+        exclude(group = "org.eclipse.edc", module = "data-plane-signaling-oauth2")
+    }
     implementation(libs.edc.control.plane.api.client)
     implementation(libs.edc.iam.mock)
     implementation(libs.edc.transfer.data.plane.signaling)

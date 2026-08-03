@@ -21,6 +21,8 @@ plugins {
 dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base)
     runtimeOnly(libs.edc.iam.mock)
+
+    implementation(project(":policy:policy-01-policy-enforcement:policy-functions"))
 }
 
 application {
