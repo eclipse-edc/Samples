@@ -119,8 +119,7 @@ In the build file, we define the following dependencies for both connectors:
 
 **Note**: we do not include any `data-plane` modules, as we are not going to transfer any data in this sample. To
 be able to actually transfer data, additional dependencies are required. More information can be found in the
-[documentation](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/build-your-own-connector.md) and in
-the [transfer samples](../../transfer/README.md).
+[documentation](https://github.com/eclipse-edc/Connector/blob/main/docs/developer/build-your-own-connector.md).
 
 #### Provider
 

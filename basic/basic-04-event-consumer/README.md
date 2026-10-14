@@ -44,7 +44,7 @@ public <E extends Event> void on(EventEnvelope<E> envelope) {
 
 ```bash
 ./gradlew basic:basic-04-event-consumer:connector-with-event-subscriber:build
-java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/consumer-configuration.properties \
+java -Dedc.fs.config=basic/basic-04-event-consumer/resources/configuration/consumer-configuration.properties \
   -jar basic/basic-04-event-consumer/connector-with-event-subscriber/build/libs/connector.jar
 ```
 

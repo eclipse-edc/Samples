@@ -41,6 +41,9 @@ public class Advanced01openTelemetryTest {
 
     private static final String SAMPLE_FOLDER = "advanced/advanced-01-open-telemetry";
     private static final String DOCKER_COMPOSE_YAML = SAMPLE_FOLDER + "/docker-compose.yaml";
+    private static final String CREATE_ASSET_FILE_PATH = SAMPLE_FOLDER + "/resources/create-asset.json";
+    private static final String CREATE_POLICY_FILE_PATH = SAMPLE_FOLDER + "/resources/create-policy.json";
+    private static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = SAMPLE_FOLDER + "/resources/create-contract-definition.json";
     private static final String FETCH_DATASET_FROM_CATALOG_FILE_PATH = SAMPLE_FOLDER + "/resources/get-dataset.json";
     private static final String NEGOTIATE_CONTRACT_FILE_PATH = SAMPLE_FOLDER + "/resources/negotiate-contract.json";
     private static final String START_TRANSFER_FILE_PATH = SAMPLE_FOLDER + "/resources/start-transfer.json";
@@ -54,9 +57,9 @@ public class Advanced01openTelemetryTest {
 
     @Test
     void runSampleSteps()  {
-        createAsset();
-        createPolicy();
-        createContractDefinition();
+        createAsset(CREATE_ASSET_FILE_PATH);
+        createPolicy(CREATE_POLICY_FILE_PATH);
+        createContractDefinition(CREATE_CONTRACT_DEFINITION_FILE_PATH);
         var catalogDatasetId = fetchDatasetFromCatalog(FETCH_DATASET_FROM_CATALOG_FILE_PATH);
         var contractNegotiationId = negotiateContract(NEGOTIATE_CONTRACT_FILE_PATH, catalogDatasetId);
         var contractAgreementId = getContractAgreementId(contractNegotiationId);

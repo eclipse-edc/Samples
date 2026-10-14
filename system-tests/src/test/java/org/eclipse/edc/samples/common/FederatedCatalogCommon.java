@@ -36,7 +36,11 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.emptyString;
 
 public class FederatedCatalogCommon {
-    private static final String CREATE_ASSET_FILE_PATH = "transfer/transfer-01-negotiation/resources/create-asset.json";
+    public static final String PARTICIPANT_CONNECTOR_MODULE_PATH = ":federated-catalog:fc-00-basic:participant-connector";
+    public static final String PARTICIPANT_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/config.properties";
+    public static final String CREATE_ASSET_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-asset.json";
+    public static final String CREATE_POLICY_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-policy.json";
+    public static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-contract-definition.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
 
     private static final String STANDALONE_FC = "standalone-fc";
@@ -55,6 +59,10 @@ public class FederatedCatalogCommon {
     public static final String EMPTY_QUERY_FILE_PATH = "federated-catalog/fc-01-embedded/resources/empty-query.json";
     public static final String TYPE = "[0].@type";
     public static final String DATASET_ASSET_ID = "[0].dataset[0].@id";
+
+    public static RuntimeExtension getParticipantConnector() {
+        return PrerequisitesCommon.getProvider(PARTICIPANT_CONNECTOR_MODULE_PATH, PARTICIPANT_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
+    }
 
     public static RuntimeExtension getFcEmbeddedConnector(String modulePath) {
         return getRuntime(modulePath, EMBEDDED_FC, FC_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);

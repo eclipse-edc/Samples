@@ -33,11 +33,12 @@ import static org.eclipse.edc.samples.util.TransferUtil.post;
 class Basic04eventConsumerTest {
 
     private static final String CONNECTOR_MODULE_PATH = ":basic:basic-04-event-consumer:connector-with-event-subscriber";
+    private static final String CONFIG_PROPERTIES_FILE_PATH = "basic/basic-04-event-consumer/resources/configuration/consumer-configuration.properties";
     private static final String CREATE_ASSET_FILE_PATH = "basic/basic-04-event-consumer/resources/create-asset.json";
     private static final String V3_ASSETS_PATH = "/v3/assets";
 
     @RegisterExtension
-    static RuntimeExtension connector = getConsumer(CONNECTOR_MODULE_PATH);
+    static RuntimeExtension connector = getConsumer(CONNECTOR_MODULE_PATH, CONFIG_PROPERTIES_FILE_PATH);
 
     @Test
     void runSampleSteps() {

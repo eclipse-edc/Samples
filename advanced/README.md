@@ -2,7 +2,7 @@
 
 The samples in this scope teach advanced topics about the EDC framework. 
 
-> Before starting with these samples, be sure to check out the [basic](../basic/README.md) and [transfer](../transfer/README.md) samples!
+> Before starting with these samples, be sure to check out the [basic](../basic/README.md) samples!
 
 ## Samples
 
