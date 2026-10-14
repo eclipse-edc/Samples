@@ -2,6 +2,7 @@
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
+  "@type": "CatalogRequest",
   "counterPartyId": "provider",
   "counterPartyAddress": "http://localhost:19194/protocol/2025-1",
   "protocol": "dataspace-protocol-http:2025-1"

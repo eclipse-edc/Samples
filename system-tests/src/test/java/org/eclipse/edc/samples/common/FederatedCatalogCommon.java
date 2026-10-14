@@ -41,7 +41,7 @@ public class FederatedCatalogCommon {
     public static final String CREATE_ASSET_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-asset.json";
     public static final String CREATE_POLICY_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-policy.json";
     public static final String CREATE_CONTRACT_DEFINITION_FILE_PATH = "federated-catalog/fc-00-basic/participant-connector/resources/create-contract-definition.json";
-    private static final String V3_ASSETS_PATH = "/v3/assets";
+    private static final String ASSETS_PATH = "/v4/assets";
 
     private static final String STANDALONE_FC = "standalone-fc";
     private static final String EMBEDDED_FC = "fc-connector";
@@ -54,11 +54,11 @@ public class FederatedCatalogCommon {
     public static final int CRAWLER_EXECUTION_PERIOD_VALUE = 5;
     public static final int TIMEOUT = 5 * CRAWLER_EXECUTION_PERIOD_VALUE;
 
-    public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29193/api/management/v3/catalogs/request";
-    public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:39193/api/management/v3/catalogs/request";
+    public static final String EMBEDDED_FC_CATALOG_API_ENDPOINT = "http://localhost:29193/api/management/v4/catalogs/request";
+    public static final String STANDALONE_FC_CATALOG_API_ENDPOINT = "http://localhost:39193/api/management/v4/catalogs/request";
     public static final String EMPTY_QUERY_FILE_PATH = "federated-catalog/fc-01-embedded/resources/empty-query.json";
     public static final String TYPE = "[0].@type";
-    public static final String DATASET_ASSET_ID = "[0].dataset[0].@id";
+    public static final String DATASET_ASSET_ID = "[0].'dcat:dataset'.@id";
 
     public static RuntimeExtension getParticipantConnector() {
         return PrerequisitesCommon.getProvider(PARTICIPANT_CONNECTOR_MODULE_PATH, PARTICIPANT_CONNECTOR_CONFIG_PROPERTIES_FILE_PATH);
@@ -87,7 +87,7 @@ public class FederatedCatalogCommon {
     }
 
     public static String createAsset() {
-        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH,
+        return post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + ASSETS_PATH,
                 getFileContentFromRelativePath(CREATE_ASSET_FILE_PATH),
                 ID);
     }
@@ -103,7 +103,7 @@ public class FederatedCatalogCommon {
                 .log().ifValidationFails()
                 .statusCode(HttpStatus.SC_OK)
                 .body(TYPE, not(emptyString()))
-                .body(TYPE, is("Catalog"))
+                .body(TYPE, is("dcat:Catalog"))
                 .extract()
                 .jsonPath();
     }

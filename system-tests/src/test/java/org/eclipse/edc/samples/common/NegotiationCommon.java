@@ -27,31 +27,31 @@ import static org.eclipse.edc.samples.util.TransferUtil.post;
 
 public class NegotiationCommon {
 
-    private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
-    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
-    private static final String V2_CATALOG_DATASET_REQUEST_PATH = "/v3/catalog/dataset/request";
+    private static final String ASSETS_PATH = "/v4/assets";
+    private static final String POLICY_DEFINITIONS_PATH = "/v4/policydefinitions";
+    private static final String CONTRACT_DEFINITIONS_PATH = "/v4/contractdefinitions";
+    private static final String CATALOG_DATASET_REQUEST_PATH = "/v4/catalog/dataset/request";
     private static final String CATALOG_DATASET_ID = "\"hasPolicy\"[0].'@id'";
-    private static final String V2_CONTRACT_NEGOTIATIONS_PATH = "/v3/contractnegotiations/";
+    private static final String CONTRACT_NEGOTIATIONS_PATH = "/v4/contractnegotiations/";
     private static final String CONTRACT_NEGOTIATION_ID = "@id";
     private static final String CONTRACT_AGREEMENT_ID = "contractAgreementId";
     private static final String CONTRACT_OFFER_ID_KEY = "{{contract-offer-id}}";
 
     public static void createAsset(String createAssetFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));
     }
 
     public static void createPolicy(String createPolicyFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
     }
 
     public static void createContractDefinition(String createContractDefinitionFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
     }
 
     public static String fetchDatasetFromCatalog(String fetchDatasetFromCatalogFilePath) {
         var catalogDatasetId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CATALOG_DATASET_REQUEST_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + CATALOG_DATASET_REQUEST_PATH,
                 getFileContentFromRelativePath(fetchDatasetFromCatalogFilePath),
                 CATALOG_DATASET_ID
         );
@@ -63,7 +63,7 @@ public class NegotiationCommon {
         var requestBody = getFileContentFromRelativePath(negotiateContractFilePath)
                 .replace(CONTRACT_OFFER_ID_KEY, catalogDatasetId);
         var contractNegotiationId = post(
-                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH,
+                PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + CONTRACT_NEGOTIATIONS_PATH,
                 requestBody,
                 CONTRACT_NEGOTIATION_ID
         );
@@ -72,7 +72,7 @@ public class NegotiationCommon {
     }
 
     public static String getContractAgreementId(String contractNegotiationId) {
-        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
         return await()
                 .atMost(TIMEOUT)
                 .pollInterval(POLL_INTERVAL)
@@ -80,7 +80,7 @@ public class NegotiationCommon {
     }
 
     public static String getContractNegotiationState(String contractNegotiationId) {
-        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + V2_CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
+        var url = PrerequisitesCommon.CONSUMER_MANAGEMENT_URL + CONTRACT_NEGOTIATIONS_PATH + contractNegotiationId;
         return get(url, "state");
     }
 }

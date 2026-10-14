@@ -42,7 +42,7 @@ Create an asset:
 ```bash
 curl -H "X-Api-Key: password" \
   -d @advanced/advanced-01-open-telemetry/resources/create-asset.json \
-  -H 'content-type: application/json' http://localhost:19193/management/v3/assets \
+  -H 'content-type: application/json' http://localhost:19193/management/v4/assets \
   -s | jq
 ```
 
@@ -51,7 +51,7 @@ Create a Policy on the provider connector:
 ```bash
 curl -H "X-Api-Key: password" \
   -d @advanced/advanced-01-open-telemetry/resources/create-policy.json \
-  -H 'content-type: application/json' http://localhost:19193/management/v3/policydefinitions \
+  -H 'content-type: application/json' http://localhost:19193/management/v4/policydefinitions \
   -s | jq
 ```
 
@@ -60,7 +60,7 @@ Follow up with the creation of a contract definition:
 ```bash
 curl -H "X-Api-Key: password" \
   -d @advanced/advanced-01-open-telemetry/resources/create-contract-definition.json \
-  -H 'content-type: application/json' http://localhost:19193/management/v3/contractdefinitions \
+  -H 'content-type: application/json' http://localhost:19193/management/v4/contractdefinitions \
   -s | jq
 ```
 
@@ -72,7 +72,7 @@ directly with this call:
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/get-dataset.json \
-  -X POST "http://localhost:29193/management/v3/catalog/dataset/request" \
+  -X POST "http://localhost:29193/management/v4/catalog/dataset/request" \
   -s | jq
 ```
 
@@ -141,7 +141,7 @@ and request the contract negotiation:
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/negotiate-contract.json \
-  -X POST "http://localhost:29193/management/v3/contractnegotiations" \
+  -X POST "http://localhost:29193/management/v4/contractnegotiations" \
   -s | jq
 ```
 
@@ -150,7 +150,7 @@ state with this call, replacing `{{contract-negotiation-id}}` with the id return
 
 ```shell
 curl -H 'X-Api-Key: password' \
-  -X GET "http://localhost:29193/management/v3/contractnegotiations/{{contract-negotiation-id}}" \
+  -X GET "http://localhost:29193/management/v4/contractnegotiations/{{contract-negotiation-id}}" \
   -s | jq
 ```
 
@@ -160,7 +160,7 @@ Finally, update the contract agreement id in the [start-transfer.json](resources
 curl -H "X-Api-Key: password" \
   -H "Content-Type: application/json" \
   -d @advanced/advanced-01-open-telemetry/resources/start-transfer.json \
-  -X POST "http://localhost:29193/management/v3/transferprocesses" \
+  -X POST "http://localhost:29193/management/v4/transferprocesses" \
   -s | jq
 ```
 

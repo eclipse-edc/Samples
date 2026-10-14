@@ -19,20 +19,20 @@ import static org.eclipse.edc.samples.util.TransferUtil.post;
 
 public class PolicyCommon {
 
-    private static final String V3_ASSETS_PATH = "/v3/assets";
-    private static final String V2_POLICY_DEFINITIONS_PATH = "/v3/policydefinitions";
-    private static final String V2_CONTRACT_DEFINITIONS_PATH = "/v3/contractdefinitions";
-    
+    private static final String ASSETS_PATH = "/v4/assets";
+    private static final String POLICY_DEFINITIONS_PATH = "/v4/policydefinitions";
+    private static final String CONTRACT_DEFINITIONS_PATH = "/v4/contractdefinitions";
+
     public static void createAsset(String createAssetFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V3_ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + ASSETS_PATH, getFileContentFromRelativePath(createAssetFilePath));
     }
-    
+
     public static void createPolicy(String createPolicyFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + POLICY_DEFINITIONS_PATH, getFileContentFromRelativePath(createPolicyFilePath));
     }
-    
+
     public static void createContractDefinition(String createContractDefinitionFilePath) {
-        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + V2_CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
+        post(PrerequisitesCommon.PROVIDER_MANAGEMENT_URL + CONTRACT_DEFINITIONS_PATH, getFileContentFromRelativePath(createContractDefinitionFilePath));
     }
     
 }

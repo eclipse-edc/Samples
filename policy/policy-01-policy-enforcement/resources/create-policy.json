@@ -2,6 +2,7 @@
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
+  "@type": "PolicyDefinition",
   "@id": "eu-policy",
   "policy": {
     "@context": "http://www.w3.org/ns/odrl.jsonld",

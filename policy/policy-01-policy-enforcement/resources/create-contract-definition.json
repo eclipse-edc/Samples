@@ -2,11 +2,12 @@
   "@context": {
     "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
   },
+  "@type": "ContractDefinition",
   "@id": "1",
   "accessPolicyId": "eu-policy",
   "contractPolicyId": "eu-policy",
   "assetsSelector": [{
-    "@type": "CriterionDto",
+    "@type": "Criterion",
     "operandLeft": "https://w3id.org/edc/v0.0.1/ns/id",
     "operator": "=",
     "operandRight": "test-document"
