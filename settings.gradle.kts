@@ -33,9 +33,6 @@ include(":basic:basic-02-health-endpoint")
 include(":basic:basic-03-configuration")
 include(":basic:basic-04-event-consumer:connector-with-event-subscriber")
 
-include(":transfer:transfer-00-prerequisites:connector")
-include(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane")
-
 include(":advanced:advanced-01-open-telemetry:open-telemetry-runtime")
 
 //policy
@@ -46,6 +43,7 @@ include(":policy:policy-01-policy-enforcement:policy-functions")
 // federated catalog
 include(":federated-catalog:fc-00-basic:federated-catalog-base")
 include(":federated-catalog:fc-00-basic:fixed-node-resolver")
+include(":federated-catalog:fc-00-basic:participant-connector")
 include(":federated-catalog:fc-01-embedded:fc-connector")
 include(":federated-catalog:fc-02-standalone:standalone-fc")
 include(":federated-catalog:fc-03-static-node-directory:target-node-resolver")
@@ -55,7 +53,5 @@ include(":federated-catalog:fc-03-static-node-directory:embedded-fc-with-node-re
 
 // modules for code samples ------------------------------------------------------------------------
 include(":advanced:advanced-02-custom-runtime")
-
-include(":util:http-request-logger")
 
 include(":system-tests")

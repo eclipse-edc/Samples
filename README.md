@@ -38,20 +38,6 @@ link above to learn about the basic samples in more detail.
 
 All basic samples are located in the `basic` directory.
 
-### [Transfer](./transfer/README.md)
-
-This scope revolves around the topic of data transfer. In these samples you will learn how a data transfer works in the
-EDC and run different transfer scenarios. Click the link above to learn about the transfer samples in more detail.
-
-All transfer samples are located in the `transfer` directory.
-
-### [Advanced](./advanced/README.md)
-
-Collection of advanced topics regarding the EDC framework.
-Click the link above to learn about the transfer samples in more detail.
-
-All transfer samples are located in the `advanced` directory.
-
 ### [Policy](./policy/README.md)
 
 These samples deal with the topic of policies and their evaluation and enforcement. They will teach you what
@@ -68,6 +54,15 @@ node resolver, which resolves the participant connectors in the dataspace and cr
 a set of all offered catalogs.
 
 All federated catalog samples are located in the [`federated-catalog`](./federated-catalog/README.md) directory.
+
+### [Advanced](./advanced/README.md)
+
+Collection of advanced topics regarding the EDC framework.
+Click the link above to learn about the transfer samples in more detail.
+
+All transfer samples are located in the `advanced` directory.
+
+
 
 ## Contributing
 

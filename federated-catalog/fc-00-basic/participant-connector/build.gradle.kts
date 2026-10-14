@@ -12,7 +12,6 @@
  *
  */
 
-
 plugins {
     `java-library`
     id("application")
@@ -20,26 +19,20 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.data.plane.spi)
-    implementation(libs.edc.web.spi)
-
-    runtimeOnly(project(":transfer:transfer-00-prerequisites:connector"))
+    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.iam.mock)
 }
 
 application {
-    mainClass.set("$group.boot.system.runtime.BaseRuntime")
+    mainClass.set("org.eclipse.edc.boot.system.runtime.BaseRuntime")
 }
 
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
-tasks.withType<CreateStartScripts> {
-    dependsOn(":transfer:transfer-00-prerequisites:connector:shadowJar")
-}
-
 tasks.shadowJar {
     mergeServiceFiles()
-    archiveFileName.set("connector.jar")
+    archiveFileName.set("participant-connector.jar")
     dependsOn(distTar, distZip)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

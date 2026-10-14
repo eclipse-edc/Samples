@@ -23,6 +23,8 @@ import java.time.Duration;
 
 import static org.awaitility.Awaitility.await;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CRAWLER_EXECUTION_DELAY_VALUE;
+import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CREATE_CONTRACT_DEFINITION_FILE_PATH;
+import static org.eclipse.edc.samples.common.FederatedCatalogCommon.CREATE_POLICY_FILE_PATH;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.DATASET_ASSET_ID;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMBEDDED_FC_CATALOG_API_ENDPOINT;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.EMPTY_QUERY_FILE_PATH;
@@ -30,18 +32,18 @@ import static org.eclipse.edc.samples.common.FederatedCatalogCommon.STANDALONE_F
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.TIMEOUT;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.createAsset;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.getFcEmbeddedConnector;
+import static org.eclipse.edc.samples.common.FederatedCatalogCommon.getParticipantConnector;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.getStandaloneFc;
 import static org.eclipse.edc.samples.common.FederatedCatalogCommon.postAndAssertType;
 import static org.eclipse.edc.samples.common.FileTransferCommon.getFileContentFromRelativePath;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createContractDefinition;
 import static org.eclipse.edc.samples.common.NegotiationCommon.createPolicy;
-import static org.eclipse.edc.samples.common.PrerequisitesCommon.getProvider;
 
 @EndToEndTest
 public class FederatedCatalog03staticNodeResolverTest {
 
     @RegisterExtension
-    static final RuntimeExtension PARTICIPANT_CONNECTOR = getProvider();
+    static final RuntimeExtension PARTICIPANT_CONNECTOR = getParticipantConnector();
 
     @RegisterExtension
     static final RuntimeExtension STANDALONE_FC_RUNTIME = getStandaloneFc(":federated-catalog:fc-03-static-node-directory:standalone-fc-with-node-resolver");
@@ -52,8 +54,8 @@ public class FederatedCatalog03staticNodeResolverTest {
     @Test
     void runSampleSteps() {
         var assetId = createAsset();
-        createPolicy();
-        createContractDefinition();
+        createPolicy(CREATE_POLICY_FILE_PATH);
+        createContractDefinition(CREATE_CONTRACT_DEFINITION_FILE_PATH);
 
         // call catalog API from standalone FC
         await()

@@ -41,7 +41,7 @@ Create an asset:
 
 ```bash
 curl -H "X-Api-Key: password" \
-  -d @transfer/transfer-01-negotiation/resources/create-asset.json \
+  -d @advanced/advanced-01-open-telemetry/resources/create-asset.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/assets \
   -s | jq
 ```
@@ -50,7 +50,7 @@ Create a Policy on the provider connector:
 
 ```bash
 curl -H "X-Api-Key: password" \
-  -d @transfer/transfer-01-negotiation/resources/create-policy.json \
+  -d @advanced/advanced-01-open-telemetry/resources/create-policy.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/policydefinitions \
   -s | jq
 ```
@@ -59,7 +59,7 @@ Follow up with the creation of a contract definition:
 
 ```bash
 curl -H "X-Api-Key: password" \
-  -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
+  -d @advanced/advanced-01-open-telemetry/resources/create-contract-definition.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/contractdefinitions \
   -s | jq
 ```

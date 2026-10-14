@@ -51,24 +51,23 @@ can successfully request and retrieve these catalogs, we need at least one conne
 Therefore, in this section, we will start a connector and then create a contract 
 for this connector. In the future samples, we will refer to it as `participant-connector`.
 This `participant-connector` will function as a provider.
-We will use the resources from the [transfer](../../transfer) sample to set up this connector. In the rest of this section we will,
+The `participant-connector` is a minimal control-plane connector that lives in the
+[participant-connector](./participant-connector) module. In the rest of this section we will,
 * run the `participant-connector`
 * create an asset for this `participant-connector`
 * create a policy
 * create a contract offer
 
-Although these topics were covered in the [transfer](../../transfer) section, we’ll document all the necessary commands here for easier execution.
-
 
 #### Build connector jar
 Use the following command to build a connector jar.
 ```shell
-./gradlew transfer:transfer-00-prerequisites:connector:build
+./gradlew federated-catalog:fc-00-basic:participant-connector:build
 ```
 #### Run the connector
 Execute the following to run the connector jar.
 ```shell
-java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/provider-configuration.properties -jar transfer/transfer-00-prerequisites/connector/build/libs/connector.jar
+java -Dedc.fs.config=federated-catalog/fc-00-basic/participant-connector/config.properties -jar federated-catalog/fc-00-basic/participant-connector/build/libs/participant-connector.jar
 ```
 
 ---
@@ -76,21 +75,21 @@ java -Dedc.fs.config=transfer/transfer-00-prerequisites/resources/configuration/
 Once the connector is running, carry out the commands below in sequence.
 #### Create an asset
 ```shell
-curl -d @transfer/transfer-01-negotiation/resources/create-asset.json \
+curl -d @federated-catalog/fc-00-basic/participant-connector/resources/create-asset.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/assets \
   -s | jq
 ```
 
 #### Create a policy
 ```bash
-curl -d @transfer/transfer-01-negotiation/resources/create-policy.json \
+curl -d @federated-catalog/fc-00-basic/participant-connector/resources/create-policy.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/policydefinitions \
   -s | jq
 ```
 
 #### Create a contract definition
 ```bash
-curl -d @transfer/transfer-01-negotiation/resources/create-contract-definition.json \
+curl -d @federated-catalog/fc-00-basic/participant-connector/resources/create-contract-definition.json \
   -H 'content-type: application/json' http://localhost:19193/management/v3/contractdefinitions \
   -s | jq
 ```

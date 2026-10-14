@@ -36,8 +36,6 @@ dependencies {
     testCompileOnly(project(":basic:basic-02-health-endpoint"))
     testCompileOnly(project(":basic:basic-03-configuration"))
 
-    testCompileOnly(project(":transfer:transfer-00-prerequisites:connector"))
-    testCompileOnly(project(":transfer:transfer-03-consumer-pull:provider-proxy-data-plane"))
     testCompileOnly(project(":basic:basic-04-event-consumer:connector-with-event-subscriber"))
 
     testCompileOnly(project(":advanced:advanced-01-open-telemetry:open-telemetry-runtime"))
@@ -47,6 +45,7 @@ dependencies {
     testCompileOnly(project(":policy:policy-01-policy-enforcement:policy-functions"))
 
     testCompileOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
+    testCompileOnly(project(":federated-catalog:fc-00-basic:participant-connector"))
     testCompileOnly(project(":federated-catalog:fc-01-embedded:fc-connector"))
     testCompileOnly(project(":federated-catalog:fc-02-standalone:standalone-fc"))
     testCompileOnly(project(":federated-catalog:fc-03-static-node-directory:target-node-resolver"))
