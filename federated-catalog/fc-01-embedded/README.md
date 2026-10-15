@@ -90,7 +90,7 @@ Use the following request to invoke the catalog API:
 curl -d @federated-catalog/fc-01-embedded/resources/empty-query.json \
   -H 'content-type: application/json' \
   -H 'x-api-key: password' \
-  http://localhost:29193/api/management/v3/catalogs/request \
+  http://localhost:29193/api/management/v4/catalogs/request \
   -s | jq
 ```
 

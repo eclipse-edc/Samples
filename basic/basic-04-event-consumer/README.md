@@ -52,7 +52,7 @@ java -Dedc.fs.config=basic/basic-04-event-consumer/resources/configuration/consu
 
 ```bash
 curl -d @basic/basic-04-event-consumer/resources/create-asset.json \
-  -X POST -H 'content-type: application/json' http://localhost:29193/management/v3/assets \
+  -X POST -H 'content-type: application/json' http://localhost:29193/management/v4/assets \
   -s | jq
 ```
 
