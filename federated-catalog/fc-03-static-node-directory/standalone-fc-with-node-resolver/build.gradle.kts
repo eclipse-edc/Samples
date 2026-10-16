@@ -21,9 +21,13 @@ plugins {
 dependencies {
     runtimeOnly(project(":federated-catalog:fc-00-basic:federated-catalog-base"))
     runtimeOnly(project(":federated-catalog:fc-03-static-node-directory:target-node-resolver"))
+    runtimeOnly(project(":federated-catalog:fc-00-basic:no-op-data-flow"))
 
     implementation(libs.edc.runtime.core)
     implementation(libs.edc.connector.core)
+    implementation(libs.edc.participant.context.core)
+    implementation(libs.edc.participant.context.config.core)
+    implementation(libs.edc.participant.context.connector.core)
     runtimeOnly(libs.edc.boot)
     runtimeOnly(libs.edc.control.plane.core)
     implementation(libs.edc.configuration.filesystem)

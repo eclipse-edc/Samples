@@ -4,9 +4,8 @@ plugins {
 }
 
 dependencies {
-    api(libs.edc.data.plane.spi)
-    api(libs.edc.json.ld.spi)
-    api(libs.edc.participant.context.config.spi)
+    api(libs.edc.core.spi)
+    api(libs.edc.control.plane.spi)
 
     implementation(libs.edc.control.plane.core)
 

@@ -81,7 +81,7 @@ public class NoOpDataFlowControllerExtension implements ServiceExtension {
         }
 
         @Override
-        public Set<String> transferTypesFor(String assetId) {
+        public Set<String> transferTypesFor(String participantContextId, String assetId) {
             return Set.of("HttpData-PULL");
         }
     }

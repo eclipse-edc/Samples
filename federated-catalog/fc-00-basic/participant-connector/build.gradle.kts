@@ -19,8 +19,13 @@ plugins {
 }
 
 dependencies {
-    runtimeOnly(libs.edc.bom.controlplane.base)
+    runtimeOnly(libs.edc.bom.controlplane.base) {
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-core")
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-oauth2")
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-oauth2-token-exchange")
+    }
     runtimeOnly(libs.edc.iam.mock)
+    runtimeOnly(project(":federated-catalog:fc-00-basic:no-op-data-flow"))
 }
 
 application {
