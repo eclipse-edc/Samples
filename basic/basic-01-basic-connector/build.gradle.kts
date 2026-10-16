@@ -23,6 +23,9 @@ dependencies {
     implementation(libs.edc.boot)
     implementation(libs.edc.runtime.core)
     implementation(libs.edc.connector.core)
+    implementation(libs.edc.participant.context.core)
+    implementation(libs.edc.participant.context.config.core)
+    implementation(libs.edc.participant.context.connector.core)
     implementation(libs.edc.http)
 }
 
