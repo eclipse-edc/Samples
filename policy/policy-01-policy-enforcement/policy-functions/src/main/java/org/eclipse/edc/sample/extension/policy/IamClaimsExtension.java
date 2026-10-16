@@ -14,10 +14,10 @@
 
 package org.eclipse.edc.sample.extension.policy;
 
+import org.eclipse.edc.controlplane.iam.AudienceResolver;
 import org.eclipse.edc.participantcontext.spi.config.ParticipantContextConfig;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.runtime.metamodel.annotation.Provider;
-import org.eclipse.edc.spi.iam.AudienceResolver;
 import org.eclipse.edc.spi.iam.ClaimToken;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.iam.TokenParameters;

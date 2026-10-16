@@ -20,8 +20,8 @@ plugins {
 
 dependencies {
     testImplementation(libs.edc.junit)
-    testImplementation(libs.edc.json.ld.lib)
-    testImplementation(libs.edc.json.ld.spi)
+    testImplementation(libs.edc.json.ld)
+    testImplementation(libs.edc.core.spi)
     testImplementation(libs.edc.control.plane.spi)
     testImplementation(testFixtures(libs.edc.management.api.test.fixtures))
     testImplementation(libs.awaitility)

@@ -21,6 +21,7 @@ plugins {
 dependencies {
     implementation(project(":federated-catalog:fc-00-basic:federated-catalog-base"))
     implementation(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
+    implementation(project(":federated-catalog:fc-00-basic:no-op-data-flow"))
 
     runtimeOnly(libs.edc.bom.controlplane.base)
     runtimeOnly(libs.edc.iam.mock)

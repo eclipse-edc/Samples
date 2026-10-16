@@ -22,7 +22,7 @@ dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base)
     runtimeOnly(libs.edc.iam.mock)
 
-    implementation(libs.edc.asset.spi)
+    implementation(libs.edc.control.plane.spi)
 }
 
 application {
