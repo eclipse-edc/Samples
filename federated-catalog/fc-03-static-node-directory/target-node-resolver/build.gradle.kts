@@ -18,5 +18,5 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.edc.fc.spi.crawler)
+    implementation(libs.edc.control.plane.spi)
 }

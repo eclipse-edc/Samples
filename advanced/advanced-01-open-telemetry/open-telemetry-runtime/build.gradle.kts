@@ -24,10 +24,11 @@ dependencies {
     runtimeOnly(libs.edc.bom.controlplane.base) {
         exclude(group = "org.eclipse.edc", "data-plane-signaling-core")
         exclude(group = "org.eclipse.edc", "data-plane-signaling-oauth2")
+        exclude(group = "org.eclipse.edc", "data-plane-signaling-oauth2-token-exchange")
     }
 
     implementation(libs.edc.iam.mock)
-    implementation(libs.edc.transfer.spi)
+    implementation(libs.edc.control.plane.spi)
     implementation(libs.opentelemetry.exporter.otlp)
 }
 

@@ -23,6 +23,7 @@ dependencies {
     runtimeOnly(project(":federated-catalog:fc-00-basic:fixed-node-resolver"))
 
     implementation(libs.edc.iam.mock)
+    runtimeOnly(libs.edc.dsp.catalog.transform.v2025)
 
 }
 
