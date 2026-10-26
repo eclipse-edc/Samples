@@ -14,12 +14,11 @@
 
 package org.eclipse.edc.sample.extension.fc;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.edc.crawler.spi.TargetNode;
 import org.eclipse.edc.crawler.spi.TargetNodeDirectory;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CatalogNodeDirectory implements TargetNodeDirectory {
@@ -35,11 +34,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
 
     @Override
     public List<TargetNode> getAll() {
-        try {
-            return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
     }
 
     @Override
