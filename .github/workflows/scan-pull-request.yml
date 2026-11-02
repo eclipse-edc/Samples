@@ -10,25 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-pull-request-title:
-    runs-on: ubuntu-latest
-    continue-on-error: false
-    steps:
-      - uses: actions/checkout@v7
-      - uses: deepakputhraya/action-pr-title@master
-        with:
-          # Match pull request titles conventional commit syntax (https://www.conventionalcommits.org/en/v1.0.0/)
-          # (online tool for regex quick check: https://regex101.com/r/V5J8kh/1)
-          regex: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(\w+((,|\/|\\)?\s?\w+)+\))?!?: [\S ]{1,80}[^\.]$'
-          allowed_prefixes: 'build,chore,ci,docs,feat,fix,perf,refactor,revert,style,test'
-          prefix_case_sensitive: true
-
-  check-for-assigned-labels:
-    runs-on: ubuntu-latest
-    continue-on-error: false
-    steps:
-      - uses: actions/checkout@v7
-      - uses: agilepathway/label-checker@v2.0.70
-        with:
-          any_of: api,bug,build,dependencies,documentation,enhancement,refactoring
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+  trigger-workflow:
+    uses: eclipse-edc/.github/.github/workflows/scan-pull-request.yml@main
+    secrets:
+      envGH: ${{ secrets.GITHUB_TOKEN }}
