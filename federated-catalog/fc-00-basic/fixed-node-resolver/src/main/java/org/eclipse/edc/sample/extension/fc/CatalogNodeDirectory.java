@@ -22,10 +22,13 @@ import java.util.List;
 public class CatalogNodeDirectory implements TargetNodeDirectory {
 
     @Override
-    public List<TargetNode> getAll() {
+    public List<TargetNode> getAll(String participantContextId) {
         var participantNode = new TargetNode("https://w3id.org/edc/v0.0.1/ns/",
                 "provider",
-                "http://localhost:19194/protocol/2025-1", List.of("dataspace-protocol-http:2025-1"));
+                "provider",
+                "http://localhost:19194/protocol/2025-1",
+                participantContextId,
+                List.of("dataspace-protocol-http:2025-1"));
 
         return List.of(participantNode);
     }
@@ -36,7 +39,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     }
 
     @Override
-    public TargetNode remove(String s) {
+    public TargetNode remove(String participantContextId, String id) {
         return null;
     }
 }

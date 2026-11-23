@@ -45,20 +45,20 @@ However, this solution is intended for use only within the sample scope; in prod
 ### Target Node Resolver
 
 The [CatalogNodeDirectory](./target-node-resolver/src/main/java/org/eclipse/edc/sample/extension/fc/CatalogNodeDirectory.java) 
-implements TargetNodeDirectory and overrides its `getAll()` method. 
+implements TargetNodeDirectory and overrides its `getAll(String participantContextId)` method. 
 In our implementation, this method maps the file content of [`participant.json`](./target-node-resolver/src/main/resources/participants.json) 
-to a list of TargetNodes.
+to a list of TargetNodes, scoped to the participant context on whose behalf the crawler runs.
 
 ```java
 public class CatalogNodeDirectory implements TargetNodeDirectory {
     //...
     @Override
-    public List<TargetNode> getAll() {
-        try {
-            return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public List<TargetNode> getAll(String participantContextId) {
+        List<TargetNode> nodes = objectMapper.readValue(participantFileContent, new TypeReference<>() {});
+        return nodes.stream()
+                .map(node -> new TargetNode(node.name(), node.id(), node.counterPartyId(), node.targetUrl(),
+                        participantContextId, node.supportedProtocols()))
+                .toList();
     }
     //...
 }
