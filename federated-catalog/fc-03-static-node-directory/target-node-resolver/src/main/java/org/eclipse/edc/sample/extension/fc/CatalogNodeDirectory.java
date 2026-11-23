@@ -33,8 +33,12 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     }
 
     @Override
-    public List<TargetNode> getAll() {
-        return objectMapper.readValue(participantFileContent, new TypeReference<>() {});
+    public List<TargetNode> getAll(String participantContextId) {
+        List<TargetNode> nodes = objectMapper.readValue(participantFileContent, new TypeReference<>() {});
+        return nodes.stream()
+                .map(node -> new TargetNode(node.name(), node.id(), node.counterPartyId(), node.targetUrl(),
+                        participantContextId, node.supportedProtocols()))
+                .toList();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class CatalogNodeDirectory implements TargetNodeDirectory {
     }
 
     @Override
-    public TargetNode remove(String s) {
+    public TargetNode remove(String participantContextId, String id) {
         return null;
     }
 }
